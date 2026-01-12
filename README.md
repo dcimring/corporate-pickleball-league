@@ -1,66 +1,85 @@
-# Corporate Pickleball League Website
+# 🏓 Corporate Pickleball League
 
-A modern, responsive website for the Corporate Pickleball League, built with React, TypeScript, and Tailwind CSS.
+A stunning, responsive website for the Corporate Pickleball League, featuring a unique "Organic Clubhouse" aesthetic. Built with speed and style using **Vite**, **React**, **TypeScript**, and **Tailwind CSS v4**.
 
-## Features
+![Design Preview](inspiration.png) *(Reference Inspiration)*
 
-*   **Division Schedules:** View playing times and team rosters for all divisions.
-*   **Leaderboards:** Up-to-date standings with win percentages and point differentials.
-*   **Match Scores:** Recent game results with visual scorecards.
-*   **Statistics:** Advanced analytics for teams and players (e.g., win streaks, aces).
-*   **Responsive Design:** Optimized for desktop and mobile viewing.
+## ✨ Key Features
 
-## Technology Stack
+-   **Organic Clubhouse Design:** A warm, tactile UI with hand-drawn doodles, hard shadows, and distinctive typography.
+-   **Division Overviews:** Quick access to schedules and team rosters for all league levels.
+-   **Interactive Leaderboards:** Real-time standings sorted by win percentage with point differential tracking.
+-   **Visual Match Results:** Detailed scorecard view of recent games with winner highlights.
+-   **Performance Analytics:** Deep-dive statistics for teams and individual players.
+-   **Deep Linking:** Click a division card on the home page to jump straight to its leaderboard.
+-   **Responsive & Robust:** Optimized for all devices and configured for seamless SPA routing on Vercel.
 
-*   **Framework:** [Vite](https://vitejs.dev/) + [React](https://reactjs.org/)
-*   **Language:** [TypeScript](https://www.typescriptlang.org/)
-*   **Styling:** [Tailwind CSS v4](https://tailwindcss.com/)
-*   **Routing:** [React Router](https://reactrouter.com/)
-*   **Icons:** [Lucide React](https://lucide.dev/)
+## 🚀 Tech Stack
 
-## Getting Started
+-   **Framework:** [React 18+](https://reactjs.org/)
+-   **Build Tool:** [Vite](https://vitejs.dev/)
+-   **Styling:** [Tailwind CSS v4](https://tailwindcss.com/) (using the new `@theme` configuration)
+-   **Language:** [TypeScript](https://www.typescriptlang.org/)
+-   **Icons:** [Lucide React](https://lucide.dev/)
+-   **Routing:** [React Router 6](https://reactrouter.com/)
+
+## 🛠️ Getting Started
 
 ### Prerequisites
 
-*   Node.js (v18 or higher)
-*   npm
+-   [Node.js](https://nodejs.org/) (v18 or higher)
+-   npm
 
 ### Installation
 
-1.  Clone the repository:
+1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/YOUR_USERNAME/corporate-pickleball-league.git
-    cd corporate-pickleball-league/app
+    git clone https://github.com/dcimring/corporate-pickleball-league.git
+    cd corporate-pickleball-league
     ```
 
-2.  Install dependencies:
+2.  **Install dependencies:**
     ```bash
+    cd app
     npm install
     ```
 
-3.  Start the development server:
+3.  **Run in Development:**
     ```bash
     npm run dev
     ```
 
-4.  Open `http://localhost:5173` (or the port shown in your terminal) to view the app.
+4.  **Build for Production:**
+    ```bash
+    npm run build
+    ```
 
-## Project Structure
+## 📦 Project Structure
 
-```
+```text
 app/
 ├── src/
-│   ├── components/     # Reusable UI components
-│   ├── lib/            # Utilities and Data access
-│   ├── pages/          # Page components
+│   ├── components/     # Reusable UI (Layout, Card, Doodle)
+│   ├── pages/          # Page views (Home, Leaderboard, Scores, Stats)
+│   ├── lib/            # Data access & utilities
 │   ├── types.ts        # TypeScript interfaces
-│   ├── league-data.json# Mock database
-│   ├── App.tsx         # Main Routing
-│   └── index.css       # Global styles & Tailwind Config
-├── public/
+│   ├── league-data.json# Mock database (Source of truth)
+│   └── index.css       # Tailwind v4 configuration & Global styles
+├── vercel.json         # SPA routing configuration
 └── ...
 ```
 
-## License
+## 🌐 Deployment
+
+The site is configured for deployment on [Vercel](https://vercel.com).
+-   **Root Directory:** `app`
+-   **Build Command:** `npm run build`
+-   **Output Directory:** `dist`
+
+## 🇰🇾 Made in Cayman
+
+Made with ❤️ in the Cayman Islands.
+
+## 📄 License
 
 This project is licensed under the MIT License.
