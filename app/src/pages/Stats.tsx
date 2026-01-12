@@ -1,32 +1,70 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { leagueData } from '../lib/data';
 import { Activity, Flame } from 'lucide-react';
 import { Card } from '../components/Card';
 import { CircleHighlight } from '../components/Doodle';
+import { clsx } from 'clsx';
 
 export const Stats: React.FC = () => {
-  const teams = Object.keys(leagueData.teamStats);
+  const [activeDivision, setActiveDivision] = useState<string>('Division A');
+  
+  // Get all division names for the toggle
+  const divisionNames = leagueData.divisions.map(d => d.name);
+  
+  // Find the current active division object
+  const currentDivisionObj = leagueData.divisions.find(d => d.name === activeDivision);
+  
+  // Filter teams that belong to the current division
+  const divisionTeams = currentDivisionObj ? currentDivisionObj.teams : [];
+  
+  // Get stats only for these teams
+  // We assume leagueData.teamStats has keys matching team names
+  const relevantTeamStats = divisionTeams
+    .filter(teamName => leagueData.teamStats[teamName])
+    .map(teamName => ({
+      name: teamName,
+      ...leagueData.teamStats[teamName]
+    }));
 
   return (
-    <div className="space-y-16">
-      <div className="text-center max-w-2xl mx-auto relative">
-        <h1 className="text-5xl font-heading font-bold text-brand-ink mb-4">The Numbers</h1>
-        <p className="font-hand text-xl text-gray-500 -rotate-1">Stats don't lie!</p>
-        <CircleHighlight className="w-40 h-20 text-brand-soft-blue absolute top-0 left-1/2 -translate-x-1/2 -z-10 opacity-50" />
+    <div className="space-y-12">
+      <div className="text-center max-w-4xl mx-auto relative space-y-6">
+        <div>
+          <h1 className="text-5xl font-heading font-bold text-brand-ink mb-4">The Numbers</h1>
+          <p className="font-hand text-xl text-gray-500 -rotate-1">Stats don't lie!</p>
+          <CircleHighlight className="w-40 h-20 text-brand-soft-blue absolute top-0 left-1/2 -translate-x-1/2 -z-10 opacity-50" />
+        </div>
+
+        {/* Division Toggle */}
+        <div className="flex flex-wrap justify-center gap-2 bg-white border-2 border-brand-ink p-2 rounded-2xl shadow-hard-sm">
+          {divisionNames.map((div) => (
+            <button
+              key={div}
+              onClick={() => setActiveDivision(div)}
+              className={clsx(
+                'px-4 py-2 rounded-xl text-sm font-bold uppercase tracking-tight transition-all border-2',
+                activeDivision === div
+                  ? 'bg-brand-ink text-white border-brand-ink shadow-md'
+                  : 'bg-transparent text-gray-500 border-transparent hover:bg-gray-100 hover:text-brand-ink'
+              )}
+            >
+              {div}
+            </button>
+          ))}
+        </div>
       </div>
 
-      {/* Team Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-        {teams.map((teamName, idx) => {
-          const stats = leagueData.teamStats[teamName];
-          return (
+      {/* Team Stats Cards Grid */}
+      {relevantTeamStats.length > 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+          {relevantTeamStats.map((team, idx) => (
             <Card 
-              key={teamName} 
+              key={team.name} 
               className="overflow-hidden p-0"
-              variant={idx === 0 ? 'acid' : 'blue'}
+              variant={idx % 2 === 0 ? 'acid' : 'blue'}
             >
               <div className="p-6 border-b-2 border-brand-ink bg-white/40 backdrop-blur-md relative">
-                <h2 className="text-3xl font-heading font-bold uppercase">{teamName}</h2>
+                <h2 className="text-3xl font-heading font-bold uppercase">{team.name}</h2>
                 <div className="flex items-center gap-2 font-bold text-sm mt-1 opacity-70">
                   <Activity className="w-4 h-4" />
                   Team Analytics
@@ -36,7 +74,7 @@ export const Stats: React.FC = () => {
               <div className="p-6 grid grid-cols-2 gap-4">
                 <div className="bg-white/80 p-4 rounded-xl border-2 border-brand-ink shadow-sm">
                   <div className="text-xs font-bold uppercase tracking-wider mb-1 opacity-60">Games</div>
-                  <div className="text-3xl font-heading font-bold">{stats.gamesPlayed}</div>
+                  <div className="text-3xl font-heading font-bold">{team.gamesPlayed}</div>
                 </div>
                 
                 <div className="bg-white/80 p-4 rounded-xl border-2 border-brand-ink shadow-sm">
@@ -44,24 +82,33 @@ export const Stats: React.FC = () => {
                     <Flame className="w-3 h-3" /> Streak
                   </div>
                   <div className="text-3xl font-heading font-bold text-brand-orange">
-                    {stats.longestWinStreak} <span className="text-lg text-brand-ink">W</span>
+                    {team.longestWinStreak} <span className="text-lg text-brand-ink">W</span>
                   </div>
                 </div>
 
                 <div className="bg-white/80 p-4 rounded-xl border-2 border-brand-ink shadow-sm">
                   <div className="text-xs font-bold uppercase tracking-wider mb-1 opacity-60">Avg Pts</div>
-                  <div className="text-3xl font-heading font-bold">{stats.avgPointsPerGame}</div>
+                  <div className="text-3xl font-heading font-bold">{team.avgPointsPerGame}</div>
                 </div>
 
                 <div className="bg-white/80 p-4 rounded-xl border-2 border-brand-ink shadow-sm">
                   <div className="text-xs font-bold uppercase tracking-wider mb-1 opacity-60">Diff</div>
-                  <div className="text-3xl font-heading font-bold text-brand-green">+{stats.avgPointDiff}</div>
+                  <div className={clsx(
+                    "text-3xl font-heading font-bold",
+                    team.avgPointDiff > 0 ? "text-brand-green" : "text-red-500"
+                  )}>
+                    {team.avgPointDiff > 0 ? '+' : ''}{team.avgPointDiff}
+                  </div>
                 </div>
               </div>
             </Card>
-          );
-        })}
-      </div>
+          ))}
+        </div>
+      ) : (
+        <div className="text-center py-20 bg-white rounded-2xl border-2 border-dashed border-gray-300">
+          <p className="font-heading text-2xl text-gray-400">No stats available for this division yet.</p>
+        </div>
+      )}
 
       {/* Player Stats Section */}
       <Card className="p-0 overflow-hidden">
