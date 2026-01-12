@@ -36,8 +36,8 @@ export interface PlayerStats {
   name: string;
   gamesPlayed: number;
   avgPoints: number;
-  totalAces: number;
-  faultsPerGame: number;
+  pointsFor: number;
+  pointsAgainst: number;
 }
 
 export interface LeagueData {

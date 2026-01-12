@@ -151,9 +151,9 @@
     }
   },
   "playerStats": [
-    { "name": "Sarah Jenkins", "gamesPlayed": 9, "avgPoints": 6.5, "totalAces": 12, "faultsPerGame": 1.2 },
-    { "name": "Mike Ross", "gamesPlayed": 9, "avgPoints": 5.8, "totalAces": 8, "faultsPerGame": 0.8 },
-    { "name": "Jessica Pearson", "gamesPlayed": 8, "avgPoints": 7.1, "totalAces": 15, "faultsPerGame": 1.5 },
-    { "name": "Louis Litt", "gamesPlayed": 9, "avgPoints": 4.2, "totalAces": 5, "faultsPerGame": 2.1 }
+    { "name": "Sarah Jenkins", "gamesPlayed": 9, "avgPoints": 6.5, "pointsFor": 58, "pointsAgainst": 32 },
+    { "name": "Mike Ross", "gamesPlayed": 9, "avgPoints": 5.8, "pointsFor": 52, "pointsAgainst": 38 },
+    { "name": "Jessica Pearson", "gamesPlayed": 8, "avgPoints": 7.1, "pointsFor": 57, "pointsAgainst": 25 },
+    { "name": "Louis Litt", "gamesPlayed": 9, "avgPoints": 4.2, "pointsFor": 38, "pointsAgainst": 55 }
   ]
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import { leagueData } from '../lib/data';
-import { Activity, Flame, Zap } from 'lucide-react';
+import { Activity, Flame } from 'lucide-react';
 import { Card } from '../components/Card';
 import { CircleHighlight } from '../components/Doodle';
 
@@ -82,8 +82,8 @@ export const Stats: React.FC = () => {
                 <th className="px-6 py-4">Player</th>
                 <th className="px-6 py-4 text-center">Games</th>
                 <th className="px-6 py-4 text-center">Avg Pts</th>
-                <th className="px-6 py-4 text-center">Aces</th>
-                <th className="px-6 py-4 text-center">Faults</th>
+                <th className="px-6 py-4 text-center">Points For</th>
+                <th className="px-6 py-4 text-center">Points Against</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-brand-ink/10 font-body">
@@ -98,11 +98,15 @@ export const Stats: React.FC = () => {
                   <td className="px-6 py-4 text-center text-gray-600 font-medium">{player.gamesPlayed}</td>
                   <td className="px-6 py-4 text-center font-bold text-brand-ink text-lg">{player.avgPoints}</td>
                   <td className="px-6 py-4 text-center">
-                    <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-yellow-100 border border-yellow-200 text-yellow-800 text-xs font-bold group-hover:bg-yellow-300 transition-colors">
-                      <Zap className="w-3 h-3" /> {player.totalAces}
+                    <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-green-100 border border-green-200 text-green-800 text-xs font-bold">
+                      {player.pointsFor}
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-center text-gray-400 font-mono">{player.faultsPerGame}</td>
+                  <td className="px-6 py-4 text-center">
+                    <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-red-50 border border-red-100 text-red-800 text-xs font-bold">
+                      {player.pointsAgainst}
+                    </span>
+                  </td>
                 </tr>
               ))}
             </tbody>
