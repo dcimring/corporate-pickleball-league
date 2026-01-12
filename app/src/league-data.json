@@ -31,17 +31,18 @@
       "teams": ["Phoenix Ltd", "CUC 2", "Greenlight Re 2", "CSC", "Calderwood", "Expertise Group Cayman", "IRIS 365 Slammers", "MBTS", "Paget-Brown Financial Services", "Digicel", "Metabase58 Cayman Limited", "The Security Centre Ltd."]
     },
     {
-      "name": "Division C3",
-      "playTime": "Monday 7:30pm & 8:30pm",
-      "teams": ["KPMG 3", "CITCO 2", "Rawlinson & Hunter", "Tower Research Capital", "Samson Law", "Kimpton Seafire / Hotel Indigo"]
-    },
-    {
       "name": "Division B4",
       "playTime": "Tuesday 7:30pm & 8:30pm",
       "teams": ["MUFG 2", "GT 2", "McCormick 2", "RBC Dominion Securities", "Pickle Tickle LTD", "CIRCA", "Harneys", "BDO", "Strategic Risk Solutions", "Rubis Cayman Islands Limited", "IMS Ltd", "Campbells LLP", "CITCO 1"]
+    },
+    {
+      "name": "Division C3",
+      "playTime": "Monday 7:30pm & 8:30pm",
+      "teams": ["KPMG 3", "CITCO 2", "Rawlinson & Hunter", "Tower Research Capital", "Samson Law", "Kimpton Seafire / Hotel Indigo"]
     }
   ],
   "leaderboard": {
+    "Cayman Premier League": [],
     "Division A": [
       { "team": "Dilluminati", "wins": 8, "losses": 1, "winPct": 0.889, "pointsFor": 96, "pointsAgainst": 45 },
       { "team": "Quality", "wins": 6, "losses": 3, "winPct": 0.667, "pointsFor": 88, "pointsAgainst": 60 },
@@ -61,6 +62,71 @@
       { "team": "McCormick 1", "wins": 3, "losses": 7, "winPct": 0.300, "pointsFor": 55, "pointsAgainst": 90 },
       { "team": "CUC 1", "wins": 2, "losses": 8, "winPct": 0.200, "pointsFor": 45, "pointsAgainst": 95 },
       { "team": "Conyers 1", "wins": 2, "losses": 8, "winPct": 0.200, "pointsFor": 40, "pointsAgainst": 100 }
+    ],
+    "Division B3": [
+      { "team": "Autonomous", "wins": 10, "losses": 0, "winPct": 1.000, "pointsFor": 110, "pointsAgainst": 35 },
+      { "team": "McGrath Tonner", "wins": 9, "losses": 1, "winPct": 0.900, "pointsFor": 102, "pointsAgainst": 45 },
+      { "team": "Dentons", "wins": 7, "losses": 3, "winPct": 0.700, "pointsFor": 95, "pointsAgainst": 60 },
+      { "team": "Baker Tilly Cayman", "wins": 6, "losses": 4, "winPct": 0.600, "pointsFor": 88, "pointsAgainst": 70 },
+      { "team": "KPMG 1", "wins": 5, "losses": 5, "winPct": 0.500, "pointsFor": 80, "pointsAgainst": 80 },
+      { "team": "Dart 1", "wins": 5, "losses": 5, "winPct": 0.500, "pointsFor": 78, "pointsAgainst": 82 },
+      { "team": "Hash Directors", "wins": 4, "losses": 6, "winPct": 0.400, "pointsFor": 70, "pointsAgainst": 90 },
+      { "team": "MHA Cayman", "wins": 4, "losses": 6, "winPct": 0.400, "pointsFor": 65, "pointsAgainst": 92 },
+      { "team": "Greenlight Re 1", "wins": 3, "losses": 7, "winPct": 0.300, "pointsFor": 60, "pointsAgainst": 95 },
+      { "team": "TechCayman", "wins": 3, "losses": 7, "winPct": 0.300, "pointsFor": 55, "pointsAgainst": 98 },
+      { "team": "Bogle Insurance Brokers Ltd.", "wins": 2, "losses": 8, "winPct": 0.200, "pointsFor": 50, "pointsAgainst": 100 },
+      { "team": "Kensington Management Group", "wins": 1, "losses": 9, "winPct": 0.100, "pointsFor": 40, "pointsAgainst": 105 }
+    ],
+    "Division C1": [
+      { "team": "Conyers 2", "wins": 11, "losses": 0, "winPct": 1.000, "pointsFor": 121, "pointsAgainst": 50 },
+      { "team": "Walkers", "wins": 9, "losses": 2, "winPct": 0.818, "pointsFor": 110, "pointsAgainst": 60 },
+      { "team": "Dart 2", "wins": 8, "losses": 3, "winPct": 0.727, "pointsFor": 105, "pointsAgainst": 70 },
+      { "team": "KPMG 2", "wins": 7, "losses": 4, "winPct": 0.636, "pointsFor": 98, "pointsAgainst": 80 },
+      { "team": "MUFG 3", "wins": 6, "losses": 5, "winPct": 0.545, "pointsFor": 90, "pointsAgainst": 85 },
+      { "team": "Stuarts Humphries", "wins": 6, "losses": 5, "winPct": 0.545, "pointsFor": 88, "pointsAgainst": 90 },
+      { "team": "CINICO", "wins": 5, "losses": 6, "winPct": 0.455, "pointsFor": 80, "pointsAgainst": 95 },
+      { "team": "Mourant", "wins": 4, "losses": 7, "winPct": 0.364, "pointsFor": 75, "pointsAgainst": 100 },
+      { "team": "Waystone", "wins": 4, "losses": 7, "winPct": 0.364, "pointsFor": 70, "pointsAgainst": 102 },
+      { "team": "Royal Bank of Canada Insurance Co", "wins": 3, "losses": 8, "winPct": 0.273, "pointsFor": 65, "pointsAgainst": 105 },
+      { "team": "Kirk IT", "wins": 2, "losses": 9, "winPct": 0.182, "pointsFor": 60, "pointsAgainst": 110 },
+      { "team": "Healthy Futures", "wins": 1, "losses": 10, "winPct": 0.091, "pointsFor": 50, "pointsAgainst": 115 }
+    ],
+    "Division C2": [
+      { "team": "Phoenix Ltd", "wins": 10, "losses": 1, "winPct": 0.909, "pointsFor": 115, "pointsAgainst": 55 },
+      { "team": "CSC", "wins": 9, "losses": 2, "winPct": 0.818, "pointsFor": 108, "pointsAgainst": 60 },
+      { "team": "Greenlight Re 2", "wins": 8, "losses": 3, "winPct": 0.727, "pointsFor": 100, "pointsAgainst": 70 },
+      { "team": "CUC 2", "wins": 7, "losses": 4, "winPct": 0.636, "pointsFor": 95, "pointsAgainst": 75 },
+      { "team": "Calderwood", "wins": 6, "losses": 5, "winPct": 0.545, "pointsFor": 90, "pointsAgainst": 85 },
+      { "team": "Expertise Group Cayman", "wins": 6, "losses": 5, "winPct": 0.545, "pointsFor": 88, "pointsAgainst": 88 },
+      { "team": "Metabase58 Cayman Limited", "wins": 5, "losses": 6, "winPct": 0.455, "pointsFor": 82, "pointsAgainst": 92 },
+      { "team": "IRIS 365 Slammers", "wins": 4, "losses": 7, "winPct": 0.364, "pointsFor": 78, "pointsAgainst": 98 },
+      { "team": "MBTS", "wins": 4, "losses": 7, "winPct": 0.364, "pointsFor": 75, "pointsAgainst": 100 },
+      { "team": "Paget-Brown Financial Services", "wins": 3, "losses": 8, "winPct": 0.273, "pointsFor": 70, "pointsAgainst": 105 },
+      { "team": "Digicel", "wins": 2, "losses": 9, "winPct": 0.182, "pointsFor": 65, "pointsAgainst": 110 },
+      { "team": "The Security Centre Ltd.", "wins": 2, "losses": 9, "winPct": 0.182, "pointsFor": 60, "pointsAgainst": 112 }
+    ],
+    "Division B4": [
+      { "team": "MUFG 2", "wins": 11, "losses": 1, "winPct": 0.917, "pointsFor": 125, "pointsAgainst": 60 },
+      { "team": "RBC Dominion Securities", "wins": 10, "losses": 2, "winPct": 0.833, "pointsFor": 118, "pointsAgainst": 65 },
+      { "team": "Pickle Tickle LTD", "wins": 9, "losses": 3, "winPct": 0.750, "pointsFor": 110, "pointsAgainst": 75 },
+      { "team": "GT 2", "wins": 8, "losses": 4, "winPct": 0.667, "pointsFor": 105, "pointsAgainst": 80 },
+      { "team": "CIRCA", "wins": 7, "losses": 5, "winPct": 0.583, "pointsFor": 98, "pointsAgainst": 90 },
+      { "team": "McCormick 2", "wins": 6, "losses": 6, "winPct": 0.500, "pointsFor": 92, "pointsAgainst": 95 },
+      { "team": "Harneys", "wins": 6, "losses": 6, "winPct": 0.500, "pointsFor": 90, "pointsAgainst": 98 },
+      { "team": "Strategic Risk Solutions", "wins": 5, "losses": 7, "winPct": 0.417, "pointsFor": 85, "pointsAgainst": 100 },
+      { "team": "BDO", "wins": 5, "losses": 7, "winPct": 0.417, "pointsFor": 82, "pointsAgainst": 102 },
+      { "team": "Campbells LLP", "wins": 4, "losses": 8, "winPct": 0.333, "pointsFor": 75, "pointsAgainst": 108 },
+      { "team": "CITCO 1", "wins": 3, "losses": 9, "winPct": 0.250, "pointsFor": 70, "pointsAgainst": 115 },
+      { "team": "Rubis Cayman Islands Limited", "wins": 2, "losses": 10, "winPct": 0.167, "pointsFor": 65, "pointsAgainst": 120 },
+      { "team": "IMS Ltd", "wins": 2, "losses": 10, "winPct": 0.167, "pointsFor": 60, "pointsAgainst": 122 }
+    ],
+    "Division C3": [
+      { "team": "KPMG 3", "wins": 5, "losses": 0, "winPct": 1.000, "pointsFor": 55, "pointsAgainst": 20 },
+      { "team": "Tower Research Capital", "wins": 4, "losses": 1, "winPct": 0.800, "pointsFor": 50, "pointsAgainst": 30 },
+      { "team": "CITCO 2", "wins": 3, "losses": 2, "winPct": 0.600, "pointsFor": 45, "pointsAgainst": 35 },
+      { "team": "Rawlinson & Hunter", "wins": 2, "losses": 3, "winPct": 0.400, "pointsFor": 38, "pointsAgainst": 42 },
+      { "team": "Samson Law", "wins": 1, "losses": 4, "winPct": 0.200, "pointsFor": 30, "pointsAgainst": 48 },
+      { "team": "Kimpton Seafire / Hotel Indigo", "wins": 0, "losses": 5, "winPct": 0.000, "pointsFor": 25, "pointsAgainst": 55 }
     ]
   },
   "scores": [
