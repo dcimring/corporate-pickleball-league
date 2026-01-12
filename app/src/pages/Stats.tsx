@@ -28,15 +28,15 @@ export const Stats: React.FC = () => {
 
   return (
     <div className="space-y-12">
-      <div className="text-center max-w-4xl mx-auto relative space-y-6">
-        <div>
-          <h1 className="text-5xl font-heading font-bold text-brand-ink mb-4">The Numbers</h1>
-          <p className="font-hand text-xl text-gray-500 -rotate-1">Stats don't lie!</p>
-          <CircleHighlight className="w-40 h-20 text-brand-soft-blue absolute top-0 left-1/2 -translate-x-1/2 -z-10 opacity-50" />
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div className="relative inline-block">
+          <h1 className="text-4xl md:text-5xl font-heading font-bold text-brand-ink mb-1">The Numbers</h1>
+          <p className="font-hand text-xl text-gray-500 mt-2 rotate-1">Stats don't lie!</p>
+          <CircleHighlight className="w-40 h-20 text-brand-soft-blue absolute top-0 left-0 -z-10 opacity-50 translate-x-1/4" />
         </div>
 
         {/* Division Toggle */}
-        <div className="flex flex-wrap justify-center gap-2 bg-white border-2 border-brand-ink p-2 rounded-2xl shadow-hard-sm">
+        <div className="flex flex-wrap gap-2 bg-white border-2 border-brand-ink p-2 rounded-2xl shadow-hard-sm">
           {divisionNames.map((div) => (
             <button
               key={div}
