@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Trophy, Activity, Calendar, Users, Menu, X } from 'lucide-react';
+import { Trophy, Activity, Calendar, Users, Menu, X, Heart } from 'lucide-react';
 import { clsx } from 'clsx';
 
 export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -101,8 +101,14 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
             <h3 className="font-heading text-2xl font-bold text-brand-ink">GET YOUR GAME ON.</h3>
             <p className="font-hand text-xl text-gray-500 rotate-1 mt-2">Don't forget to hydrate!</p>
           </div>
-          <div className="text-sm font-bold text-gray-400">
-            © 2026 Corporate Pickleball League
+          <div className="text-center md:text-right flex flex-col items-center md:items-end gap-2">
+            <div className="text-sm font-bold text-gray-400">
+              © 2026 Corporate Pickleball League
+            </div>
+            <div className="flex items-center gap-1.5 text-sm font-bold text-brand-ink/60 font-hand text-lg">
+              Made in Cayman with 
+              <Heart className="w-4 h-4 text-red-500 fill-red-500 animate-pulse" /> 
+            </div>
           </div>
         </div>
       </footer>
