@@ -2,8 +2,6 @@
 
 A stunning, responsive website for the Corporate Pickleball League, featuring a unique "Organic Clubhouse" aesthetic. Built with speed and style using **Vite**, **React**, **TypeScript**, and **Tailwind CSS v4**.
 
-![Design Preview](inspiration.png) *(Reference Inspiration)*
-
 ## ✨ Key Features
 
 -   **Organic Clubhouse Design:** A warm, tactile UI with hand-drawn doodles, hard shadows, and distinctive typography.
