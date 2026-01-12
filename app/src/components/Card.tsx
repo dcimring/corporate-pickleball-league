@@ -1,14 +1,14 @@
 import React from 'react';
 import { clsx } from 'clsx';
 
-interface CardProps {
+interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
   className?: string;
   variant?: 'default' | 'blue' | 'acid';
   title?: string;
 }
 
-export const Card: React.FC<CardProps> = ({ children, className, variant = 'default', title }) => {
+export const Card: React.FC<CardProps> = ({ children, className, variant = 'default', title, ...props }) => {
   return (
     <div
       className={clsx(
@@ -18,6 +18,7 @@ export const Card: React.FC<CardProps> = ({ children, className, variant = 'defa
         variant === 'acid' && 'bg-brand-acid shadow-hard',
         className
       )}
+      {...props}
     >
       {title && (
         <div className="border-b-2 border-brand-ink px-6 py-4 bg-white/50 rounded-t-xl backdrop-blur-sm">

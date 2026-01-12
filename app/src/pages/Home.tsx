@@ -3,8 +3,15 @@ import { leagueData } from '../lib/data';
 import { Clock, Users, ArrowRight, CircleDashed } from 'lucide-react';
 import { Card } from '../components/Card';
 import { CircleHighlight, Underline } from '../components/Doodle';
+import { useNavigate } from 'react-router-dom';
 
 export const Home: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleDivisionClick = (divisionName: string) => {
+    navigate(`/leaderboard?division=${encodeURIComponent(divisionName)}`);
+  };
+
   return (
     <div className="space-y-16">
       {/* Hero Section */}
@@ -44,7 +51,8 @@ export const Home: React.FC = () => {
             <Card 
               key={div.name} 
               className="h-full flex flex-col group cursor-pointer"
-              variant={idx % 3 === 0 ? 'default' : idx % 3 === 1 ? 'default' : 'default'} // Keeping cards white for clarity, varying doodles maybe?
+              variant={idx % 3 === 0 ? 'default' : idx % 3 === 1 ? 'default' : 'default'} // Keeping cards white for clarity
+              onClick={() => handleDivisionClick(div.name)}
             >
               {/* Badge */}
               <div className="absolute -top-3 -right-3 bg-brand-acid border-2 border-brand-ink p-2 rounded-full shadow-sm rotate-3 group-hover:rotate-180 transition-transform duration-500">

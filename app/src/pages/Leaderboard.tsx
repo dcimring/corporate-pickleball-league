@@ -4,10 +4,24 @@ import { clsx } from 'clsx';
 import { Trophy, TrendingUp, TrendingDown, Minus, Info } from 'lucide-react';
 import { Card } from '../components/Card';
 import { Underline, Squiggle } from '../components/Doodle';
+import { useSearchParams } from 'react-router-dom';
 
 export const Leaderboard: React.FC = () => {
-  const [activeDivision, setActiveDivision] = useState<string>('Division A');
+  const [searchParams, setSearchParams] = useSearchParams();
   const divisions = Object.keys(leagueData.leaderboard);
+  
+  // Initialize from URL or default
+  const [activeDivision, setActiveDivision] = useState<string>(() => {
+    const div = searchParams.get('division');
+    return div && divisions.includes(div) ? div : 'Division A';
+  });
+
+  // Sync state to URL when user clicks tabs
+  const handleDivisionChange = (div: string) => {
+    setActiveDivision(div);
+    setSearchParams({ division: div });
+  };
+
   const stats = leagueData.leaderboard[activeDivision] || [];
 
   return (
@@ -27,7 +41,7 @@ export const Leaderboard: React.FC = () => {
           {divisions.map((div) => (
             <button
               key={div}
-              onClick={() => setActiveDivision(div)}
+              onClick={() => handleDivisionChange(div)}
               className={clsx(
                 'px-4 py-2 rounded-xl text-sm font-bold uppercase tracking-tight transition-all border-2',
                 activeDivision === div
