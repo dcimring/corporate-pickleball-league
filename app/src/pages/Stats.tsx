@@ -23,7 +23,7 @@ export const Stats: React.FC = () => {
   return (
     <div className="space-y-12">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-        <div className="relative inline-block">
+        <div className="relative inline-block pb-3">
           <h1 className="text-4xl md:text-5xl font-heading font-bold text-brand-ink mb-1">Numbers</h1>
           <p className="font-hand text-xl text-gray-500 mt-2 rotate-1">Stats don't lie!</p>
           <CircleHighlight className="w-40 h-20 text-brand-soft-blue absolute top-0 left-0 -z-10 opacity-50 translate-x-1/4" />

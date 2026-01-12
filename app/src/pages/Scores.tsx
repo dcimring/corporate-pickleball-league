@@ -13,10 +13,10 @@ export const Scores: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto space-y-10">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-        <div className="relative inline-block">
+        <div className="relative inline-block pb-3">
           <h1 className="text-4xl md:text-5xl font-heading font-bold text-brand-ink mb-2">Match Results</h1>
           <p className="font-hand text-xl text-gray-500">The thrill of victory...</p>
-          <Squiggle className="w-32 h-6 text-brand-acid absolute -bottom-4 left-0 -translate-x-0" />
+          <Squiggle className="w-32 h-6 text-brand-acid absolute -bottom-1 left-0 -translate-x-0" />
         </div>
 
         {/* Division Toggle */}
