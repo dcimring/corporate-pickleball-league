@@ -9,22 +9,16 @@ export const Stats: React.FC = () => {
   const [activeDivision, setActiveDivision] = useState<string>('Division A');
   
   // Get all division names for the toggle
-  const divisionNames = leagueData.divisions.map(d => d.name);
+  const divisionNames = Object.keys(leagueData.teamStats);
   
-  // Find the current active division object
-  const currentDivisionObj = leagueData.divisions.find(d => d.name === activeDivision);
+  // Get stats object for the active division
+  const divisionStats = leagueData.teamStats[activeDivision] || {};
   
-  // Filter teams that belong to the current division
-  const divisionTeams = currentDivisionObj ? currentDivisionObj.teams : [];
-  
-  // Get stats only for these teams
-  // We assume leagueData.teamStats has keys matching team names
-  const relevantTeamStats = divisionTeams
-    .filter(teamName => leagueData.teamStats[teamName])
-    .map(teamName => ({
-      name: teamName,
-      ...leagueData.teamStats[teamName]
-    }));
+  // Convert object to array for mapping
+  const relevantTeamStats = Object.entries(divisionStats).map(([name, stats]) => ({
+    name,
+    ...stats
+  }));
 
   return (
     <div className="space-y-12">

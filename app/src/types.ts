@@ -44,6 +44,6 @@ export interface LeagueData {
   divisions: Division[];
   leaderboard: Record<string, LeaderboardEntry[]>;
   scores: Record<string, MatchResult[]>;
-  teamStats: Record<string, TeamStats>;
+  teamStats: Record<string, Record<string, TeamStats>>;
   playerStats: PlayerStats[];
 }
