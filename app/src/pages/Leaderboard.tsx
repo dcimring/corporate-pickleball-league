@@ -3,7 +3,7 @@ import { leagueData } from '../lib/data';
 import { clsx } from 'clsx';
 import { Trophy, TrendingUp, TrendingDown, Minus, Info } from 'lucide-react';
 import { Card } from '../components/Card';
-import { Underline } from '../components/Doodle';
+import { Underline, Squiggle } from '../components/Doodle';
 
 export const Leaderboard: React.FC = () => {
   const [activeDivision, setActiveDivision] = useState<string>('Division A');
@@ -13,12 +13,13 @@ export const Leaderboard: React.FC = () => {
   return (
     <div className="space-y-8">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-        <div className="pb-3">
+        <div className="pb-3 relative inline-block">
           <h1 className="text-4xl md:text-5xl font-heading font-bold text-brand-ink relative inline-block">
             Leaderboard
             <Underline className="absolute bottom-0 left-0 w-full text-brand-soft-blue -z-10 opacity-60" />
           </h1>
           <p className="font-hand text-xl text-gray-500 mt-2 rotate-1">Who's smashing it this week?</p>
+          <Squiggle className="w-32 h-6 text-brand-acid absolute -bottom-1 left-0 -translate-x-0" />
         </div>
 
         {/* Division Toggle - Flex Wrapped for multiple items */}

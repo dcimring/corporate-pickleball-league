@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { leagueData } from '../lib/data';
 import { Activity, Flame } from 'lucide-react';
 import { Card } from '../components/Card';
-import { CircleHighlight } from '../components/Doodle';
+import { CircleHighlight, Squiggle } from '../components/Doodle';
 import { clsx } from 'clsx';
 
 export const Stats: React.FC = () => {
@@ -27,6 +27,7 @@ export const Stats: React.FC = () => {
           <h1 className="text-4xl md:text-5xl font-heading font-bold text-brand-ink mb-1">Numbers</h1>
           <p className="font-hand text-xl text-gray-500 mt-2 rotate-1">Stats don't lie!</p>
           <CircleHighlight className="w-40 h-20 text-brand-soft-blue absolute top-0 left-0 -z-10 opacity-50 translate-x-1/4" />
+          <Squiggle className="w-32 h-6 text-brand-acid absolute -bottom-1 left-0 -translate-x-0" />
         </div>
 
         {/* Division Toggle */}
