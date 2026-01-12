@@ -11,73 +11,73 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     { name: 'Teams', path: '/', icon: Users },
     { name: 'Leaderboard', path: '/leaderboard', icon: Trophy },
     { name: 'Scores', path: '/scores', icon: Calendar },
-    { name: 'Statistics', path: '/stats', icon: Activity },
+    { name: 'Stats', path: '/stats', icon: Activity },
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col font-body">
-      {/* Header */}
-      <header className="bg-brand-blue text-white shadow-lg sticky top-0 z-50 border-b-4 border-brand-orange">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-20 items-center">
-            {/* Logo */}
-            <div className="flex-shrink-0 flex items-center gap-3">
-              <div className="bg-brand-orange p-2 rounded-lg transform -rotate-3">
-                <Trophy className="h-6 w-6 text-white" />
-              </div>
-              <Link to="/" className="font-heading text-2xl tracking-wider uppercase font-bold">
-                Corporate <span className="text-brand-orange">League</span>
-              </Link>
-            </div>
+    <div className="min-h-screen bg-brand-cream flex flex-col font-body selection:bg-brand-acid selection:text-brand-ink">
+      
+      {/* Decorative Top Bar */}
+      <div className="h-2 bg-brand-ink w-full"></div>
 
-            {/* Desktop Nav */}
-            <nav className="hidden md:flex space-x-8">
-              {navItems.map((item) => {
-                const isActive = location.pathname === item.path;
-                return (
-                  <Link
-                    key={item.name}
-                    to={item.path}
-                    className={clsx(
-                      'flex items-center gap-2 px-3 py-2 text-sm font-medium transition-colors duration-200 uppercase tracking-wide',
-                      isActive
-                        ? 'text-brand-orange'
-                        : 'text-slate-300 hover:text-white'
-                    )}
-                  >
-                    <item.icon className={clsx("w-4 h-4", isActive ? "text-brand-orange" : "text-slate-400 group-hover:text-white")} />
-                    {item.name}
-                  </Link>
-                );
-              })}
-            </nav>
-
-            {/* Mobile menu button */}
-            <div className="flex items-center md:hidden">
-              <button
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="text-slate-300 hover:text-white p-2"
-              >
-                {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-              </button>
+      {/* Floating Navbar */}
+      <header className="sticky top-4 z-50 px-4 mb-8">
+        <div className="max-w-4xl mx-auto bg-white border-2 border-brand-ink rounded-full shadow-hard flex items-center justify-between px-6 py-3 relative">
+          
+          {/* Logo */}
+          <Link to="/" className="flex items-center gap-2 group">
+            <div className="bg-brand-acid border-2 border-brand-ink p-1.5 rounded-lg transform -rotate-6 group-hover:rotate-0 transition-transform">
+              <Trophy className="h-5 w-5 text-brand-ink" />
             </div>
-          </div>
+            <span className="font-heading font-bold text-xl tracking-tight text-brand-ink">
+              CORP<span className="text-brand-orange">LEAGUE</span>
+            </span>
+          </Link>
+
+          {/* Desktop Nav */}
+          <nav className="hidden md:flex items-center gap-1">
+            {navItems.map((item) => {
+              const isActive = location.pathname === item.path;
+              return (
+                <Link
+                  key={item.name}
+                  to={item.path}
+                  className={clsx(
+                    'px-4 py-2 rounded-full text-sm font-bold transition-all duration-200 border-2 border-transparent',
+                    isActive
+                      ? 'bg-brand-soft-blue text-brand-ink border-brand-ink'
+                      : 'text-gray-600 hover:bg-gray-100 hover:text-brand-ink'
+                  )}
+                >
+                  {item.name}
+                </Link>
+              );
+            })}
+          </nav>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="md:hidden p-2 text-brand-ink hover:bg-gray-100 rounded-full"
+          >
+            {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
         </div>
 
-        {/* Mobile Nav */}
+        {/* Mobile Menu Dropdown */}
         {isMobileMenuOpen && (
-          <div className="md:hidden bg-brand-dark border-t border-slate-700">
-            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+          <div className="absolute top-full left-0 right-0 mt-2 px-4 md:hidden">
+            <div className="bg-white border-2 border-brand-ink rounded-2xl shadow-hard p-2 flex flex-col gap-1">
               {navItems.map((item) => (
                 <Link
                   key={item.name}
                   to={item.path}
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={clsx(
-                    'flex items-center gap-3 px-3 py-3 rounded-md text-base font-medium',
+                    'flex items-center gap-3 px-4 py-3 rounded-xl font-bold transition-colors',
                     location.pathname === item.path
-                      ? 'bg-slate-800 text-brand-orange'
-                      : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+                      ? 'bg-brand-soft-blue text-brand-ink border-2 border-brand-ink'
+                      : 'text-gray-600 hover:bg-gray-50'
                   )}
                 >
                   <item.icon className="w-5 h-5" />
@@ -90,14 +90,20 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       </header>
 
       {/* Main Content */}
-      <main className="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="flex-grow w-full max-w-6xl mx-auto px-4 sm:px-6 py-6">
         {children}
       </main>
 
       {/* Footer */}
-      <footer className="bg-brand-blue text-slate-400 py-8 border-t border-slate-700">
-        <div className="max-w-7xl mx-auto px-4 text-center">
-          <p className="font-heading tracking-wide text-sm">© 2026 Corporate Pickleball League. All rights reserved.</p>
+      <footer className="mt-auto border-t-2 border-brand-ink bg-white py-12">
+        <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="text-center md:text-left">
+            <h3 className="font-heading text-2xl font-bold text-brand-ink">GET YOUR GAME ON.</h3>
+            <p className="font-hand text-xl text-gray-500 rotate-1 mt-2">Don't forget to hydrate!</p>
+          </div>
+          <div className="text-sm font-bold text-gray-400">
+            © 2026 Corporate Pickleball League
+          </div>
         </div>
       </footer>
     </div>

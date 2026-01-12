@@ -1,63 +1,88 @@
 import React from 'react';
 import { leagueData } from '../lib/data';
-import { Clock, Users } from 'lucide-react';
+import { Clock, Users, ArrowRight } from 'lucide-react';
+import { Card } from '../components/Card';
+import { CircleHighlight, Underline } from '../components/Doodle';
 
 export const Home: React.FC = () => {
   return (
-    <div className="space-y-8">
-      {/* Hero */}
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden relative">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-brand-orange/10 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
-        <div className="p-8 sm:p-12 relative z-10">
-          <h1 className="text-4xl sm:text-5xl font-bold text-brand-blue mb-4">
-            Winter 2026 <span className="text-brand-orange">Season</span>
-          </h1>
-          <p className="text-slate-600 max-w-2xl text-lg">
-            Welcome to the official Corporate Pickleball League portal. Check your division schedules, standings, and stats.
-          </p>
+    <div className="space-y-16">
+      {/* Hero Section */}
+      <section className="text-center py-12 relative max-w-4xl mx-auto">
+        <div className="absolute top-0 right-10 w-20 h-20 bg-brand-acid rounded-full border-2 border-brand-ink hidden md:block"></div>
+        <div className="absolute bottom-10 left-0 w-12 h-12 bg-brand-soft-blue rotate-12 border-2 border-brand-ink hidden md:block"></div>
+        
+        <h1 className="text-5xl md:text-7xl font-heading font-bold text-brand-ink mb-6 relative inline-block">
+          WINTER 2026
+          <CircleHighlight className="absolute -top-4 -left-6 w-[120%] h-[120%] text-brand-acid -z-10" />
+        </h1>
+        
+        <p className="font-body text-xl md:text-2xl text-gray-700 max-w-2xl mx-auto leading-relaxed">
+          The official <span className="font-bold relative inline-block">
+            Corporate Pickleball League
+            <Underline className="absolute bottom-1 left-0 w-full text-brand-orange" />
+          </span> portal. 
+          Check schedules, smash stats, and climb the ranks.
+        </p>
+
+        <div className="mt-10">
+          <button className="btn-primary text-lg">
+            Find Your Team <ArrowRight className="ml-2 w-5 h-5" />
+          </button>
         </div>
-      </div>
+      </section>
 
       {/* Divisions Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {leagueData.divisions.map((div) => (
-          <div 
-            key={div.name} 
-            className="bg-white rounded-xl shadow-sm border border-slate-200 hover:shadow-md transition-shadow duration-300 flex flex-col h-full"
-          >
-            {/* Card Header */}
-            <div className="p-5 border-b border-slate-100 bg-slate-50/50 rounded-t-xl">
-              <h3 className="text-xl font-bold text-brand-blue mb-2">{div.name}</h3>
-              <div className="flex items-center text-sm text-slate-500 font-medium">
-                <Clock className="w-4 h-4 mr-2 text-brand-orange" />
-                {div.playTime}
-              </div>
-            </div>
+      <section>
+        <div className="flex items-center gap-4 mb-8">
+          <h2 className="text-3xl font-heading font-bold">Your Divisions</h2>
+          <div className="h-0.5 flex-grow bg-brand-ink opacity-20"></div>
+        </div>
 
-            {/* Teams List */}
-            <div className="p-5 flex-grow">
-              <div className="flex items-center gap-2 mb-3 text-xs font-bold text-slate-400 uppercase tracking-wider">
-                <Users className="w-3 h-3" />
-                <span>{div.teams.length} Teams</span>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {leagueData.divisions.map((div, idx) => (
+            <Card 
+              key={div.name} 
+              className="h-full flex flex-col group cursor-pointer"
+              variant={idx % 3 === 0 ? 'default' : idx % 3 === 1 ? 'default' : 'default'} // Keeping cards white for clarity, varying doodles maybe?
+            >
+              {/* Badge */}
+              <div className="absolute -top-3 -right-3 bg-brand-acid border-2 border-brand-ink px-3 py-1 rounded-full text-xs font-bold shadow-sm rotate-3 group-hover:rotate-6 transition-transform">
+                DIV {idx + 1}
               </div>
-              
-              {div.teams.length > 0 ? (
-                <ul className="space-y-2">
-                  {div.teams.map((team) => (
-                    <li key={team} className="text-slate-700 text-sm py-1 px-2 rounded hover:bg-slate-50 border border-transparent hover:border-slate-100 transition-colors">
-                      {team}
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <div className="text-slate-400 text-sm italic py-4 text-center bg-slate-50 rounded-lg border border-dashed border-slate-200">
-                  No teams assigned yet
+
+              <div className="mb-4">
+                <h3 className="text-2xl font-heading font-bold text-brand-ink leading-none mb-2">{div.name}</h3>
+                <div className="flex items-center text-sm font-bold text-gray-500 bg-gray-100 w-fit px-3 py-1 rounded-full border border-gray-200">
+                  <Clock className="w-4 h-4 mr-2" />
+                  {div.playTime}
                 </div>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
+              </div>
+
+              <div className="flex-grow">
+                <div className="flex items-center gap-2 mb-3 font-hand text-lg text-gray-400">
+                  <Users className="w-4 h-4" />
+                  <span>{div.teams.length} Teams</span>
+                </div>
+                
+                {div.teams.length > 0 ? (
+                  <ul className="flex flex-wrap gap-2">
+                    {div.teams.map((team) => (
+                      <li key={team} className="text-sm font-medium bg-brand-cream border border-brand-ink/10 px-2 py-1 rounded-lg">
+                        {team}
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <div className="text-gray-400 text-sm font-hand rotate-1">
+                    No teams yet... stay tuned!
+                  </div>
+                )}
+              </div>
+            </Card>
+          ))}
+        </div>
+      </section>
     </div>
   );
 };

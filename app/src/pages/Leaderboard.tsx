@@ -2,32 +2,36 @@ import React, { useState } from 'react';
 import { leagueData } from '../lib/data';
 import { clsx } from 'clsx';
 import { Trophy, TrendingUp, TrendingDown, Minus } from 'lucide-react';
+import { Card } from '../components/Card';
+import { Underline } from '../components/Doodle';
 
 export const Leaderboard: React.FC = () => {
   const [activeDivision, setActiveDivision] = useState<string>('Division A');
   const divisions = Object.keys(leagueData.leaderboard);
-
   const stats = leagueData.leaderboard[activeDivision];
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="space-y-8">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div>
-          <h1 className="text-3xl font-bold text-brand-blue">League Standings</h1>
-          <p className="text-slate-500 mt-1">Real-time performance tracking</p>
+          <h1 className="text-4xl md:text-5xl font-heading font-bold text-brand-ink relative inline-block">
+            Leaderboard
+            <Underline className="absolute bottom-0 left-0 w-full text-brand-soft-blue -z-10 opacity-60" />
+          </h1>
+          <p className="font-hand text-xl text-gray-500 mt-2 rotate-1">Who's smashing it this week?</p>
         </div>
 
         {/* Division Toggle */}
-        <div className="bg-white p-1 rounded-lg border border-slate-200 inline-flex shadow-sm">
+        <div className="flex bg-white border-2 border-brand-ink p-1.5 rounded-full shadow-hard-sm">
           {divisions.map((div) => (
             <button
               key={div}
               onClick={() => setActiveDivision(div)}
               className={clsx(
-                'px-4 py-2 rounded-md text-sm font-bold uppercase tracking-wide transition-all',
+                'px-6 py-2 rounded-full text-sm font-bold uppercase tracking-tight transition-all',
                 activeDivision === div
-                  ? 'bg-brand-blue text-white shadow-md'
-                  : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
+                  ? 'bg-brand-ink text-white shadow-md'
+                  : 'text-gray-500 hover:bg-gray-100 hover:text-brand-ink'
               )}
             >
               {div}
@@ -37,49 +41,54 @@ export const Leaderboard: React.FC = () => {
       </div>
 
       {/* Table Card */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+      <Card className="p-0 overflow-hidden bg-white border-2 border-brand-ink rounded-2xl shadow-hard">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-slate-50 border-b border-slate-200 text-xs font-bold text-slate-500 uppercase tracking-wider">
-                <th className="px-6 py-4">Rank</th>
-                <th className="px-6 py-4 w-1/3">Team</th>
-                <th className="px-6 py-4 text-center">W</th>
-                <th className="px-6 py-4 text-center">L</th>
-                <th className="px-6 py-4 text-center text-brand-orange">Win %</th>
-                <th className="px-6 py-4 text-center hidden sm:table-cell">PF</th>
-                <th className="px-6 py-4 text-center hidden sm:table-cell">PA</th>
-                <th className="px-6 py-4 text-center hidden sm:table-cell">Diff</th>
+              <tr className="bg-brand-cream border-b-2 border-brand-ink font-heading text-lg text-brand-ink uppercase tracking-wider">
+                <th className="px-6 py-5">Rank</th>
+                <th className="px-6 py-5 w-1/3">Team</th>
+                <th className="px-6 py-5 text-center bg-white/50 border-x border-brand-ink/10">W</th>
+                <th className="px-6 py-5 text-center">L</th>
+                <th className="px-6 py-5 text-center text-brand-orange bg-brand-orange/5">Win %</th>
+                <th className="px-6 py-5 text-center hidden sm:table-cell border-l border-brand-ink/10">PF</th>
+                <th className="px-6 py-5 text-center hidden sm:table-cell">PA</th>
+                <th className="px-6 py-5 text-center hidden sm:table-cell border-l border-brand-ink/10">Diff</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-brand-ink/10">
               {stats.map((entry, index) => {
                 const diff = entry.pointsFor - entry.pointsAgainst;
                 return (
                   <tr 
                     key={entry.team} 
-                    className="hover:bg-slate-50 transition-colors group"
+                    className={clsx(
+                      "hover:bg-brand-soft-blue/20 transition-colors font-body",
+                      index < 3 && "bg-brand-cream/30"
+                    )}
                   >
-                    <td className="px-6 py-4 text-slate-400 font-mono">
-                      {index + 1}
+                    <td className="px-6 py-4 font-heading font-bold text-xl text-gray-400">
+                      #{index + 1}
                     </td>
-                    <td className="px-6 py-4 font-bold text-slate-800 flex items-center gap-3">
-                      {index === 0 && <Trophy className="w-4 h-4 text-yellow-500" />}
-                      {index === 1 && <Trophy className="w-4 h-4 text-slate-400" />}
-                      {index === 2 && <Trophy className="w-4 h-4 text-orange-400" />}
-                      {entry.team}
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-3">
+                        {index === 0 && <div className="bg-brand-acid p-1 rounded border border-brand-ink"><Trophy className="w-4 h-4 text-brand-ink" /></div>}
+                        <span className={clsx("font-bold text-lg", index === 0 ? "text-brand-ink" : "text-gray-700")}>
+                          {entry.team}
+                        </span>
+                      </div>
                     </td>
-                    <td className="px-6 py-4 text-center font-medium text-slate-700">{entry.wins}</td>
-                    <td className="px-6 py-4 text-center text-slate-500">{entry.losses}</td>
-                    <td className="px-6 py-4 text-center font-bold text-brand-blue bg-slate-50/50">
-                      {(entry.winPct * 100).toFixed(1)}%
+                    <td className="px-6 py-4 text-center font-bold text-xl border-x border-brand-ink/10 bg-white/30">{entry.wins}</td>
+                    <td className="px-6 py-4 text-center font-medium text-gray-400">{entry.losses}</td>
+                    <td className="px-6 py-4 text-center font-heading font-bold text-lg text-brand-ink bg-brand-orange/5">
+                      {(entry.winPct * 100).toFixed(0)}%
                     </td>
-                    <td className="px-6 py-4 text-center hidden sm:table-cell text-slate-600">{entry.pointsFor}</td>
-                    <td className="px-6 py-4 text-center hidden sm:table-cell text-slate-600">{entry.pointsAgainst}</td>
-                    <td className="px-6 py-4 text-center hidden sm:table-cell">
+                    <td className="px-6 py-4 text-center hidden sm:table-cell text-gray-500">{entry.pointsFor}</td>
+                    <td className="px-6 py-4 text-center hidden sm:table-cell text-gray-500">{entry.pointsAgainst}</td>
+                    <td className="px-6 py-4 text-center hidden sm:table-cell border-l border-brand-ink/10">
                       <span className={clsx(
-                        "inline-flex items-center px-2 py-0.5 rounded text-xs font-medium",
-                        diff > 0 ? "bg-green-100 text-green-800" : diff < 0 ? "bg-red-100 text-red-800" : "bg-slate-100 text-slate-800"
+                        "inline-flex items-center px-2 py-1 rounded-lg text-sm font-bold border-2",
+                        diff > 0 ? "bg-green-100 text-green-800 border-green-200" : diff < 0 ? "bg-red-50 text-red-800 border-red-100" : "bg-gray-100 text-gray-800 border-gray-200"
                       )}>
                         {diff > 0 ? <TrendingUp className="w-3 h-3 mr-1" /> : diff < 0 ? <TrendingDown className="w-3 h-3 mr-1" /> : <Minus className="w-3 h-3 mr-1" />}
                         {diff > 0 ? '+' : ''}{diff}
@@ -91,7 +100,7 @@ export const Leaderboard: React.FC = () => {
             </tbody>
           </table>
         </div>
-      </div>
+      </Card>
     </div>
   );
 };

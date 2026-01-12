@@ -1,56 +1,61 @@
 import React from 'react';
 import { leagueData } from '../lib/data';
-import { CalendarDays, ArrowRight } from 'lucide-react';
+import { CalendarDays } from 'lucide-react';
+import { Card } from '../components/Card';
+import { Squiggle } from '../components/Doodle';
 
 export const Scores: React.FC = () => {
   return (
-    <div className="max-w-3xl mx-auto space-y-8">
-      <div className="text-center">
-        <h1 className="text-3xl font-bold text-brand-blue">Recent Results</h1>
-        <p className="text-slate-500 mt-2">Division A - Latest Matches</p>
+    <div className="max-w-3xl mx-auto space-y-10">
+      <div className="text-center relative">
+        <h1 className="text-4xl md:text-5xl font-heading font-bold text-brand-ink mb-2">Match Results</h1>
+        <p className="font-hand text-xl text-gray-500">The thrill of victory...</p>
+        <Squiggle className="w-32 h-6 text-brand-acid absolute -bottom-4 left-1/2 -translate-x-1/2" />
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-6">
         {leagueData.scores.map((match, idx) => (
-          <div 
+          <Card 
             key={idx}
-            className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col sm:flex-row items-center justify-between gap-6 hover:shadow-md transition-shadow"
+            className="flex flex-col sm:flex-row items-stretch sm:items-center gap-6 p-0 overflow-hidden"
           >
-            {/* Date Badge */}
-            <div className="flex flex-col items-center justify-center bg-slate-50 border border-slate-100 rounded-lg p-3 min-w-[80px]">
-              <CalendarDays className="w-5 h-5 text-slate-400 mb-1" />
-              <span className="text-xs font-bold text-slate-500 uppercase">
-                {new Date(match.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-              </span>
+            {/* Date Tab */}
+            <div className="bg-brand-cream border-b-2 sm:border-b-0 sm:border-r-2 border-brand-ink p-4 flex sm:flex-col items-center justify-center min-w-[100px] gap-2">
+              <CalendarDays className="w-5 h-5 text-gray-400" />
+              <div className="text-center leading-none">
+                <div className="text-sm font-bold text-gray-400 uppercase">
+                  {new Date(match.date).toLocaleDateString('en-US', { month: 'short' })}
+                </div>
+                <div className="text-2xl font-heading font-bold text-brand-ink">
+                  {new Date(match.date).toLocaleDateString('en-US', { day: 'numeric' })}
+                </div>
+              </div>
             </div>
 
             {/* Matchup */}
-            <div className="flex-grow flex items-center justify-between w-full sm:w-auto gap-4">
+            <div className="flex-grow flex flex-col sm:flex-row items-center justify-between p-6 sm:p-0 sm:pr-8 gap-6">
+              
               {/* Winner */}
-              <div className="flex-1 text-right">
-                <div className="font-bold text-brand-blue text-lg leading-tight">{match.winner}</div>
-                <div className="text-xs text-brand-green font-bold uppercase tracking-wider mt-1">Winner</div>
+              <div className="flex-1 text-center sm:text-right w-full">
+                <div className="font-heading font-bold text-2xl text-brand-ink leading-tight">{match.winner}</div>
+                <div className="inline-block bg-brand-acid px-2 py-0.5 rounded text-xs font-bold border border-brand-ink mt-1 transform -rotate-2">
+                  WINNER!
+                </div>
               </div>
 
-              {/* Score Box */}
-              <div className="flex items-center gap-3 px-4 py-2 bg-slate-900 rounded text-white font-mono text-xl font-bold shadow-inner">
-                <span className="text-brand-orange">{match.winnerScore}</span>
-                <span className="text-slate-600">-</span>
-                <span>{match.loserScore}</span>
+              {/* Scoreboard */}
+              <div className="bg-brand-ink text-brand-acid px-6 py-3 rounded-xl border-2 border-gray-800 font-mono text-3xl font-bold shadow-inner flex items-center gap-3">
+                <span>{match.winnerScore}</span>
+                <span className="text-gray-600 text-xl">:</span>
+                <span className="text-white opacity-60">{match.loserScore}</span>
               </div>
 
               {/* Loser */}
-              <div className="flex-1 text-left">
-                <div className="font-medium text-slate-600 text-lg leading-tight">{match.loser}</div>
-                <div className="text-xs text-slate-400 uppercase tracking-wider mt-1">Defeated</div>
+              <div className="flex-1 text-center sm:text-left w-full opacity-60 grayscale hover:grayscale-0 transition-all">
+                <div className="font-heading font-bold text-xl text-brand-ink leading-tight">{match.loser}</div>
               </div>
             </div>
-            
-            {/* Mobile Arrow for flow */}
-            <div className="sm:hidden text-slate-300">
-              <ArrowRight className="w-5 h-5 rotate-90" />
-            </div>
-          </div>
+          </Card>
         ))}
       </div>
     </div>
