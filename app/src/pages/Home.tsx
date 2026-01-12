@@ -1,6 +1,6 @@
 import React from 'react';
 import { leagueData } from '../lib/data';
-import { Clock, Users, ArrowRight } from 'lucide-react';
+import { Clock, Users, ArrowRight, CircleDashed } from 'lucide-react';
 import { Card } from '../components/Card';
 import { CircleHighlight, Underline } from '../components/Doodle';
 
@@ -47,8 +47,8 @@ export const Home: React.FC = () => {
               variant={idx % 3 === 0 ? 'default' : idx % 3 === 1 ? 'default' : 'default'} // Keeping cards white for clarity, varying doodles maybe?
             >
               {/* Badge */}
-              <div className="absolute -top-3 -right-3 bg-brand-acid border-2 border-brand-ink px-3 py-1 rounded-full text-xs font-bold shadow-sm rotate-3 group-hover:rotate-6 transition-transform">
-                DIV {idx + 1}
+              <div className="absolute -top-3 -right-3 bg-brand-acid border-2 border-brand-ink p-2 rounded-full shadow-sm rotate-3 group-hover:rotate-180 transition-transform duration-500">
+                <CircleDashed className="w-5 h-5 text-brand-ink" />
               </div>
 
               <div className="mb-4">
