@@ -6,19 +6,14 @@
       "teams": []
     },
     {
-      "name": "Division B1 / B2",
-      "playTime": "Thursday 7:30pm & 8:30pm",
-      "teams": ["Conch Picklers", "AON", "The Bird", "McAlpine", "MUFG 1", "North End Re", "GT 1", "McCormick 1", "Conyers 1", "CUC 1"]
-    },
-    {
-      "name": "Division C1",
-      "playTime": "Monday 7:30pm & 8:30pm",
-      "teams": ["Conyers 2", "MUFG 3", "Dart 2", "KPMG 2", "Walkers", "CINICO", "Stuarts Humphries", "Kirk IT", "Waystone", "Mourant", "Royal Bank of Canada Insurance Co", "Healthy Futures"]
-    },
-    {
       "name": "Division A",
       "playTime": "Wednesday 6:30pm",
       "teams": ["Dilluminati", "Locale Staycationers", "Anglin-Lewis & Associates", "Quality", "The UpSetters", "Century 21"]
+    },
+    {
+      "name": "Division B1 / B2",
+      "playTime": "Thursday 7:30pm & 8:30pm",
+      "teams": ["Conch Picklers", "AON", "The Bird", "McAlpine", "MUFG 1", "North End Re", "GT 1", "McCormick 1", "Conyers 1", "CUC 1"]
     },
     {
       "name": "Division B3",
@@ -26,19 +21,24 @@
       "teams": ["McGrath Tonner", "Baker Tilly Cayman", "Autonomous", "Dentons", "MHA Cayman", "Kensington Management Group", "Hash Directors", "Dart 1", "KPMG 1", "Greenlight Re 1", "Bogle Insurance Brokers Ltd.", "TechCayman"]
     },
     {
+      "name": "Division C1",
+      "playTime": "Monday 7:30pm & 8:30pm",
+      "teams": ["Conyers 2", "MUFG 3", "Dart 2", "KPMG 2", "Walkers", "CINICO", "Stuarts Humphries", "Kirk IT", "Waystone", "Mourant", "Royal Bank of Canada Insurance Co", "Healthy Futures"]
+    },
+    {
       "name": "Division C2",
       "playTime": "Monday 7:30pm & 8:30pm",
       "teams": ["Phoenix Ltd", "CUC 2", "Greenlight Re 2", "CSC", "Calderwood", "Expertise Group Cayman", "IRIS 365 Slammers", "MBTS", "Paget-Brown Financial Services", "Digicel", "Metabase58 Cayman Limited", "The Security Centre Ltd."]
     },
     {
-      "name": "Division B4",
-      "playTime": "Tuesday 7:30pm & 8:30pm",
-      "teams": ["MUFG 2", "GT 2", "McCormick 2", "RBC Dominion Securities", "Pickle Tickle LTD", "CIRCA", "Harneys", "BDO", "Strategic Risk Solutions", "Rubis Cayman Islands Limited", "IMS Ltd", "Campbells LLP", "CITCO 1"]
-    },
-    {
       "name": "Division C3",
       "playTime": "Monday 7:30pm & 8:30pm",
       "teams": ["KPMG 3", "CITCO 2", "Rawlinson & Hunter", "Tower Research Capital", "Samson Law", "Kimpton Seafire / Hotel Indigo"]
+    },
+    {
+      "name": "Division B4",
+      "playTime": "Tuesday 7:30pm & 8:30pm",
+      "teams": ["MUFG 2", "GT 2", "McCormick 2", "RBC Dominion Securities", "Pickle Tickle LTD", "CIRCA", "Harneys", "BDO", "Strategic Risk Solutions", "Rubis Cayman Islands Limited", "IMS Ltd", "Campbells LLP", "CITCO 1"]
     }
   ],
   "leaderboard": {
