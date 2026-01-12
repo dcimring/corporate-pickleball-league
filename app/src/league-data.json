@@ -1,0 +1,93 @@
+{
+  "divisions": [
+    {
+      "name": "Cayman Premier League",
+      "playTime": "Wednesday 7:30pm",
+      "teams": []
+    },
+    {
+      "name": "Division B1 / B2",
+      "playTime": "Thursday 7:30pm & 8:30pm",
+      "teams": ["Conch Picklers", "AON", "The Bird", "McAlpine", "MUFG 1", "North End Re", "GT 1", "McCormick 1", "Conyers 1", "CUC 1"]
+    },
+    {
+      "name": "Division C1",
+      "playTime": "Monday 7:30pm & 8:30pm",
+      "teams": ["Conyers 2", "MUFG 3", "Dart 2", "KPMG 2", "Walkers", "CINICO", "Stuarts Humphries", "Kirk IT", "Waystone", "Mourant", "Royal Bank of Canada Insurance Co", "Healthy Futures"]
+    },
+    {
+      "name": "Division A",
+      "playTime": "Wednesday 6:30pm",
+      "teams": ["Dilluminati", "Locale Staycationers", "Anglin-Lewis & Associates", "Quality", "The UpSetters", "Century 21"]
+    },
+    {
+      "name": "Division B3",
+      "playTime": "Tuesday 7:30pm & 8:30pm",
+      "teams": ["McGrath Tonner", "Baker Tilly Cayman", "Autonomous", "Dentons", "MHA Cayman", "Kensington Management Group", "Hash Directors", "Dart 1", "KPMG 1", "Greenlight Re 1", "Bogle Insurance Brokers Ltd.", "TechCayman"]
+    },
+    {
+      "name": "Division C2",
+      "playTime": "Monday 7:30pm & 8:30pm",
+      "teams": ["Phoenix Ltd", "CUC 2", "Greenlight Re 2", "CSC", "Calderwood", "Expertise Group Cayman", "IRIS 365 Slammers", "MBTS", "Paget-Brown Financial Services", "Digicel", "Metabase58 Cayman Limited", "The Security Centre Ltd."]
+    },
+    {
+      "name": "Division B4",
+      "playTime": "Tuesday 7:30pm & 8:30pm",
+      "teams": ["MUFG 2", "GT 2", "McCormick 2", "RBC Dominion Securities", "Pickle Tickle LTD", "CIRCA", "Harneys", "BDO", "Strategic Risk Solutions", "Rubis Cayman Islands Limited", "IMS Ltd", "Campbells LLP", "CITCO 1"]
+    },
+    {
+      "name": "Division C3",
+      "playTime": "Monday 7:30pm & 8:30pm",
+      "teams": ["KPMG 3", "CITCO 2", "Rawlinson & Hunter", "Tower Research Capital", "Samson Law", "Kimpton Seafire / Hotel Indigo"]
+    }
+  ],
+  "leaderboard": {
+    "Division A": [
+      { "team": "Dilluminati", "wins": 8, "losses": 1, "winPct": 0.889, "pointsFor": 96, "pointsAgainst": 45 },
+      { "team": "Quality", "wins": 6, "losses": 3, "winPct": 0.667, "pointsFor": 88, "pointsAgainst": 60 },
+      { "team": "The UpSetters", "wins": 5, "losses": 4, "winPct": 0.556, "pointsFor": 75, "pointsAgainst": 70 },
+      { "team": "Century 21", "wins": 4, "losses": 5, "winPct": 0.444, "pointsFor": 60, "pointsAgainst": 75 },
+      { "team": "Anglin-Lewis & Associates", "wins": 3, "losses": 6, "winPct": 0.333, "pointsFor": 55, "pointsAgainst": 85 },
+      { "team": "Locale Staycationers", "wins": 1, "losses": 8, "winPct": 0.111, "pointsFor": 30, "pointsAgainst": 95 }
+    ],
+    "Division B1 / B2": [
+      { "team": "Conch Picklers", "wins": 9, "losses": 1, "winPct": 0.900, "pointsFor": 105, "pointsAgainst": 40 },
+      { "team": "The Bird", "wins": 8, "losses": 2, "winPct": 0.800, "pointsFor": 98, "pointsAgainst": 55 },
+      { "team": "AON", "wins": 7, "losses": 3, "winPct": 0.700, "pointsFor": 90, "pointsAgainst": 65 },
+      { "team": "McAlpine", "wins": 6, "losses": 4, "winPct": 0.600, "pointsFor": 85, "pointsAgainst": 75 },
+      { "team": "MUFG 1", "wins": 5, "losses": 5, "winPct": 0.500, "pointsFor": 70, "pointsAgainst": 70 },
+      { "team": "GT 1", "wins": 4, "losses": 6, "winPct": 0.400, "pointsFor": 65, "pointsAgainst": 80 },
+      { "team": "North End Re", "wins": 4, "losses": 6, "winPct": 0.400, "pointsFor": 60, "pointsAgainst": 85 },
+      { "team": "McCormick 1", "wins": 3, "losses": 7, "winPct": 0.300, "pointsFor": 55, "pointsAgainst": 90 },
+      { "team": "CUC 1", "wins": 2, "losses": 8, "winPct": 0.200, "pointsFor": 45, "pointsAgainst": 95 },
+      { "team": "Conyers 1", "wins": 2, "losses": 8, "winPct": 0.200, "pointsFor": 40, "pointsAgainst": 100 }
+    ]
+  },
+  "scores": [
+    { "winner": "Dilluminati", "loser": "Quality", "winnerScore": 11, "loserScore": 8, "date": "2026-01-07" },
+    { "winner": "The UpSetters", "loser": "Century 21", "winnerScore": 11, "loserScore": 9, "date": "2026-01-07" },
+    { "winner": "Anglin-Lewis & Associates", "loser": "Locale Staycationers", "winnerScore": 11, "loserScore": 5, "date": "2026-01-07" },
+    { "winner": "Dilluminati", "loser": "The UpSetters", "winnerScore": 11, "loserScore": 6, "date": "2026-01-14" },
+    { "winner": "Quality", "loser": "Locale Staycationers", "winnerScore": 11, "loserScore": 2, "date": "2026-01-14" }
+  ],
+  "teamStats": {
+    "Dilluminati": {
+      "gamesPlayed": 9,
+      "avgPointsPerGame": 10.6,
+      "avgPointDiff": 5.6,
+      "longestWinStreak": 6
+    },
+    "Conch Picklers": {
+      "gamesPlayed": 10,
+      "avgPointsPerGame": 10.5,
+      "avgPointDiff": 6.5,
+      "longestWinStreak": 9
+    }
+  },
+  "playerStats": [
+    { "name": "Sarah Jenkins", "gamesPlayed": 9, "avgPoints": 6.5, "totalAces": 12, "faultsPerGame": 1.2 },
+    { "name": "Mike Ross", "gamesPlayed": 9, "avgPoints": 5.8, "totalAces": 8, "faultsPerGame": 0.8 },
+    { "name": "Jessica Pearson", "gamesPlayed": 8, "avgPoints": 7.1, "totalAces": 15, "faultsPerGame": 1.5 },
+    { "name": "Louis Litt", "gamesPlayed": 9, "avgPoints": 4.2, "totalAces": 5, "faultsPerGame": 2.1 }
+  ]
+}
