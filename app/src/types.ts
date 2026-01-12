@@ -43,7 +43,7 @@ export interface PlayerStats {
 export interface LeagueData {
   divisions: Division[];
   leaderboard: Record<string, LeaderboardEntry[]>;
-  scores: MatchResult[];
+  scores: Record<string, MatchResult[]>;
   teamStats: Record<string, TeamStats>;
   playerStats: PlayerStats[];
 }
