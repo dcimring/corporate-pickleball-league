@@ -12,17 +12,20 @@ export const Card: React.FC<CardProps> = ({ children, className, variant = 'defa
   return (
     <div
       className={clsx(
-        'relative rounded-2xl border-2 border-brand-ink transition-transform hover:-translate-y-1 hover:shadow-hard-sm duration-200',
-        variant === 'default' && 'bg-white shadow-hard',
-        variant === 'blue' && 'bg-brand-soft-blue shadow-hard',
-        variant === 'acid' && 'bg-brand-acid shadow-hard',
+        'relative border-2 transition-transform hover:-translate-y-1 hover:shadow-glow duration-200',
+        variant === 'default' && 'bg-brand-soft-blue border-white/20 hover:border-brand-acid text-white',
+        variant === 'blue' && 'bg-slate-800 border-brand-acid text-white shadow-hard-sm',
+        variant === 'acid' && 'bg-brand-acid border-white text-brand-cream',
         className
       )}
       {...props}
     >
       {title && (
-        <div className="border-b-2 border-brand-ink px-6 py-4 bg-white/50 rounded-t-xl backdrop-blur-sm">
-          <h3 className="font-heading text-xl font-bold uppercase tracking-tight">{title}</h3>
+        <div className={clsx(
+          "border-b-2 px-6 py-4 backdrop-blur-sm",
+          variant === 'acid' ? "border-brand-cream/20 bg-brand-acid" : "border-white/10 bg-black/20"
+        )}>
+          <h3 className="font-heading text-2xl font-normal uppercase italic tracking-wider">{title}</h3>
         </div>
       )}
       <div className="p-6">{children}</div>

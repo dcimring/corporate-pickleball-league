@@ -1,20 +1,21 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Outfit:wght@300;400;500;700&family=Patrick+Hand&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;700&family=Patrick+Hand&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --color-brand-cream: #F9F8F4;
-  --color-brand-ink: #121212;
-  --color-brand-green: #064E3B;
-  --color-brand-acid: #E2F84D;
-  --color-brand-soft-blue: #D6E4FF;
-  --color-brand-orange: #EF7D00;
+  --color-brand-cream: #0F172A;
+  --color-brand-ink: #FFFFFF;
+  --color-brand-green: #10B981;
+  --color-brand-acid: #CCFF00;
+  --color-brand-soft-blue: #1E293B;
+  --color-brand-orange: #F97316;
 
-  --font-heading: 'Space Grotesk', sans-serif;
+  --font-heading: 'Bebas Neue', sans-serif;
   --font-body: 'Outfit', sans-serif;
   --font-hand: 'Patrick Hand', cursive;
   
-  --shadow-hard: 4px 4px 0px 0px #121212;
-  --shadow-hard-sm: 2px 2px 0px 0px #121212;
+  --shadow-hard: 4px 4px 0px 0px #CCFF00;
+  --shadow-hard-sm: 2px 2px 0px 0px #CCFF00;
+  --shadow-glow: 0 0 15px rgba(204, 255, 0, 0.3);
 }
 
 @layer base {
@@ -24,15 +25,15 @@
   }
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
-    @apply font-bold tracking-tight;
+    @apply font-normal tracking-wide uppercase italic;
   }
 }
 
 @layer components {
   .btn-primary {
-    @apply inline-flex items-center justify-center px-6 py-3 border-2 border-brand-ink bg-brand-orange text-white font-bold rounded-full transition-transform hover:-translate-y-1 hover:shadow-hard active:translate-y-0 active:shadow-none;
+    @apply inline-flex items-center justify-center px-6 py-3 border-2 border-brand-acid bg-brand-acid text-brand-cream font-bold rounded-none skew-x-[-10deg] hover:skew-x-[-5deg] transition-all hover:shadow-glow uppercase tracking-wider;
   }
   .card-retro {
-    @apply bg-white border-2 border-brand-ink rounded-2xl shadow-hard;
+    @apply bg-brand-soft-blue border-2 border-brand-acid rounded-none shadow-hard;
   }
 }
