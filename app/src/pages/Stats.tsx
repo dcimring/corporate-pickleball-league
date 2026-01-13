@@ -33,13 +33,13 @@ export const Stats: React.FC = () => {
         </div>
 
         {/* Division Toggle */}
-        <div className="flex flex-wrap gap-2 bg-brand-soft-blue border border-white/10 p-2 shadow-glow max-w-full">
+        <div className="flex gap-2 bg-brand-soft-blue border border-white/10 p-2 shadow-glow max-w-full overflow-x-auto no-scrollbar md:flex-wrap md:overflow-visible">
           {divisionNames.map((div) => (
             <button
               key={div}
               onClick={() => setActiveDivision(div)}
               className={clsx(
-                'px-4 py-2 text-sm font-heading italic tracking-wider transition-all border skew-x-[-10deg]',
+                'px-4 py-2 text-sm font-heading italic tracking-wider transition-all border skew-x-[-10deg] whitespace-nowrap flex-shrink-0',
                 activeDivision === div
                   ? 'bg-brand-acid text-brand-cream border-brand-acid shadow-glow'
                   : 'bg-transparent text-gray-400 border-transparent hover:border-white/30 hover:text-white'
