@@ -61,15 +61,15 @@ export const Leaderboard: React.FC = () => {
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-black/20 border-b border-white/10 font-heading text-xl text-brand-acid italic tracking-wider">
-                  <th className="px-6 py-5 whitespace-nowrap">Rank</th>
-                  <th className="px-6 py-5 w-1/3 whitespace-nowrap">Team</th>
-                  <th className="px-6 py-5 text-center bg-white/5 border-x border-white/5 whitespace-nowrap">W</th>
-                  <th className="px-6 py-5 text-center whitespace-nowrap">L</th>
-                  <th className="px-6 py-5 text-center text-white bg-brand-acid/10 whitespace-nowrap">Win %</th>
-                  <th className="px-6 py-5 text-center hidden sm:table-cell border-l border-white/5 whitespace-nowrap">PF</th>
-                  <th className="px-6 py-5 text-center hidden sm:table-cell whitespace-nowrap">PA</th>
-                  <th className="px-6 py-5 text-center hidden sm:table-cell border-l border-white/5 whitespace-nowrap">Diff</th>
+                <tr className="bg-black/20 border-b border-white/10 font-heading text-lg sm:text-xl text-brand-acid italic tracking-wider">
+                  <th className="px-3 sm:px-6 py-3 sm:py-5 whitespace-nowrap">Rank</th>
+                  <th className="px-3 sm:px-6 py-3 sm:py-5 w-1/3 whitespace-nowrap">Team</th>
+                  <th className="px-3 sm:px-6 py-3 sm:py-5 text-center bg-white/5 border-x border-white/5 whitespace-nowrap">W</th>
+                  <th className="px-3 sm:px-6 py-3 sm:py-5 text-center whitespace-nowrap">L</th>
+                  <th className="px-3 sm:px-6 py-3 sm:py-5 text-center text-white bg-brand-acid/10 whitespace-nowrap">Win %</th>
+                  <th className="px-3 sm:px-6 py-3 sm:py-5 text-center hidden sm:table-cell border-l border-white/5 whitespace-nowrap">PF</th>
+                  <th className="px-3 sm:px-6 py-3 sm:py-5 text-center hidden sm:table-cell whitespace-nowrap">PA</th>
+                  <th className="px-3 sm:px-6 py-3 sm:py-5 text-center hidden sm:table-cell border-l border-white/5 whitespace-nowrap">Diff</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5">
@@ -83,25 +83,25 @@ export const Leaderboard: React.FC = () => {
                         index < 3 && "bg-brand-acid/5"
                       )}
                     >
-                      <td className="px-6 py-4 font-heading text-2xl text-gray-500 italic">
+                      <td className="px-3 sm:px-6 py-3 sm:py-4 font-heading text-lg sm:text-2xl text-gray-500 italic">
                         #{index + 1}
                       </td>
-                      <td className="px-6 py-4">
+                      <td className="px-3 sm:px-6 py-3 sm:py-4">
                         <div className="flex items-center gap-3">
-                          {index === 0 && <div className="bg-brand-acid text-brand-cream p-1 skew-x-[-10deg]"><Trophy className="w-4 h-4 skew-x-[10deg]" /></div>}
-                          <span className={clsx("font-bold text-lg whitespace-nowrap", index === 0 ? "text-brand-acid" : "text-white")}>
+                          {index === 0 && <div className="bg-brand-acid text-brand-cream p-1 skew-x-[-10deg]"><Trophy className="w-3 h-3 sm:w-4 sm:h-4 skew-x-[10deg]" /></div>}
+                          <span className={clsx("font-bold text-sm sm:text-lg whitespace-nowrap", index === 0 ? "text-brand-acid" : "text-white")}>
                             {entry.team}
                           </span>
                         </div>
                       </td>
-                      <td className="px-6 py-4 text-center font-bold text-xl border-x border-white/5 bg-black/20 text-white">{entry.wins}</td>
-                      <td className="px-6 py-4 text-center font-medium text-gray-500">{entry.losses}</td>
-                      <td className="px-6 py-4 text-center font-heading text-xl text-brand-acid bg-brand-acid/5">
+                      <td className="px-3 sm:px-6 py-3 sm:py-4 text-center font-bold text-base sm:text-xl border-x border-white/5 bg-black/20 text-white">{entry.wins}</td>
+                      <td className="px-3 sm:px-6 py-3 sm:py-4 text-center font-medium text-sm sm:text-base text-gray-500">{entry.losses}</td>
+                      <td className="px-3 sm:px-6 py-3 sm:py-4 text-center font-heading text-base sm:text-xl text-brand-acid bg-brand-acid/5">
                         {(entry.winPct * 100).toFixed(0)}%
                       </td>
-                      <td className="px-6 py-4 text-center hidden sm:table-cell text-gray-400">{entry.pointsFor}</td>
-                      <td className="px-6 py-4 text-center hidden sm:table-cell text-gray-400">{entry.pointsAgainst}</td>
-                      <td className="px-6 py-4 text-center hidden sm:table-cell border-l border-white/5">
+                      <td className="px-3 sm:px-6 py-3 sm:py-4 text-center hidden sm:table-cell text-gray-400">{entry.pointsFor}</td>
+                      <td className="px-3 sm:px-6 py-3 sm:py-4 text-center hidden sm:table-cell text-gray-400">{entry.pointsAgainst}</td>
+                      <td className="px-3 sm:px-6 py-3 sm:py-4 text-center hidden sm:table-cell border-l border-white/5">
                         <span className={clsx(
                           "inline-flex items-center px-2 py-1 text-sm font-bold border skew-x-[-10deg]",
                           diff > 0 ? "bg-green-900/30 text-green-400 border-green-500/30" : diff < 0 ? "bg-red-900/30 text-red-400 border-red-500/30" : "bg-gray-800 text-gray-400 border-gray-600"
