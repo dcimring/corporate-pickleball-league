@@ -1,23 +1,26 @@
 # 🏓 Corporate Pickleball League
 
-A stunning, responsive website for the Corporate Pickleball League, featuring a unique "Organic Clubhouse" aesthetic. Built with speed and style using **Vite**, **React**, **TypeScript**, and **Tailwind CSS v4**.
+A high-energy, responsive website for the Corporate Pickleball League, featuring a striking **"Night Court Electric"** aesthetic. Built for speed, style, and mobile-first performance using **Vite**, **React**, **TypeScript**, and **Tailwind CSS v4**.
 
 ## ✨ Key Features
 
--   **Organic Clubhouse Design:** A warm, tactile UI with hand-drawn doodles, hard shadows, and distinctive typography.
--   **Division Overviews:** Quick access to schedules and team rosters for all league levels.
--   **Interactive Leaderboards:** Real-time standings sorted by win percentage with point differential tracking.
--   **Visual Match Results:** Detailed scorecard view of recent games with winner highlights.
--   **Performance Analytics:** Deep-dive statistics for teams and individual players.
--   **Deep Linking:** Click a division card on the home page to jump straight to its leaderboard.
--   **Responsive & Robust:** Optimized for all devices and configured for seamless SPA routing on Vercel.
+-   **Night Court Aesthetic:** A high-contrast UI with Deep Navy backgrounds, Electric Volt accents, neon glows, and aggressive, athletic typography ('Bebas Neue').
+-   **Mobile-Optimized UX:**
+    *   **Fade Mask Horizontal Scroll:** Division selectors use a soft-fade gradient to indicate more content on mobile.
+    *   **Compact Data Views:** Leaderboards use reduced padding and optimized font sizes for maximum readability on small screens.
+    *   **Auto-Scroll Tabs:** Navigating to a specific division automatically scrolls the selector to the active item.
+-   **Interactive Leaderboards:** Real-time standings sorted by win percentage with detailed point tracking.
+-   **Visual Match Results:** Scorecard view of recent games styled as digital court scoreboards.
+-   **Deep Linking:** Click any division card on the Home page to jump directly to its filtered leaderboard.
+-   **Global Scroll Management:** Automatic "Scroll to Top" behavior on all route transitions.
+-   **Robust Deployment:** Fully configured for SPA routing and seamless refreshes on Vercel.
 
 ## 🚀 Tech Stack
 
 -   **Framework:** [React 18+](https://reactjs.org/)
 -   **Build Tool:** [Vite](https://vitejs.dev/)
--   **Styling:** [Tailwind CSS v4](https://tailwindcss.com/) (using the new `@theme` configuration)
--   **Language:** [TypeScript](https://www.typescriptlang.org/)
+-   **Styling:** [Tailwind CSS v4](https://tailwindcss.com/)
+-   **Typography:** 'Bebas Neue' (Athletic Display), 'Outfit' (Geometric Body)
 -   **Icons:** [Lucide React](https://lucide.dev/)
 -   **Routing:** [React Router 6](https://reactrouter.com/)
 
@@ -47,32 +50,24 @@ A stunning, responsive website for the Corporate Pickleball League, featuring a 
     npm run dev
     ```
 
-4.  **Build for Production:**
-    ```bash
-    npm run build
-    ```
-
 ## 📦 Project Structure
 
 ```text
 app/
 ├── src/
-│   ├── components/     # Reusable UI (Layout, Card, Doodle)
-│   ├── pages/          # Page views (Home, Leaderboard, Scores, Stats)
-│   ├── lib/            # Data access & utilities
+│   ├── components/     # UI Components (Layout, Card, ScrollToTop)
+│   ├── pages/          # Views (Home, Leaderboard, Scores, Stats)
+│   ├── lib/            # Data access (league-data.json source)
 │   ├── types.ts        # TypeScript interfaces
-│   ├── league-data.json# Mock database (Source of truth)
-│   └── index.css       # Tailwind v4 configuration & Global styles
-├── vercel.json         # SPA routing configuration
+│   └── index.css       # Tailwind v4 theme & global styles
+├── vercel.json         # Deployment rewrites
 └── ...
 ```
 
-## 🌐 Deployment
+## 🎨 Theme Versions
 
-The site is configured for deployment on [Vercel](https://vercel.com).
--   **Root Directory:** `app`
--   **Build Command:** `npm run build`
--   **Output Directory:** `dist`
+-   **Main Branch:** The current "Night Court Electric" theme.
+-   **[old-theme](https://github.com/dcimring/corporate-pickleball-league/tree/old-theme) Branch:** Preserves the original "Organic Clubhouse" design (Cream & Ink).
 
 ## 🇰🇾 Made in Cayman
 
