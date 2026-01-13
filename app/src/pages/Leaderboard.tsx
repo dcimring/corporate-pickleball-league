@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { leagueData } from '../lib/data';
 import { clsx } from 'clsx';
 import { Trophy, TrendingUp, TrendingDown, Minus, Info } from 'lucide-react';
@@ -9,6 +9,7 @@ import { useSearchParams } from 'react-router-dom';
 export const Leaderboard: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const divisions = Object.keys(leagueData.leaderboard);
+  const tabsRef = useRef<HTMLDivElement>(null);
   
   // Initialize from URL or default
   const [activeDivision, setActiveDivision] = useState<string>(() => {
@@ -21,6 +22,16 @@ export const Leaderboard: React.FC = () => {
     setActiveDivision(div);
     setSearchParams({ division: div });
   };
+
+  // Scroll active tab into view
+  useEffect(() => {
+    if (tabsRef.current) {
+      const activeButton = tabsRef.current.querySelector(`button[data-value="${activeDivision}"]`);
+      if (activeButton) {
+        activeButton.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+    }
+  }, [activeDivision]);
 
   const stats = leagueData.leaderboard[activeDivision] || [];
 
@@ -38,10 +49,11 @@ export const Leaderboard: React.FC = () => {
 
         {/* Division Toggle */}
         <div className="relative group max-w-full">
-          <div className="flex gap-2 bg-brand-soft-blue border border-white/10 p-2 shadow-glow overflow-x-auto no-scrollbar md:flex-wrap md:overflow-visible">
+          <div ref={tabsRef} className="flex gap-2 bg-brand-soft-blue border border-white/10 p-2 shadow-glow overflow-x-auto no-scrollbar md:flex-wrap md:overflow-visible">
             {divisions.map((div) => (
               <button
                 key={div}
+                data-value={div}
                 onClick={() => handleDivisionChange(div)}
                 className={clsx(
                   'px-4 py-2 text-sm font-heading italic tracking-wider transition-all border skew-x-[-10deg] whitespace-nowrap flex-shrink-0',
