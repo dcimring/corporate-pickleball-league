@@ -1,17 +1,48 @@
-import React, { useState } from 'react';
-import { leagueData } from '../lib/data';
-import { Activity, Flame } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { fetchLeagueData, initialLeagueData } from '../lib/data';
+import type { LeagueData } from '../types';
+import { Activity, Flame, Loader2 } from 'lucide-react';
 import { Card } from '../components/Card';
 import { clsx } from 'clsx';
 
 export const Stats: React.FC = () => {
-  const [activeDivision, setActiveDivision] = useState<string>('Division A');
+  const [data, setData] = useState<LeagueData>(initialLeagueData);
+  const [loading, setLoading] = useState(true);
+  const [activeDivision, setActiveDivision] = useState<string>('');
   
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const fetched = await fetchLeagueData();
+        setData(fetched);
+        
+        // Initial division selection
+        const divisionNames = Object.keys(fetched.teamStats);
+        if (activeDivision === '' || !divisionNames.includes(activeDivision)) {
+            setActiveDivision(divisionNames[0] || 'Division A');
+        }
+      } catch (error) {
+        console.error("Failed to fetch league data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadData();
+  }, []); // Only run once on mount
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-[50vh]">
+        <Loader2 className="w-10 h-10 text-brand-blue animate-spin" />
+      </div>
+    );
+  }
+
   // Get all division names for the toggle
-  const divisionNames = Object.keys(leagueData.teamStats);
+  const divisionNames = Object.keys(data.teamStats);
   
   // Get stats object for the active division
-  const divisionStats = leagueData.teamStats[activeDivision] || {};
+  const divisionStats = data.teamStats[activeDivision] || {};
   
   // Convert object to array for mapping
   const relevantTeamStats = Object.entries(divisionStats).map(([name, stats]) => ({
