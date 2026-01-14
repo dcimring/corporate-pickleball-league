@@ -118,61 +118,15 @@
       { "team": "Campbells LLP", "wins": 4, "losses": 8, "winPct": 0.333, "pointsFor": 75, "pointsAgainst": 108 },
       { "team": "CITCO 1", "wins": 3, "losses": 9, "winPct": 0.250, "pointsFor": 70, "pointsAgainst": 115 },
       { "team": "Rubis Cayman Islands Limited", "wins": 2, "losses": 10, "winPct": 0.167, "pointsFor": 65, "pointsAgainst": 120 },
-      { "team": "IMS Ltd", "wins": 2, "losses": 10, "winPct": 0.167, "pointsFor": 60, "pointsAgainst": 122 }
+      { "team": "IMS Ltd", "wins": 2, "locally": 10, "winPct": 0.167, "pointsFor": 60, "pointsAgainst": 122 }
     ],
     "Division C3": [
       { "team": "KPMG 3", "wins": 5, "losses": 0, "winPct": 1.000, "pointsFor": 55, "pointsAgainst": 20 },
       { "team": "Tower Research Capital", "wins": 4, "losses": 1, "winPct": 0.800, "pointsFor": 50, "pointsAgainst": 30 },
-      { "team": "CITCO 2", "wins": 3, "losses": 2, "winPct": 0.600, "pointsFor": 45, "pointsAgainst": 35 },
+      { "team": "CITCO 2", "wins": 3, "locally": 2, "winPct": 0.600, "pointsFor": 45, "pointsAgainst": 35 },
       { "team": "Rawlinson & Hunter", "wins": 2, "losses": 3, "winPct": 0.400, "pointsFor": 38, "pointsAgainst": 42 },
       { "team": "Samson Law", "wins": 1, "losses": 4, "winPct": 0.200, "pointsFor": 30, "pointsAgainst": 48 },
       { "team": "Kimpton Seafire / Hotel Indigo", "wins": 0, "losses": 5, "winPct": 0.000, "pointsFor": 25, "pointsAgainst": 55 }
-    ]
-  },
-  "scores": {
-    "Cayman Premier League": [],
-    "Division A": [
-      { "winner": "Dilluminati", "loser": "Quality", "winnerScore": 11, "loserScore": 8, "date": "2026-01-07" },
-      { "winner": "The UpSetters", "loser": "Century 21", "winnerScore": 11, "loserScore": 9, "date": "2026-01-07" },
-      { "winner": "Anglin-Lewis & Associates", "loser": "Locale Staycationers", "winnerScore": 11, "loserScore": 5, "date": "2026-01-07" },
-      { "winner": "Dilluminati", "loser": "The UpSetters", "winnerScore": 11, "loserScore": 6, "date": "2026-01-14" },
-      { "winner": "Quality", "loser": "Locale Staycationers", "winnerScore": 11, "loserScore": 2, "date": "2026-01-14" }
-    ],
-    "Division B1 / B2": [
-      { "winner": "Conch Picklers", "loser": "AON", "winnerScore": 11, "loserScore": 4, "date": "2026-01-08" },
-      { "winner": "The Bird", "loser": "McAlpine", "winnerScore": 11, "loserScore": 7, "date": "2026-01-08" },
-      { "winner": "North End Re", "loser": "MUFG 1", "winnerScore": 11, "loserScore": 9, "date": "2026-01-08" },
-      { "winner": "Conch Picklers", "loser": "CUC 1", "winnerScore": 11, "loserScore": 2, "date": "2026-01-15" },
-      { "winner": "AON", "loser": "Conyers 1", "winnerScore": 11, "loserScore": 5, "date": "2026-01-15" }
-    ],
-    "Division B3": [
-      { "winner": "Autonomous", "loser": "Dentons", "winnerScore": 11, "loserScore": 8, "date": "2026-01-06" },
-      { "winner": "McGrath Tonner", "loser": "Baker Tilly Cayman", "winnerScore": 11, "loserScore": 6, "date": "2026-01-06" },
-      { "winner": "KPMG 1", "loser": "MHA Cayman", "winnerScore": 11, "loserScore": 9, "date": "2026-01-06" },
-      { "winner": "Autonomous", "loser": "TechCayman", "winnerScore": 11, "loserScore": 1, "date": "2026-01-13" }
-    ],
-    "Division C1": [
-      { "winner": "Conyers 2", "loser": "Walkers", "winnerScore": 11, "loserScore": 5, "date": "2026-01-05" },
-      { "winner": "Dart 2", "loser": "KPMG 2", "winnerScore": 11, "loserScore": 7, "date": "2026-01-05" },
-      { "winner": "MUFG 3", "loser": "CINICO", "winnerScore": 11, "loserScore": 9, "date": "2026-01-05" },
-      { "winner": "Conyers 2", "loser": "Healthy Futures", "winnerScore": 11, "loserScore": 0, "date": "2026-01-12" }
-    ],
-    "Division C2": [
-      { "winner": "Phoenix Ltd", "loser": "CSC", "winnerScore": 11, "loserScore": 6, "date": "2026-01-05" },
-      { "winner": "Greenlight Re 2", "loser": "CUC 2", "winnerScore": 11, "loserScore": 8, "date": "2026-01-05" },
-      { "winner": "Calderwood", "loser": "Expertise Group Cayman", "winnerScore": 11, "loserScore": 9, "date": "2026-01-05" },
-      { "winner": "Phoenix Ltd", "loser": "The Security Centre Ltd.", "winnerScore": 11, "loserScore": 3, "date": "2026-01-12" }
-    ],
-    "Division B4": [
-      { "winner": "MUFG 2", "loser": "GT 2", "winnerScore": 11, "loserScore": 5, "date": "2026-01-06" },
-      { "winner": "RBC Dominion Securities", "loser": "McCormick 2", "winnerScore": 11, "loserScore": 7, "date": "2026-01-06" },
-      { "winner": "Pickle Tickle LTD", "loser": "CIRCA", "winnerScore": 11, "loserScore": 8, "date": "2026-01-06" },
-      { "winner": "MUFG 2", "loser": "CITCO 1", "winnerScore": 11, "loserScore": 2, "date": "2026-01-13" }
-    ],
-    "Division C3": [
-      { "winner": "KPMG 3", "loser": "CITCO 2", "winnerScore": 11, "loserScore": 4, "date": "2026-01-05" },
-      { "winner": "Tower Research Capital", "loser": "Rawlinson & Hunter", "winnerScore": 11, "loserScore": 7, "date": "2026-01-05" },
-      { "winner": "KPMG 3", "loser": "Kimpton Seafire / Hotel Indigo", "winnerScore": 11, "loserScore": 1, "date": "2026-01-12" }
     ]
   },
   "teamStats": {

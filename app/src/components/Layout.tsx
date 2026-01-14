@@ -11,7 +11,6 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   const navItems = [
     { name: 'Teams', path: '/', icon: Users },
     { name: 'Leaderboard', path: '/leaderboard', icon: Trophy },
-    { name: 'Scores', path: '/scores', icon: Calendar },
     { name: 'Stats', path: '/stats', icon: Activity },
   ];
 
