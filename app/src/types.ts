@@ -17,14 +17,6 @@ export interface LeaderboardEntry {
   pointsAgainst: number;
 }
 
-export interface MatchResult {
-  winner: string;
-  loser: string;
-  winnerScore: number;
-  loserScore: number;
-  date: string;
-}
-
 export interface TeamStats {
   gamesPlayed: number;
   avgPointsPerGame: number;
@@ -32,18 +24,8 @@ export interface TeamStats {
   longestWinStreak: number;
 }
 
-export interface PlayerStats {
-  name: string;
-  gamesPlayed: number;
-  avgPoints: number;
-  pointsFor: number;
-  pointsAgainst: number;
-}
-
 export interface LeagueData {
   divisions: Division[];
   leaderboard: Record<string, LeaderboardEntry[]>;
-  scores: Record<string, MatchResult[]>;
   teamStats: Record<string, Record<string, TeamStats>>;
-  playerStats: PlayerStats[];
 }

@@ -46,32 +46,16 @@ export const Home: React.FC = () => {
         </h1>
         
         <div className="mt-12 flex justify-center gap-4">
-           <button className="btn-primary text-lg shadow-lg hover:scale-105 transition-transform">
+           <button 
+             onClick={() => navigate("/leaderboard")}
+             className="btn-primary text-lg shadow-lg hover:scale-105 transition-transform"
+           >
              View Standings
            </button>
            <button className="px-8 py-3 bg-white border-2 border-brand-blue text-brand-blue font-heading font-bold rounded-full uppercase hover:bg-blue-50 transition-colors">
              Learn More
            </button>
         </div>
-      </section>
-
-      {/* Features Grid (Experience) */}
-      <section className="bg-brand-gray -mx-4 sm:-mx-6 px-4 sm:px-6 py-20">
-         <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-heading font-bold text-center text-brand-blue mb-12 italic">The Pickleball Cayman Experience</h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {features.map((feature, idx) => (
-                <div key={idx} className="flex flex-col items-center text-center group">
-                  <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-soft mb-6 group-hover:scale-110 transition-transform duration-300 border border-gray-100">
-                    <feature.icon className="w-8 h-8 text-brand-blue" />
-                  </div>
-                  <h3 className="font-heading font-bold text-xl text-brand-blue mb-3">{feature.title}</h3>
-                  <p className="text-gray-600 text-sm leading-relaxed max-w-xs">{feature.desc}</p>
-                </div>
-              ))}
-            </div>
-         </div>
       </section>
 
       {/* Divisions Section */}
@@ -105,16 +89,11 @@ export const Home: React.FC = () => {
                 
                 {div.teams.length > 0 ? (
                   <div className="flex flex-wrap gap-2">
-                    {div.teams.slice(0, 5).map((team) => (
+                    {div.teams.map((team) => (
                       <span key={team} className="text-xs bg-gray-50 border border-gray-100 px-2 py-1 rounded text-gray-600">
                         {team}
                       </span>
                     ))}
-                    {div.teams.length > 5 && (
-                      <span className="text-xs bg-brand-yellow/10 border border-brand-yellow/20 px-2 py-1 rounded text-brand-blue font-bold">
-                        +{div.teams.length - 5} more
-                      </span>
-                    )}
                   </div>
                 ) : (
                   <div className="text-gray-400 text-sm italic">
@@ -131,6 +110,25 @@ export const Home: React.FC = () => {
             </Card>
           ))}
         </div>
+      </section>
+
+      {/* Features Grid (Experience) */}
+      <section className="bg-brand-gray -mx-4 sm:-mx-6 px-4 sm:px-6 py-20">
+         <div className="max-w-6xl mx-auto">
+            <h2 className="text-3xl font-heading font-bold text-center text-brand-blue mb-12 italic">The Pickleball Cayman Experience</h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {features.map((feature, idx) => (
+                <div key={idx} className="flex flex-col items-center text-center group">
+                  <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-soft mb-6 group-hover:scale-110 transition-transform duration-300 border border-gray-100">
+                    <feature.icon className="w-8 h-8 text-brand-blue" />
+                  </div>
+                  <h3 className="font-heading font-bold text-xl text-brand-blue mb-3">{feature.title}</h3>
+                  <p className="text-gray-600 text-sm leading-relaxed max-w-xs">{feature.desc}</p>
+                </div>
+              ))}
+            </div>
+         </div>
       </section>
     </div>
   );
