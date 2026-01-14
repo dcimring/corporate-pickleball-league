@@ -46,7 +46,10 @@ export const Home: React.FC = () => {
         </h1>
         
         <div className="mt-12 flex justify-center gap-4">
-           <button className="btn-primary text-lg shadow-lg hover:scale-105 transition-transform">
+           <button 
+             onClick={() => navigate("/leaderboard")}
+             className="btn-primary text-lg shadow-lg hover:scale-105 transition-transform"
+           >
              View Standings
            </button>
            <button className="px-8 py-3 bg-white border-2 border-brand-blue text-brand-blue font-heading font-bold rounded-full uppercase hover:bg-blue-50 transition-colors">
