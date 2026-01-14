@@ -102,7 +102,7 @@ export const Leaderboard: React.FC = () => {
                 <thead>
                   <tr className="bg-gray-50 border-b border-gray-100 font-heading font-bold text-xs md:text-sm text-gray-500 uppercase tracking-wider">
                     <th className="px-2 py-2 md:px-6 md:py-4 whitespace-nowrap">Rank</th>
-                    <th className="px-2 py-2 md:px-6 md:py-4 w-1/3 whitespace-nowrap">Team</th>
+                    <th className="px-2 py-2 md:px-6 md:py-4 whitespace-nowrap">Team</th>
                     <th className="px-2 py-2 md:px-6 md:py-4 text-center whitespace-nowrap">W</th>
                     <th className="px-2 py-2 md:px-6 md:py-4 text-center whitespace-nowrap">L</th>
                     <th className="px-2 py-2 md:px-6 md:py-4 text-center whitespace-nowrap">Win %</th>

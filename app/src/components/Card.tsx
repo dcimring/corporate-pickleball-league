@@ -34,7 +34,7 @@ export const Card: React.FC<CardProps> = ({ children, className, variant = 'defa
           </h3>
         </div>
       )}
-      <div className="p-6 h-full flex flex-col">{children}</div>
+      <div className="p-2 md:p-6 h-full flex flex-col">{children}</div>
     </div>
   );
 };
