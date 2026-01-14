@@ -29,3 +29,21 @@ export interface LeagueData {
   leaderboard: Record<string, LeaderboardEntry[]>;
   teamStats: Record<string, Record<string, TeamStats>>;
 }
+
+// Database Row Types
+export interface DivisionRow {
+  id: string;
+  name: string;
+  play_time: string;
+}
+
+export interface TeamRow {
+  id: string;
+  division_id: string;
+  name: string;
+  wins: number;
+  losses: number;
+  points_for: number;
+  points_against: number;
+  longest_win_streak: number;
+}

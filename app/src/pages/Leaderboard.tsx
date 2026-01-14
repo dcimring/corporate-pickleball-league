@@ -1,20 +1,40 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { leagueData } from '../lib/data';
+import { fetchLeagueData, initialLeagueData } from '../lib/data';
+import type { LeagueData } from '../types';
 import { clsx } from 'clsx';
-import { Trophy, TrendingUp, TrendingDown, Minus, Info } from 'lucide-react';
+import { Trophy, TrendingUp, TrendingDown, Minus, Info, Loader2 } from 'lucide-react';
 import { Card } from '../components/Card';
 import { useSearchParams } from 'react-router-dom';
 
 export const Leaderboard: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const divisions = Object.keys(leagueData.leaderboard);
   const tabsRef = useRef<HTMLDivElement>(null);
-  
-  // Initialize from URL or default
-  const [activeDivision, setActiveDivision] = useState<string>(() => {
-    const div = searchParams.get('division');
-    return div && divisions.includes(div) ? div : 'Division A';
-  });
+  const [data, setData] = useState<LeagueData>(initialLeagueData);
+  const [loading, setLoading] = useState(true);
+  const [activeDivision, setActiveDivision] = useState<string>('');
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const fetched = await fetchLeagueData();
+        setData(fetched);
+        
+        // Initial division selection logic
+        const divisions = Object.keys(fetched.leaderboard);
+        const paramDiv = searchParams.get('division');
+        const defaultDiv = paramDiv && divisions.includes(paramDiv) ? paramDiv : divisions[0] || '';
+        
+        if (activeDivision === '' || (paramDiv && activeDivision !== paramDiv)) {
+             setActiveDivision(defaultDiv);
+        }
+      } catch (error) {
+        console.error("Failed to fetch league data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadData();
+  }, [searchParams]); // Re-run if URL params change externally, though local state handles clicks
 
   // Sync state to URL when user clicks tabs
   const handleDivisionChange = (div: string) => {
@@ -24,15 +44,24 @@ export const Leaderboard: React.FC = () => {
 
   // Scroll active tab into view
   useEffect(() => {
-    if (tabsRef.current) {
+    if (tabsRef.current && activeDivision) {
       const activeButton = tabsRef.current.querySelector(`button[data-value="${activeDivision}"]`);
       if (activeButton) {
         activeButton.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
       }
     }
-  }, [activeDivision]);
+  }, [activeDivision, loading]);
 
-  const stats = leagueData.leaderboard[activeDivision] || [];
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-[50vh]">
+        <Loader2 className="w-10 h-10 text-brand-blue animate-spin" />
+      </div>
+    );
+  }
+
+  const divisions = Object.keys(data.leaderboard);
+  const stats = data.leaderboard[activeDivision] || [];
 
   return (
     <div className="space-y-8">

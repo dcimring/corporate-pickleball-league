@@ -1,12 +1,29 @@
-import React from 'react';
-import { leagueData } from '../lib/data';
-import { Clock, Users, ArrowRight, Sun, Zap, Award, Coffee } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { fetchLeagueData, initialLeagueData } from '../lib/data';
+import type { LeagueData } from '../types';
+import { Clock, Users, ArrowRight, Sun, Zap, Award, Coffee, Loader2 } from 'lucide-react';
 import { Card } from '../components/Card';
 import { useNavigate } from 'react-router-dom';
 import sponsorLogo from '../assets/la roche posay 2.jpg';
 
 export const Home: React.FC = () => {
   const navigate = useNavigate();
+  const [data, setData] = useState<LeagueData>(initialLeagueData);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const fetched = await fetchLeagueData();
+        setData(fetched);
+      } catch (error) {
+        console.error("Failed to fetch league data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadData();
+  }, []);
 
   const handleDivisionClick = (divisionName: string) => {
     navigate(`/leaderboard?division=${encodeURIComponent(divisionName)}`);
@@ -18,6 +35,14 @@ export const Home: React.FC = () => {
     { icon: Award, title: "Club Tournaments", desc: "Fantastic competitions on our premium courts." },
     { icon: Coffee, title: "Bar & Restaurant", desc: "Enjoy delicious food and drinks at The Roost." },
   ];
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-[50vh]">
+        <Loader2 className="w-10 h-10 text-brand-blue animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-20 pb-20">
@@ -66,7 +91,7 @@ export const Home: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {leagueData.divisions.map((div) => (
+          {data.divisions.map((div) => (
             <Card 
               key={div.name} 
               className="group cursor-pointer hover:-translate-y-2"
