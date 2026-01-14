@@ -9,34 +9,9 @@ import { useSearchParams } from 'react-router-dom';
 export const Leaderboard: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const tabsRef = useRef<HTMLDivElement>(null);
-  const tableContainerRef = useRef<HTMLDivElement>(null);
   const [data, setData] = useState<LeagueData>(initialLeagueData);
   const [loading, setLoading] = useState(true);
   const [activeDivision, setActiveDivision] = useState<string>('');
-
-  useEffect(() => {
-    // Peek animation for mobile to indicate scrollability
-    const peekTable = async () => {
-      if (window.innerWidth < 768 && tableContainerRef.current) {
-        // Immediately scroll to the far right to start
-        tableContainerRef.current.scrollLeft = tableContainerRef.current.scrollWidth;
-        
-        // Small delay to let the user see it starting at the end
-        await new Promise(resolve => setTimeout(resolve, 500));
-        
-        if (tableContainerRef.current) {
-           // Smoothly scroll back to the start (left)
-           tableContainerRef.current.scrollTo({ left: 0, behavior: 'smooth' });
-        }
-      }
-    };
-    
-    // We need to wait for the data to be rendered so the table has width
-    if (!loading && data.leaderboard[activeDivision]?.length > 0) {
-        // Use a small timeout to ensure DOM painting is complete
-        setTimeout(peekTable, 100);
-    }
-  }, [loading, activeDivision, data]); // Re-run when data loads or division changes
 
   useEffect(() => {
     const loadData = async () => {
@@ -122,7 +97,7 @@ export const Leaderboard: React.FC = () => {
       <Card className="p-0 overflow-hidden shadow-soft">
         {stats.length > 0 ? (
           <div className="relative">
-            <div className="overflow-x-auto" ref={tableContainerRef}>
+            <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="bg-gray-50 border-b border-gray-100 font-heading font-bold text-xs md:text-sm text-gray-500 uppercase tracking-wider">
