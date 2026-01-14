@@ -24,17 +24,8 @@ export interface TeamStats {
   longestWinStreak: number;
 }
 
-export interface PlayerStats {
-  name: string;
-  gamesPlayed: number;
-  avgPoints: number;
-  pointsFor: number;
-  pointsAgainst: number;
-}
-
 export interface LeagueData {
   divisions: Division[];
   leaderboard: Record<string, LeaderboardEntry[]>;
   teamStats: Record<string, Record<string, TeamStats>>;
-  playerStats: PlayerStats[];
 }
