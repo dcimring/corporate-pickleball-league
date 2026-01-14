@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Trophy, Activity, Calendar, Users, Menu, X } from 'lucide-react';
+import { Trophy, Activity, Users, Menu, X } from 'lucide-react';
 import { clsx } from 'clsx';
 import logo from '../assets/pickball_cayman_logo.png';
 
@@ -49,9 +49,14 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                 })}
               </nav>
               
-              <button className="btn-primary py-2 px-6 text-xs md:text-sm shadow-none hover:shadow-md">
+              <a 
+                href="https://app.courtreserve.com/Online/Account/LogIn/8318" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="btn-primary py-2 px-6 text-xs md:text-sm shadow-none hover:shadow-md"
+              >
                 Login / Sign Up
-              </button>
+              </a>
             </div>
 
             {/* Mobile Menu Button */}
@@ -87,9 +92,14 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                 </Link>
               ))}
               <div className="px-3 py-4">
-                 <button className="w-full btn-primary py-3">
+                 <a 
+                  href="https://app.courtreserve.com/Online/Account/LogIn/8318" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-full btn-primary py-3"
+                >
                   Login / Sign Up
-                </button>
+                </a>
               </div>
             </div>
           </div>
