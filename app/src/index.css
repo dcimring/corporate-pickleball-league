@@ -1,47 +1,53 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;700&family=Patrick+Hand&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400;1,700&family=Open+Sans:wght@400;600&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --color-brand-cream: #0F172A;
-  --color-brand-ink: #FFFFFF;
-  --color-brand-green: #10B981;
-  --color-brand-acid: #CCFF00;
-  --color-brand-soft-blue: #1E293B;
-  --color-brand-orange: #F97316;
-
-  --font-heading: 'Bebas Neue', sans-serif;
-  --font-body: 'Outfit', sans-serif;
-  --font-hand: 'Patrick Hand', cursive;
+  /* Cayman Theme Colors */
+  --color-brand-blue: #005596;
+  --color-brand-yellow: #FFC72C;
+  --color-brand-red: #E31837;
+  --color-brand-green: #00A651;
+  --color-brand-light-blue: #E0F2FE;
+  --color-brand-gray: #F8FAFC;
+  --color-text-main: #0F172A;
   
-  --shadow-hard: 4px 4px 0px 0px #CCFF00;
-  --shadow-hard-sm: 2px 2px 0px 0px #CCFF00;
-  --shadow-glow: 0 0 15px rgba(204, 255, 0, 0.3);
+  /* Retain generic names mapped to new theme for compatibility, or update components */
+  --color-brand-cream: #FFFFFF; /* Main BG is now white */
+  --color-brand-ink: #0F172A;   /* Main Text */
+  --color-brand-acid: #FFC72C;  /* Accents are now Yellow */
+  --color-brand-soft-blue: #F1F5F9; /* Card BG is now very light gray/white */
 
-  --animate-twinkle: twinkle 4s ease-in-out infinite;
+  --font-heading: 'Montserrat', sans-serif;
+  --font-body: 'Open Sans', sans-serif;
+  
+  --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 
-  @keyframes twinkle {
-    0%, 100% { opacity: 0.2; transform: scale(0.8); }
-    50% { opacity: 0.8; transform: scale(1.2); }
+  --animate-float: float 6s ease-in-out infinite;
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
   }
 }
 
 @layer base {
   body {
     font-family: var(--font-body);
-    @apply text-brand-ink bg-brand-cream antialiased;
+    @apply text-brand-ink bg-white antialiased;
   }
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
-    @apply font-normal tracking-wide uppercase italic;
+    @apply font-bold text-brand-blue;
   }
 }
 
 @layer components {
   .btn-primary {
-    @apply inline-flex items-center justify-center px-6 py-3 border-2 border-brand-acid bg-brand-acid text-brand-cream font-bold rounded-none skew-x-[-10deg] hover:skew-x-[-5deg] transition-all hover:shadow-glow uppercase tracking-wider;
+    @apply inline-flex items-center justify-center px-8 py-3 bg-brand-yellow text-brand-blue font-heading font-bold uppercase tracking-wide rounded-full hover:bg-yellow-400 transition-all shadow-sm hover:shadow-md text-sm md:text-base;
   }
-  .card-retro {
-    @apply bg-brand-soft-blue border-2 border-brand-acid rounded-none shadow-hard;
+  .card-modern {
+    @apply bg-white border border-gray-100 rounded-2xl shadow-soft hover:shadow-hover transition-all duration-300;
   }
   
   /* Hide scrollbar for Chrome, Safari and Opera */
