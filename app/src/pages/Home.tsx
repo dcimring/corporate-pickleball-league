@@ -1,6 +1,6 @@
 import React from 'react';
 import { leagueData } from '../lib/data';
-import { Clock, Users, ArrowRight, CircleDashed, Sun, Zap, Award, Coffee, Car } from 'lucide-react';
+import { Clock, Users, ArrowRight, Sun, Zap, Award, Coffee } from 'lucide-react';
 import { Card } from '../components/Card';
 import { useNavigate } from 'react-router-dom';
 import sponsorLogo from '../assets/la roche posay 2.jpg';
@@ -82,7 +82,7 @@ export const Home: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {leagueData.divisions.map((div, idx) => (
+          {leagueData.divisions.map((div) => (
             <Card 
               key={div.name} 
               className="group cursor-pointer hover:-translate-y-2"
