@@ -89,16 +89,11 @@ export const Home: React.FC = () => {
                 
                 {div.teams.length > 0 ? (
                   <div className="flex flex-wrap gap-2">
-                    {div.teams.slice(0, 5).map((team) => (
+                    {div.teams.map((team) => (
                       <span key={team} className="text-xs bg-gray-50 border border-gray-100 px-2 py-1 rounded text-gray-600">
                         {team}
                       </span>
                     ))}
-                    {div.teams.length > 5 && (
-                      <span className="text-xs bg-brand-yellow/10 border border-brand-yellow/20 px-2 py-1 rounded text-brand-blue font-bold">
-                        +{div.teams.length - 5} more
-                      </span>
-                    )}
                   </div>
                 ) : (
                   <div className="text-gray-400 text-sm italic">
