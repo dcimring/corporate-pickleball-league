@@ -9,9 +9,32 @@ import { useSearchParams } from 'react-router-dom';
 export const Leaderboard: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const tabsRef = useRef<HTMLDivElement>(null);
+  const tableContainerRef = useRef<HTMLDivElement>(null);
   const [data, setData] = useState<LeagueData>(initialLeagueData);
   const [loading, setLoading] = useState(true);
   const [activeDivision, setActiveDivision] = useState<string>('');
+
+  useEffect(() => {
+    // Peek animation for mobile to indicate scrollability
+    const peekTable = async () => {
+      if (window.innerWidth < 768 && tableContainerRef.current) {
+        // Small delay to let the page settle
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        if (tableContainerRef.current) {
+           tableContainerRef.current.scrollTo({ left: 80, behavior: 'smooth' });
+           
+           // Scroll back after a longer delay for smoothness
+           await new Promise(resolve => setTimeout(resolve, 1200));
+           if (tableContainerRef.current) {
+             tableContainerRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+           }
+        }
+      }
+    };
+    
+    peekTable();
+  }, [loading]); // Run after loading finishes
 
   useEffect(() => {
     const loadData = async () => {
@@ -97,7 +120,7 @@ export const Leaderboard: React.FC = () => {
       <Card className="p-0 overflow-hidden shadow-soft">
         {stats.length > 0 ? (
           <div className="relative">
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto" ref={tableContainerRef}>
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="bg-gray-50 border-b border-gray-100 font-heading font-bold text-xs md:text-sm text-gray-500 uppercase tracking-wider">
