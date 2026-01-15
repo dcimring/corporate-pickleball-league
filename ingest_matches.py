@@ -91,13 +91,19 @@ def process_csv(file_path):
             team1_name = row[1]
             team2_name = row[3] # Skip 'v' at index 2
             date_raw = row[4]
+            
+            # Skip if match results are missing (indicates upcoming match)
+            if not row[5].strip() or not row[6].strip():
+                print(f"Skipping row {row_num}: Match has no results yet (upcoming).")
+                continue
+
             try:
                 t1_wins = int(row[5])
                 t2_wins = int(row[6])
                 t1_points = int(row[7])
                 t2_points = int(row[8])
-            except ValueError:
-                print(f"Skipping row {row_num}: Invalid number format")
+            except (ValueError, IndexError):
+                print(f"Skipping row {row_num}: Invalid or missing score data.")
                 continue
 
             # Lookup IDs
