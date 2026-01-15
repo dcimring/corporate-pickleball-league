@@ -118,13 +118,13 @@ export const fetchLeagueData = async (): Promise<LeagueData> => {
     // Build Leaderboard
     const entries: LeaderboardEntry[] = divTeams.map(t => {
       const stats = teamAggregates.get(t.id)!;
-      const gamesPlayed = stats.matchWins + stats.matchLosses;
-      const winPct = gamesPlayed > 0 ? stats.matchWins / gamesPlayed : 0;
+      const totalGames = stats.gamesWon + stats.gamesLost;
+      const winPct = totalGames > 0 ? stats.gamesWon / totalGames : 0;
       
       return {
         team: t.name,
-        wins: stats.matchWins,
-        losses: stats.matchLosses,
+        wins: stats.gamesWon,
+        losses: stats.gamesLost,
         winPct: Number(winPct.toFixed(3)),
         pointsFor: stats.pointsFor,
         pointsAgainst: stats.pointsAgainst
