@@ -124,12 +124,6 @@ export const Stats: React.FC = () => {
                   <div className="text-3xl font-heading font-bold text-brand-blue">{team.matchesPlayed}</div>
                 </div>
 
-                {/* Win % */}
-                <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
-                  <div className="text-xs font-bold uppercase tracking-wider mb-1 text-gray-400">Win %</div>
-                  <div className="text-3xl font-heading font-bold text-brand-blue">{(team.winPct * 100).toFixed(1)}%</div>
-                </div>
-
                 {/* Games Won */}
                 <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
                    <div className="text-xs font-bold uppercase tracking-wider mb-1 text-gray-400">Games Won</div>
@@ -140,6 +134,12 @@ export const Stats: React.FC = () => {
                 <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
                    <div className="text-xs font-bold uppercase tracking-wider mb-1 text-gray-400">Games Lost</div>
                    <div className="text-3xl font-heading font-bold text-red-500">{team.gamesLost}</div>
+                </div>
+
+                {/* Win % */}
+                <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+                  <div className="text-xs font-bold uppercase tracking-wider mb-1 text-gray-400">Win %</div>
+                  <div className="text-3xl font-heading font-bold text-brand-blue">{(team.winPct * 100).toFixed(1)}%</div>
                 </div>
 
                 {/* Points For */}
