@@ -47,24 +47,24 @@ def parse_date(date_str):
              return datetime.now().strftime("%Y-%m-%d")
 
 def get_division_id(name_raw, divisions):
-    name = name_raw.strip()
-    # Try exact match
+    name = name_raw.strip().lower()
+    # Try exact match (case-insensitive)
     for d in divisions:
-        if d['name'] == name:
+        if d['name'].lower() == name:
             return d['id']
     
-    # Try prepending "Division "
-    alt_name = f"Division {name}"
+    # Try prepending "Division " (case-insensitive)
+    alt_name = f"division {name}"
     for d in divisions:
-        if d['name'] == alt_name:
+        if d['name'].lower() == alt_name:
             return d['id']
             
     return None
 
 def get_team_id(name_raw, division_id, teams):
-    name = name_raw.strip()
+    name = name_raw.strip().lower()
     for t in teams:
-        if t['name'] == name and t['division_id'] == division_id:
+        if t['name'].lower() == name and t['division_id'] == division_id:
             return t['id']
     return None
 
