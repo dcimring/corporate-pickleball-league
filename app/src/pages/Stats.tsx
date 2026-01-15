@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { fetchLeagueData, initialLeagueData } from '../lib/data';
 import type { LeagueData } from '../types';
-import { Activity, Flame, Loader2 } from 'lucide-react';
+import { Activity, Loader2 } from 'lucide-react';
 import { Card } from '../components/Card';
 import { clsx } from 'clsx';
 import { useSearchParams } from 'react-router-dom';
@@ -54,11 +54,13 @@ export const Stats: React.FC = () => {
   // Get stats object for the active division
   const divisionStats = data.teamStats[activeDivision] || {};
   
-  // Convert object to array for mapping
-  const relevantTeamStats = Object.entries(divisionStats).map(([name, stats]) => ({
-    name,
-    ...stats
-  }));
+  // Convert object to array for mapping and sort by rank
+  const relevantTeamStats = Object.entries(divisionStats)
+    .map(([name, stats]) => ({
+      name,
+      ...stats
+    }))
+    .sort((a, b) => a.rank - b.rank);
 
   return (
     <div className="space-y-12">
@@ -99,45 +101,59 @@ export const Stats: React.FC = () => {
               variant={idx % 2 === 0 ? 'highlight' : 'default'}
             >
               <div className={clsx(
-                  "p-6 border-b",
+                  "p-6 border-b flex justify-between items-center",
                   idx % 2 === 0 ? "bg-blue-50 border-blue-100" : "bg-gray-50 border-gray-100"
               )}>
-                <h2 className="text-2xl font-heading font-bold text-brand-blue">{team.name}</h2>
-                <div className="flex items-center gap-2 font-bold text-xs mt-1 text-gray-500 uppercase tracking-widest">
-                  <Activity className="w-4 h-4 text-brand-yellow" />
-                  Team Analytics
+                <div>
+                    <h2 className="text-2xl font-heading font-bold text-brand-blue">{team.name}</h2>
+                    <div className="flex items-center gap-2 font-bold text-xs mt-1 text-gray-500 uppercase tracking-widest">
+                    <Activity className="w-4 h-4 text-brand-yellow" />
+                    Team Analytics
+                    </div>
+                </div>
+                <div className="text-4xl font-heading font-bold text-gray-200">
+                    #{team.rank}
                 </div>
               </div>
               
-              <div className="p-6 grid grid-cols-2 gap-4">
-                <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
-                  <div className="text-xs font-bold uppercase tracking-wider mb-1 text-gray-400">Games</div>
-                  <div className="text-3xl font-heading font-bold text-brand-blue">{team.gamesPlayed}</div>
-                </div>
+              <div className="p-6 grid grid-cols-2 md:grid-cols-3 gap-4">
                 
+                {/* Matches Played */}
                 <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
-                  <div className="text-xs font-bold uppercase tracking-wider mb-1 flex items-center gap-1 text-gray-400">
-                    <Flame className="w-3 h-3 text-brand-yellow" /> Streak
-                  </div>
-                  <div className="text-3xl font-heading font-bold text-brand-blue">
-                    {team.longestWinStreak} <span className="text-sm text-gray-400 font-normal">W</span>
-                  </div>
+                  <div className="text-xs font-bold uppercase tracking-wider mb-1 text-gray-400">Matches</div>
+                  <div className="text-3xl font-heading font-bold text-brand-blue">{team.matchesPlayed}</div>
                 </div>
 
+                {/* Win % */}
                 <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
-                  <div className="text-xs font-bold uppercase tracking-wider mb-1 text-gray-400">Avg Pts</div>
-                  <div className="text-3xl font-heading font-bold text-brand-blue">{team.avgPointsPerGame}</div>
+                  <div className="text-xs font-bold uppercase tracking-wider mb-1 text-gray-400">Win %</div>
+                  <div className="text-3xl font-heading font-bold text-brand-blue">{(team.winPct * 100).toFixed(1)}%</div>
                 </div>
 
+                {/* Games Won */}
                 <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
-                  <div className="text-xs font-bold uppercase tracking-wider mb-1 text-gray-400">Diff</div>
-                  <div className={clsx(
-                    "text-3xl font-heading font-bold",
-                    team.avgPointDiff > 0 ? "text-green-500" : "text-red-500"
-                  )}>
-                    {team.avgPointDiff > 0 ? '+' : ''}{team.avgPointDiff}
-                  </div>
+                   <div className="text-xs font-bold uppercase tracking-wider mb-1 text-gray-400">Games Won</div>
+                   <div className="text-3xl font-heading font-bold text-green-500">{team.gamesWon}</div>
                 </div>
+
+                {/* Games Lost */}
+                <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+                   <div className="text-xs font-bold uppercase tracking-wider mb-1 text-gray-400">Games Lost</div>
+                   <div className="text-3xl font-heading font-bold text-red-500">{team.gamesLost}</div>
+                </div>
+
+                {/* Points For */}
+                <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+                   <div className="text-xs font-bold uppercase tracking-wider mb-1 text-gray-400">Points For</div>
+                   <div className="text-3xl font-heading font-bold text-brand-blue">{team.pointsFor}</div>
+                </div>
+
+                {/* Points Against */}
+                <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+                   <div className="text-xs font-bold uppercase tracking-wider mb-1 text-gray-400">Points Agst</div>
+                   <div className="text-3xl font-heading font-bold text-brand-blue">{team.pointsAgainst}</div>
+                </div>
+
               </div>
             </Card>
           ))}

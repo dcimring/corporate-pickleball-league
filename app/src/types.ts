@@ -18,10 +18,13 @@ export interface LeaderboardEntry {
 }
 
 export interface TeamStats {
-  gamesPlayed: number;
-  avgPointsPerGame: number;
-  avgPointDiff: number;
-  longestWinStreak: number;
+  rank: number;
+  matchesPlayed: number;
+  gamesWon: number;
+  gamesLost: number;
+  winPct: number;
+  pointsFor: number;
+  pointsAgainst: number;
 }
 
 export interface Match {
