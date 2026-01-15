@@ -6,6 +6,11 @@ import { Card } from '../components/Card';
 import { clsx } from 'clsx';
 import { useSearchParams } from 'react-router-dom';
 
+const shortenDivisionName = (name: string) => {
+  if (name === 'Cayman Premier League') return 'CPL';
+  return name.replace('Division ', 'Div ');
+};
+
 export const Stats: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const tabsRef = useRef<HTMLDivElement>(null);
@@ -97,7 +102,7 @@ export const Stats: React.FC = () => {
                   : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
               )}
             >
-              {div}
+              {shortenDivisionName(div)}
             </button>
           ))}
         </div>

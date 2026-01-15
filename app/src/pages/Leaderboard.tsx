@@ -6,6 +6,11 @@ import { Trophy, TrendingUp, TrendingDown, Minus, Info, Loader2 } from 'lucide-r
 import { Card } from '../components/Card';
 import { useSearchParams } from 'react-router-dom';
 
+const shortenDivisionName = (name: string) => {
+  if (name === 'Cayman Premier League') return 'CPL';
+  return name.replace('Division ', 'Div ');
+};
+
 export const Leaderboard: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const tabsRef = useRef<HTMLDivElement>(null);
@@ -87,7 +92,7 @@ export const Leaderboard: React.FC = () => {
                   : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
               )}
             >
-              {div}
+              {shortenDivisionName(div)}
             </button>
           ))}
         </div>
