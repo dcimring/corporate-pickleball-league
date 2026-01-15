@@ -91,7 +91,7 @@ export const Stats: React.FC = () => {
               data-value={div}
               onClick={() => handleDivisionChange(div)}
               className={clsx(
-                'px-6 py-2 text-sm font-heading font-bold uppercase tracking-wide rounded-full transition-all whitespace-nowrap',
+                'px-4 py-1.5 md:px-6 md:py-2 text-xs md:text-sm font-heading font-bold uppercase tracking-wide rounded-full transition-all whitespace-nowrap',
                 activeDivision === div
                   ? 'bg-brand-blue text-white shadow-md'
                   : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
@@ -123,47 +123,47 @@ export const Stats: React.FC = () => {
                     Team Analytics
                     </div>
                 </div>
-                <div className="text-4xl font-heading font-bold text-gray-200">
+                <div className="text-2xl md:text-4xl font-heading font-bold text-gray-200">
                     #{team.rank}
                 </div>
               </div>
               
-              <div className="p-6 grid grid-cols-2 md:grid-cols-3 gap-4">
+              <div className="p-4 md:p-6 grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
                 
                 {/* Matches Played */}
-                <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
-                  <div className="text-xs font-bold uppercase tracking-wider mb-1 text-gray-400">Matches</div>
-                  <div className="text-3xl font-heading font-bold text-brand-blue">{team.matchesPlayed}</div>
+                <div className="bg-white p-3 md:p-4 rounded-xl border border-gray-100 shadow-sm">
+                  <div className="text-[10px] md:text-xs font-bold uppercase tracking-wider mb-1 text-gray-400">Matches</div>
+                  <div className="text-xl md:text-3xl font-heading font-bold text-brand-blue">{team.matchesPlayed}</div>
                 </div>
 
                 {/* Games Won */}
-                <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
-                   <div className="text-xs font-bold uppercase tracking-wider mb-1 text-gray-400">Games Won</div>
-                   <div className="text-3xl font-heading font-bold text-green-500">{team.gamesWon}</div>
+                <div className="bg-white p-3 md:p-4 rounded-xl border border-gray-100 shadow-sm">
+                   <div className="text-[10px] md:text-xs font-bold uppercase tracking-wider mb-1 text-gray-400">Games Won</div>
+                   <div className="text-xl md:text-3xl font-heading font-bold text-green-500">{team.gamesWon}</div>
                 </div>
 
                 {/* Games Lost */}
-                <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
-                   <div className="text-xs font-bold uppercase tracking-wider mb-1 text-gray-400">Games Lost</div>
-                   <div className="text-3xl font-heading font-bold text-red-500">{team.gamesLost}</div>
+                <div className="bg-white p-3 md:p-4 rounded-xl border border-gray-100 shadow-sm">
+                   <div className="text-[10px] md:text-xs font-bold uppercase tracking-wider mb-1 text-gray-400">Games Lost</div>
+                   <div className="text-xl md:text-3xl font-heading font-bold text-red-500">{team.gamesLost}</div>
                 </div>
 
                 {/* Win % */}
-                <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
-                  <div className="text-xs font-bold uppercase tracking-wider mb-1 text-gray-400">Win %</div>
-                  <div className="text-3xl font-heading font-bold text-brand-blue">{(team.winPct * 100).toFixed(1)}%</div>
+                <div className="bg-white p-3 md:p-4 rounded-xl border border-gray-100 shadow-sm">
+                  <div className="text-[10px] md:text-xs font-bold uppercase tracking-wider mb-1 text-gray-400">Win %</div>
+                  <div className="text-xl md:text-3xl font-heading font-bold text-brand-blue">{(team.winPct * 100).toFixed(1)}%</div>
                 </div>
 
                 {/* Points For */}
-                <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
-                   <div className="text-xs font-bold uppercase tracking-wider mb-1 text-gray-400">Points For</div>
-                   <div className="text-3xl font-heading font-bold text-brand-blue">{team.pointsFor}</div>
+                <div className="bg-white p-3 md:p-4 rounded-xl border border-gray-100 shadow-sm">
+                   <div className="text-[10px] md:text-xs font-bold uppercase tracking-wider mb-1 text-gray-400">Points For</div>
+                   <div className="text-xl md:text-3xl font-heading font-bold text-brand-blue">{team.pointsFor}</div>
                 </div>
 
                 {/* Points Against */}
-                <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
-                   <div className="text-xs font-bold uppercase tracking-wider mb-1 text-gray-400">Points Agst</div>
-                   <div className="text-3xl font-heading font-bold text-brand-blue">{team.pointsAgainst}</div>
+                <div className="bg-white p-3 md:p-4 rounded-xl border border-gray-100 shadow-sm">
+                   <div className="text-[10px] md:text-xs font-bold uppercase tracking-wider mb-1 text-gray-400">Points Agst</div>
+                   <div className="text-xl md:text-3xl font-heading font-bold text-brand-blue">{team.pointsAgainst}</div>
                 </div>
 
               </div>
