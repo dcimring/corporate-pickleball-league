@@ -130,12 +130,17 @@ def process_csv(file_path):
             })
 
     if matches_to_insert:
-        print(f"Attempting to insert {len(matches_to_insert)} matches...")
+        print("Clearing existing matches...")
         try:
+            # Delete all rows by filtering for IDs not equal to the Nil UUID
+            supabase.table("matches").delete().neq("id", "00000000-0000-0000-0000-000000000000").execute()
+            print("Matches table cleared.")
+
+            print(f"Attempting to insert {len(matches_to_insert)} matches...")
             data = supabase.table("matches").insert(matches_to_insert).execute()
             print("Success! Matches inserted.")
         except Exception as e:
-            print(f"Error inserting data: {e}")
+            print(f"Error updating data: {e}")
     else:
         print("No valid matches found to insert.")
 
