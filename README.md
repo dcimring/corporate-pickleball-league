@@ -10,19 +10,21 @@ A high-energy, responsive website for the Corporate Pickleball League, featuring
     *   **Compact Data Views:** Leaderboards use reduced padding and optimized font sizes for maximum readability on small screens.
     *   **Auto-Scroll Tabs:** Navigating to a specific division automatically scrolls the selector to the active item.
 -   **Interactive Leaderboards:** Real-time standings sorted by win percentage with detailed point tracking.
--   **Visual Match Results:** Scorecard view of recent games styled as digital court scoreboards.
+-   **Visual Match Results:** Dedicated "Matches" page showing recent and upcoming games with real-time data from Supabase.
+-   **Persistent Division Context:** Your selected division follows you as you navigate between Leaderboard, Matches, and Stats.
+-   **Data-Driven Analytics:** Detailed team statistics calculated directly from match results, including Game Win% and individual game tracking.
+-   **Supabase Backend:** Real-time database integration for managing teams, divisions, and match schedules.
 -   **Deep Linking:** Click any division card on the Home page to jump directly to its filtered leaderboard.
--   **Global Scroll Management:** Automatic "Scroll to Top" behavior on all route transitions.
--   **Robust Deployment:** Fully configured for SPA routing and seamless refreshes on Vercel.
 
 ## 🚀 Tech Stack
 
--   **Framework:** [React 18+](https://reactjs.org/)
+-   **Framework:** [React 19+](https://reactjs.org/)
 -   **Build Tool:** [Vite](https://vitejs.dev/)
+-   **Database:** [Supabase](https://supabase.com/) (PostgreSQL)
 -   **Styling:** [Tailwind CSS v4](https://tailwindcss.com/)
 -   **Typography:** 'Bebas Neue' (Athletic Display), 'Outfit' (Geometric Body)
 -   **Icons:** [Lucide React](https://lucide.dev/)
--   **Routing:** [React Router 6](https://reactrouter.com/)
+-   **Routing:** [React Router 7](https://reactrouter.com/)
 
 ## 🛠️ Getting Started
 
@@ -45,7 +47,14 @@ A high-energy, responsive website for the Corporate Pickleball League, featuring
     npm install
     ```
 
-3.  **Run in Development:**
+3.  **Setup Environment Variables:**
+    Create a `.env` file in the `app` directory with your Supabase credentials:
+    ```env
+    VITE_SUPABASE_URL=your_supabase_url
+    VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+    ```
+
+4.  **Run in Development:**
     ```bash
     npm run dev
     ```
@@ -56,10 +65,11 @@ A high-energy, responsive website for the Corporate Pickleball League, featuring
 app/
 ├── src/
 │   ├── components/     # UI Components (Layout, Card, ScrollToTop)
-│   ├── pages/          # Views (Home, Leaderboard, Scores, Stats)
-│   ├── lib/            # Data access (league-data.json source)
-│   ├── types.ts        # TypeScript interfaces
+│   ├── pages/          # Views (Home, Leaderboard, Matches, Stats)
+│   ├── lib/            # Data access (Supabase & local logic)
+│   ├── types.ts        # TypeScript interfaces & DB schemas
 │   └── index.css       # Tailwind v4 theme & global styles
+├── league-data.json    # Legacy mock data (for reference)
 ├── vercel.json         # Deployment rewrites
 └── ...
 ```
