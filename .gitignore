@@ -128,3 +128,5 @@ dist
 *.swp
 *.swo
 .venv/
+\n# Database Backups
+backups/
