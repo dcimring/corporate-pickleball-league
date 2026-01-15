@@ -96,7 +96,7 @@ export const Stats: React.FC = () => {
               data-value={div}
               onClick={() => handleDivisionChange(div)}
               className={clsx(
-                'px-4 py-1.5 md:px-3 md:py-1 text-xs md:text-[11px] font-heading font-bold uppercase tracking-wide rounded-full transition-all whitespace-nowrap',
+                'px-4 py-1.5 md:px-4 md:py-2 text-xs md:text-base font-heading font-bold uppercase tracking-wide rounded-full transition-all whitespace-nowrap',
                 activeDivision === div
                   ? 'bg-brand-blue text-white shadow-md'
                   : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
