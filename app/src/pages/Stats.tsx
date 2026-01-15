@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { fetchLeagueData, initialLeagueData } from '../lib/data';
 import type { LeagueData } from '../types';
 import { Activity, Loader2 } from 'lucide-react';
@@ -8,6 +8,7 @@ import { useSearchParams } from 'react-router-dom';
 
 export const Stats: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const tabsRef = useRef<HTMLDivElement>(null);
   const [data, setData] = useState<LeagueData>(initialLeagueData);
   const [loading, setLoading] = useState(true);
   const [activeDivision, setActiveDivision] = useState<string>('');
@@ -39,6 +40,16 @@ export const Stats: React.FC = () => {
     setActiveDivision(div);
     setSearchParams({ division: div });
   };
+
+  // Scroll active tab into view
+  useEffect(() => {
+    if (tabsRef.current && activeDivision) {
+      const activeButton = tabsRef.current.querySelector(`button[data-value="${activeDivision}"]`);
+      if (activeButton) {
+        activeButton.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+    }
+  }, [activeDivision, loading]);
 
   if (loading) {
     return (
@@ -73,10 +84,11 @@ export const Stats: React.FC = () => {
         </div>
 
         {/* Division Toggle */}
-        <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2">
+        <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2" ref={tabsRef}>
           {divisionNames.map((div) => (
             <button
               key={div}
+              data-value={div}
               onClick={() => handleDivisionChange(div)}
               className={clsx(
                 'px-6 py-2 text-sm font-heading font-bold uppercase tracking-wide rounded-full transition-all whitespace-nowrap',

@@ -127,3 +127,6 @@ dist
 .vscode/
 *.swp
 *.swo
+.venv/
+\n# Database Backups
+backups/
