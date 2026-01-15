@@ -4,8 +4,10 @@ import type { LeagueData } from '../types';
 import { Activity, Flame, Loader2 } from 'lucide-react';
 import { Card } from '../components/Card';
 import { clsx } from 'clsx';
+import { useSearchParams } from 'react-router-dom';
 
 export const Stats: React.FC = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [data, setData] = useState<LeagueData>(initialLeagueData);
   const [loading, setLoading] = useState(true);
   const [activeDivision, setActiveDivision] = useState<string>('');
@@ -16,10 +18,13 @@ export const Stats: React.FC = () => {
         const fetched = await fetchLeagueData();
         setData(fetched);
         
-        // Initial division selection
+        // Initial division selection logic
         const divisionNames = Object.keys(fetched.teamStats);
-        if (activeDivision === '' || !divisionNames.includes(activeDivision)) {
-            setActiveDivision(divisionNames[0] || 'Division A');
+        const paramDiv = searchParams.get('division');
+        const defaultDiv = paramDiv && divisionNames.includes(paramDiv) ? paramDiv : divisionNames[0] || '';
+        
+        if (activeDivision === '' || (paramDiv && activeDivision !== paramDiv)) {
+             setActiveDivision(defaultDiv);
         }
       } catch (error) {
         console.error("Failed to fetch league data:", error);
@@ -28,7 +33,12 @@ export const Stats: React.FC = () => {
       }
     };
     loadData();
-  }, []); // Only run once on mount
+  }, [searchParams]);
+
+  const handleDivisionChange = (div: string) => {
+    setActiveDivision(div);
+    setSearchParams({ division: div });
+  };
 
   if (loading) {
     return (
@@ -65,7 +75,7 @@ export const Stats: React.FC = () => {
           {divisionNames.map((div) => (
             <button
               key={div}
-              onClick={() => setActiveDivision(div)}
+              onClick={() => handleDivisionChange(div)}
               className={clsx(
                 'px-6 py-2 text-sm font-heading font-bold uppercase tracking-wide rounded-full transition-all whitespace-nowrap',
                 activeDivision === div

@@ -1,5 +1,5 @@
 import { supabase } from './supabase';
-import type { LeagueData, DivisionRow, TeamRow, Division, LeaderboardEntry, TeamStats } from '../types';
+import type { LeagueData, DivisionRow, TeamRow, MatchRow, Division, LeaderboardEntry, TeamStats, Match } from '../types';
 
 // Helper to calculate calculated stats that aren't in DB
 const calculateStats = (wins: number, losses: number, pf: number, pa: number) => {
@@ -30,6 +30,15 @@ export const fetchLeagueData = async (): Promise<LeagueData> => {
   if (teamError) throw teamError;
   const teamsRows = teamsData as TeamRow[];
 
+  // Fetch all matches
+  const { data: matchesData, error: matchError } = await supabase
+    .from('matches')
+    .select('*')
+    .order('date', { ascending: false });
+
+  if (matchError) throw matchError;
+  const matchesRows = matchesData as MatchRow[];
+
   // Transform to existing App Structure
   const divisions: Division[] = divisionsRows.map(div => {
     // Find teams for this division
@@ -43,6 +52,11 @@ export const fetchLeagueData = async (): Promise<LeagueData> => {
 
   const leaderboard: Record<string, LeaderboardEntry[]> = {};
   const teamStats: Record<string, Record<string, TeamStats>> = {};
+  const matches: Record<string, Match[]> = {};
+
+  // Create a lookup for team names by id
+  const teamNameMap = new Map<string, string>();
+  teamsRows.forEach(t => teamNameMap.set(t.id, t.name));
 
   divisionsRows.forEach(div => {
     const divTeams = teamsRows.filter(t => t.division_id === div.id);
@@ -82,12 +96,26 @@ export const fetchLeagueData = async (): Promise<LeagueData> => {
       };
     });
     teamStats[div.name] = statsMap;
+
+    // Build Matches
+    const divMatches = matchesRows.filter(m => m.division_id === div.id);
+    matches[div.name] = divMatches.map(m => ({
+        id: m.id,
+        date: m.date,
+        team1: teamNameMap.get(m.team1_id) || 'Unknown Team',
+        team2: teamNameMap.get(m.team2_id) || 'Unknown Team',
+        team1Wins: m.team1_wins,
+        team2Wins: m.team2_wins,
+        team1Points: m.team1_points_for,
+        team2Points: m.team2_points_for
+    }));
   });
 
   return {
     divisions,
     leaderboard,
-    teamStats
+    teamStats,
+    matches
   };
 };
 
@@ -95,5 +123,6 @@ export const fetchLeagueData = async (): Promise<LeagueData> => {
 export const initialLeagueData: LeagueData = {
   divisions: [],
   leaderboard: {},
-  teamStats: {}
+  teamStats: {},
+  matches: {}
 };

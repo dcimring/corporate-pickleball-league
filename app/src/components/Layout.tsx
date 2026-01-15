@@ -1,17 +1,27 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Trophy, Activity, Users, Menu, X } from 'lucide-react';
+import { Trophy, Activity, Users, Menu, X, Calendar } from 'lucide-react';
 import { clsx } from 'clsx';
 import logo from '../assets/pickball_cayman_logo.png';
 
 export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+  
+  // Use URLSearchParams directly from window.location.search because useSearchParams 
+  // might not be available if Layout is rendered outside of a specific Route context
+  // (though it is inside BrowserRouter). 
+  // Let's use the hook for consistency if we are sure it's inside Router. 
+  // Layout is inside BrowserRouter in App.tsx.
+  const searchParams = new URLSearchParams(location.search);
+  const divisionParam = searchParams.get('division');
+  const queryStr = divisionParam ? `?division=${encodeURIComponent(divisionParam)}` : '';
 
   const navItems = [
-    { name: 'Teams', path: '/', icon: Users },
-    { name: 'Leaderboard', path: '/leaderboard', icon: Trophy },
-    { name: 'Stats', path: '/stats', icon: Activity },
+    { name: 'Teams', path: '/', icon: Users, preserveParams: false },
+    { name: 'Leaderboard', path: '/leaderboard', icon: Trophy, preserveParams: true },
+    { name: 'Matches', path: '/matches', icon: Calendar, preserveParams: true },
+    { name: 'Stats', path: '/stats', icon: Activity, preserveParams: true },
   ];
 
   return (
@@ -32,10 +42,11 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
               <nav className="flex space-x-6">
                 {navItems.map((item) => {
                   const isActive = location.pathname === item.path;
+                  const to = item.preserveParams ? `${item.path}${queryStr}` : item.path;
                   return (
                     <Link
                       key={item.name}
-                      to={item.path}
+                      to={to}
                       className={clsx(
                         'text-sm font-heading font-bold uppercase tracking-wide transition-colors duration-200',
                         isActive
@@ -75,22 +86,25 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         {isMobileMenuOpen && (
           <div className="md:hidden bg-white border-t border-gray-100 absolute w-full shadow-lg">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-              {navItems.map((item) => (
-                <Link
-                  key={item.name}
-                  to={item.path}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className={clsx(
-                    'flex items-center gap-3 px-3 py-4 text-base font-heading font-bold uppercase tracking-wide',
-                    location.pathname === item.path
-                      ? 'text-brand-blue bg-blue-50'
-                      : 'text-gray-600 hover:text-brand-blue hover:bg-gray-50'
-                  )}
-                >
-                  <item.icon className="w-5 h-5" />
-                  {item.name}
-                </Link>
-              ))}
+              {navItems.map((item) => {
+                const to = item.preserveParams ? `${item.path}${queryStr}` : item.path;
+                return (
+                  <Link
+                    key={item.name}
+                    to={to}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={clsx(
+                      'flex items-center gap-3 px-3 py-4 text-base font-heading font-bold uppercase tracking-wide',
+                      location.pathname === item.path
+                        ? 'text-brand-blue bg-blue-50'
+                        : 'text-gray-600 hover:text-brand-blue hover:bg-gray-50'
+                    )}
+                  >
+                    <item.icon className="w-5 h-5" />
+                    {item.name}
+                  </Link>
+                );
+              })}
               <div className="px-3 py-4">
                  <a 
                   href="https://app.courtreserve.com/Online/Account/LogIn/8318" 
