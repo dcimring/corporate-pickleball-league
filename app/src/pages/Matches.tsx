@@ -118,11 +118,11 @@ export const Matches: React.FC = () => {
                   
                   {/* Team 1 */}
                   <div className={clsx(
-                    "text-right flex flex-col md:flex-row items-center md:justify-end gap-2",
+                    "text-left flex flex-col md:flex-row items-center md:justify-start gap-2",
                     match.team1Wins > match.team2Wins ? "text-brand-blue font-bold" : "text-gray-600"
                   )}>
-                    <span className="text-sm md:text-lg leading-tight">{match.team1}</span>
                     {match.team1Wins > match.team2Wins && <span className="text-brand-yellow">★</span>}
+                    <span className="text-sm md:text-lg leading-tight">{match.team1}</span>
                   </div>
 
                   {/* Score */}
@@ -132,11 +132,11 @@ export const Matches: React.FC = () => {
 
                   {/* Team 2 */}
                   <div className={clsx(
-                    "text-left flex flex-col md:flex-row-reverse items-center md:justify-end gap-2",
+                    "text-right flex flex-col md:flex-row-reverse items-center md:justify-start gap-2",
                     match.team2Wins > match.team1Wins ? "text-brand-blue font-bold" : "text-gray-600"
                   )}>
-                    <span className="text-sm md:text-lg leading-tight">{match.team2}</span>
                     {match.team2Wins > match.team1Wins && <span className="text-brand-yellow">★</span>}
+                    <span className="text-sm md:text-lg leading-tight">{match.team2}</span>
                   </div>
 
                 </div>
