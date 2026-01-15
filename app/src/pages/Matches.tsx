@@ -66,7 +66,8 @@ export const Matches: React.FC = () => {
     return new Intl.DateTimeFormat('en-GB', {
       day: 'numeric',
       month: 'short',
-      year: '2-digit'
+      year: '2-digit',
+      timeZone: 'UTC'
     }).format(date);
   };
 
