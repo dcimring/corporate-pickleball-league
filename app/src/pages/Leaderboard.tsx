@@ -74,7 +74,7 @@ export const Leaderboard: React.FC = () => {
         </div>
 
         {/* Division Toggle */}
-        <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2" ref={tabsRef}>
+        <div className="flex gap-2 overflow-x-auto md:overflow-x-visible md:flex-wrap no-scrollbar pb-2" ref={tabsRef}>
           {divisions.map((div) => (
             <button
               key={div}
