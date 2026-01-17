@@ -88,7 +88,6 @@ export const Matches: React.FC = () => {
             divisions={divisions} 
             activeDivision={activeDivision} 
             onChange={handleDivisionChange} 
-            variant="underline" 
           />
         </div>
       </div>

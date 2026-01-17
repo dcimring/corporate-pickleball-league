@@ -80,7 +80,6 @@ export const Leaderboard: React.FC = () => {
             divisions={divisions} 
             activeDivision={activeDivision} 
             onChange={handleDivisionChange} 
-            variant="underline" 
           />
         </div>
       </div>

@@ -90,7 +90,6 @@ export const Stats: React.FC = () => {
             divisions={divisionNames} 
             activeDivision={activeDivision} 
             onChange={handleDivisionChange} 
-            variant="underline" 
           />
         </div>
       </div>

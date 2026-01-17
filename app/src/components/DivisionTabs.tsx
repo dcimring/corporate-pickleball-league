@@ -1,12 +1,12 @@
-import React, { useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef, useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { clsx } from 'clsx';
+import { ChevronDown, Check } from 'lucide-react';
 
 interface DivisionTabsProps {
   divisions: string[];
   activeDivision: string;
   onChange: (division: string) => void;
-  variant?: 'underline' | 'segmented' | 'block';
 }
 
 const shortenDivisionName = (name: string) => {
@@ -17,97 +17,78 @@ const shortenDivisionName = (name: string) => {
 export const DivisionTabs: React.FC<DivisionTabsProps> = ({ 
   divisions, 
   activeDivision, 
-  onChange,
-  variant = 'underline'
+  onChange
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isOpen, setIsOpen] = useState(false);
 
-  // Auto-scroll logic
+  // Close dropdown when clicking outside
   useEffect(() => {
-    if (containerRef.current && activeDivision) {
-      const activeButton = containerRef.current.querySelector(`button[data-active="true"]`);
-      if (activeButton) {
-        activeButton.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    const handleClickOutside = (event: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
       }
-    }
-  }, [activeDivision]);
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
-  // Variant 2: Segmented Pill (Clean, Modern, Contained)
-  if (variant === 'segmented') {
-    return (
-      <div 
-        ref={containerRef}
-        className="flex overflow-x-auto md:overflow-x-visible md:flex-wrap gap-1 p-1 bg-gray-100 rounded-xl no-scrollbar border border-gray-200 md:justify-end"
-      >
-        {divisions.map((div) => {
-          const isActive = activeDivision === div;
-          return (
-            <button
-              key={div}
-              data-active={isActive}
-              onClick={() => onChange(div)}
-              className={clsx(
-                "relative px-4 py-2 md:px-5 md:py-2 rounded-lg text-xs md:text-sm font-heading font-bold uppercase tracking-wider transition-colors whitespace-nowrap z-10 flex-shrink-0",
-                isActive ? "text-brand-blue" : "text-gray-400 hover:text-brand-blue"
-              )}
-            >
-              {isActive && (
-                <motion.div
-                  layoutId="segmented-tab"
-                  className="absolute inset-0 bg-white rounded-lg -z-10 shadow-sm border border-gray-100"
-                  transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                />
-              )}
-              {shortenDivisionName(div)}
-            </button>
-          );
-        })}
-      </div>
-    );
-  }
+  const handleSelect = (div: string) => {
+    onChange(div);
+    setIsOpen(false);
+  };
 
-  // Variant 3: Varsity Block (Bold, Athletic, High Contrast)
-  if (variant === 'block') {
-    return (
-      <div 
-        ref={containerRef}
-        className="flex overflow-x-auto md:overflow-x-visible md:flex-wrap gap-2 no-scrollbar pb-2 md:justify-end"
-      >
-        {divisions.map((div) => {
-          const isActive = activeDivision === div;
-          return (
-            <button
-              key={div}
-              data-active={isActive}
-              onClick={() => onChange(div)}
-              className={clsx(
-                "relative px-4 py-2 md:px-6 md:py-2 text-xs md:text-sm font-heading font-bold uppercase tracking-widest border transition-all duration-200 whitespace-nowrap skew-x-[-10deg] flex-shrink-0",
-                isActive 
-                  ? "bg-brand-blue border-brand-blue text-white shadow-[4px_4px_0_#FFC72C] translate-y-[-2px]" 
-                  : "bg-white border-gray-200 text-gray-400 hover:border-brand-blue hover:text-brand-blue"
-              )}
-            >
-              <span className="block skew-x-[10deg]">{shortenDivisionName(div)}</span>
-            </button>
-          );
-        })}
-      </div>
-    );
-  }
-
-  // Variant 1: Pro League Underline (Minimal, Dashboard feel) - Default
   return (
-    <div className="w-full">
-      <div 
-        ref={containerRef}
-        className="flex overflow-x-auto md:overflow-x-visible md:flex-wrap gap-6 md:gap-8 no-scrollbar px-2 md:justify-end"
-      >
+    <div className="w-full relative" ref={containerRef}>
+      
+      {/* Mobile Dropdown */}
+      <div className="md:hidden">
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="w-full flex items-center justify-between px-4 py-3 bg-white border border-gray-200 rounded-xl shadow-sm text-brand-blue font-heading font-bold text-sm uppercase tracking-wide active:bg-gray-50 transition-colors"
+        >
+          <span>{shortenDivisionName(activeDivision) || 'Select Division'}</span>
+          <ChevronDown className={clsx("w-5 h-5 transition-transform duration-200", isOpen && "rotate-180")} />
+        </button>
+
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+              className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-100 rounded-xl shadow-xl z-50 overflow-hidden max-h-[60vh] overflow-y-auto"
+            >
+              <div className="py-1">
+                {divisions.map((div) => (
+                  <button
+                    key={div}
+                    onClick={() => handleSelect(div)}
+                    className={clsx(
+                      "w-full flex items-center justify-between px-4 py-3 text-left font-heading font-bold text-sm uppercase tracking-wide transition-colors",
+                      activeDivision === div 
+                        ? "bg-blue-50 text-brand-blue" 
+                        : "text-gray-600 hover:bg-gray-50"
+                    )}
+                  >
+                    {shortenDivisionName(div)}
+                    {activeDivision === div && <Check className="w-4 h-4 text-brand-blue" />}
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* Desktop Tabs */}
+      <div className="hidden md:flex md:flex-wrap gap-6 md:gap-8 justify-end px-2 border-b border-gray-100 pb-px">
         {divisions.map((div) => {
           const isActive = activeDivision === div;
           return (
             <button
               key={div}
-              data-active={isActive}
               onClick={() => onChange(div)}
               className={clsx(
                 "relative py-3 md:py-4 text-xs md:text-sm font-heading font-bold uppercase tracking-widest transition-colors whitespace-nowrap flex-shrink-0",
