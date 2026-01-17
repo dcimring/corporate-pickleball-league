@@ -5,11 +5,7 @@ import { clsx } from 'clsx';
 import { Calendar as CalendarIcon, Loader2, Info } from 'lucide-react';
 import { Card } from '../components/Card';
 import { useSearchParams } from 'react-router-dom';
-
-const shortenDivisionName = (name: string) => {
-  if (name === 'Cayman Premier League') return 'CPL';
-  return name.replace('Division ', 'Div ');
-};
+import { DivisionTabs } from '../components/DivisionTabs';
 
 export const Matches: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -87,22 +83,13 @@ export const Matches: React.FC = () => {
         </div>
 
         {/* Division Toggle */}
-        <div className="flex gap-2 overflow-x-auto md:overflow-x-visible md:flex-wrap no-scrollbar pb-2" ref={tabsRef}>
-          {divisions.map((div) => (
-            <button
-              key={div}
-              data-value={div}
-              onClick={() => handleDivisionChange(div)}
-              className={clsx(
-                'px-4 py-1.5 md:px-4 md:py-1.5 text-xs md:text-xs font-heading font-bold uppercase tracking-wide rounded-full transition-all whitespace-nowrap',
-                activeDivision === div
-                  ? 'bg-brand-blue text-white shadow-md'
-                  : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
-              )}
-            >
-              {shortenDivisionName(div)}
-            </button>
-          ))}
+        <div ref={tabsRef} className="w-full overflow-hidden">
+          <DivisionTabs 
+            divisions={divisions} 
+            activeDivision={activeDivision} 
+            onChange={handleDivisionChange} 
+            variant="underline" 
+          />
         </div>
       </div>
 

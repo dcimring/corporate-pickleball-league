@@ -74,22 +74,14 @@ export const Leaderboard: React.FC = () => {
           <p className="font-body text-gray-500 mt-2">Who's dominating the court?</p>
         </div>
 
-        {/* Division Toggle - Design Review Mode */}
-        <div className="flex flex-col gap-6 w-full" ref={tabsRef}>
-          <div className="space-y-2">
-            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Option 1: Pro League Underline</p>
-            <DivisionTabs divisions={divisions} activeDivision={activeDivision} onChange={handleDivisionChange} variant="underline" />
-          </div>
-
-          <div className="space-y-2">
-            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Option 2: Pill Segmented</p>
-            <DivisionTabs divisions={divisions} activeDivision={activeDivision} onChange={handleDivisionChange} variant="segmented" />
-          </div>
-
-          <div className="space-y-2">
-            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Option 3: Varsity Block</p>
-            <DivisionTabs divisions={divisions} activeDivision={activeDivision} onChange={handleDivisionChange} variant="block" />
-          </div>
+        {/* Division Toggle */}
+        <div ref={tabsRef} className="w-full overflow-hidden">
+          <DivisionTabs 
+            divisions={divisions} 
+            activeDivision={activeDivision} 
+            onChange={handleDivisionChange} 
+            variant="underline" 
+          />
         </div>
       </div>
 
