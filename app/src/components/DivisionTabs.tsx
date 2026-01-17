@@ -97,7 +97,7 @@ export const DivisionTabs: React.FC<DivisionTabsProps> = ({
 
   // Variant 1: Pro League Underline (Minimal, Dashboard feel) - Default
   return (
-    <div className="border-b border-gray-100 w-full">
+    <div className="w-full">
       <div 
         ref={containerRef}
         className="flex overflow-x-auto md:overflow-x-visible md:flex-wrap gap-6 md:gap-8 no-scrollbar px-2 md:justify-end"
