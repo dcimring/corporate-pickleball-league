@@ -5,11 +5,7 @@ import { Activity, Loader2 } from 'lucide-react';
 import { Card } from '../components/Card';
 import { clsx } from 'clsx';
 import { useSearchParams } from 'react-router-dom';
-
-const shortenDivisionName = (name: string) => {
-  if (name === 'Cayman Premier League') return 'CPL';
-  return name.replace('Division ', 'Div ');
-};
+import { DivisionTabs } from '../components/DivisionTabs';
 
 export const Stats: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -79,8 +75,8 @@ export const Stats: React.FC = () => {
     .sort((a, b) => a.rank - b.rank);
 
   return (
-    <div className="space-y-12">
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-gray-100">
+    <div className="space-y-6 md:space-y-8">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
           <h1 className="text-4xl font-heading font-bold text-brand-blue uppercase tracking-wide">
             The Numbers
@@ -89,22 +85,12 @@ export const Stats: React.FC = () => {
         </div>
 
         {/* Division Toggle */}
-        <div className="flex gap-2 overflow-x-auto md:overflow-x-visible md:flex-wrap no-scrollbar pb-2" ref={tabsRef}>
-          {divisionNames.map((div) => (
-            <button
-              key={div}
-              data-value={div}
-              onClick={() => handleDivisionChange(div)}
-              className={clsx(
-                'px-4 py-1.5 md:px-4 md:py-1.5 text-xs md:text-xs font-heading font-bold uppercase tracking-wide rounded-full transition-all whitespace-nowrap',
-                activeDivision === div
-                  ? 'bg-brand-blue text-white shadow-md'
-                  : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
-              )}
-            >
-              {shortenDivisionName(div)}
-            </button>
-          ))}
+        <div ref={tabsRef} className="w-full">
+          <DivisionTabs 
+            divisions={divisionNames} 
+            activeDivision={activeDivision} 
+            onChange={handleDivisionChange} 
+          />
         </div>
       </div>
 
