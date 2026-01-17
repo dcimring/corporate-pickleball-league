@@ -75,7 +75,7 @@ export const Leaderboard: React.FC = () => {
         </div>
 
         {/* Division Toggle */}
-        <div ref={tabsRef} className="w-full overflow-hidden">
+        <div ref={tabsRef} className="w-full">
           <DivisionTabs 
             divisions={divisions} 
             activeDivision={activeDivision} 
