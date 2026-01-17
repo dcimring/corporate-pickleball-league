@@ -83,7 +83,7 @@ export const DivisionTabs: React.FC<DivisionTabsProps> = ({
       </div>
 
       {/* Desktop Tabs */}
-      <div className="hidden md:flex md:flex-wrap gap-6 md:gap-8 justify-end px-2 border-b border-gray-100 pb-px">
+      <div className="hidden md:flex md:flex-wrap gap-6 md:gap-8 justify-end px-2">
         {divisions.map((div) => {
           const isActive = activeDivision === div;
           return (
