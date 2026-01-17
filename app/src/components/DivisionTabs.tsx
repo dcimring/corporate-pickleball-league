@@ -110,7 +110,7 @@ export const DivisionTabs: React.FC<DivisionTabsProps> = ({
               data-active={isActive}
               onClick={() => onChange(div)}
               className={clsx(
-                "relative py-3 md:py-4 text-sm md:text-base font-heading font-bold uppercase tracking-widest transition-colors whitespace-nowrap flex-shrink-0",
+                "relative py-3 md:py-4 text-xs md:text-sm font-heading font-bold uppercase tracking-widest transition-colors whitespace-nowrap flex-shrink-0",
                 isActive ? "text-brand-blue" : "text-gray-400 hover:text-brand-blue"
               )}
             >
