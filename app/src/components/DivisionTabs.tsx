@@ -37,7 +37,7 @@ export const DivisionTabs: React.FC<DivisionTabsProps> = ({
     return (
       <div 
         ref={containerRef}
-        className="flex overflow-x-auto md:overflow-x-visible md:flex-wrap gap-1 p-1 bg-gray-100 rounded-xl no-scrollbar border border-gray-200"
+        className="flex overflow-x-auto md:overflow-x-visible md:flex-wrap gap-1 p-1 bg-gray-100 rounded-xl no-scrollbar border border-gray-200 md:justify-end"
       >
         {divisions.map((div) => {
           const isActive = activeDivision === div;
@@ -71,7 +71,7 @@ export const DivisionTabs: React.FC<DivisionTabsProps> = ({
     return (
       <div 
         ref={containerRef}
-        className="flex overflow-x-auto md:overflow-x-visible md:flex-wrap gap-2 no-scrollbar pb-2"
+        className="flex overflow-x-auto md:overflow-x-visible md:flex-wrap gap-2 no-scrollbar pb-2 md:justify-end"
       >
         {divisions.map((div) => {
           const isActive = activeDivision === div;
@@ -100,7 +100,7 @@ export const DivisionTabs: React.FC<DivisionTabsProps> = ({
     <div className="border-b border-gray-100 w-full">
       <div 
         ref={containerRef}
-        className="flex overflow-x-auto md:overflow-x-visible md:flex-wrap gap-6 md:gap-8 no-scrollbar px-2"
+        className="flex overflow-x-auto md:overflow-x-visible md:flex-wrap gap-6 md:gap-8 no-scrollbar px-2 md:justify-end"
       >
         {divisions.map((div) => {
           const isActive = activeDivision === div;
