@@ -42,7 +42,7 @@ export const DivisionTabs: React.FC<DivisionTabsProps> = ({
     <div className="w-full relative" ref={containerRef}>
       
       {/* Mobile Dropdown */}
-      <div className="md:hidden">
+      <div className="md:hidden px-6">
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="w-full flex items-center justify-between px-4 py-3 bg-white border border-gray-200 rounded-xl shadow-sm text-brand-blue font-heading font-bold text-sm uppercase tracking-wide active:bg-gray-50 transition-colors"
