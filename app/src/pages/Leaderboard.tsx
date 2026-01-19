@@ -6,6 +6,7 @@ import { Trophy, TrendingUp, TrendingDown, Minus, Info, Loader2 } from 'lucide-r
 import { Card } from '../components/Card';
 import { useSearchParams } from 'react-router-dom';
 import { DivisionTabs } from '../components/DivisionTabs';
+import { PageTabs } from '../components/PageTabs';
 
 export const Leaderboard: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -65,15 +66,11 @@ export const Leaderboard: React.FC = () => {
   const stats = data.leaderboard[activeDivision] || [];
 
   return (
-    <div className="space-y-4 md:space-y-6">
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-        <div>
-          <h1 className="text-4xl font-heading font-bold text-brand-blue uppercase tracking-wide">
-            Leaderboard
-          </h1>
-          <p className="font-body text-gray-500 mt-2">Who's dominating the court?</p>
-        </div>
-
+    <div className="space-y-4">
+      {/* Navigation */}
+      <div>
+        <PageTabs />
+        
         {/* Division Toggle */}
         <div ref={tabsRef} className="w-full">
           <DivisionTabs 

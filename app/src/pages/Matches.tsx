@@ -6,6 +6,7 @@ import { Calendar as CalendarIcon, Loader2, Info } from 'lucide-react';
 import { Card } from '../components/Card';
 import { useSearchParams } from 'react-router-dom';
 import { DivisionTabs } from '../components/DivisionTabs';
+import { PageTabs } from '../components/PageTabs';
 
 export const Matches: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -44,7 +45,7 @@ export const Matches: React.FC = () => {
 
   useEffect(() => {
     if (tabsRef.current && activeDivision) {
-      const activeButton = tabsRef.current.querySelector(`button[data-value="${activeDivision}"]`);
+      const activeButton = tabsRef.current.querySelector(`button[data-active="true"]`);
       if (activeButton) {
         activeButton.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
       }
@@ -73,15 +74,11 @@ export const Matches: React.FC = () => {
   };
 
   return (
-    <div className="space-y-4 md:space-y-6">
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-        <div>
-          <h1 className="text-4xl font-heading font-bold text-brand-blue uppercase tracking-wide">
-            Matches
-          </h1>
-          <p className="font-body text-gray-500 mt-2">Recent and upcoming games</p>
-        </div>
-
+    <div className="space-y-4">
+      {/* Navigation */}
+      <div>
+        <PageTabs />
+        
         {/* Division Toggle */}
         <div ref={tabsRef} className="w-full">
           <DivisionTabs 
