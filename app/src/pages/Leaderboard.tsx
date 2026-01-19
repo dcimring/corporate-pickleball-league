@@ -24,7 +24,9 @@ export const Leaderboard: React.FC = () => {
         // Initial division selection logic
         const divisions = Object.keys(fetched.leaderboard);
         const paramDiv = searchParams.get('division');
-        const defaultDiv = paramDiv && divisions.includes(paramDiv) ? paramDiv : divisions[0] || '';
+        const defaultDiv = paramDiv && divisions.includes(paramDiv) 
+          ? paramDiv 
+          : (divisions.includes('Division A') ? 'Division A' : divisions[0] || '');
         
         if (activeDivision === '' || (paramDiv && activeDivision !== paramDiv)) {
              setActiveDivision(defaultDiv);
