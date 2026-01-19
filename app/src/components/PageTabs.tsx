@@ -7,7 +7,7 @@ interface PageTabsProps {
   variant?: 'neon-pill' | 'minimal-glow' | 'floating-card';
 }
 
-export const PageTabs: React.FC<PageTabsProps> = ({ variant = 'minimal-glow' }) => {
+export const PageTabs: React.FC<PageTabsProps> = ({ variant = 'neon-pill' }) => {
   const location = useLocation();
   
   // Use URLSearchParams to preserve the division param
