@@ -23,7 +23,7 @@ export const PageTabs: React.FC<PageTabsProps> = ({ variant = 'neon-pill' }) => 
   // Variant 1: Neon Pill (High energy, contained)
   if (variant === 'neon-pill') {
     return (
-      <div className="flex items-center gap-2 mb-6 px-2">
+      <div className="flex items-center gap-2 mb-6 px-6">
         {tabs.map((tab) => {
           const isActive = location.pathname === tab.path;
           return (
