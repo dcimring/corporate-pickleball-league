@@ -6,31 +6,37 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
 
   // RESIZER LOGIC
   useEffect(() => {
-    function notifyParentOfHeight() {
-        setTimeout(() => {
-            const height = document.documentElement.scrollHeight;
-            window.parent.postMessage({ 'height': height }, '*');
-        }, 100);
+    const sendHeight = () => {
+      // Get the height of the root content wrapper, not the document/body which might be stretched
+      const appContainer = document.getElementById('app-container');
+      if (appContainer) {
+        const height = appContainer.offsetHeight;
+        // Add a small buffer to prevent scrollbar flickering
+        window.parent.postMessage({ 'height': height + 20 }, '*');
+      }
+    };
+
+    // 1. Initial send
+    setTimeout(sendHeight, 100);
+
+    // 2. ResizeObserver detects content size changes
+    const observer = new ResizeObserver(sendHeight);
+    const appContainer = document.getElementById('app-container');
+    if (appContainer) {
+      observer.observe(appContainer);
     }
 
-    // Call on mount and route change
-    notifyParentOfHeight();
-
-    // Call on resize
-    window.addEventListener('resize', notifyParentOfHeight);
-    
-    // Call on DOM changes (e.g. expanding dropdowns)
-    const observer = new ResizeObserver(notifyParentOfHeight);
-    observer.observe(document.body);
+    // 3. Window resize fallback
+    window.addEventListener('resize', sendHeight);
 
     return () => {
-        window.removeEventListener('resize', notifyParentOfHeight);
+        window.removeEventListener('resize', sendHeight);
         observer.disconnect();
     };
-  }, [location.pathname]); // Re-run on route change
+  }, [location.pathname]);
 
   return (
-    <div className="min-h-screen font-body selection:bg-brand-yellow selection:text-brand-blue bg-transparent pt-4">
+    <div id="app-container" className="font-body selection:bg-brand-yellow selection:text-brand-blue bg-transparent pt-4 inline-block w-full">
       {/* Main Content - No padding, full width */}
       <main className="w-full">
         {children}
