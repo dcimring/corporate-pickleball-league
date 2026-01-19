@@ -33,8 +33,10 @@ export const PageTabs: React.FC<PageTabsProps> = ({ variant = 'neon-pill' }) => 
               className="relative group"
             >
               <div className={clsx(
-                "relative z-10 px-6 py-2.5 rounded-full font-heading font-bold uppercase tracking-wider text-sm transition-colors duration-300",
-                isActive ? "text-brand-blue" : "text-gray-400 group-hover:text-brand-blue"
+                "relative z-10 px-6 py-2.5 rounded-full font-heading font-bold uppercase tracking-wider text-sm transition-all duration-300 border",
+                isActive 
+                  ? "text-brand-blue border-transparent" 
+                  : "text-gray-400 border-gray-100 group-hover:text-brand-blue group-hover:border-gray-200"
               )}>
                 {tab.name}
               </div>
