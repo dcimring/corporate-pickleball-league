@@ -23,7 +23,7 @@ export const PageTabs: React.FC<PageTabsProps> = ({ variant = 'neon-pill' }) => 
   // Variant 1: Neon Pill (High energy, contained)
   if (variant === 'neon-pill') {
     return (
-      <div className="flex items-center gap-3 mb-4 px-6">
+      <div className="flex items-center gap-2 mb-4 px-6">
         {tabs.map((tab) => {
           const isActive = location.pathname === tab.path;
           return (
@@ -33,13 +33,20 @@ export const PageTabs: React.FC<PageTabsProps> = ({ variant = 'neon-pill' }) => 
               className="relative group"
             >
               <div className={clsx(
-                "relative z-10 px-8 py-3 rounded-full font-heading font-bold uppercase tracking-wider text-xs transition-all duration-300 border shadow-sm",
+                "relative z-10 px-6 py-2.5 rounded-full font-heading font-bold uppercase tracking-wider text-sm transition-all duration-300 border",
                 isActive 
-                  ? "bg-brand-yellow text-black border-brand-yellow hover:bg-yellow-400" 
-                  : "bg-white text-gray-400 border-gray-100 hover:bg-gray-50 hover:text-black hover:border-gray-200"
+                  ? "text-brand-blue border-transparent" 
+                  : "text-gray-400 border-gray-100 group-hover:text-brand-blue group-hover:border-gray-200"
               )}>
                 {tab.name}
               </div>
+              {isActive && (
+                <motion.div
+                  layoutId="neon-pill-bg"
+                  className="absolute inset-0 bg-brand-yellow rounded-full shadow-[0_0_15px_rgba(204,255,0,0.4)] z-0"
+                  transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                />
+              )}
             </Link>
           );
         })}
