@@ -4,15 +4,10 @@ A high-energy, responsive website for the Corporate Pickleball League, featuring
 
 ## ✨ Key Features
 
--   **Night Court Aesthetic:** A high-contrast UI with Deep Navy backgrounds, Electric Volt accents, neon glows, and aggressive, athletic typography ('Bebas Neue').
--   **Mobile-Optimized UX:**
-    *   **Fade Mask Horizontal Scroll:** Division selectors use a soft-fade gradient to indicate more content on mobile.
-    *   **Compact Data Views:** Leaderboards use reduced padding and optimized font sizes for maximum readability on small screens.
-    *   **Auto-Scroll Tabs:** Navigating to a specific division automatically scrolls the selector to the active item.
--   **Interactive Leaderboards:** Real-time standings sorted by win percentage with detailed point tracking.
+-   **Brand-Aligned Aesthetic:** A professional, clean UI styled to match the main Pickleball Cayman site, featuring **Cayman Blue**, **Pickle Yellow**, and vibrant action colors.
 -   **Iframe Integration:** Optimized for embedding as a WordPress widget with zero external layout (no header/footer).
 -   **Auto-Resizing:** Real-time height synchronization with the parent window using `postMessage` and `ResizeObserver`.
--   **Simplified Navigation:** Custom "Neon Pill" page tabs and a mobile-friendly division dropdown for a clean, widget-like experience.
+-   **Simplified Navigation:** Custom pill-shaped page tabs and a mobile-friendly division dropdown for a clean, widget-like experience.
 -   **Full-Width UI:** Edge-to-edge layout designed to fit perfectly within any parent container.
 -   **Supabase Backend:** Real-time database integration for managing teams, divisions, and match schedules.
 
