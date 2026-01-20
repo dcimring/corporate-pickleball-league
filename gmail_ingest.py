@@ -40,7 +40,8 @@ def process_emails():
     print(f"Searching for UNREAD emails from {TARGET_SENDER}...")
     
     # Search for UNREAD emails from specific sender
-    status, messages = mail.search(None, f'(UNREAD FROM "{TARGET_SENDER}")')
+    # Pass criteria as separate arguments for better compatibility
+    status, messages = mail.search(None, 'UNREAD', 'FROM', f'"{TARGET_SENDER}"')
     
     if status != "OK" or not messages[0]:
         print("No unread messages found.")
@@ -92,8 +93,7 @@ def process_emails():
                                 df = pd.read_csv(io.BytesIO(content))
                                 print("\n--- Data Preview ---")
                                 print(df.head())
-                                print("--------------------
-")
+                                print("--------------------")
                                 
                                 # Mark as read (optional, keeping commented out for safety during testing)
                                 # mail.store(e_id, '+FLAGS', '\Seen')
