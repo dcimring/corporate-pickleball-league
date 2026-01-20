@@ -40,8 +40,8 @@ def process_emails():
     print(f"Searching for UNREAD emails from {TARGET_SENDER}...")
     
     # Search for UNREAD emails from specific sender
-    # Pass criteria as separate arguments for better compatibility
-    status, messages = mail.search(None, 'UNREAD', 'FROM', f'"{TARGET_SENDER}"')
+    # Use UNSEEN instead of UNREAD and wrap in parens
+    status, messages = mail.search(None, f'(UNSEEN FROM "{TARGET_SENDER}")')
     
     if status != "OK" or not messages[0]:
         print("No unread messages found.")
