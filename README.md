@@ -1,6 +1,6 @@
 # 🏓 Corporate Pickleball League
 
-A high-energy, responsive website for the Corporate Pickleball League, featuring a striking **"Night Court Electric"** aesthetic. Built for speed, style, and mobile-first performance using **Vite**, **React**, **TypeScript**, and **Tailwind CSS v4**.
+A professional, responsive, and iframe-optimized website for the Corporate Pickleball League, seamlessly integrated with the main Pickleball Cayman brand.
 
 ## ✨ Key Features
 
