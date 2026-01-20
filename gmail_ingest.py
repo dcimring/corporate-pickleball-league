@@ -63,7 +63,8 @@ def process_emails():
                 if isinstance(subject, bytes):
                     subject = subject.decode(encoding if encoding else "utf-8")
                 
-                print(f"Processing Email: {subject}")
+                date_str = msg.get("Date")
+                print(f"Processing Email: {subject} ({date_str})")
 
                 # Walk through the email parts to find attachments
                 found_csv = False
@@ -82,7 +83,7 @@ def process_emails():
 
                         # Check if filename matches target (exact or contains)
                         if TARGET_FILENAME.lower() in filename.lower():
-                            print(f"  Found matching attachment: {filename}")
+                            print(f"  Found matching attachment: {filename} (from {date_str})")
                             found_csv = True
                             
                             # Get the content
