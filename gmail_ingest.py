@@ -3,6 +3,7 @@ import imaplib
 import email
 import pandas as pd
 from email.header import decode_header
+from email.utils import parsedate_to_datetime
 from dotenv import load_dotenv
 import io
 
@@ -63,8 +64,18 @@ def process_emails():
                 if isinstance(subject, bytes):
                     subject = subject.decode(encoding if encoding else "utf-8")
                 
-                date_str = msg.get("Date")
-                print(f"Processing Email: {subject} ({date_str})")
+                date_header = msg.get("Date")
+                try:
+                    # Convert to local time
+                    if date_header:
+                        dt = parsedate_to_datetime(date_header)
+                        date_display = dt.astimezone().strftime("%Y-%m-%d %H:%M:%S")
+                    else:
+                        date_display = "Unknown Date"
+                except Exception:
+                    date_display = date_header
+
+                print(f"Processing Email: {subject} ({date_display})")
 
                 # Walk through the email parts to find attachments
                 found_csv = False
@@ -83,7 +94,7 @@ def process_emails():
 
                         # Check if filename matches target (exact or contains)
                         if TARGET_FILENAME.lower() in filename.lower():
-                            print(f"  Found matching attachment: {filename} (from {date_str})")
+                            print(f"  Found matching attachment: {filename} (from {date_display})")
                             found_csv = True
                             
                             # Get the content
