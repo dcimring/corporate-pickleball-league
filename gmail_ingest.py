@@ -14,11 +14,12 @@ load_dotenv('.env')
 GMAIL_USER = os.getenv('GMAIL_USER')
 GMAIL_PASS = os.getenv('GMAIL_APP_PASSWORD')
 TARGET_SENDER = os.getenv('TARGET_SENDER')
+TARGET_SUBJECT = os.getenv('TARGET_SUBJECT')
 TARGET_FILENAME = os.getenv('TARGET_FILENAME') # e.g. "Daily Schedule.csv"
 
-if not all([GMAIL_USER, GMAIL_PASS, TARGET_SENDER, TARGET_FILENAME]):
+if not all([GMAIL_USER, GMAIL_PASS, TARGET_SENDER, TARGET_FILENAME, TARGET_SUBJECT]):
     print("Error: Missing required environment variables.")
-    print("Please set GMAIL_USER, GMAIL_APP_PASSWORD, TARGET_SENDER, and TARGET_FILENAME in .env")
+    print("Please set GMAIL_USER, GMAIL_APP_PASSWORD, TARGET_SENDER, TARGET_SUBJECT, and TARGET_FILENAME in .env")
     exit(1)
 
 def connect_to_gmail():
@@ -37,11 +38,10 @@ def process_emails():
 
     mail.select("inbox")
 
-    print(f"Searching for UNREAD emails from {TARGET_SENDER}...")
+    print(f"Searching for UNREAD emails from {TARGET_SENDER} with subject '{TARGET_SUBJECT}'...")
     
-    # Search for UNREAD emails from specific sender
-    # Use UNSEEN instead of UNREAD and wrap in parens
-    status, messages = mail.search(None, f'(UNSEEN FROM "{TARGET_SENDER}")')
+    # Search for UNREAD emails from specific sender with specific subject
+    status, messages = mail.search(None, f'(UNSEEN FROM "{TARGET_SENDER}" SUBJECT "{TARGET_SUBJECT}")')
     
     if status != "OK" or not messages[0]:
         print("No unread messages found.")
