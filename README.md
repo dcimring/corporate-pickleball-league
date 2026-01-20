@@ -10,11 +10,11 @@ A high-energy, responsive website for the Corporate Pickleball League, featuring
     *   **Compact Data Views:** Leaderboards use reduced padding and optimized font sizes for maximum readability on small screens.
     *   **Auto-Scroll Tabs:** Navigating to a specific division automatically scrolls the selector to the active item.
 -   **Interactive Leaderboards:** Real-time standings sorted by win percentage with detailed point tracking.
--   **Visual Match Results:** Dedicated "Matches" page showing recent and upcoming games with real-time data from Supabase.
--   **Persistent Division Context:** Your selected division follows you as you navigate between Leaderboard, Matches, and Stats.
--   **Data-Driven Analytics:** Detailed team statistics calculated directly from match results, including Game Win% and individual game tracking.
+-   **Iframe Integration:** Optimized for embedding as a WordPress widget with zero external layout (no header/footer).
+-   **Auto-Resizing:** Real-time height synchronization with the parent window using `postMessage` and `ResizeObserver`.
+-   **Simplified Navigation:** Custom "Neon Pill" page tabs and a mobile-friendly division dropdown for a clean, widget-like experience.
+-   **Full-Width UI:** Edge-to-edge layout designed to fit perfectly within any parent container.
 -   **Supabase Backend:** Real-time database integration for managing teams, divisions, and match schedules.
--   **Deep Linking:** Click any division card on the Home page to jump directly to its filtered leaderboard.
 
 ## 🚀 Tech Stack
 
@@ -22,7 +22,7 @@ A high-energy, responsive website for the Corporate Pickleball League, featuring
 -   **Build Tool:** [Vite](https://vitejs.dev/)
 -   **Database:** [Supabase](https://supabase.com/) (PostgreSQL)
 -   **Styling:** [Tailwind CSS v4](https://tailwindcss.com/)
--   **Typography:** 'Bebas Neue' (Athletic Display), 'Outfit' (Geometric Body)
+-   **Typography:** 'Montserrat' (Heading), 'Open Sans' (Body)
 -   **Icons:** [Lucide React](https://lucide.dev/)
 -   **Routing:** [React Router 7](https://reactrouter.com/)
 
@@ -64,15 +64,30 @@ A high-energy, responsive website for the Corporate Pickleball League, featuring
 ```text
 app/
 ├── src/
-│   ├── components/     # UI Components (Layout, Card, ScrollToTop)
-│   ├── pages/          # Views (Home, Leaderboard, Matches, Stats)
+│   ├── components/     # UI Components (DivisionTabs, PageTabs, Layout)
+│   ├── pages/          # Views (Leaderboard, Matches)
 │   ├── lib/            # Data access (Supabase & local logic)
 │   ├── types.ts        # TypeScript interfaces & DB schemas
 │   └── index.css       # Tailwind v4 theme & global styles
-├── league-data.json    # Legacy mock data (for reference)
+├── index.html          # Local iframe testing harness
 ├── vercel.json         # Deployment rewrites
 └── ...
 ```
+
+## 🧩 Iframe Integration
+
+To use this site inside an iframe, add the following script to your WordPress (parent) site to handle automatic height adjustments:
+
+```javascript
+window.addEventListener('message', function(e) {
+    if (e.data.height) {
+        document.getElementById('pickleball-iframe').style.height = e.data.height + 'px';
+    }
+}, false);
+```
+
+Ensure your iframe has the ID `pickleball-iframe`.
+
 
 ## 🎨 Theme Versions
 

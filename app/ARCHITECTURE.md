@@ -1,51 +1,32 @@
-# Corporate Pickleball League - Application Architecture
+# Corporate Pickleball League - Iframe Architecture
+
+## Embedded Logic
+This branch is specifically designed for integration as a WordPress widget. 
+
+### 1. Stripped Layout
+- **Removed Header/Footer:** The `Layout.tsx` component no longer renders a site-wide navigation bar or footer.
+- **Removed Branding:** No logos or external links are rendered within the application to avoid visual conflict with the parent site.
+
+### 2. Parent-Child Communication (Resizer)
+To prevent the "Iframe Scrollbar" issue, the app implements a height-matching protocol:
+- **`notifyParentOfHeight`:** A utility within `Layout.tsx` that calculates the height of the `#app-container` and sends a `postMessage` to the parent window.
+- **`ResizeObserver`:** Monitors the DOM for changes (like expanding dropdowns or switching tabs) and triggers a height update immediately.
+- **Buffer:** Adds a small `20px` buffer to the reported height to prevent sub-pixel rounding errors from triggering scrollbars.
+
+### 3. Navigation System
+Since the primary site navigation is gone, the app uses a nested navigation system:
+- **Level 1 (PageTabs):** Switches between the main views (`/leaderboard` and `/matches`).
+- **Level 2 (DivisionTabs):** Filters the data by division. On mobile, this transforms into a styled dropdown for better space efficiency.
+
+### 4. Routing
+- `/`: Redirects to `/leaderboard`.
+- `/leaderboard`: Shows the standings table.
+- `/matches`: Shows the match schedule.
+- *(Note: Stats and Home pages have been removed to keep the widget focused).*
 
 ## Tech Stack
-- **Framework**: React 19+ (via Vite)
-- **Language**: TypeScript
-- **Database**: Supabase (PostgreSQL)
-- **Styling**: Tailwind CSS v4 (using CSS variables and `@theme`)
+- **Framework**: React 19+
 - **Routing**: React Router 7
-- **Icons**: Lucide React
-
-## Project Structure
-```
-src/
-├── components/     # Reusable UI components (Layout, Card, etc.)
-├── lib/            # Utilities and Data access
-│   ├── supabase.ts # Supabase client initialization
-│   └── data.ts     # Data fetching and aggregation logic
-├── pages/          # Page components (Home, Leaderboard, Matches, Stats)
-├── types.ts        # TypeScript interfaces and Database row types
-├── App.tsx         # Main Routing configuration
-└── index.css       # Global styles & Tailwind Config
-```
-
-## Data Management & Flow
-The application has transitioned from static JSON to a **Supabase (Postgres)** backend.
-
-### Source of Truth
-- The `matches` table is the primary source of truth for all standings and statistics.
-- `src/lib/data.ts` fetches raw data from `divisions`, `teams`, and `matches` tables.
-- It then **aggregates** this data on-the-fly to calculate:
-  - **Leaderboard Standings**: Based on Game Win% and points.
-  - **Team Statistics**: Detailed metrics like Games Won, Games Lost, and Matches Played.
-
-### Persistence
-- The selected **Division** is persisted in the URL query parameters (`?division=...`).
-- This state is maintained across page transitions in the `Layout` component and page-level hooks.
-
-## Styling System
-We utilize **Tailwind CSS v4** with a **"Night Court Electric"** theme.
-- **Colors**:
-  - `brand-blue`: #0F172A (Deep Navy)
-  - `brand-yellow`: #CCFF00 (Electric Volt)
-- **Typography**:
-  - Headings: 'Bebas Neue' (Uppercase, Athletic)
-  - Body: 'Outfit' (Geometric Sans-serif)
-
-## Routing
-- `/`: **Home** - Division overview.
-- `/leaderboard`: **Leaderboard** - Standings sorted by Game Win%.
-- `/matches`: **Matches** - Historical match results and individual game scores.
-- `/stats`: **Stats** - Deep dive into team performance metrics.
+- **Database**: Supabase
+- **Styling**: Tailwind CSS v4
+- **Animation**: Framer Motion (for tab transitions)

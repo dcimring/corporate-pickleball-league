@@ -1,29 +1,24 @@
-# 🏓 Corporate Pickleball League - App Source
+# 🏓 Corporate Pickleball League - Iframe Edition
 
-This directory contains the main React application source code.
+This version of the application is optimized for embedding inside a WordPress site via an `<iframe>`.
 
 ## 🚀 Key Features
-- **Supabase Integration:** Real-time data for teams, matches, and standings.
-- **Dynamic Stats:** Performance metrics calculated on-the-fly from match history.
-- **Mobile-First Design:** Optimized for court-side viewing with high-contrast themes.
-- **Division Persistence:** Seamless navigation across leaderboard, matches, and stats pages while maintaining your selected division.
+- **Widget-Ready Layout:** All external branding (header/footer) has been removed to allow the parent site to control the outer UI.
+- **Dynamic Resizing:** Uses a `ResizeObserver` and `postMessage` to communicate content height changes to the parent window instantly.
+- **Embedded Navigation:** Custom tab-based navigation allows users to switch views (Leaderboard/Matches) entirely within the iframe.
+- **Supabase Backend:** Real-time data processing for standings and schedules.
 
 ## 🛠️ Development
 
-### Setup
-1. Install dependencies: `npm install`
-2. Configure `.env`:
-   ```env
-   VITE_SUPABASE_URL=...
-   VITE_SUPABASE_ANON_KEY=...
-   ```
-3. Start development server: `npm run dev`
+### Local Iframe Testing
+To test the iframe behavior locally:
+1. Run `npm run dev` in this directory.
+2. Open the `index.html` file in the **root** of the repository (it contains a test harness with the necessary `postMessage` listener).
 
 ### Commands
 - `npm run dev`: Start Vite dev server.
 - `npm run build`: Build for production.
 - `npm run lint`: Run ESLint.
-- `npm run preview`: Preview the production build.
 
 ## 📦 Architecture
-For a deep dive into how the data and components are structured, see [ARCHITECTURE.md](./ARCHITECTURE.md).
+The app uses a simplified routing structure where `Leaderboard` is the entry point. The `Layout` component handles the height notification logic globally.
