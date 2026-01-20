@@ -33,21 +33,6 @@ def connect_to_gmail():
         print(f"Connection failed: {e}")
         return None
 
-def process_emails():
-    mail = connect_to_gmail()
-    if not mail: return
-
-    mail.select("inbox")
-
-    print(f"Searching for UNREAD emails from {TARGET_SENDER} with subject '{TARGET_SUBJECT}'...")
-    
-    # Search for UNREAD emails from specific sender with specific subject
-    status, messages = mail.search(None, f'(UNSEEN FROM "{TARGET_SENDER}" SUBJECT "{TARGET_SUBJECT}")')
-    
-    if status != "OK" or not messages[0]:
-        print("No unread messages found.")
-        return
-
 def process_single_email(msg, date_display):
     subject_header = decode_header(msg["Subject"])[0]
     subject = subject_header[0]
@@ -120,8 +105,8 @@ def process_emails():
         # Fetch the email body
         res, msg_data = mail.fetch(e_id, "(RFC822)")
         
-        # Mark as read immediately
-        mail.store(e_id, '+FLAGS', '\Seen')
+        # Mark as read immediately using raw string for backslash
+        mail.store(e_id, '+FLAGS', r'\Seen')
         
         for response_part in msg_data:
             if isinstance(response_part, tuple):
