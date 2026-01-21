@@ -35,15 +35,6 @@ def check_and_process():
         
         log(f"New CSV valid row count: {new_count}")
 
-        # Validation: Ensure we don't shrink the dataset (unless manual intervention)
-        if new_count < current_count:
-            log(f"WARNING: New data has fewer rows ({new_count}) than DB ({current_count}). Skipping update to prevent potential data loss.")
-            return
-
-        if new_count == 0:
-             log("WARNING: New CSV has 0 matches. Skipping.")
-             return
-
         log("Data valid. Starting ingestion...")
         
         success = ingest_matches.update_database(matches_to_insert)
@@ -51,7 +42,7 @@ def check_and_process():
         if success:
             log("Ingestion complete.")
         else:
-            log("Ingestion failed.")
+            log("Ingestion skipped or failed.")
 
     except Exception as e:
         log(f"Error in service loop: {e}")

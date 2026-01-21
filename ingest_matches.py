@@ -146,8 +146,16 @@ def process_csv_content(csv_file_obj):
 
     return matches_to_insert
 
-def update_database(matches_to_insert):
+def update_database(matches_to_insert, force=False):
     if matches_to_insert:
+        # Safety Check: Prevent shrinking the database unless forced
+        current_count = get_match_count()
+        new_count = len(matches_to_insert)
+        
+        if not force and new_count < current_count:
+            log(f"ABORT: New data has fewer valid rows ({new_count}) than current DB ({current_count}). Ingestion cancelled to prevent data loss. (Use --force to override)")
+            return False
+
         log("Clearing existing matches...")
         try:
             # Delete all rows by filtering for IDs not equal to the Nil UUID
@@ -165,15 +173,16 @@ def update_database(matches_to_insert):
         log("No valid matches found to insert.")
         return False
 
-def process_csv_file(file_path):
+def process_csv_file(file_path, force=False):
     log(f"Reading CSV file: {file_path}")
     with open(file_path, mode='r', encoding='utf-8-sig') as csvfile:
         matches = process_csv_content(csvfile)
-        update_database(matches)
+        update_database(matches, force=force)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Ingest pickleball match results from CSV to Supabase.")
     parser.add_argument("file", help="Path to the CSV file")
+    parser.add_argument("--force", action="store_true", help="Force update even if new row count is lower than current")
     args = parser.parse_args()
     
-    process_csv_file(args.file)
+    process_csv_file(args.file, force=args.force)
