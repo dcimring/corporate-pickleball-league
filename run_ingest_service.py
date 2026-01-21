@@ -5,6 +5,7 @@ import requests
 import ingest_matches
 import gmail_ingest
 from datetime import datetime
+from email.utils import parsedate_to_datetime
 from dotenv import load_dotenv
 
 # Load env to ensure DISCORD_WEBHOOK_URL is available
@@ -16,6 +17,14 @@ DISCORD_WEBHOOK_URL = os.getenv('DISCORD_WEBHOOK_URL')
 def log(message):
     timestamp = datetime.now().strftime("%d %b %Y %H:%M:%S")
     print(f"{timestamp} - {message}")
+
+def format_to_local(date_str):
+    try:
+        if not date_str: return "Unknown Date"
+        dt = parsedate_to_datetime(date_str)
+        return dt.astimezone().strftime("%Y-%m-%d %H:%M:%S %Z")
+    except Exception:
+        return date_str
 
 def send_discord_notification(success, title, description, details=None):
     if not DISCORD_WEBHOOK_URL:
@@ -56,7 +65,8 @@ def check_and_process():
             log("No new emails found.")
             return
 
-        log(f"Found email: {match_data['subject']} from {match_data['date']}")
+        local_date = format_to_local(match_data['date'])
+        log(f"Found email: {match_data['subject']} from {local_date}")
         
         # Get current DB count
         current_count = ingest_matches.get_match_count()
@@ -73,7 +83,7 @@ def check_and_process():
 
         stats = {
             "Email Subject": match_data['subject'],
-            "Email Date": match_data['date'],
+            "Email Date": local_date,
             "Current DB Rows": current_count,
             "New CSV Rows": new_count
         }
