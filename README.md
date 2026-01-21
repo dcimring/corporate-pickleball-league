@@ -9,6 +9,8 @@ A professional, responsive, and iframe-optimized website for the Corporate Pickl
 -   **Auto-Resizing:** Real-time height synchronization with the parent window using `postMessage` and `ResizeObserver`.
 -   **Simplified Navigation:** Custom pill-shaped page tabs and a mobile-friendly division dropdown for a clean, widget-like experience.
 -   **Full-Width UI:** Edge-to-edge layout designed to fit perfectly within any parent container.
+-   **Automated Ingestion:** Background service (`run_ingest_service.py`) that monitors Gmail for match results and syncs them automatically every 15 minutes.
+-   **Data Safety:** Built-in validation ensuring new match data never shrinks without explicit override, protecting against accidental data loss.
 -   **Supabase Backend:** Real-time database integration for managing teams, divisions, and match schedules.
 
 ## 🚀 Tech Stack
@@ -82,6 +84,19 @@ window.addEventListener('message', function(e) {
 ```
 
 Ensure your iframe has the ID `pickleball-iframe`.
+
+## ⚙️ Ingestion Tools
+
+The project includes scripts to automate and manage match data:
+
+-   **`run_ingest_service.py`:** The primary automation service. Runs every 15 minutes, checks for specific emails from `jerry@pickleball.ky`, validates row counts, and updates Supabase.
+-   **`ingest_matches.py`:** Manual CLI tool for uploading a CSV. Includes a `--force` flag to bypass safety checks.
+-   **`db_backup.py`:** Snapshot your database before making major changes.
+
+**To run the automation:**
+```bash
+python run_ingest_service.py
+```
 
 
 ## 🎨 Theme Versions

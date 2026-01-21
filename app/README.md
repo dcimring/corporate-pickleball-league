@@ -6,6 +6,7 @@ This version of the application is optimized for embedding inside a WordPress si
 - **Widget-Ready Layout:** All external branding (header/footer) has been removed to allow the parent site to control the outer UI.
 - **Dynamic Resizing:** Uses a `ResizeObserver` and `postMessage` to communicate content height changes to the parent window instantly.
 - **Embedded Navigation:** Custom tab-based navigation allows users to switch views (Leaderboard/Matches) entirely within the iframe.
+- **Automated Ingestion:** Dedicated Python services handle automatic data synchronization from Gmail attachments.
 - **Supabase Backend:** Real-time data processing for standings and schedules.
 
 ## 🛠️ Development
