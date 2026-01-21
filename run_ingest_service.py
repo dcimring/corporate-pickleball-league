@@ -2,6 +2,7 @@ import time
 import io
 import os
 import requests
+import argparse
 import ingest_matches
 import gmail_ingest
 from datetime import datetime
@@ -116,16 +117,28 @@ def check_and_process():
         log(f"Error in service loop: {e}")
         send_discord_notification(False, "Service Error", str(e))
 
-def run_service():
+def run_service(once=False):
     log("Starting ingestion service...")
+    if once:
+        log("Mode: Run once")
+    else:
+        log("Mode: Continuous (5 min interval)")
     
     # Run immediately on start
     check_and_process()
 
+    if once:
+        log("Run once complete. Exiting.")
+        return
+
     while True:
-        log("Sleeping for 15 minutes...")
-        time.sleep(900) # 15 minutes
+        log("Sleeping for 5 minutes...")
+        time.sleep(300) # 5 minutes
         check_and_process()
 
 if __name__ == "__main__":
-    run_service()
+    parser = argparse.ArgumentParser(description="Run the automated ingestion service.")
+    parser.add_argument("--once", action="store_true", help="Run once and exit instead of looping")
+    args = parser.parse_args()
+
+    run_service(once=args.once)
