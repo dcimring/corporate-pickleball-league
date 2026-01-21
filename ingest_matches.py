@@ -2,6 +2,7 @@ import os
 import sys
 import csv
 import argparse
+import io
 from datetime import datetime
 from dotenv import load_dotenv
 from supabase import create_client, Client
@@ -21,9 +22,20 @@ if not SUPABASE_URL or not SUPABASE_KEY:
 
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
+def log(message):
+    timestamp = datetime.now().strftime("%d %b %Y %H:%M:%S")
+    print(f"{timestamp} - {message}")
+
+def get_match_count():
+    try:
+        # head=True is effectively count='exact' in recent libs, or select count
+        res = supabase.table("matches").select("id", count="exact").execute()
+        return res.count
+    except Exception as e:
+        log(f"Error getting match count: {e}")
+        return 0
+
 def fetch_lookups():
-    print("Fetching divisions and teams from Supabase...")
-    
     # Fetch Divisions
     div_res = supabase.table("divisions").select("id,name").execute()
     divisions = div_res.data
@@ -43,7 +55,7 @@ def parse_date(date_str):
             # Try 4 digit year just in case: 13-Jan-2026
             return datetime.strptime(date_str.strip(), "%d-%b-%Y").strftime("%Y-%m-%d")
         except ValueError:
-             print(f"Warning: Could not parse date '{date_str}'. Using today's date.")
+             log(f"Warning: Could not parse date '{date_str}'. Using today's date.")
              return datetime.now().strftime("%Y-%m-%d")
 
 def get_division_id(name_raw, divisions):
@@ -68,91 +80,100 @@ def get_team_id(name_raw, division_id, teams):
             return t['id']
     return None
 
-def process_csv(file_path):
+def process_csv_content(csv_file_obj):
     divisions, teams = fetch_lookups()
     matches_to_insert = []
     
-    print(f"Reading CSV file: {file_path}")
+    # Using csv.reader to handle standard CSV parsing
+    reader = csv.reader(csv_file_obj)
     
-    with open(file_path, mode='r', encoding='utf-8-sig') as csvfile:
-        # Using csv.reader to handle standard CSV parsing
-        reader = csv.reader(csvfile)
+    for row_num, row in enumerate(reader, 1):
+        if not row: continue
         
-        for row_num, row in enumerate(reader, 1):
-            if not row: continue
-            
-            # Basic validation
-            if len(row) < 9:
-                print(f"Skipping row {row_num}: Not enough columns {row}")
-                continue
+        # Basic validation
+        if len(row) < 9:
+            log(f"Skipping row {row_num}: Not enough columns {row}")
+            continue
 
-            # Parse columns
-            div_name = row[0]
-            team1_name = row[1]
-            team2_name = row[3] # Skip 'v' at index 2
-            date_raw = row[4]
-            
-            # Skip if match results are missing (indicates upcoming match)
-            if not row[5].strip() or not row[6].strip():
-                print(f"Skipping row {row_num}: Match has no results yet (upcoming).")
-                continue
+        # Parse columns
+        div_name = row[0]
+        team1_name = row[1]
+        team2_name = row[3] # Skip 'v' at index 2
+        date_raw = row[4]
+        
+        # Skip if match results are missing (indicates upcoming match)
+        if not row[5].strip() or not row[6].strip():
+            # log(f"Skipping row {row_num}: Match has no results yet (upcoming).") # Verbose logging
+            continue
 
-            try:
-                t1_wins = int(row[5])
-                t2_wins = int(row[6])
-                t1_points = int(row[7])
-                t2_points = int(row[8])
-            except (ValueError, IndexError):
-                print(f"Skipping row {row_num}: Invalid or missing score data.")
-                continue
+        try:
+            t1_wins = int(row[5])
+            t2_wins = int(row[6])
+            t1_points = int(row[7])
+            t2_points = int(row[8])
+        except (ValueError, IndexError):
+            log(f"Skipping row {row_num}: Invalid or missing score data.")
+            continue
 
-            # Lookup IDs
-            div_id = get_division_id(div_name, divisions)
-            if not div_id:
-                print(f"Row {row_num}: Division '{div_name}' not found. Skipping.")
-                continue
+        # Lookup IDs
+        div_id = get_division_id(div_name, divisions)
+        if not div_id:
+            log(f"Row {row_num}: Division '{div_name}' not found. Skipping.")
+            continue
 
-            t1_id = get_team_id(team1_name, div_id, teams)
-            t2_id = get_team_id(team2_name, div_id, teams)
+        t1_id = get_team_id(team1_name, div_id, teams)
+        t2_id = get_team_id(team2_name, div_id, teams)
 
-            if not t1_id:
-                print(f"Row {row_num}: Team '{team1_name}' not found in division. Skipping.")
-                continue
-            if not t2_id:
-                print(f"Row {row_num}: Team '{team2_name}' not found in division. Skipping.")
-                continue
+        if not t1_id:
+            log(f"Row {row_num}: Team '{team1_name}' not found in division. Skipping.")
+            continue
+        if not t2_id:
+            log(f"Row {row_num}: Team '{team2_name}' not found in division. Skipping.")
+            continue
 
-            formatted_date = parse_date(date_raw)
+        formatted_date = parse_date(date_raw)
 
-            matches_to_insert.append({
-                "division_id": div_id,
-                "team1_id": t1_id,
-                "team2_id": t2_id,
-                "date": formatted_date,
-                "team1_wins": t1_wins,
-                "team2_wins": t2_wins,
-                "team1_points_for": t1_points,
-                "team2_points_for": t2_points
-            })
+        matches_to_insert.append({
+            "division_id": div_id,
+            "team1_id": t1_id,
+            "team2_id": t2_id,
+            "date": formatted_date,
+            "team1_wins": t1_wins,
+            "team2_wins": t2_wins,
+            "team1_points_for": t1_points,
+            "team2_points_for": t2_points
+        })
 
+    return matches_to_insert
+
+def update_database(matches_to_insert):
     if matches_to_insert:
-        print("Clearing existing matches...")
+        log("Clearing existing matches...")
         try:
             # Delete all rows by filtering for IDs not equal to the Nil UUID
             supabase.table("matches").delete().neq("id", "00000000-0000-0000-0000-000000000000").execute()
-            print("Matches table cleared.")
+            log("Matches table cleared.")
 
-            print(f"Attempting to insert {len(matches_to_insert)} matches...")
-            data = supabase.table("matches").insert(matches_to_insert).execute()
-            print("Success! Matches inserted.")
+            log(f"Attempting to insert {len(matches_to_insert)} matches...")
+            supabase.table("matches").insert(matches_to_insert).execute()
+            log("Success! Matches inserted.")
+            return True
         except Exception as e:
-            print(f"Error updating data: {e}")
+            log(f"Error updating data: {e}")
+            return False
     else:
-        print("No valid matches found to insert.")
+        log("No valid matches found to insert.")
+        return False
+
+def process_csv_file(file_path):
+    log(f"Reading CSV file: {file_path}")
+    with open(file_path, mode='r', encoding='utf-8-sig') as csvfile:
+        matches = process_csv_content(csvfile)
+        update_database(matches)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Ingest pickleball match results from CSV to Supabase.")
     parser.add_argument("file", help="Path to the CSV file")
     args = parser.parse_args()
     
-    process_csv(args.file)
+    process_csv_file(args.file)
