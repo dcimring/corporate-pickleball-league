@@ -1,7 +1,7 @@
 // CONFIGURATION
 // Go to Project Settings > Script Properties to add these keys:
 // SUPABASE_URL: Your Supabase Project URL
-// SUPABASE_KEY: Your Supabase Service Role Key (preferred) or Anon Key
+// SUPABASE_SERVICE_ROLE_KEY: Your Supabase Service Role Key (preferred) or Anon Key
 // TARGET_SENDER: Email address to accept results from (e.g. sender@example.com)
 // TARGET_SUBJECT: Subject line to match (e.g. Corporate League Results)
 // DISCORD_WEBHOOK_URL: Webhook URL for status notifications
@@ -127,7 +127,7 @@ function processMatchResults() {
 
 function getMatchCount() {
   const url = PropertiesService.getScriptProperties().getProperty('SUPABASE_URL');
-  const key = PropertiesService.getScriptProperties().getProperty('SUPABASE_KEY');
+  const key = PropertiesService.getScriptProperties().getProperty('SUPABASE_SERVICE_ROLE_KEY');
   
   // select id, count=exact, head=true (to avoid fetching body)
   // Range header is typical for counting in PostgREST but 'count=exact' query param works too with HEAD method
@@ -157,7 +157,7 @@ function getMatchCount() {
 
 function updateDatabase(matches) {
   const url = PropertiesService.getScriptProperties().getProperty('SUPABASE_URL');
-  const key = PropertiesService.getScriptProperties().getProperty('SUPABASE_KEY');
+  const key = PropertiesService.getScriptProperties().getProperty('SUPABASE_SERVICE_ROLE_KEY');
   const headers = {
     'apikey': key, 
     'Authorization': `Bearer ${key}`,
@@ -189,10 +189,10 @@ function updateDatabase(matches) {
 
 function fetchSupabaseLookups() {
   const url = PropertiesService.getScriptProperties().getProperty('SUPABASE_URL');
-  const key = PropertiesService.getScriptProperties().getProperty('SUPABASE_KEY');
+  const key = PropertiesService.getScriptProperties().getProperty('SUPABASE_SERVICE_ROLE_KEY');
 
   if (!url || !key) {
-    log("Missing Script Properties. Please set SUPABASE_URL and SUPABASE_KEY.");
+    log("Missing Script Properties. Please set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.");
     return null;
   }
 
