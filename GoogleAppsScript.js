@@ -83,7 +83,7 @@ function processMatchResults() {
   log(`Processing newest email: "${newest.subject}" from ${formatDate(newest.date)}`);
 
   const csvData = newest.attachment.getDataAsString();
-  const matchesToInsert = parseCSVAndMap(csvData, lookups);
+  const { matches: matchesToInsert, errors } = parseCSVAndMap(csvData, lookups);
   const newCount = matchesToInsert.length;
 
   // 5. Data Safety Check
@@ -96,6 +96,12 @@ function processMatchResults() {
     "Current DB Rows": currentCount,
     "New CSV Rows": newCount
   };
+
+  if (errors.length > 0) {
+    let errorMsg = errors.slice(0, 10).join("\n");
+    if (errors.length > 10) errorMsg += `\n...and ${errors.length - 10} more.`;
+    stats["Validation Errors"] = errorMsg;
+  }
 
   if (newCount < currentCount) {
     const msg = `WARNING: New data has fewer rows (${newCount}) than DB (${currentCount}). Skipping update.`;
@@ -221,6 +227,7 @@ function fetchSupabaseLookups() {
 function parseCSVAndMap(csvText, { divisions, teams }) {
   const lines = csvText.split(/\r\n|\n/);
   const mappedMatches = [];
+  const errors = [];
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
@@ -232,9 +239,7 @@ function parseCSVAndMap(csvText, { divisions, teams }) {
     if (cols.length < 9) continue;
 
     // Check for incomplete match data (upcoming matches have empty score cols)
-    // Cols 5,6 are wins. If empty string, skip.
     if (!cols[5].trim() || !cols[6].trim()) {
-      // Upcoming match, skip
       continue;
     }
 
@@ -250,15 +255,25 @@ function parseCSVAndMap(csvText, { divisions, teams }) {
     // Lookup IDs (Case Insensitive)
     const divId = getDivisionId(divNameRaw, divisions);
     if (!divId) {
-      log(`Row ${i+1}: Division '${divNameRaw}' not found.`);
+      const msg = `Row ${i+1}: Division '${divNameRaw}' not found.`;
+      log(msg);
+      errors.push(msg);
       continue;
     }
 
     const t1Id = getTeamId(team1Name, divId, teams);
     const t2Id = getTeamId(team2Name, divId, teams);
 
-    if (!t1Id || !t2Id) {
-      log(`Row ${i+1}: Teams '${team1Name}' or '${team2Name}' not found.`);
+    if (!t1Id) {
+      const msg = `Row ${i+1}: Team '${team1Name}' not found in '${divNameRaw}'.`;
+      log(msg);
+      errors.push(msg);
+      continue;
+    }
+    if (!t2Id) {
+      const msg = `Row ${i+1}: Team '${team2Name}' not found in '${divNameRaw}'.`;
+      log(msg);
+      errors.push(msg);
       continue;
     }
 
@@ -274,7 +289,7 @@ function parseCSVAndMap(csvText, { divisions, teams }) {
     });
   }
 
-  return mappedMatches;
+  return { matches: mappedMatches, errors: errors };
 }
 
 function getDivisionId(nameRaw, divisions) {

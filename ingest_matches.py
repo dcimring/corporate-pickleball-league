@@ -83,6 +83,7 @@ def get_team_id(name_raw, division_id, teams):
 def process_csv_content(csv_file_obj):
     divisions, teams = fetch_lookups()
     matches_to_insert = []
+    errors = []
     
     # Using csv.reader to handle standard CSV parsing
     reader = csv.reader(csv_file_obj)
@@ -92,7 +93,9 @@ def process_csv_content(csv_file_obj):
         
         # Basic validation
         if len(row) < 9:
-            log(f"Skipping row {row_num}: Not enough columns {row}")
+            msg = f"Row {row_num}: Not enough columns {row}"
+            log(msg)
+            errors.append(msg)
             continue
 
         # Parse columns
@@ -112,23 +115,31 @@ def process_csv_content(csv_file_obj):
             t1_points = int(row[7])
             t2_points = int(row[8])
         except (ValueError, IndexError):
-            log(f"Skipping row {row_num}: Invalid or missing score data.")
+            msg = f"Row {row_num}: Invalid or missing score data."
+            log(msg)
+            errors.append(msg)
             continue
 
         # Lookup IDs
         div_id = get_division_id(div_name, divisions)
         if not div_id:
-            log(f"Row {row_num}: Division '{div_name}' not found. Skipping.")
+            msg = f"Row {row_num}: Division '{div_name}' not found."
+            log(msg)
+            errors.append(msg)
             continue
 
         t1_id = get_team_id(team1_name, div_id, teams)
         t2_id = get_team_id(team2_name, div_id, teams)
 
         if not t1_id:
-            log(f"Row {row_num}: Team '{team1_name}' not found in division. Skipping.")
+            msg = f"Row {row_num}: Team '{team1_name}' not found in '{div_name}'."
+            log(msg)
+            errors.append(msg)
             continue
         if not t2_id:
-            log(f"Row {row_num}: Team '{team2_name}' not found in division. Skipping.")
+            msg = f"Row {row_num}: Team '{team2_name}' not found in '{div_name}'."
+            log(msg)
+            errors.append(msg)
             continue
 
         formatted_date = parse_date(date_raw)
@@ -144,7 +155,7 @@ def process_csv_content(csv_file_obj):
             "team2_points_for": t2_points
         })
 
-    return matches_to_insert
+    return matches_to_insert, errors
 
 def update_database(matches_to_insert, force=False):
     if matches_to_insert:
@@ -176,7 +187,14 @@ def update_database(matches_to_insert, force=False):
 def process_csv_file(file_path, force=False):
     log(f"Reading CSV file: {file_path}")
     with open(file_path, mode='r', encoding='utf-8-sig') as csvfile:
-        matches = process_csv_content(csvfile)
+        matches, errors = process_csv_content(csvfile)
+        
+        if errors:
+            print("\n--- Validation Warnings ---")
+            for err in errors:
+                print(err)
+            print("---------------------------\n")
+            
         update_database(matches, force=force)
 
 if __name__ == "__main__":
