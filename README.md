@@ -89,7 +89,7 @@ Ensure your iframe has the ID `pickleball-iframe`.
 
 The project includes scripts to automate and manage match data:
 
--   **`run_ingest_service.py`:** The primary automation service. Runs every 15 minutes, checks for specific emails from `jerry@pickleball.ky`, validates row counts, and updates Supabase.
+-   **`run_ingest_service.py`:** The primary automation service. Runs every 15 minutes, checks for specific emails from a designated address (configurable in `.env`), validates row counts, and updates Supabase.
 -   **`ingest_matches.py`:** Manual CLI tool for uploading a CSV. Includes a `--force` flag to bypass safety checks.
 -   **`db_backup.py`:** Snapshot your database before making major changes.
 
