@@ -2,50 +2,188 @@
 // Go to Project Settings > Script Properties to add these keys:
 // SUPABASE_URL: Your Supabase Project URL
 // SUPABASE_KEY: Your Supabase Service Role Key (preferred) or Anon Key
+// TARGET_SENDER: Email address to accept results from (e.g. jerry@pickleball.ky)
+// TARGET_SUBJECT: Subject line to match (e.g. Corporate League Results)
+// DISCORD_WEBHOOK_URL: Webhook URL for status notifications
 
 const CONFIG = {
-  SEARCH_QUERY: 'from:jerry@pickleball.ky subject:"Corporate League Results" is:unread', // Filter for unprocessed emails
   PROCESSED_LABEL: 'Processed_Pickleball_Results'
 };
 
 function processMatchResults() {
-  const threads = GmailApp.search(CONFIG.SEARCH_QUERY);
-  if (threads.length === 0) {
-    console.log("No new emails found.");
+  const props = PropertiesService.getScriptProperties();
+  const targetSender = props.getProperty('TARGET_SENDER');
+  const targetSubject = props.getProperty('TARGET_SUBJECT');
+  
+  if (!targetSender || !targetSubject) {
+    log("Error: TARGET_SENDER or TARGET_SUBJECT not set in Script Properties.");
     return;
   }
 
+  // Search query: from:sender subject:"..." is:unread
+  const searchQuery = `from:${targetSender} subject:"${targetSubject}" is:unread`;
+  log(`Searching for emails: ${searchQuery}`);
+
+  const threads = GmailApp.search(searchQuery);
+  
+  if (threads.length === 0) {
+    log("No new emails found.");
+    return;
+  }
+
+  log(`Found ${threads.length} unread threads.`);
+
   // 1. Fetch Lookups (Divisions and Teams)
   const lookups = fetchSupabaseLookups();
-  if (!lookups) return;
+  if (!lookups) {
+    sendDiscordNotification(false, "Service Error", "Failed to fetch lookups from Supabase.");
+    return;
+  }
 
-  // 2. Process Each Email
+  let emailsToProcess = [];
+
+  // 2. Collect all valid CSV attachments
   for (const thread of threads) {
     const messages = thread.getMessages();
     for (const message of messages) {
-      if (!message.isUnread()) continue; // Skip if somehow read (though search filters it)
+      if (!message.isUnread()) continue;
 
       const attachments = message.getAttachments();
+      let hasCsv = false;
+      
       for (const attachment of attachments) {
         if (attachment.getContentType() === 'text/csv' || attachment.getName().endsWith('.csv')) {
-          const csvData = attachment.getDataAsString();
-          const matches = parseCSVAndMap(csvData, lookups);
-          
-          if (matches.length > 0) {
-            const success = uploadMatchesToSupabase(matches);
-            if (success) {
-              console.log(`Successfully uploaded ${matches.length} matches from ${attachment.getName()}`);
-            } else {
-              console.error(`Failed to upload matches from ${attachment.getName()}`);
-            }
-          }
+          emailsToProcess.push({
+            date: message.getDate(),
+            subject: message.getSubject(),
+            attachment: attachment,
+            messageId: message.getId()
+          });
+          hasCsv = true;
         }
       }
-      message.markRead(); // Mark as read so we don't process it again
+      
+      // Mark as read immediately
+      message.markRead();
     }
-    
-    // Optional: Add a label
+    // Add label
     addLabel(thread);
+  }
+
+  if (emailsToProcess.length === 0) {
+    log("No CSV attachments found in the unread emails.");
+    return;
+  }
+
+  // 3. Sort by date descending (Newest first)
+  emailsToProcess.sort((a, b) => b.date.getTime() - a.date.getTime());
+
+  // 4. Process only the newest email
+  const newest = emailsToProcess[0];
+  log(`Processing newest email: "${newest.subject}" from ${formatDate(newest.date)}`);
+
+  const csvData = newest.attachment.getDataAsString();
+  const matchesToInsert = parseCSVAndMap(csvData, lookups);
+  const newCount = matchesToInsert.length;
+
+  // 5. Data Safety Check
+  const currentCount = getMatchCount();
+  log(`Current DB rows: ${currentCount}. New valid CSV rows: ${newCount}.`);
+
+  const stats = {
+    "Email Subject": newest.subject,
+    "Email Date": formatDate(newest.date),
+    "Current DB Rows": currentCount,
+    "New CSV Rows": newCount
+  };
+
+  if (newCount < currentCount) {
+    const msg = `WARNING: New data has fewer rows (${newCount}) than DB (${currentCount}). Skipping update.`;
+    log(msg);
+    sendDiscordNotification(false, "Ingestion Skipped", msg, stats);
+    return;
+  }
+
+  if (newCount === 0) {
+    const msg = "WARNING: New CSV has 0 matches. Skipping.";
+    log(msg);
+    sendDiscordNotification(false, "Ingestion Skipped", msg, stats);
+    return;
+  }
+
+  // 6. Update Database (Clear & Insert)
+  const success = updateDatabase(matchesToInsert);
+
+  if (success) {
+    log("Ingestion complete.");
+    sendDiscordNotification(true, "Ingestion Successful", "Match data has been updated.", stats);
+  } else {
+    log("Ingestion failed.");
+    sendDiscordNotification(false, "Ingestion Failed", "Database update encountered an error.", stats);
+  }
+}
+
+// --- Supabase Helpers ---
+
+function getMatchCount() {
+  const url = PropertiesService.getScriptProperties().getProperty('SUPABASE_URL');
+  const key = PropertiesService.getScriptProperties().getProperty('SUPABASE_KEY');
+  
+  // select id, count=exact, head=true (to avoid fetching body)
+  // Range header is typical for counting in PostgREST but 'count=exact' query param works too with HEAD method
+  const options = {
+    method: 'get',
+    headers: {
+      'apikey': key, 
+      'Authorization': `Bearer ${key}`,
+      'Range': '0-0',
+      'Prefer': 'count=exact'
+    }
+  };
+
+  try {
+    const response = UrlFetchApp.fetch(`${url}/rest/v1/matches?select=id`, options);
+    // Content-Range header format: 0-0/27 (where 27 is total)
+    const rangeHeader = response.getHeaders()['Content-Range'];
+    if (rangeHeader) {
+      return parseInt(rangeHeader.split('/')[1]);
+    }
+    return 0;
+  } catch (e) {
+    log("Error getting count: " + e);
+    return 0;
+  }
+}
+
+function updateDatabase(matches) {
+  const url = PropertiesService.getScriptProperties().getProperty('SUPABASE_URL');
+  const key = PropertiesService.getScriptProperties().getProperty('SUPABASE_KEY');
+  const headers = {
+    'apikey': key, 
+    'Authorization': `Bearer ${key}`,
+    'Content-Type': 'application/json'
+  };
+
+  try {
+    // 1. Clear Table
+    log("Clearing existing matches...");
+    // DELETE /rest/v1/matches?id=neq.00000000-0000-0000-0000-000000000000
+    const deleteOptions = { method: 'delete', headers: headers };
+    UrlFetchApp.fetch(`${url}/rest/v1/matches?id=neq.00000000-0000-0000-0000-000000000000`, deleteOptions);
+    
+    // 2. Insert New Data
+    log(`Inserting ${matches.length} matches...`);
+    const insertOptions = {
+      method: 'post',
+      headers: { ...headers, 'Prefer': 'return=minimal' },
+      payload: JSON.stringify(matches)
+    };
+    const response = UrlFetchApp.fetch(`${url}/rest/v1/matches`, insertOptions);
+    
+    return response.getResponseCode() === 201;
+  } catch (e) {
+    log("Database Update Error: " + e);
+    return false;
   }
 }
 
@@ -54,46 +192,51 @@ function fetchSupabaseLookups() {
   const key = PropertiesService.getScriptProperties().getProperty('SUPABASE_KEY');
 
   if (!url || !key) {
-    console.error("Missing Script Properties. Please set SUPABASE_URL and SUPABASE_KEY.");
+    log("Missing Script Properties. Please set SUPABASE_URL and SUPABASE_KEY.");
     return null;
   }
 
-  // Fetch Divisions
-  const divResponse = UrlFetchApp.fetch(`${url}/rest/v1/divisions?select=id,name`, {
-    headers: { 'apikey': key, 'Authorization': `Bearer ${key}` }
-  });
-  const divisions = JSON.parse(divResponse.getContentText());
+  try {
+    // Fetch Divisions
+    const divResponse = UrlFetchApp.fetch(`${url}/rest/v1/divisions?select=id,name`, {
+      headers: { 'apikey': key, 'Authorization': `Bearer ${key}` }
+    });
+    const divisions = JSON.parse(divResponse.getContentText());
 
-  // Fetch Teams
-  const teamResponse = UrlFetchApp.fetch(`${url}/rest/v1/teams?select=id,name,division_id`, {
-    headers: { 'apikey': key, 'Authorization': `Bearer ${key}` }
-  });
-  const teams = JSON.parse(teamResponse.getContentText());
+    // Fetch Teams
+    const teamResponse = UrlFetchApp.fetch(`${url}/rest/v1/teams?select=id,name,division_id`, {
+      headers: { 'apikey': key, 'Authorization': `Bearer ${key}` }
+    });
+    const teams = JSON.parse(teamResponse.getContentText());
 
-  return { divisions, teams };
+    return { divisions, teams };
+  } catch (e) {
+    log("Error fetching lookups: " + e);
+    return null;
+  }
 }
+
+// --- Parsing & Utilities ---
 
 function parseCSVAndMap(csvText, { divisions, teams }) {
   const lines = csvText.split(/\r\n|\n/);
   const mappedMatches = [];
 
-  for (const line of lines) {
-    if (!line.trim()) continue; // Skip empty lines
-    // Simple CSV split (assumes no commas in names for now, or use a robust parser if needed)
-    const cols = line.split(','); 
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    if (!line.trim()) continue;
     
-    if (cols.length < 9) continue; // Skip invalid rows
+    // Simple split (assuming no commas in fields)
+    const cols = line.split(',');
+    
+    if (cols.length < 9) continue;
 
-    // CSV Columns based on example:
-    // 0: Division (e.g., "B3")
-    // 1: Team 1 Name
-    // 2: "v"
-    // 3: Team 2 Name
-    // 4: Date (e.g., "13-Jan-26")
-    // 5: Team 1 Wins
-    // 6: Team 2 Wins
-    // 7: Team 1 Points
-    // 8: Team 2 Points
+    // Check for incomplete match data (upcoming matches have empty score cols)
+    // Cols 5,6 are wins. If empty string, skip.
+    if (!cols[5].trim() || !cols[6].trim()) {
+      // Upcoming match, skip
+      continue;
+    }
 
     const divNameRaw = cols[0].trim();
     const team1Name = cols[1].trim();
@@ -104,31 +247,26 @@ function parseCSVAndMap(csvText, { divisions, teams }) {
     const t1Points = parseInt(cols[7]);
     const t2Points = parseInt(cols[8]);
 
-    // 1. Find Division ID
-    // Logic: Try exact match, then try prepending "Division "
-    let division = divisions.find(d => d.name === divNameRaw || d.name === `Division ${divNameRaw}`);
-    if (!division) {
-      console.warn(`Division not found for: ${divNameRaw}`);
+    // Lookup IDs (Case Insensitive)
+    const divId = getDivisionId(divNameRaw, divisions);
+    if (!divId) {
+      log(`Row ${i+1}: Division '${divNameRaw}' not found.`);
       continue;
     }
 
-    // 2. Find Team IDs
-    const team1 = teams.find(t => t.name === team1Name && t.division_id === division.id);
-    const team2 = teams.find(t => t.name === team2Name && t.division_id === division.id);
+    const t1Id = getTeamId(team1Name, divId, teams);
+    const t2Id = getTeamId(team2Name, divId, teams);
 
-    if (!team1 || !team2) {
-      console.warn(`Team not found: ${team1Name} or ${team2Name} in ${division.name}`);
+    if (!t1Id || !t2Id) {
+      log(`Row ${i+1}: Teams '${team1Name}' or '${team2Name}' not found.`);
       continue;
     }
-
-    // 3. Format Date (13-Jan-26 -> YYYY-MM-DD)
-    const formattedDate = parseDate(dateRaw);
 
     mappedMatches.push({
-      division_id: division.id,
-      team1_id: team1.id,
-      team2_id: team2.id,
-      date: formattedDate,
+      division_id: divId,
+      team1_id: t1Id,
+      team2_id: t2Id,
+      date: parseDate(dateRaw),
       team1_wins: t1Wins,
       team2_wins: t2Wins,
       team1_points_for: t1Points,
@@ -139,14 +277,33 @@ function parseCSVAndMap(csvText, { divisions, teams }) {
   return mappedMatches;
 }
 
+function getDivisionId(nameRaw, divisions) {
+  const name = nameRaw.trim().toLowerCase();
+  for (const d of divisions) {
+    if (d.name.toLowerCase() === name) return d.id;
+  }
+  const altName = `division ${name}`;
+  for (const d of divisions) {
+    if (d.name.toLowerCase() === altName) return d.id;
+  }
+  return null;
+}
+
+function getTeamId(nameRaw, divId, teams) {
+  const name = nameRaw.trim().toLowerCase();
+  for (const t of teams) {
+    if (t.name.toLowerCase() === name && t.division_id === divId) return t.id;
+  }
+  return null;
+}
+
 function parseDate(dateStr) {
-  // Input: "13-Jan-26" or "13-Jan-2026"
-  // Output: "2026-01-13"
+  // Input: "13-Jan-26" -> Output: "2026-01-13"
   const months = { jan: '01', feb: '02', mar: '03', apr: '04', may: '05', jun: '06', 
                    jul: '07', aug: '08', sep: '09', oct: '10', nov: '11', dec: '12' };
   
   const parts = dateStr.split('-');
-  if (parts.length !== 3) return new Date().toISOString().split('T')[0]; // Fallback to today
+  if (parts.length !== 3) return new Date().toISOString().split('T')[0];
 
   const day = parts[0].padStart(2, '0');
   const monthStr = parts[1].toLowerCase();
@@ -158,28 +315,13 @@ function parseDate(dateStr) {
   return `${year}-${month}-${day}`;
 }
 
-function uploadMatchesToSupabase(matches) {
-  const url = PropertiesService.getScriptProperties().getProperty('SUPABASE_URL');
-  const key = PropertiesService.getScriptProperties().getProperty('SUPABASE_KEY');
+function log(message) {
+  const timestamp = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "dd MMM yyyy HH:mm:ss");
+  console.log(`${timestamp} - ${message}`);
+}
 
-  const options = {
-    method: 'post',
-    contentType: 'application/json',
-    headers: {
-      'apikey': key,
-      'Authorization': `Bearer ${key}`,
-      'Prefer': 'return=minimal' // Don't return the inserted rows
-    },
-    payload: JSON.stringify(matches)
-  };
-
-  try {
-    const response = UrlFetchApp.fetch(`${url}/rest/v1/matches`, options);
-    return response.getResponseCode() === 201;
-  } catch (e) {
-    console.error("Supabase Upload Error: " + e.toString());
-    return false;
-  }
+function formatDate(dateObj) {
+  return Utilities.formatDate(dateObj, Session.getScriptTimeZone(), "yyyy-MM-dd HH:mm:ss");
 }
 
 function addLabel(thread) {
@@ -188,4 +330,40 @@ function addLabel(thread) {
     label = GmailApp.createLabel(CONFIG.PROCESSED_LABEL);
   }
   thread.addLabel(label);
+}
+
+function sendDiscordNotification(success, title, description, details) {
+  const webhookUrl = PropertiesService.getScriptProperties().getProperty('DISCORD_WEBHOOK_URL');
+  if (!webhookUrl) return;
+
+  // Colors: Green (5763719), Red (15548997)
+  const color = success ? 5763719 : 15548997;
+  
+  const fields = [];
+  if (details) {
+    for (const key in details) {
+      fields.push({ "name": key, "value": String(details[key]), "inline": true });
+    }
+  }
+
+  const payload = {
+    "embeds": [{
+      "title": title,
+      "description": description,
+      "color": color,
+      "fields": fields,
+      "footer": { "text": "GAS Ingestion Service" },
+      "timestamp": new Date().toISOString()
+    }]
+  };
+
+  try {
+    UrlFetchApp.fetch(webhookUrl, {
+      method: 'post',
+      contentType: 'application/json',
+      payload: JSON.stringify(payload)
+    });
+  } catch (e) {
+    log("Failed to send Discord notification: " + e);
+  }
 }
