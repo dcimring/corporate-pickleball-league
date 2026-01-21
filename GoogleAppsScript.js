@@ -2,7 +2,7 @@
 // Go to Project Settings > Script Properties to add these keys:
 // SUPABASE_URL: Your Supabase Project URL
 // SUPABASE_KEY: Your Supabase Service Role Key (preferred) or Anon Key
-// TARGET_SENDER: Email address to accept results from (e.g. jerry@pickleball.ky)
+// TARGET_SENDER: Email address to accept results from (e.g. sender@example.com)
 // TARGET_SUBJECT: Subject line to match (e.g. Corporate League Results)
 // DISCORD_WEBHOOK_URL: Webhook URL for status notifications
 
