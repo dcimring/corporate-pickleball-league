@@ -1,26 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { fetchLeagueData, initialLeagueData } from '../lib/data';
-import type { LeagueData } from '../types';
 import { Loader2 } from 'lucide-react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { LeaderboardTable } from '../components/LeaderboardTable';
 import { Navigation } from '../components/Navigation';
+import { useLeagueData } from '../context/LeagueContext';
 
 export const Leaderboard: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
-  const [data, setData] = useState<LeagueData>(initialLeagueData);
-  const [loading, setLoading] = useState(true);
+  const { data, loading } = useLeagueData();
   const [activeDivision, setActiveDivision] = useState<string>('');
 
   useEffect(() => {
-    const loadData = async () => {
-      try {
-        const fetched = await fetchLeagueData();
-        setData(fetched);
-        
+    if (!loading && data.leaderboard) {
         // Initial division selection logic
-        const divisions = Object.keys(fetched.leaderboard);
+        const divisions = Object.keys(data.leaderboard);
         const paramDiv = searchParams.get('division');
         const defaultDiv = paramDiv && divisions.includes(paramDiv) 
           ? paramDiv 
@@ -29,14 +23,8 @@ export const Leaderboard: React.FC = () => {
         if (activeDivision === '' || (paramDiv && activeDivision !== paramDiv)) {
              setActiveDivision(defaultDiv);
         }
-      } catch (error) {
-        console.error("Failed to fetch league data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadData();
-  }, [searchParams]);
+    }
+  }, [loading, data, searchParams]);
 
   const handleDivisionChange = (div: string) => {
     setActiveDivision(div);
