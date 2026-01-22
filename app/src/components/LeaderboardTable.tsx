@@ -25,8 +25,7 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats }) => 
             <th className="py-5 font-heading font-bold text-sm tracking-widest">TEAM</th>
             <th className="py-5 text-center font-heading font-bold text-sm tracking-widest w-[80px]">REC</th>
             <th className="py-5 text-center font-heading font-bold text-sm tracking-widest text-brand-blue w-[80px]">PCT</th>
-            <th className="hidden md:table-cell py-5 text-center font-heading font-bold text-sm tracking-widest w-[60px]">PF</th>
-            <th className="hidden md:table-cell py-5 text-center font-heading font-bold text-sm tracking-widest w-[60px]">PA</th>
+            <th className="hidden md:table-cell py-5 text-center font-heading font-bold text-sm tracking-widest w-[100px]">PTS</th>
             <th className="hidden md:table-cell py-5 pr-6 text-right font-heading font-bold text-sm tracking-widest w-[100px]">DIFF</th>
           </tr>
         </thead>
@@ -59,11 +58,12 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats }) => 
                     <span className="text-xs align-top ml-0.5 text-gray-400">%</span>
                   </span>
                 </td>
-                <td className="hidden md:table-cell py-4 text-center font-mono text-xs text-gray-400">
-                  {entry.pointsFor}
-                </td>
-                <td className="hidden md:table-cell py-4 text-center font-mono text-xs text-gray-400">
-                  {entry.pointsAgainst}
+                <td className="hidden md:table-cell py-4 text-center">
+                  <div className="inline-flex items-center gap-1 font-mono text-xs text-gray-500 font-bold bg-gray-50 px-2 py-1 rounded">
+                    <span className="text-gray-900">{entry.pointsFor}</span>
+                    <span className="text-gray-300">-</span>
+                    <span>{entry.pointsAgainst}</span>
+                  </div>
                 </td>
                 <td className="hidden md:table-cell py-4 pr-6 text-right">
                   <span className={clsx(
