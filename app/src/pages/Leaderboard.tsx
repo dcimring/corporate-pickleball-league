@@ -3,9 +3,8 @@ import { fetchLeagueData, initialLeagueData } from '../lib/data';
 import type { LeagueData } from '../types';
 import { Loader2 } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
-import { DivisionTabs } from '../components/DivisionTabs';
-import { PageTabs } from '../components/PageTabs';
 import { LeaderboardTable } from '../components/LeaderboardTable';
+import { NavigationVariant } from '../components/NavigationVariants';
 
 export const Leaderboard: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -66,24 +65,67 @@ export const Leaderboard: React.FC = () => {
   const divisions = Object.keys(data.leaderboard);
   const stats = data.leaderboard[activeDivision] || [];
 
+  const pageTabs = [
+    { name: 'Leaderboard', path: '/leaderboard' },
+    { name: 'Matches', path: '/matches' },
+  ];
+
+  const handlePageChange = (path: string) => {
+    // Just a mock handler for the visual review
+    console.log("Navigating to:", path);
+  };
+
   return (
-    <div className="space-y-4">
-      {/* Navigation */}
-      <div>
-        <PageTabs />
-        
-        {/* Division Toggle */}
-        <div ref={tabsRef} className="w-full">
-          <DivisionTabs 
+    <div className="space-y-12">
+      {/* Design Review: Option 1 */}
+      <div className="space-y-4">
+        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-4">Option 1: Refined Pill (Current Polish)</p>
+        <NavigationVariant 
+            pageTabs={pageTabs} 
+            activePage="/leaderboard" 
             divisions={divisions} 
             activeDivision={activeDivision} 
-            onChange={handleDivisionChange} 
-          />
+            onPageChange={handlePageChange} 
+            onDivisionChange={handleDivisionChange}
+            variant="refined-pill" 
+        />
+        <div className="pt-4">
+            <LeaderboardTable stats={stats} />
         </div>
       </div>
 
-      <div className="space-y-12">
-        <LeaderboardTable stats={stats} />
+      {/* Design Review: Option 2 */}
+      <div className="space-y-4 pt-12 border-t border-dashed border-gray-200">
+        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-4">Option 2: Underline Glow</p>
+        <NavigationVariant 
+            pageTabs={pageTabs} 
+            activePage="/leaderboard" 
+            divisions={divisions} 
+            activeDivision={activeDivision} 
+            onPageChange={handlePageChange} 
+            onDivisionChange={handleDivisionChange}
+            variant="underline-glow" 
+        />
+        <div className="pt-4">
+            <LeaderboardTable stats={stats} />
+        </div>
+      </div>
+
+      {/* Design Review: Option 3 */}
+      <div className="space-y-4 pt-12 border-t border-dashed border-gray-200">
+        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-4">Option 3: Varsity Block</p>
+        <NavigationVariant 
+            pageTabs={pageTabs} 
+            activePage="/leaderboard" 
+            divisions={divisions} 
+            activeDivision={activeDivision} 
+            onPageChange={handlePageChange} 
+            onDivisionChange={handleDivisionChange}
+            variant="varsity-block" 
+        />
+        <div className="pt-4">
+            <LeaderboardTable stats={stats} />
+        </div>
       </div>
     </div>
   );
