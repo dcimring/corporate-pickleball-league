@@ -21,8 +21,8 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats }) => 
       <table className="w-full text-left border-collapse">
         <thead>
           <tr className="bg-brand-blue text-white">
-            <th className="py-5 pl-6 font-heading font-bold text-sm tracking-widest opacity-60 w-[60px] md:w-[80px]">POS</th>
-            <th className="py-5 font-heading font-bold text-sm tracking-widest opacity-60">CLUB</th>
+            <th className="py-5 pl-6 font-heading font-bold text-sm tracking-widest opacity-60 w-[60px] md:w-[80px]">#</th>
+            <th className="py-5 font-heading font-bold text-sm tracking-widest opacity-60">TEAM</th>
             <th className="py-5 text-center font-heading font-bold text-sm tracking-widest opacity-60 w-[80px]">REC</th>
             <th className="py-5 text-center font-heading font-bold text-sm tracking-widest opacity-60 text-brand-yellow w-[80px]">PCT</th>
             <th className="hidden md:table-cell py-5 text-center font-heading font-bold text-sm tracking-widest opacity-60 w-[60px]">PF</th>
