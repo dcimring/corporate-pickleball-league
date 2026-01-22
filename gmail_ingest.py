@@ -15,9 +15,17 @@ load_dotenv('.env')
 # Configuration
 GMAIL_USER = os.getenv('GMAIL_USER')
 GMAIL_PASS = os.getenv('GMAIL_APP_PASSWORD')
-TARGET_SENDER = os.getenv('TARGET_SENDER')
+TARGET_SENDERS = os.getenv('TARGET_SENDERS') # Comma separated list of emails
 TARGET_SUBJECT = os.getenv('TARGET_SUBJECT')
 TARGET_FILENAME = os.getenv('TARGET_FILENAME') # e.g. "Daily Schedule.csv"
+
+if not all([GMAIL_USER, GMAIL_PASS, TARGET_SENDERS, TARGET_FILENAME, TARGET_SUBJECT]):
+    print("Error: Missing required environment variables.")
+    print("Please set GMAIL_USER, GMAIL_APP_PASSWORD, TARGET_SENDERS, TARGET_SUBJECT, and TARGET_FILENAME in .env")
+    exit(1)
+
+# Parse senders
+ALLOWED_SENDERS = [s.strip() for s in TARGET_SENDERS.split(',') if s.strip()]
 
 def log(message):
     timestamp = datetime.now().strftime("%d %b %Y %H:%M:%S")
@@ -55,7 +63,7 @@ def extract_csv_from_email(msg):
     return None, None
 
 def check_for_new_matches():
-    if not all([GMAIL_USER, GMAIL_PASS, TARGET_SENDER, TARGET_FILENAME, TARGET_SUBJECT]):
+    if not all([GMAIL_USER, GMAIL_PASS, ALLOWED_SENDERS, TARGET_FILENAME, TARGET_SUBJECT]):
         log("Error: Missing required environment variables.")
         return None
 
@@ -65,13 +73,19 @@ def check_for_new_matches():
     try:
         mail.select("inbox")
         
-        # Search for UNREAD emails from specific sender with specific subject
-        status, messages = mail.search(None, f'(UNSEEN FROM "{TARGET_SENDER}" SUBJECT "{TARGET_SUBJECT}")')
+        email_ids = set()
         
-        if status != "OK" or not messages[0]:
+        # Iterate through each sender and search
+        for sender in ALLOWED_SENDERS:
+            # log(f"Searching for UNREAD emails from {sender}...") # Verbose
+            status, messages = mail.search(None, f'(UNSEEN FROM "{sender}" SUBJECT "{TARGET_SUBJECT}")')
+            if status == "OK" and messages[0]:
+                for eid in messages[0].split():
+                    email_ids.add(eid)
+        
+        if not email_ids:
             return None
 
-        email_ids = messages[0].split()
         log(f"Found {len(email_ids)} unread matching emails.")
         
         fetched_emails = []

@@ -12,16 +12,19 @@ const CONFIG = {
 
 function processMatchResults() {
   const props = PropertiesService.getScriptProperties();
-  const targetSender = props.getProperty('TARGET_SENDER');
+  const targetSenders = props.getProperty('TARGET_SENDERS'); // Expects comma-separated list
   const targetSubject = props.getProperty('TARGET_SUBJECT');
   
-  if (!targetSender || !targetSubject) {
-    log("Error: TARGET_SENDER or TARGET_SUBJECT not set in Script Properties.");
+  if (!targetSenders || !targetSubject) {
+    log("Error: TARGET_SENDERS or TARGET_SUBJECT not set in Script Properties.");
     return;
   }
 
-  // Search query: from:sender subject:"..." is:unread
-  const searchQuery = `from:${targetSender} subject:"${targetSubject}" is:unread`;
+  // Gmail search syntax for OR is {sender1 sender2}
+  const sendersList = targetSenders.split(',').map(s => s.trim()).filter(s => s).join(' ');
+  
+  // Search query: from:{sender1 sender2} subject:"..." is:unread
+  const searchQuery = `from:{${sendersList}} subject:"${targetSubject}" is:unread`;
   log(`Searching for emails: ${searchQuery}`);
 
   const threads = GmailApp.search(searchQuery);
