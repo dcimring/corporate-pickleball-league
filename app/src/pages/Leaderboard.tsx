@@ -83,23 +83,7 @@ export const Leaderboard: React.FC = () => {
       </div>
 
       <div className="space-y-12">
-        {/* Variant 1 */}
-        <div className="space-y-2">
-            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-2">Option 1: Minimal Stripes</p>
-            <LeaderboardTable stats={stats} variant="minimal-stripes" />
-        </div>
-
-        {/* Variant 2 */}
-        <div className="space-y-2">
-            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-2">Option 2: Grid Card</p>
-            <LeaderboardTable stats={stats} variant="grid-card" />
-        </div>
-
-        {/* Variant 3 */}
-        <div className="space-y-2">
-            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-2">Option 3: High Contrast</p>
-            <LeaderboardTable stats={stats} variant="high-contrast" />
-        </div>
+        <LeaderboardTable stats={stats} />
       </div>
     </div>
   );
