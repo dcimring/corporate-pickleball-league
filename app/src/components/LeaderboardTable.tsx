@@ -25,7 +25,7 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats }) => 
             <th className="py-5 font-heading font-bold text-sm tracking-widest">TEAM</th>
             <th className="py-5 text-center font-heading font-bold text-sm tracking-widest w-[80px]">WINS</th>
             <th className="py-5 text-center font-heading font-bold text-sm tracking-widest text-brand-blue w-[80px]">PCT</th>
-            <th className="py-5 text-center font-heading font-bold text-[10px] md:text-sm tracking-widest w-[60px] md:w-[100px]">PTS</th>
+            <th className="py-5 text-center font-heading font-bold text-xs md:text-sm tracking-widest w-[60px] md:w-[100px]">PTS</th>
             <th className="hidden md:table-cell py-5 pr-6 text-right font-heading font-bold text-sm tracking-widest w-[100px]">DIFF</th>
           </tr>
         </thead>
@@ -60,7 +60,7 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats }) => 
                 </td>
                 <td className="py-4 text-center">
                   {/* Mobile: Just Points For */}
-                  <span className="md:hidden font-mono text-[10px] text-gray-400 font-bold">
+                  <span className="md:hidden font-mono text-xs text-gray-400 font-bold">
                     {entry.pointsFor}
                   </span>
                   {/* Desktop: PF-PA Pill */}
