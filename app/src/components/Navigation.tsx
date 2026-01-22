@@ -47,7 +47,7 @@ export const Navigation: React.FC<NavigationProps> = ({
   return (
     <div className="flex flex-col gap-6 px-6 md:px-0">
       {/* Page Tabs (Underline Glow) */}
-      <div className="flex items-center gap-8 border-b border-gray-100 pb-px">
+      <div className="flex items-center gap-8 border-b border-gray-100 pb-px pl-1 md:pl-5">
         {pageTabs.map((tab) => {
           const isActive = activePage === tab.path;
           return (
