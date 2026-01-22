@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { fetchLeagueData, initialLeagueData } from '../lib/data';
 import type { LeagueData } from '../types';
-import { clsx } from 'clsx';
-import { Trophy, TrendingUp, TrendingDown, Minus, Info, Loader2 } from 'lucide-react';
-import { Card } from '../components/Card';
+import { Loader2 } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
 import { DivisionTabs } from '../components/DivisionTabs';
 import { PageTabs } from '../components/PageTabs';
+import { LeaderboardTable } from '../components/LeaderboardTable';
 
 export const Leaderboard: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -83,79 +82,25 @@ export const Leaderboard: React.FC = () => {
         </div>
       </div>
 
-      {/* Table Card */}
-      <Card className="p-0 overflow-hidden shadow-soft">
-        {stats.length > 0 ? (
-          <div className="relative">
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="bg-gray-50 border-b border-gray-100 font-heading font-bold text-xs md:text-sm text-gray-500 uppercase tracking-wider">
-                    <th className="px-2 py-2 md:px-6 md:py-4 whitespace-nowrap">Rank</th>
-                    <th className="px-2 py-2 md:px-6 md:py-4 whitespace-nowrap">Team</th>
-                    <th className="px-2 py-2 md:px-6 md:py-4 text-center whitespace-nowrap">W</th>
-                    <th className="px-2 py-2 md:px-6 md:py-4 text-center whitespace-nowrap">L</th>
-                    <th className="px-2 py-2 md:px-6 md:py-4 text-center whitespace-nowrap">Win %</th>
-                    <th className="px-2 py-2 md:px-6 md:py-4 text-center hidden sm:table-cell whitespace-nowrap">PF</th>
-                    <th className="px-2 py-2 md:px-6 md:py-4 text-center hidden sm:table-cell whitespace-nowrap">PA</th>
-                    <th className="px-2 py-2 md:px-6 md:py-4 text-center hidden sm:table-cell whitespace-nowrap">Diff</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-100">
-                  {stats.map((entry, index) => {
-                    const diff = entry.pointsFor - entry.pointsAgainst;
-                    return (
-                      <tr 
-                        key={entry.team} 
-                        className={clsx(
-                          "hover:bg-blue-50/50 transition-colors font-body",
-                          index < 3 && "bg-yellow-50/50"
-                        )}
-                      >
-                        <td className="px-2 py-2 md:px-6 md:py-4 font-heading font-bold text-gray-400 text-xs md:text-sm">
-                          #{index + 1}
-                        </td>
-                        <td className="px-2 py-2 md:px-6 md:py-4 text-xs md:text-sm">
-                          <div className="flex items-center gap-2 md:gap-3">
-                            {index === 0 && <Trophy className="w-4 h-4 md:w-5 md:h-5 text-brand-yellow" />}
-                            <span className={clsx("font-bold whitespace-nowrap text-brand-blue text-xs md:text-base")}>
-                              {entry.team}
-                            </span>
-                          </div>
-                        </td>
-                        <td className="px-2 py-2 md:px-6 md:py-4 text-center font-bold text-brand-blue text-xs md:text-sm">{entry.wins}</td>
-                        <td className="px-2 py-2 md:px-6 md:py-4 text-center font-medium text-gray-400 text-xs md:text-sm">{entry.losses}</td>
-                        <td className="px-2 py-2 md:px-6 md:py-4 text-center font-bold text-brand-blue text-xs md:text-sm">
-                          {(entry.winPct * 100).toFixed(0)}%
-                        </td>
-                        <td className="px-2 py-2 md:px-6 md:py-4 text-center hidden sm:table-cell text-gray-500 text-xs md:text-sm">{entry.pointsFor}</td>
-                        <td className="px-2 py-2 md:px-6 md:py-4 text-center hidden sm:table-cell text-gray-500 text-xs md:text-sm">{entry.pointsAgainst}</td>
-                        <td className="px-2 py-2 md:px-6 md:py-4 text-center hidden sm:table-cell text-xs md:text-sm">
-                          <span className={clsx(
-                            "inline-flex items-center px-2 py-1 text-[10px] md:text-xs font-bold rounded-full",
-                            diff > 0 ? "bg-green-100 text-green-700" : diff < 0 ? "bg-red-100 text-red-700" : "bg-gray-100 text-gray-500"
-                          )}>
-                             {diff > 0 ? <TrendingUp className="w-2.5 h-2.5 md:w-3 md:h-3 mr-1" /> : diff < 0 ? <TrendingDown className="w-2.5 h-2.5 md:w-3 md:h-3 mr-1" /> : <Minus className="w-2.5 h-2.5 md:w-3 md:h-3 mr-1" />}
-                             {diff > 0 ? '+' : ''}{diff}
-                          </span>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        ) : (
-          <div className="p-16 text-center flex flex-col items-center justify-center gap-4 text-gray-400">
-            <div className="bg-blue-50 p-4 rounded-full">
-              <Info className="w-8 h-8 text-brand-blue" />
-            </div>
-            <p className="font-heading font-bold text-xl text-brand-blue">No data available yet</p>
-            <p className="font-body text-gray-500">Matches start soon!</p>
-          </div>
-        )}
-      </Card>
+      <div className="space-y-12">
+        {/* Variant 1 */}
+        <div className="space-y-2">
+            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-2">Option 1: Minimal Stripes</p>
+            <LeaderboardTable stats={stats} variant="minimal-stripes" />
+        </div>
+
+        {/* Variant 2 */}
+        <div className="space-y-2">
+            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-2">Option 2: Grid Card</p>
+            <LeaderboardTable stats={stats} variant="grid-card" />
+        </div>
+
+        {/* Variant 3 */}
+        <div className="space-y-2">
+            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-2">Option 3: High Contrast</p>
+            <LeaderboardTable stats={stats} variant="high-contrast" />
+        </div>
+      </div>
     </div>
   );
 };
