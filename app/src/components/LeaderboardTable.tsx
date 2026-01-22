@@ -59,15 +59,10 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats }) => 
                   </span>
                 </td>
                 <td className="py-4 text-center">
-                  {/* Mobile: Just Points For */}
-                  <span className="md:hidden font-mono text-xs text-gray-400 font-bold">
-                    {entry.pointsFor}
-                  </span>
-                  {/* Desktop: PF-PA Pill */}
-                  <div className="hidden md:inline-flex items-center gap-1 font-mono text-xs text-gray-500 font-bold bg-gray-50 px-2 py-1 rounded">
+                  <div className="inline-flex items-center gap-1 font-mono text-xs text-gray-500 font-bold bg-gray-50 px-2 py-1 rounded">
                     <span className="text-gray-900">{entry.pointsFor}</span>
-                    <span className="text-gray-300">-</span>
-                    <span>{entry.pointsAgainst}</span>
+                    <span className="hidden md:inline text-gray-300">-</span>
+                    <span className="hidden md:inline">{entry.pointsAgainst}</span>
                   </div>
                 </td>
                 <td className="hidden md:table-cell py-4 pr-6 text-right">
