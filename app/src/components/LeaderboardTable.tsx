@@ -34,9 +34,9 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats }) => 
             const diff = entry.pointsFor - entry.pointsAgainst;
             return (
               <tr key={entry.team} className="border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors group">
-                <td className="py-4 pl-6">
+                <td className="py-4">
                   <div className={clsx(
-                    "w-8 h-8 flex items-center justify-center rounded-full font-heading font-bold text-sm transition-transform group-hover:scale-110",
+                    "w-8 h-8 flex items-center justify-center rounded-full font-heading font-bold text-sm transition-transform group-hover:scale-110 mx-auto",
                     index === 0 ? "bg-brand-yellow text-brand-blue" : "bg-gray-100 text-gray-500"
                   )}>
                     {index + 1}
