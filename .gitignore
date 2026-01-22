@@ -123,6 +123,11 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
 # IDEs and Editors
 .idea/
 .vscode/
