@@ -47,7 +47,7 @@ export const Navigation: React.FC<NavigationProps> = ({
   return (
     <div className="flex flex-col gap-6 px-6 md:px-0">
       {/* Page Tabs (Underline Glow) */}
-      <div className="flex items-center gap-8 border-b border-gray-100 pb-px pl-1 md:pl-5">
+      <div className="flex items-center gap-8 border-b border-gray-100 pb-px justify-center">
         {pageTabs.map((tab) => {
           const isActive = activePage === tab.path;
           return (
@@ -74,10 +74,10 @@ export const Navigation: React.FC<NavigationProps> = ({
       {/* Division Selector */}
       <div className="w-full relative" ref={containerRef}>
           {/* Mobile Dropdown */}
-          <div className="md:hidden">
+          <div className="md:hidden px-6">
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="w-full flex items-center justify-between px-4 py-3 bg-brand-blue text-white rounded-none shadow-sm font-heading font-bold text-sm uppercase tracking-wide"
+            className="w-full max-w-xs mx-auto flex items-center justify-between px-4 py-3 bg-brand-blue text-white rounded-none shadow-sm font-heading font-bold text-sm uppercase tracking-wide"
           >
             <span>{shortenDivisionName(activeDivision) || 'Select Division'}</span>
             <ChevronDown className={clsx("w-5 h-5 transition-transform duration-200", isOpen && "rotate-180")} />
@@ -88,7 +88,7 @@ export const Navigation: React.FC<NavigationProps> = ({
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
-                className="bg-brand-blue text-white overflow-hidden"
+                className="bg-brand-blue text-white overflow-hidden max-w-xs mx-auto"
               >
                   {divisions.map((div) => (
                     <button
@@ -109,7 +109,7 @@ export const Navigation: React.FC<NavigationProps> = ({
         </div>
 
         {/* Desktop Tabs (Pills) */}
-        <div className="hidden md:flex md:flex-wrap gap-3 justify-start p-1 bg-gray-50 rounded-lg w-fit">
+        <div className="hidden md:flex md:flex-wrap gap-3 md:justify-center p-1 bg-gray-50 rounded-lg w-full">
           {divisions.map((div) => {
             const isActive = activeDivision === div;
             return (
