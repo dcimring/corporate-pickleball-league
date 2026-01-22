@@ -17,17 +17,17 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats }) => 
 
   // Variant 3: High Contrast (Bold, Athletic, "Night Court" vibe)
   return (
-    <div className="w-full bg-brand-blue rounded-t-2xl overflow-hidden shadow-soft">
+    <div className="w-full overflow-hidden shadow-soft">
       <table className="w-full text-left border-collapse">
         <thead>
-          <tr className="bg-brand-blue text-white">
-            <th className="py-5 pl-6 font-heading font-bold text-sm tracking-widest opacity-60 w-[60px] md:w-[80px]">#</th>
-            <th className="py-5 font-heading font-bold text-sm tracking-widest opacity-60">TEAM</th>
-            <th className="py-5 text-center font-heading font-bold text-sm tracking-widest opacity-60 w-[80px]">REC</th>
-            <th className="py-5 text-center font-heading font-bold text-sm tracking-widest opacity-60 text-brand-yellow w-[80px]">PCT</th>
-            <th className="hidden md:table-cell py-5 text-center font-heading font-bold text-sm tracking-widest opacity-60 w-[60px]">PF</th>
-            <th className="hidden md:table-cell py-5 text-center font-heading font-bold text-sm tracking-widest opacity-60 w-[60px]">PA</th>
-            <th className="hidden md:table-cell py-5 pr-6 text-right font-heading font-bold text-sm tracking-widest opacity-60 w-[100px]">DIFF</th>
+          <tr className="bg-brand-gray text-black border-b border-gray-200">
+            <th className="py-5 pl-6 font-heading font-bold text-sm tracking-widest w-[60px] md:w-[80px]">#</th>
+            <th className="py-5 font-heading font-bold text-sm tracking-widest">TEAM</th>
+            <th className="py-5 text-center font-heading font-bold text-sm tracking-widest w-[80px]">REC</th>
+            <th className="py-5 text-center font-heading font-bold text-sm tracking-widest text-brand-blue w-[80px]">PCT</th>
+            <th className="hidden md:table-cell py-5 text-center font-heading font-bold text-sm tracking-widest w-[60px]">PF</th>
+            <th className="hidden md:table-cell py-5 text-center font-heading font-bold text-sm tracking-widest w-[60px]">PA</th>
+            <th className="hidden md:table-cell py-5 pr-6 text-right font-heading font-bold text-sm tracking-widest w-[100px]">DIFF</th>
           </tr>
         </thead>
         <tbody className="bg-white">
