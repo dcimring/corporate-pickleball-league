@@ -131,12 +131,10 @@ export const fetchLeagueData = async (): Promise<LeagueData> => {
       };
     });
     
-    // Sort leaderboard (Wins desc, then Point Diff (PF-PA) desc)
+    // Sort leaderboard (Win % desc, then Points For desc)
     entries.sort((a, b) => {
-        if (b.wins !== a.wins) return b.wins - a.wins;
-        const diffA = a.pointsFor - a.pointsAgainst;
-        const diffB = b.pointsFor - b.pointsAgainst;
-        return diffB - diffA;
+        if (b.winPct !== a.winPct) return b.winPct - a.winPct;
+        return b.pointsFor - a.pointsFor;
     });
 
     leaderboard[div.name] = entries;
