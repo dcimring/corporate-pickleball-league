@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { fetchLeagueData, initialLeagueData } from '../lib/data';
 import type { LeagueData } from '../types';
-import { clsx } from 'clsx';
-import { Calendar as CalendarIcon, Loader2, Info } from 'lucide-react';
-import { Card } from '../components/Card';
+import { Loader2, Info } from 'lucide-react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Navigation } from '../components/Navigation';
+import { MatchCard } from '../components/MatchCardVariants';
 
 export const Matches: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -64,16 +63,6 @@ export const Matches: React.FC = () => {
   const divisions = Object.keys(data.matches);
   const matches = data.matches[activeDivision] || [];
 
-  const formatDate = (dateStr: string) => {
-    const date = new Date(dateStr);
-    return new Intl.DateTimeFormat('en-GB', {
-      day: 'numeric',
-      month: 'short',
-      year: '2-digit',
-      timeZone: 'UTC'
-    }).format(date);
-  };
-
   const pageTabs = [
     { name: 'Leaderboard', path: '/leaderboard' },
     { name: 'Matches', path: '/matches' },
@@ -90,61 +79,39 @@ export const Matches: React.FC = () => {
         onDivisionChange={handleDivisionChange} 
       />
 
-      <div className="grid gap-4">
+      <div className="space-y-12">
         {matches.length > 0 ? (
-          matches.map((match) => (
-            <Card key={match.id} className="p-4 md:p-6 shadow-soft hover:shadow-md transition-shadow">
-              <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-                
-                {/* Date */}
-                <div className="flex items-center gap-2 text-gray-400 text-xs md:text-sm font-heading font-bold uppercase tracking-wide min-w-[100px]">
-                  <CalendarIcon className="w-4 h-4" />
-                  {formatDate(match.date)}
+          <>
+            {/* Design Review: Option 1 */}
+            <div className="space-y-4">
+                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-4">Option 1: High Contrast</p>
+                <div className="grid gap-4">
+                    {matches.map((match) => (
+                        <MatchCard key={`hc-${match.id}`} match={match} variant="high-contrast" />
+                    ))}
                 </div>
+            </div>
 
-                {/* Matchup */}
-                <div className="flex-1 w-full grid grid-cols-[1fr,auto,1fr] gap-4 items-center">
-                  
-                  {/* Team 1 */}
-                  <div className={clsx(
-                    "text-left flex flex-col md:flex-row items-center md:justify-start gap-2",
-                    match.team1Wins > match.team2Wins ? "text-brand-blue font-bold" : "text-gray-600"
-                  )}>
-                    {match.team1Wins > match.team2Wins && <span className="text-brand-yellow">★</span>}
-                    <span className="text-sm md:text-lg leading-tight">{match.team1}</span>
-                  </div>
-
-                  {/* Score */}
-                  <div className="bg-gray-100 px-3 py-1 md:px-4 md:py-2 rounded-lg font-heading font-bold text-lg md:text-2xl text-brand-blue min-w-[80px] text-center whitespace-nowrap">
-                    {match.team1Wins} - {match.team2Wins}
-                  </div>
-
-                  {/* Team 2 */}
-                  <div className={clsx(
-                    "text-right flex flex-col md:flex-row-reverse items-center md:justify-start gap-2",
-                    match.team2Wins > match.team1Wins ? "text-brand-blue font-bold" : "text-gray-600"
-                  )}>
-                    {match.team2Wins > match.team1Wins && <span className="text-brand-yellow">★</span>}
-                    <span className="text-sm md:text-lg leading-tight">{match.team2}</span>
-                  </div>
-
+            {/* Design Review: Option 2 */}
+            <div className="space-y-4 pt-8 border-t border-dashed border-gray-200">
+                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-4">Option 2: Versus Split</p>
+                <div className="grid gap-4">
+                    {matches.map((match) => (
+                        <MatchCard key={`vs-${match.id}`} match={match} variant="versus-split" />
+                    ))}
                 </div>
-                
-                {/* Points */}
-                <div className="hidden md:flex flex-col items-center text-xs text-gray-400 font-mono">
-                    <span>Points</span>
-                    <span>{match.team1Points}-{match.team2Points}</span>
+            </div>
+
+            {/* Design Review: Option 3 */}
+            <div className="space-y-4 pt-8 border-t border-dashed border-gray-200">
+                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-4">Option 3: Digital Scoreboard</p>
+                <div className="grid gap-4">
+                    {matches.map((match) => (
+                        <MatchCard key={`db-${match.id}`} match={match} variant="digital-board" />
+                    ))}
                 </div>
-
-              </div>
-              
-              {/* Mobile Points */}
-              <div className="md:hidden mt-4 pt-3 border-t border-gray-100 flex justify-center text-xs text-gray-400 font-mono">
-                  Points: {match.team1Points} - {match.team2Points}
-              </div>
-
-            </Card>
-          ))
+            </div>
+          </>
         ) : (
           <div className="p-16 text-center flex flex-col items-center justify-center gap-4 text-gray-400 bg-white rounded-2xl border border-gray-100">
             <div className="bg-blue-50 p-4 rounded-full">
