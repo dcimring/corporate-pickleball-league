@@ -7,7 +7,13 @@ This branch is specifically designed for integration as a WordPress widget.
 - **Removed Header/Footer:** The `Layout.tsx` component no longer renders a site-wide navigation bar or footer.
 - **Removed Branding:** No logos or external links are rendered within the application to avoid visual conflict with the parent site.
 
-### 2. Parent-Child Communication (Resizer)
+### 2. Data Flow (Front-Load Pattern)
+To ensure instant navigation:
+- **`LeagueContext`:** Fetches all data (Divisions, Matches, Teams) once when the app mounts.
+- **Background Refresh:** Silently re-fetches data every 60 seconds to keep the UI live without spinners.
+- **Consumption:** `Leaderboard` and `Matches` pages read directly from this context, rendering immediately.
+
+### 3. Parent-Child Communication (Resizer)
 To prevent the "Iframe Scrollbar" issue, the app implements a height-matching protocol:
 - **`notifyParentOfHeight`:** A utility within `Layout.tsx` that calculates the height of the `#app-container` and sends a `postMessage` to the parent window.
 - **`ResizeObserver`:** Monitors the DOM for changes (like expanding dropdowns or switching tabs) and triggers a height update immediately.

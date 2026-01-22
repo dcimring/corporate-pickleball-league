@@ -5,6 +5,9 @@ A professional, responsive, and iframe-optimized website for the Corporate Pickl
 ## ✨ Key Features
 
 -   **Brand-Aligned Aesthetic:** A professional, clean UI styled to match the main Pickleball Cayman site, featuring **Cayman Blue**, **Pickle Yellow**, and vibrant action colors.
+-   **Instant Navigation:** "Front-loaded" data architecture ensures zero-latency switching between Leaderboard and Matches, with automatic background data refreshing.
+-   **High-Contrast Tables:** Custom leaderboard design with responsive "Points" pills and clear rank indicators.
+-   **Versus Split Cards:** Dramatic match result cards that highlight the winning team and score in a visual split-view layout.
 -   **Iframe Integration:** Optimized for embedding as a WordPress widget with zero external layout (no header/footer).
 -   **Auto-Resizing:** Real-time height synchronization with the parent window using `postMessage` and `ResizeObserver`.
 -   **Simplified Navigation:** Custom pill-shaped page tabs and a mobile-friendly division dropdown for a clean, widget-like experience.

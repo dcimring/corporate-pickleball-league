@@ -22,4 +22,9 @@ To test the iframe behavior locally:
 - `npm run lint`: Run ESLint.
 
 ## 📦 Architecture
-The app uses a simplified routing structure where `Leaderboard` is the entry point. The `Layout` component handles the height notification logic globally.
+The app uses a **Context-driven** architecture:
+- `LeagueContext` lifts data fetching to the root level.
+- Pages (`Leaderboard`, `Matches`) consume data instantly from the context.
+- Automatic background polling keeps data fresh without page reloads.
+- `Layout` handles the global iframe resizing logic.
+For a deep dive, see [ARCHITECTURE.md](./ARCHITECTURE.md).
