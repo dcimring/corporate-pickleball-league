@@ -4,7 +4,7 @@ import type { LeagueData } from '../types';
 import { Loader2, Info } from 'lucide-react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Navigation } from '../components/Navigation';
-import { MatchCard } from '../components/MatchCardVariants';
+import { MatchCard } from '../components/MatchCard';
 
 export const Matches: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -79,39 +79,11 @@ export const Matches: React.FC = () => {
         onDivisionChange={handleDivisionChange} 
       />
 
-      <div className="space-y-12">
+      <div className="grid gap-6">
         {matches.length > 0 ? (
-          <>
-            {/* Design Review: Option 1 */}
-            <div className="space-y-4">
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-4">Option 1: High Contrast</p>
-                <div className="grid gap-4">
-                    {matches.map((match) => (
-                        <MatchCard key={`hc-${match.id}`} match={match} variant="high-contrast" />
-                    ))}
-                </div>
-            </div>
-
-            {/* Design Review: Option 2 */}
-            <div className="space-y-4 pt-8 border-t border-dashed border-gray-200">
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-4">Option 2: Versus Split</p>
-                <div className="grid gap-4">
-                    {matches.map((match) => (
-                        <MatchCard key={`vs-${match.id}`} match={match} variant="versus-split" />
-                    ))}
-                </div>
-            </div>
-
-            {/* Design Review: Option 3 */}
-            <div className="space-y-4 pt-8 border-t border-dashed border-gray-200">
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-4">Option 3: Digital Scoreboard</p>
-                <div className="grid gap-4">
-                    {matches.map((match) => (
-                        <MatchCard key={`db-${match.id}`} match={match} variant="digital-board" />
-                    ))}
-                </div>
-            </div>
-          </>
+          matches.map((match) => (
+            <MatchCard key={match.id} match={match} />
+          ))
         ) : (
           <div className="p-16 text-center flex flex-col items-center justify-center gap-4 text-gray-400 bg-white rounded-2xl border border-gray-100">
             <div className="bg-blue-50 p-4 rounded-full">
