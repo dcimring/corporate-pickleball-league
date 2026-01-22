@@ -46,6 +46,9 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
           )}>
             {match.team1Wins}
           </span>
+          <span className="text-[10px] font-mono font-bold text-gray-400 mt-1 relative z-10">
+            {match.team1Points} PTS
+          </span>
           {isWin1 && <div className="absolute inset-0 bg-brand-yellow/10 skew-x-[-12deg] w-[120%] -ml-[10%]" />}
         </div>
 
@@ -73,15 +76,11 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
           )}>
             {match.team2Wins}
           </span>
+          <span className="text-[10px] font-mono font-bold text-gray-400 mt-1 relative z-10">
+            {match.team2Points} PTS
+          </span>
           {isWin2 && <div className="absolute inset-0 bg-brand-yellow/10 skew-x-[12deg] w-[120%] -ml-[10%]" />}
         </div>
-      </div>
-      
-      {/* Points Footer */}
-      <div className="bg-gray-50 border-t border-gray-100 px-4 py-1.5 flex justify-center gap-4 text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest">
-        <span>Pts: {match.team1Points}</span>
-        <span className="text-gray-200">|</span>
-        <span>Pts: {match.team2Points}</span>
       </div>
     </div>
   );
