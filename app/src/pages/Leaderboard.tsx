@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { fetchLeagueData, initialLeagueData } from '../lib/data';
 import type { LeagueData } from '../types';
 import { Loader2 } from 'lucide-react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { LeaderboardTable } from '../components/LeaderboardTable';
-import { NavigationVariant } from '../components/NavigationVariants';
+import { Navigation } from '../components/Navigation';
 
 export const Leaderboard: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const tabsRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
   const [data, setData] = useState<LeagueData>(initialLeagueData);
   const [loading, setLoading] = useState(true);
   const [activeDivision, setActiveDivision] = useState<string>('');
@@ -36,23 +36,22 @@ export const Leaderboard: React.FC = () => {
       }
     };
     loadData();
-  }, [searchParams]); // Re-run if URL params change externally, though local state handles clicks
+  }, [searchParams]);
 
-  // Sync state to URL when user clicks tabs
   const handleDivisionChange = (div: string) => {
     setActiveDivision(div);
     setSearchParams({ division: div });
   };
 
-  // Scroll active tab into view
-  useEffect(() => {
-    if (tabsRef.current && activeDivision) {
-      const activeButton = tabsRef.current.querySelector(`button[data-value="${activeDivision}"]`);
-      if (activeButton) {
-        activeButton.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-      }
+  const handlePageChange = (path: string) => {
+    // Navigate while preserving division param if possible, or just append it
+    const currentDiv = searchParams.get('division') || activeDivision;
+    if (currentDiv) {
+        navigate(`${path}?division=${encodeURIComponent(currentDiv)}`);
+    } else {
+        navigate(path);
     }
-  }, [activeDivision, loading]);
+  };
 
   if (loading) {
     return (
@@ -70,62 +69,19 @@ export const Leaderboard: React.FC = () => {
     { name: 'Matches', path: '/matches' },
   ];
 
-  const handlePageChange = (path: string) => {
-    // Just a mock handler for the visual review
-    console.log("Navigating to:", path);
-  };
-
   return (
-    <div className="space-y-12">
-      {/* Design Review: Option 1 */}
-      <div className="space-y-4">
-        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-4">Option 1: Refined Pill (Current Polish)</p>
-        <NavigationVariant 
-            pageTabs={pageTabs} 
-            activePage="/leaderboard" 
-            divisions={divisions} 
-            activeDivision={activeDivision} 
-            onPageChange={handlePageChange} 
-            onDivisionChange={handleDivisionChange}
-            variant="refined-pill" 
-        />
-        <div className="pt-4">
-            <LeaderboardTable stats={stats} />
-        </div>
-      </div>
+    <div className="space-y-8">
+      <Navigation 
+        pageTabs={pageTabs} 
+        activePage="/leaderboard" 
+        divisions={divisions} 
+        activeDivision={activeDivision} 
+        onPageChange={handlePageChange} 
+        onDivisionChange={handleDivisionChange} 
+      />
 
-      {/* Design Review: Option 2 */}
-      <div className="space-y-4 pt-12 border-t border-dashed border-gray-200">
-        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-4">Option 2: Underline Glow</p>
-        <NavigationVariant 
-            pageTabs={pageTabs} 
-            activePage="/leaderboard" 
-            divisions={divisions} 
-            activeDivision={activeDivision} 
-            onPageChange={handlePageChange} 
-            onDivisionChange={handleDivisionChange}
-            variant="underline-glow" 
-        />
-        <div className="pt-4">
-            <LeaderboardTable stats={stats} />
-        </div>
-      </div>
-
-      {/* Design Review: Option 3 */}
-      <div className="space-y-4 pt-12 border-t border-dashed border-gray-200">
-        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-4">Option 3: Varsity Block</p>
-        <NavigationVariant 
-            pageTabs={pageTabs} 
-            activePage="/leaderboard" 
-            divisions={divisions} 
-            activeDivision={activeDivision} 
-            onPageChange={handlePageChange} 
-            onDivisionChange={handleDivisionChange}
-            variant="varsity-block" 
-        />
-        <div className="pt-4">
-            <LeaderboardTable stats={stats} />
-        </div>
+      <div className="space-y-12">
+        <LeaderboardTable stats={stats} />
       </div>
     </div>
   );

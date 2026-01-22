@@ -1,16 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { fetchLeagueData, initialLeagueData } from '../lib/data';
 import type { LeagueData } from '../types';
 import { clsx } from 'clsx';
 import { Calendar as CalendarIcon, Loader2, Info } from 'lucide-react';
 import { Card } from '../components/Card';
-import { useSearchParams } from 'react-router-dom';
-import { DivisionTabs } from '../components/DivisionTabs';
-import { PageTabs } from '../components/PageTabs';
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import { Navigation } from '../components/Navigation';
 
 export const Matches: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const tabsRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
   const [data, setData] = useState<LeagueData>(initialLeagueData);
   const [loading, setLoading] = useState(true);
   const [activeDivision, setActiveDivision] = useState<string>('');
@@ -45,14 +44,14 @@ export const Matches: React.FC = () => {
     setSearchParams({ division: div });
   };
 
-  useEffect(() => {
-    if (tabsRef.current && activeDivision) {
-      const activeButton = tabsRef.current.querySelector(`button[data-active="true"]`);
-      if (activeButton) {
-        activeButton.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-      }
+  const handlePageChange = (path: string) => {
+    const currentDiv = searchParams.get('division') || activeDivision;
+    if (currentDiv) {
+        navigate(`${path}?division=${encodeURIComponent(currentDiv)}`);
+    } else {
+        navigate(path);
     }
-  }, [activeDivision, loading]);
+  };
 
   if (loading) {
     return (
@@ -75,21 +74,21 @@ export const Matches: React.FC = () => {
     }).format(date);
   };
 
+  const pageTabs = [
+    { name: 'Leaderboard', path: '/leaderboard' },
+    { name: 'Matches', path: '/matches' },
+  ];
+
   return (
-    <div className="space-y-4">
-      {/* Navigation */}
-      <div>
-        <PageTabs />
-        
-        {/* Division Toggle */}
-        <div ref={tabsRef} className="w-full">
-          <DivisionTabs 
-            divisions={divisions} 
-            activeDivision={activeDivision} 
-            onChange={handleDivisionChange} 
-          />
-        </div>
-      </div>
+    <div className="space-y-8">
+      <Navigation 
+        pageTabs={pageTabs} 
+        activePage="/matches" 
+        divisions={divisions} 
+        activeDivision={activeDivision} 
+        onPageChange={handlePageChange} 
+        onDivisionChange={handleDivisionChange} 
+      />
 
       <div className="grid gap-4">
         {matches.length > 0 ? (
