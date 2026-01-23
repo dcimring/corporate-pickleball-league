@@ -196,6 +196,34 @@ function updateDatabase(matches) {
   }
 }
 
+function createTeam(name, divisionId) {
+  const url = PropertiesService.getScriptProperties().getProperty('SUPABASE_URL');
+  const key = PropertiesService.getScriptProperties().getProperty('SUPABASE_SERVICE_ROLE_KEY');
+
+  const options = {
+    method: 'post',
+    contentType: 'application/json',
+    headers: {
+      'apikey': key,
+      'Authorization': `Bearer ${key}`,
+      'Prefer': 'return=representation'
+    },
+    payload: JSON.stringify({ name: name, division_id: divisionId })
+  };
+
+  try {
+    const response = UrlFetchApp.fetch(`${url}/rest/v1/teams`, options);
+    if (response.getResponseCode() === 201) {
+      const data = JSON.parse(response.getContentText());
+      log(`Created new team: ${name}`);
+      return data[0];
+    }
+  } catch (e) {
+    log(`Error creating team ${name}: ${e}`);
+  }
+  return null;
+}
+
 function fetchSupabaseLookups() {
   const url = PropertiesService.getScriptProperties().getProperty('SUPABASE_URL');
   const key = PropertiesService.getScriptProperties().getProperty('SUPABASE_SERVICE_ROLE_KEY');
@@ -264,20 +292,34 @@ function parseCSVAndMap(csvText, { divisions, teams }) {
       continue;
     }
 
-    const t1Id = getTeamId(team1Name, divId, teams);
-    const t2Id = getTeamId(team2Name, divId, teams);
-
+    let t1Id = getTeamId(team1Name, divId, teams);
     if (!t1Id) {
-      const msg = `Row ${i+1}: Team '${team1Name}' not found in '${divNameRaw}'.`;
-      log(msg);
-      errors.push(msg);
-      continue;
+      // Auto-create Team 1
+      const newTeam = createTeam(team1Name, divId);
+      if (newTeam) {
+        t1Id = newTeam.id;
+        teams.push(newTeam); // Update cache
+      } else {
+        const msg = `Row ${i+1}: Failed to create team '${team1Name}'.`;
+        log(msg);
+        errors.push(msg);
+        continue;
+      }
     }
+
+    let t2Id = getTeamId(team2Name, divId, teams);
     if (!t2Id) {
-      const msg = `Row ${i+1}: Team '${team2Name}' not found in '${divNameRaw}'.`;
-      log(msg);
-      errors.push(msg);
-      continue;
+      // Auto-create Team 2
+      const newTeam = createTeam(team2Name, divId);
+      if (newTeam) {
+        t2Id = newTeam.id;
+        teams.push(newTeam); // Update cache
+      } else {
+        const msg = `Row ${i+1}: Failed to create team '${team2Name}'.`;
+        log(msg);
+        errors.push(msg);
+        continue;
+      }
     }
 
     mappedMatches.push({
