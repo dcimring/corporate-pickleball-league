@@ -1,6 +1,6 @@
 import React from 'react';
 import { clsx } from 'clsx';
-import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
+import { TrendingUp, TrendingDown, Minus, Info } from 'lucide-react';
 import type { LeaderboardEntry } from '../types';
 
 interface LeaderboardTableProps {
@@ -10,8 +10,12 @@ interface LeaderboardTableProps {
 export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats }) => {
   
   if (stats.length === 0) return (
-    <div className="p-8 text-center text-gray-400 font-heading font-bold text-lg">
-      No data available
+    <div className="p-16 text-center flex flex-col items-center justify-center gap-4 text-gray-400 bg-white rounded-2xl border border-gray-100">
+      <div className="bg-blue-50 p-4 rounded-full">
+        <Info className="w-8 h-8 text-brand-blue" />
+      </div>
+      <p className="font-heading font-bold text-xl text-brand-blue">No teams found</p>
+      <p className="font-body text-gray-500">Check back later for the schedule!</p>
     </div>
   );
 
