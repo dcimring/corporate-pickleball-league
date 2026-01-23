@@ -77,7 +77,7 @@ def check_and_process():
         csv_str = match_data['content'].decode('utf-8-sig')
         csv_file = io.StringIO(csv_str)
         
-        matches_to_insert, errors = ingest_matches.process_csv_content(csv_file)
+        matches_to_insert, errors, created_teams = ingest_matches.process_csv_content(csv_file)
         new_count = len(matches_to_insert)
         
         log(f"New CSV valid row count: {new_count}")
@@ -89,6 +89,12 @@ def check_and_process():
             "New CSV Rows": new_count
         }
         
+        if created_teams:
+            created_preview = "\n".join(created_teams[:5])
+            if len(created_teams) > 5:
+                created_preview += f"\n...and {len(created_teams)-5} more."
+            stats["New Teams Created"] = created_preview
+
         if errors:
             # Limit errors to first 10 to avoid hitting Discord limit
             error_preview = "\n".join(errors[:10])

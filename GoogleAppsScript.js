@@ -86,7 +86,7 @@ function processMatchResults() {
   log(`Processing newest email: "${newest.subject}" from ${formatDate(newest.date)}`);
 
   const csvData = newest.attachment.getDataAsString();
-  const { matches: matchesToInsert, errors } = parseCSVAndMap(csvData, lookups);
+  const { matches: matchesToInsert, errors, createdTeams } = parseCSVAndMap(csvData, lookups);
   const newCount = matchesToInsert.length;
 
   // 5. Data Safety Check
@@ -99,6 +99,12 @@ function processMatchResults() {
     "Current DB Rows": currentCount,
     "New CSV Rows": newCount
   };
+
+  if (createdTeams.length > 0) {
+    let createdMsg = createdTeams.slice(0, 5).join("\n");
+    if (createdTeams.length > 5) createdMsg += `\n...and ${createdTeams.length - 5} more.`;
+    stats["New Teams Created"] = createdMsg;
+  }
 
   if (errors.length > 0) {
     let errorMsg = errors.slice(0, 10).join("\n");
@@ -259,6 +265,7 @@ function parseCSVAndMap(csvText, { divisions, teams }) {
   const lines = csvText.split(/\r\n|\n/);
   const mappedMatches = [];
   const errors = [];
+  const createdTeams = [];
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
@@ -299,6 +306,7 @@ function parseCSVAndMap(csvText, { divisions, teams }) {
       if (newTeam) {
         t1Id = newTeam.id;
         teams.push(newTeam); // Update cache
+        createdTeams.push(`${team1Name} (${divNameRaw})`);
       } else {
         const msg = `Row ${i+1}: Failed to create team '${team1Name}'.`;
         log(msg);
@@ -314,6 +322,7 @@ function parseCSVAndMap(csvText, { divisions, teams }) {
       if (newTeam) {
         t2Id = newTeam.id;
         teams.push(newTeam); // Update cache
+        createdTeams.push(`${team2Name} (${divNameRaw})`);
       } else {
         const msg = `Row ${i+1}: Failed to create team '${team2Name}'.`;
         log(msg);
@@ -334,7 +343,7 @@ function parseCSVAndMap(csvText, { divisions, teams }) {
     });
   }
 
-  return { matches: mappedMatches, errors: errors };
+  return { matches: mappedMatches, errors: errors, createdTeams: createdTeams };
 }
 
 function getDivisionId(nameRaw, divisions) {

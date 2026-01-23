@@ -95,6 +95,7 @@ def process_csv_content(csv_file_obj):
     divisions, teams = fetch_lookups()
     matches_to_insert = []
     errors = []
+    created_teams = []
     
     # Using csv.reader to handle standard CSV parsing
     reader = csv.reader(csv_file_obj)
@@ -146,6 +147,7 @@ def process_csv_content(csv_file_obj):
             if new_team:
                 t1_id = new_team['id']
                 teams.append(new_team) # Update cache
+                created_teams.append(f"{team1_name} ({div_name})")
             else:
                 msg = f"Row {row_num}: Failed to create team '{team1_name}'."
                 log(msg)
@@ -159,6 +161,7 @@ def process_csv_content(csv_file_obj):
             if new_team:
                 t2_id = new_team['id']
                 teams.append(new_team) # Update cache
+                created_teams.append(f"{team2_name} ({div_name})")
             else:
                 msg = f"Row {row_num}: Failed to create team '{team2_name}'."
                 log(msg)
@@ -178,7 +181,7 @@ def process_csv_content(csv_file_obj):
             "team2_points_for": t2_points
         })
 
-    return matches_to_insert, errors
+    return matches_to_insert, errors, created_teams
 
 def update_database(matches_to_insert, force=False):
     if matches_to_insert:
@@ -210,8 +213,14 @@ def update_database(matches_to_insert, force=False):
 def process_csv_file(file_path, force=False):
     log(f"Reading CSV file: {file_path}")
     with open(file_path, mode='r', encoding='utf-8-sig') as csvfile:
-        matches, errors = process_csv_content(csvfile)
+        matches, errors, created_teams = process_csv_content(csvfile)
         
+        if created_teams:
+            print("\n--- New Teams Created ---")
+            for t in created_teams:
+                print(f"+ {t}")
+            print("-------------------------\n")
+
         if errors:
             print("\n--- Validation Warnings ---")
             for err in errors:
