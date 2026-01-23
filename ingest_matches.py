@@ -60,6 +60,11 @@ def parse_date(date_str):
 
 def get_division_id(name_raw, divisions):
     name = name_raw.strip().lower()
+
+    # Handle Special Mappings
+    if name == "cpl":
+        name = "cayman premier league"
+
     # Try exact match (case-insensitive)
     for d in divisions:
         if d['name'].lower() == name:

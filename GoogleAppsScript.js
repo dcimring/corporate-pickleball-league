@@ -347,7 +347,13 @@ function parseCSVAndMap(csvText, { divisions, teams }) {
 }
 
 function getDivisionId(nameRaw, divisions) {
-  const name = nameRaw.trim().toLowerCase();
+  let name = nameRaw.trim().toLowerCase();
+
+  // Handle Special Mappings
+  if (name === "cpl") {
+    name = "cayman premier league";
+  }
+
   for (const d of divisions) {
     if (d.name.toLowerCase() === name) return d.id;
   }
