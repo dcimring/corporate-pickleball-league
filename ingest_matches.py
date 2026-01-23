@@ -80,6 +80,17 @@ def get_team_id(name_raw, division_id, teams):
             return t['id']
     return None
 
+def create_team(name, division_id):
+    try:
+        # Insert and return representation
+        res = supabase.table("teams").insert({"name": name, "division_id": division_id}).execute()
+        if res.data:
+            log(f"Created new team: {name}")
+            return res.data[0] # Returns full team object
+    except Exception as e:
+        log(f"Error creating team {name}: {e}")
+        return None
+
 def process_csv_content(csv_file_obj):
     divisions, teams = fetch_lookups()
     matches_to_insert = []
@@ -129,18 +140,30 @@ def process_csv_content(csv_file_obj):
             continue
 
         t1_id = get_team_id(team1_name, div_id, teams)
-        t2_id = get_team_id(team2_name, div_id, teams)
-
         if not t1_id:
-            msg = f"Row {row_num}: Team '{team1_name}' not found in '{div_name}'."
-            log(msg)
-            errors.append(msg)
-            continue
+            # Auto-create Team 1
+            new_team = create_team(team1_name, div_id)
+            if new_team:
+                t1_id = new_team['id']
+                teams.append(new_team) # Update cache
+            else:
+                msg = f"Row {row_num}: Failed to create team '{team1_name}'."
+                log(msg)
+                errors.append(msg)
+                continue
+
+        t2_id = get_team_id(team2_name, div_id, teams)
         if not t2_id:
-            msg = f"Row {row_num}: Team '{team2_name}' not found in '{div_name}'."
-            log(msg)
-            errors.append(msg)
-            continue
+            # Auto-create Team 2
+            new_team = create_team(team2_name, div_id)
+            if new_team:
+                t2_id = new_team['id']
+                teams.append(new_team) # Update cache
+            else:
+                msg = f"Row {row_num}: Failed to create team '{team2_name}'."
+                log(msg)
+                errors.append(msg)
+                continue
 
         formatted_date = parse_date(date_raw)
 
