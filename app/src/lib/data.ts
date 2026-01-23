@@ -14,7 +14,7 @@ export const fetchLeagueData = async (): Promise<LeagueData> => {
   // Fetch all teams
   const { data: teamsData, error: teamError } = await supabase
     .from('teams')
-    .select('*');
+    .select('id, name, division_id');
     
   if (teamError) throw teamError;
   const teamsRows = teamsData as TeamRow[];

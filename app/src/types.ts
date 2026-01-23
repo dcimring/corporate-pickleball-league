@@ -56,11 +56,6 @@ export interface TeamRow {
   id: string;
   division_id: string;
   name: string;
-  wins: number;
-  losses: number;
-  points_for: number;
-  points_against: number;
-  longest_win_streak: number;
 }
 
 export interface MatchRow {
