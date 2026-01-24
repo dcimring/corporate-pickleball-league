@@ -32,24 +32,24 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
         {/* Team 1 Side */}
         <div className={clsx(
           "flex-1 flex flex-col justify-center items-center p-4 relative overflow-hidden",
-          isWin1 ? "bg-blue-50" : "bg-white"
+          isWin1 ? "bg-green-50" : "bg-white"
         )}>
           <span className={clsx(
             "font-heading font-black text-lg md:text-xl uppercase text-center relative z-10",
-            isWin1 ? "text-brand-blue" : "text-gray-400"
+            isWin1 ? "text-brand-green" : "text-gray-400"
           )}>
             {match.team1}
           </span>
           <span className={clsx(
             "text-4xl md:text-5xl font-heading font-black mt-2 relative z-10",
-            isWin1 ? "text-brand-blue" : "text-gray-200"
+            isWin1 ? "text-brand-green" : "text-gray-200"
           )}>
             {match.team1Wins}
           </span>
           <span className="text-[10px] font-mono font-bold text-gray-400 mt-1 relative z-10">
             {match.team1Points} PTS
           </span>
-          {isWin1 && <div className="absolute inset-0 bg-brand-yellow/10 skew-x-[-12deg] w-[120%] -ml-[10%]" />}
+          {isWin1 && <div className="absolute inset-0 bg-brand-green/10 skew-x-[-12deg] w-[120%] -ml-[10%]" />}
         </div>
 
         {/* VS Divider */}
@@ -62,24 +62,24 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
         {/* Team 2 Side */}
         <div className={clsx(
           "flex-1 flex flex-col justify-center items-center p-4 relative overflow-hidden",
-          isWin2 ? "bg-blue-50" : "bg-white"
+          isWin2 ? "bg-green-50" : "bg-white"
         )}>
           <span className={clsx(
             "font-heading font-black text-lg md:text-xl uppercase text-center relative z-10",
-            isWin2 ? "text-brand-blue" : "text-gray-400"
+            isWin2 ? "text-brand-green" : "text-gray-400"
           )}>
             {match.team2}
           </span>
           <span className={clsx(
             "text-4xl md:text-5xl font-heading font-black mt-2 relative z-10",
-            isWin2 ? "text-brand-blue" : "text-gray-200"
+            isWin2 ? "text-brand-green" : "text-gray-200"
           )}>
             {match.team2Wins}
           </span>
           <span className="text-[10px] font-mono font-bold text-gray-400 mt-1 relative z-10">
             {match.team2Points} PTS
           </span>
-          {isWin2 && <div className="absolute inset-0 bg-brand-yellow/10 skew-x-[12deg] w-[120%] -ml-[10%]" />}
+          {isWin2 && <div className="absolute inset-0 bg-brand-green/10 skew-x-[12deg] w-[120%] -ml-[10%]" />}
         </div>
       </div>
     </div>
