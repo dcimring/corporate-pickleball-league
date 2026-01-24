@@ -34,12 +34,14 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
           "flex-1 flex flex-col justify-center items-center p-4 relative overflow-hidden",
           isWin1 ? "bg-green-50" : "bg-white"
         )}>
-          <span className={clsx(
-            "font-heading font-black text-lg md:text-xl uppercase text-center relative z-10",
-            isWin1 ? "text-brand-green" : "text-gray-400"
-          )}>
-            {match.team1}
-          </span>
+          <div className="h-16 md:h-auto flex items-center justify-center w-full relative z-10">
+            <span className={clsx(
+              "font-heading font-black text-lg md:text-xl uppercase text-center line-clamp-2",
+              isWin1 ? "text-brand-green" : "text-gray-400"
+            )}>
+              {match.team1}
+            </span>
+          </div>
           <span className={clsx(
             "text-4xl md:text-5xl font-heading font-black mt-2 relative z-10",
             isWin1 ? "text-brand-green" : "text-gray-200"
@@ -64,12 +66,14 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
           "flex-1 flex flex-col justify-center items-center p-4 relative overflow-hidden",
           isWin2 ? "bg-green-50" : "bg-white"
         )}>
-          <span className={clsx(
-            "font-heading font-black text-lg md:text-xl uppercase text-center relative z-10",
-            isWin2 ? "text-brand-green" : "text-gray-400"
-          )}>
-            {match.team2}
-          </span>
+          <div className="h-16 md:h-auto flex items-center justify-center w-full relative z-10">
+            <span className={clsx(
+              "font-heading font-black text-lg md:text-xl uppercase text-center line-clamp-2",
+              isWin2 ? "text-brand-green" : "text-gray-400"
+            )}>
+              {match.team2}
+            </span>
+          </div>
           <span className={clsx(
             "text-4xl md:text-5xl font-heading font-black mt-2 relative z-10",
             isWin2 ? "text-brand-green" : "text-gray-200"
