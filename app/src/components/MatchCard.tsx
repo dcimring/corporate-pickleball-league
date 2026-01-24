@@ -24,7 +24,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
   return (
     <div className="relative w-full bg-white rounded-xl overflow-hidden border border-gray-100 shadow-soft hover:shadow-hover transition-all group">
       {/* Date Tag */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-[10px] font-bold px-3 py-1 rounded-b-lg shadow-sm z-10 font-heading tracking-widest">
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 bg-brand-yellow text-brand-blue text-[10px] font-black px-3 py-1 rounded-b-lg shadow-sm z-10 font-heading tracking-widest uppercase">
         {formatDate(match.date)}
       </div>
 
