@@ -20,6 +20,9 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
 
   const isWin1 = match.team1Wins > match.team2Wins;
   const isWin2 = match.team2Wins > match.team1Wins;
+  const isTie = match.team1Wins === match.team2Wins;
+  const isPointsWin1 = isTie && match.team1Points > match.team2Points;
+  const isPointsWin2 = isTie && match.team2Points > match.team1Points;
 
   return (
     <div className="relative w-full bg-white rounded-xl overflow-hidden border border-gray-100 shadow-soft hover:shadow-hover transition-all group">
@@ -34,6 +37,10 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
           "flex-1 flex flex-col justify-center items-center p-4 relative overflow-hidden",
           isWin1 ? "bg-green-50" : "bg-white"
         )}>
+          {isPointsWin1 && (
+            <div className="absolute inset-2 border-2 border-dashed border-brand-green/50 rounded-lg pointer-events-none" />
+          )}
+          
           <div className="h-16 md:h-auto flex items-center justify-center w-full relative z-10">
             <span className={clsx(
               "font-heading font-black text-lg md:text-xl uppercase text-center line-clamp-2",
@@ -48,14 +55,17 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
           )}>
             {match.team1Wins}
           </span>
-          <span className="text-[10px] font-mono font-bold text-gray-400 mt-1 relative z-10">
+          <span className={clsx(
+            "text-[10px] font-mono font-bold mt-1 relative z-10",
+            isPointsWin1 ? "text-brand-green" : "text-gray-400"
+          )}>
             {match.team1Points} PTS
           </span>
           {isWin1 && <div className="absolute inset-0 bg-brand-green/10 skew-x-[-12deg] w-[120%] -ml-[10%]" />}
         </div>
 
         {/* VS Divider */}
-        <div className="relative w-px bg-gray-200 flex items-center justify-center">
+        <div className="relative w-px bg-gray-200 hidden items-center justify-center md:flex">
           <div className="bg-white border border-gray-200 rounded-full w-8 h-8 flex items-center justify-center text-[10px] font-bold text-gray-300 font-heading z-20">
             VS
           </div>
@@ -66,6 +76,10 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
           "flex-1 flex flex-col justify-center items-center p-4 relative overflow-hidden",
           isWin2 ? "bg-green-50" : "bg-white"
         )}>
+          {isPointsWin2 && (
+            <div className="absolute inset-2 border-2 border-dashed border-brand-green/50 rounded-lg pointer-events-none" />
+          )}
+
           <div className="h-16 md:h-auto flex items-center justify-center w-full relative z-10">
             <span className={clsx(
               "font-heading font-black text-lg md:text-xl uppercase text-center line-clamp-2",
@@ -80,7 +94,10 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
           )}>
             {match.team2Wins}
           </span>
-          <span className="text-[10px] font-mono font-bold text-gray-400 mt-1 relative z-10">
+          <span className={clsx(
+            "text-[10px] font-mono font-bold mt-1 relative z-10",
+            isPointsWin2 ? "text-brand-green" : "text-gray-400"
+          )}>
             {match.team2Points} PTS
           </span>
           {isWin2 && <div className="absolute inset-0 bg-brand-green/10 skew-x-[12deg] w-[120%] -ml-[10%]" />}
