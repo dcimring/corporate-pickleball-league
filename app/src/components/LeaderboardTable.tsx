@@ -24,13 +24,13 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats }) => 
     <div className="w-full overflow-hidden shadow-soft">
       <table className="w-full text-left border-collapse">
         <thead>
-          <tr className="bg-brand-gray text-black border-b border-gray-200">
-            <th className="py-5 text-center font-heading font-bold text-sm tracking-widest w-[60px] md:w-[80px]">#</th>
-            <th className="py-5 font-heading font-bold text-sm tracking-widest">TEAM</th>
-            <th className="py-5 text-center font-heading font-bold text-sm tracking-widest w-[80px]">WINS</th>
-            <th className="py-5 text-center font-heading font-bold text-sm tracking-widest text-brand-blue w-[80px]">PCT</th>
-            <th className="py-5 text-center font-heading font-bold text-sm tracking-widest w-[60px] md:w-[100px]">PTS</th>
-            <th className="hidden md:table-cell py-5 pr-6 text-right font-heading font-bold text-sm tracking-widest w-[100px]">DIFF</th>
+          <tr className="bg-brand-gray text-black border-t border-b border-gray-200">
+            <th className="py-5 text-center font-heading font-black text-sm tracking-widest w-[60px] md:w-[80px]">#</th>
+            <th className="py-5 font-heading font-black text-sm tracking-widest">TEAM</th>
+            <th className="py-5 text-center font-heading font-black text-sm tracking-widest w-[80px]">WINS</th>
+            <th className="py-5 text-center font-heading font-black text-sm tracking-widest text-brand-blue w-[80px]">PCT</th>
+            <th className="py-5 text-center font-heading font-black text-sm tracking-widest w-[60px] md:w-[100px]">PTS</th>
+            <th className="hidden md:table-cell py-5 pr-6 text-right font-heading font-black text-sm tracking-widest w-[100px]">DIFF</th>
           </tr>
         </thead>
         <tbody className="bg-white">
