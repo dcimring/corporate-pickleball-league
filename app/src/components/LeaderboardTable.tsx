@@ -1,6 +1,6 @@
 import React from 'react';
 import { clsx } from 'clsx';
-import { TrendingUp, TrendingDown, Minus, Info } from 'lucide-react';
+import { Info } from 'lucide-react';
 import type { LeaderboardEntry } from '../types';
 
 interface LeaderboardTableProps {
