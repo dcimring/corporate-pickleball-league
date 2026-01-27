@@ -23,7 +23,7 @@ A professional, responsive, and iframe-optimized website for the Corporate Pickl
 -   **Build Tool:** [Vite](https://vitejs.dev/)
 -   **Database:** [Supabase](https://supabase.com/) (PostgreSQL)
 -   **Styling:** [Tailwind CSS v4](https://tailwindcss.com/)
--   **Typography:** 'Montserrat' (Heading), 'Open Sans' (Body)
+-   **Typography:** 'Raleway' (Heading & Body)
 -   **Icons:** [Lucide React](https://lucide.dev/)
 -   **Routing:** [React Router 7](https://reactrouter.com/)
 
@@ -105,8 +105,10 @@ python run_ingest_service.py
 
 ## 🎨 Theme Versions
 
--   **Main Branch:** The current "Night Court Electric" theme.
--   **[old-theme](https://github.com/dcimring/corporate-pickleball-league/tree/old-theme) Branch:** Preserves the original "Organic Clubhouse" design (Cream & Ink).
+-   **Main Branch:** The iframe friendly version themed for Pickleball Cayman
+-   **night-court-theme Branch:** "Night Court Electric" theme
+-   **old-theme Branch:** Preserves the original "Organic Clubhouse" design (Cream & Ink).
+-   **pickleball-cayman-theme Branch:** full site with Pickleball Cayman theme.
 
 ## 🇰🇾 Made in Cayman
 
