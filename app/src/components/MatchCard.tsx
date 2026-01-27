@@ -7,101 +7,79 @@ interface MatchCardProps {
 }
 
 export const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
-  
+  const isWin1 = match.team1Wins > match.team2Wins || (match.team1Wins === match.team2Wins && match.team1Points > match.team2Points);
+  const isWin2 = match.team2Wins > match.team1Wins || (match.team1Wins === match.team2Wins && match.team2Points > match.team1Points);
+
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);
     return new Intl.DateTimeFormat('en-GB', {
-      day: 'numeric',
+      day: '2-digit',
       month: 'short',
       year: '2-digit',
       timeZone: 'UTC'
-    }).format(date);
+    }).format(date).toUpperCase(); // 14-JAN-26
   };
 
-  const isWin1 = match.team1Wins > match.team2Wins;
-  const isWin2 = match.team2Wins > match.team1Wins;
-  const isTie = match.team1Wins === match.team2Wins;
-  const isPointsWin1 = isTie && match.team1Points > match.team2Points;
-  const isPointsWin2 = isTie && match.team2Points > match.team1Points;
-
   return (
-    <div className="relative w-full bg-white rounded-xl overflow-hidden border border-gray-100 shadow-soft hover:shadow-hover transition-all group">
-      {/* Date Tag */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 bg-brand-yellow text-brand-blue text-[10px] font-black px-3 py-1 rounded-b-lg shadow-sm z-10 font-heading tracking-widest uppercase">
-        {formatDate(match.date)}
-      </div>
+    <div className="w-full bg-white rounded-3xl shadow-soft hover:shadow-lg transition-all duration-300 relative overflow-hidden group border border-gray-100/50">
+      
+      {/* Top Accent Bar (Inset) */}
+      <div className="absolute top-0 left-6 right-6 h-2 bg-[rgb(142,209,252)] rounded-b-md z-10" />
 
-      <div className="flex h-full min-h-[100px]">
-        {/* Team 1 Side */}
-        <div className={clsx(
-          "flex-1 flex flex-col justify-center items-center p-4 relative overflow-hidden",
-          isWin1 ? "bg-green-50" : "bg-white"
-        )}>
-          {isPointsWin1 && (
-            <div className="absolute inset-2 border-2 border-dashed border-brand-green/50 rounded-lg pointer-events-none" />
-          )}
-          
-          <div className="h-16 md:h-auto flex items-center justify-center w-full relative z-10">
-            <span className={clsx(
-              "font-heading font-black text-lg md:text-xl uppercase text-center line-clamp-2",
-              isWin1 ? "text-brand-green" : "text-gray-400"
-            )}>
-              {match.team1}
-            </span>
-          </div>
-          <span className={clsx(
-            "text-4xl md:text-5xl font-heading font-black mt-2 relative z-10",
-            isWin1 ? "text-brand-green" : "text-gray-200"
-          )}>
-            {match.team1Wins}
-          </span>
-          <span className={clsx(
-            "text-[10px] font-mono font-bold mt-1 relative z-10",
-            isPointsWin1 ? "text-brand-green" : "text-gray-400"
-          )}>
-            {match.team1Points} PTS
-          </span>
-          {isWin1 && <div className="absolute inset-0 bg-brand-green/10 skew-x-[-12deg] w-[120%] -ml-[10%]" />}
+      <div className="pt-6 md:pt-10 pb-3 px-5 md:px-8 flex flex-col h-full">
+        
+        {/* Teams Container */}
+        <div className="flex-1 flex flex-col justify-center gap-2 md:gap-4">
+            {/* Team 1 */}
+            <div className="flex justify-between items-center group/team">
+                <div className={clsx(
+                  "font-heading font-black italic uppercase text-base md:text-2xl tracking-tight leading-none max-w-[80%]",
+                  isWin1 ? "text-[rgb(0,85,150)]" : "text-gray-300"
+                )}>
+                  {match.team1}
+                </div>
+                <div className={clsx(
+                  "font-heading font-black text-3xl md:text-5xl relative",
+                  isWin1 ? "text-[rgb(0,85,150)] drop-shadow-[2px_2px_0px_rgb(247,191,38)] md:drop-shadow-[3px_3px_0px_rgb(247,191,38)]" : "text-gray-100"
+                )}>
+                  {match.team1Wins}
+                </div>
+            </div>
+
+            {/* Subtle Divider */}
+            <div className="h-px bg-gray-50 w-full" />
+
+            {/* Team 2 */}
+            <div className="flex justify-between items-center group/team">
+                <div className={clsx(
+                  "font-heading font-black italic uppercase text-base md:text-2xl tracking-tight leading-none max-w-[80%]",
+                  isWin2 ? "text-[rgb(0,85,150)]" : "text-gray-300"
+                )}>
+                  {match.team2}
+                </div>
+                <div className={clsx(
+                  "font-heading font-black text-3xl md:text-5xl relative",
+                  isWin2 ? "text-[rgb(0,85,150)] drop-shadow-[2px_2px_0px_rgb(247,191,38)] md:drop-shadow-[3px_3px_0px_rgb(247,191,38)]" : "text-gray-100"
+                )}>
+                  {match.team2Wins}
+                </div>
+            </div>
         </div>
 
-        {/* VS Divider */}
-        <div className="relative w-px bg-gray-200 hidden items-center justify-center md:flex">
-          <div className="bg-white border border-gray-200 rounded-full w-8 h-8 flex items-center justify-center text-[10px] font-bold text-gray-300 font-heading z-20">
-            VS
-          </div>
+        {/* Footer (Date & Points) */}
+        <div className="mt-2 md:mt-4 pt-3 border-t border-gray-100 flex justify-between items-end">
+            <div className="font-heading font-bold text-[rgb(142,209,252)] text-xs tracking-[0.2em] uppercase">
+                {formatDate(match.date)}
+            </div>
+            
+            <div className="flex items-center gap-2 font-mono text-[10px] font-bold text-gray-400">
+                <span className="tracking-widest uppercase">PTS:</span>
+                <span className={clsx("text-sm", isWin1 ? "text-[rgb(0,85,150)]" : "text-gray-400")}>{match.team1Points}</span>
+                <span className="text-gray-300">/</span>
+                <span className={clsx("text-sm", isWin2 ? "text-[rgb(0,85,150)]" : "text-gray-400")}>{match.team2Points}</span>
+            </div>
         </div>
 
-        {/* Team 2 Side */}
-        <div className={clsx(
-          "flex-1 flex flex-col justify-center items-center p-4 relative overflow-hidden",
-          isWin2 ? "bg-green-50" : "bg-white"
-        )}>
-          {isPointsWin2 && (
-            <div className="absolute inset-2 border-2 border-dashed border-brand-green/50 rounded-lg pointer-events-none" />
-          )}
-
-          <div className="h-16 md:h-auto flex items-center justify-center w-full relative z-10">
-            <span className={clsx(
-              "font-heading font-black text-lg md:text-xl uppercase text-center line-clamp-2",
-              isWin2 ? "text-brand-green" : "text-gray-400"
-            )}>
-              {match.team2}
-            </span>
-          </div>
-          <span className={clsx(
-            "text-4xl md:text-5xl font-heading font-black mt-2 relative z-10",
-            isWin2 ? "text-brand-green" : "text-gray-200"
-          )}>
-            {match.team2Wins}
-          </span>
-          <span className={clsx(
-            "text-[10px] font-mono font-bold mt-1 relative z-10",
-            isPointsWin2 ? "text-brand-green" : "text-gray-400"
-          )}>
-            {match.team2Points} PTS
-          </span>
-          {isWin2 && <div className="absolute inset-0 bg-brand-green/10 skew-x-[12deg] w-[120%] -ml-[10%]" />}
-        </div>
       </div>
     </div>
   );
