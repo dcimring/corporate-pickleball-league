@@ -19,62 +19,78 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats }) => 
     </div>
   );
 
-  // Variant 3: High Contrast (Bold, Athletic, "Night Court" vibe)
+  // Option 3: "Precision Grid" - Kinetic Aesthetic
   return (
-    <div className="w-full overflow-hidden shadow-soft">
+    <div className="w-full overflow-hidden bg-white rounded-3xl shadow-soft border border-gray-100/50">
+      {/* Top Accent Bar (Inset) - Matching MatchCard */}
+      <div className="h-2 w-[95%] mx-auto bg-[rgb(142,209,252)] rounded-b-md mb-2" />
+
       <table className="w-full text-left border-collapse">
         <thead>
-          <tr className="bg-brand-gray text-black border-t border-b border-gray-200">
-            <th className="py-5 text-center font-heading font-black text-sm tracking-widest w-[60px] md:w-[80px]">#</th>
-            <th className="py-5 font-heading font-black text-sm tracking-widest">TEAM</th>
-            <th className="py-5 text-center font-heading font-black text-sm tracking-widest w-[80px]">WINS</th>
-            <th className="py-5 text-center font-heading font-black text-sm tracking-widest text-brand-blue w-[80px]">PCT</th>
-            <th className="py-5 text-center font-heading font-black text-sm tracking-widest w-[60px] md:w-[100px]">PTS</th>
-            <th className="hidden md:table-cell py-5 pr-6 text-right font-heading font-black text-sm tracking-widest w-[100px]">DIFF</th>
+          <tr className="text-[rgb(0,85,150)] border-b-2 border-[rgb(142,209,252)]">
+            <th className="py-4 text-center font-heading font-black italic text-sm tracking-widest w-[60px] md:w-[80px]">#</th>
+            <th className="py-4 pl-4 font-heading font-black italic text-sm tracking-widest">TEAM</th>
+            <th className="hidden md:table-cell py-4 text-center font-heading font-black italic text-sm tracking-widest w-[80px]">WINS</th>
+            <th className="py-4 text-center font-heading font-black italic text-sm tracking-widest w-[80px]">PCT</th>
+            <th className="hidden md:table-cell py-4 text-center font-heading font-black italic text-sm tracking-widest w-[60px] md:w-[100px]">PTS</th>
+            <th className="hidden md:table-cell py-4 pr-8 text-right font-heading font-black italic text-sm tracking-widest w-[100px]">DIFF</th>
           </tr>
         </thead>
-        <tbody className="bg-white">
+        <tbody>
           {stats.map((entry, index) => {
             const diff = entry.pointsFor - entry.pointsAgainst;
+            const isTop3 = index < 3;
+            
             return (
-              <tr key={entry.team} className="border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors group">
-                <td className="py-4">
+              <tr key={entry.team} className="border-b border-gray-100 border-dashed last:border-0 hover:bg-gray-50 transition-all duration-200 group">
+                <td className="py-3">
                   <div className={clsx(
-                    "w-8 h-8 flex items-center justify-center rounded-full font-heading font-bold text-sm transition-transform group-hover:scale-110 mx-auto",
-                    index === 0 ? "bg-brand-yellow text-brand-blue" : "bg-gray-100 text-gray-500"
+                    "w-7 h-7 flex items-center justify-center font-heading font-black text-xs mx-auto transform -skew-x-6",
+                    index === 0 ? "bg-[rgb(247,191,38)] text-[rgb(0,85,150)] shadow-sm" : 
+                    index === 1 ? "bg-gray-200 text-gray-600" :
+                    index === 2 ? "bg-orange-100 text-orange-800" : "text-gray-400"
                   )}>
-                    {index + 1}
+                    <span className="skew-x-6">{index + 1}</span>
                   </div>
                 </td>
-                <td className="py-4 font-bold text-gray-800 text-sm md:text-base">
-                  {entry.team}
-                </td>
-                <td className="py-4 text-center">
-                  <div className="inline-flex items-center gap-1 font-mono text-xs text-gray-500 font-bold bg-gray-50 px-2 py-1 rounded">
-                    <span className="text-gray-900">{entry.wins}</span>
-                    <span className="text-gray-300">-</span>
-                    <span>{entry.losses}</span>
+                <td className="py-3 pl-4">
+                  <div className="flex flex-col">
+                    <span className="font-heading font-black italic text-base text-[rgb(0,85,150)] uppercase tracking-tight group-hover:translate-x-1 transition-transform duration-300 leading-tight">
+                        {entry.team}
+                    </span>
+                    {/* Mobile Only Stats Row for density */}
+                    <div className="md:hidden flex items-center gap-2 mt-0.5 text-[10px] font-mono text-gray-400">
+                        <span>{entry.wins}W-{entry.losses}L</span>
+                        <span className="text-gray-300">|</span>
+                        <span>{entry.pointsFor}/{entry.pointsAgainst}</span>
+                    </div>
                   </div>
                 </td>
-                <td className="py-4 text-center">
-                  <span className="font-heading font-black text-lg text-brand-blue tracking-tight">
-                    {(entry.winPct * 100).toFixed(0)}
-                    <span className="text-xs align-top ml-0.5 text-gray-400">%</span>
+                <td className="py-3 text-center hidden md:table-cell">
+                  <div className="font-mono font-bold text-gray-600 text-base">
+                    {entry.wins}
+                    <span className="text-gray-300 text-xs ml-1">-{entry.losses}</span>
+                  </div>
+                </td>
+                <td className="py-3 text-center">
+                  <span className={clsx(
+                      "font-heading font-black text-lg tracking-tight",
+                      isTop3 ? "text-[rgb(0,85,150)]" : "text-gray-400"
+                  )}>
+                    {(entry.winPct * 100).toFixed(0)}%
                   </span>
                 </td>
-                <td className="py-4 text-center">
-                  <div className="inline-flex items-center gap-1 font-mono text-xs text-gray-500 font-bold bg-gray-50 px-2 py-1 rounded">
-                    <span className="text-gray-900">{entry.pointsFor}</span>
-                    <span className="hidden md:inline text-gray-300">-</span>
-                    <span className="hidden md:inline">{entry.pointsAgainst}</span>
+                <td className="py-3 text-center hidden md:table-cell">
+                  <div className="font-mono font-bold text-gray-500 text-sm">
+                    {entry.pointsFor}
+                    <span className="text-gray-300 text-xs ml-1">-{entry.pointsAgainst}</span>
                   </div>
                 </td>
-                <td className="hidden md:table-cell py-4 pr-6 text-right">
+                <td className="hidden md:table-cell py-3 pr-8 text-right">
                   <span className={clsx(
-                    "inline-flex items-center px-2.5 py-1 text-[10px] md:text-xs font-bold rounded-full ml-auto",
-                    diff > 0 ? "bg-green-100 text-green-700" : diff < 0 ? "bg-red-100 text-red-700" : "bg-gray-100 text-gray-500"
+                    "inline-flex items-center px-2 py-0.5 text-[10px] font-bold rounded-md font-mono",
+                    diff > 0 ? "bg-green-50 text-green-700" : diff < 0 ? "bg-red-50 text-red-700" : "bg-gray-50 text-gray-500"
                   )}>
-                     {diff > 0 ? <TrendingUp className="w-3 h-3 mr-1" /> : diff < 0 ? <TrendingDown className="w-3 h-3 mr-1" /> : <Minus className="w-3 h-3 mr-1" />}
                      {diff > 0 ? '+' : ''}{diff}
                   </span>
                 </td>
