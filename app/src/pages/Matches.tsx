@@ -73,7 +73,7 @@ export const Matches: React.FC = () => {
             <MatchCard key={match.id} match={match} />
           ))
         ) : (
-          <div className="p-16 text-center flex flex-col items-center justify-center gap-4 text-gray-400 bg-white rounded-2xl border border-gray-100">
+          <div className="col-span-full p-16 text-center flex flex-col items-center justify-center gap-4 text-gray-400 bg-white rounded-2xl border border-gray-100">
             <div className="bg-blue-50 p-4 rounded-full">
               <Info className="w-8 h-8 text-brand-blue" />
             </div>
