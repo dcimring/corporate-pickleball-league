@@ -21,12 +21,12 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
   };
 
   return (
-    <div className="w-full bg-white rounded-3xl shadow-soft hover:shadow-lg transition-all duration-300 relative overflow-hidden group border border-gray-100/50">
+    <div className="w-full bg-white rounded-3xl shadow-soft hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group border border-gray-100/50">
       
       {/* Top Accent Bar (Inset) */}
-      <div className="absolute top-0 left-6 right-6 h-2 bg-[rgb(142,209,252)] rounded-b-md z-10" />
+      <div className="absolute top-0 left-4 md:left-6 right-4 md:right-6 h-2 bg-[rgb(142,209,252)] rounded-b-md z-10" />
 
-      <div className="pt-6 md:pt-10 pb-3 px-5 md:px-8 flex flex-col h-full">
+      <div className="pt-6 md:pt-10 pb-3 px-4 md:px-8 flex flex-col h-full">
         
         {/* Teams Container */}
         <div className="flex-1 flex flex-col justify-center gap-2 md:gap-4">
@@ -34,13 +34,13 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
             <div className="flex justify-between items-center group/team">
                 <div className={clsx(
                   "font-heading font-black italic uppercase text-base md:text-2xl tracking-tight leading-none max-w-[80%]",
-                  isWin1 ? "text-[rgb(0,85,150)]" : "text-gray-300"
+                  isWin1 ? "text-[rgb(0,85,150)]" : "text-gray-400"
                 )}>
                   {match.team1}
                 </div>
                 <div className={clsx(
                   "font-heading font-black text-3xl md:text-5xl relative",
-                  isWin1 ? "text-[rgb(0,85,150)] drop-shadow-[2px_2px_0px_rgb(247,191,38)] md:drop-shadow-[3px_3px_0px_rgb(247,191,38)]" : "text-gray-100"
+                  isWin1 ? "text-[rgb(0,85,150)] drop-shadow-[2px_2px_0px_rgb(247,191,38)] md:drop-shadow-[3px_3px_0px_rgb(247,191,38)]" : "text-gray-200"
                 )}>
                   {match.team1Wins}
                 </div>
@@ -53,13 +53,13 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
             <div className="flex justify-between items-center group/team">
                 <div className={clsx(
                   "font-heading font-black italic uppercase text-base md:text-2xl tracking-tight leading-none max-w-[80%]",
-                  isWin2 ? "text-[rgb(0,85,150)]" : "text-gray-300"
+                  isWin2 ? "text-[rgb(0,85,150)]" : "text-gray-400"
                 )}>
                   {match.team2}
                 </div>
                 <div className={clsx(
                   "font-heading font-black text-3xl md:text-5xl relative",
-                  isWin2 ? "text-[rgb(0,85,150)] drop-shadow-[2px_2px_0px_rgb(247,191,38)] md:drop-shadow-[3px_3px_0px_rgb(247,191,38)]" : "text-gray-100"
+                  isWin2 ? "text-[rgb(0,85,150)] drop-shadow-[2px_2px_0px_rgb(247,191,38)] md:drop-shadow-[3px_3px_0px_rgb(247,191,38)]" : "text-gray-200"
                 )}>
                   {match.team2Wins}
                 </div>
