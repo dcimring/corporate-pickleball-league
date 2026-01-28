@@ -40,7 +40,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
                 </div>
                 <div className={clsx(
                   "font-heading font-black text-3xl md:text-5xl relative",
-                  isWin1 ? "text-[rgb(0,85,150)] drop-shadow-[2px_2px_0px_rgb(247,191,38)] md:drop-shadow-[3px_3px_0px_rgb(247,191,38)]" : "text-gray-200"
+                  isWin1 ? "text-[rgb(0,85,150)] drop-shadow-[1px_1px_0px_rgb(247,191,38)] md:drop-shadow-[2px_2px_0px_rgb(247,191,38)]" : "text-gray-200"
                 )}>
                   {match.team1Wins}
                 </div>
@@ -59,7 +59,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
                 </div>
                 <div className={clsx(
                   "font-heading font-black text-3xl md:text-5xl relative",
-                  isWin2 ? "text-[rgb(0,85,150)] drop-shadow-[2px_2px_0px_rgb(247,191,38)] md:drop-shadow-[3px_3px_0px_rgb(247,191,38)]" : "text-gray-200"
+                  isWin2 ? "text-[rgb(0,85,150)] drop-shadow-[1px_1px_0px_rgb(247,191,38)] md:drop-shadow-[2px_2px_0px_rgb(247,191,38)]" : "text-gray-200"
                 )}>
                   {match.team2Wins}
                 </div>
