@@ -68,7 +68,7 @@ export const Leaderboard: React.FC = () => {
         onDivisionChange={handleDivisionChange} 
       />
 
-      <div className="space-y-12">
+      <div className="space-y-12 px-4">
         <LeaderboardTable stats={stats} />
       </div>
     </div>
