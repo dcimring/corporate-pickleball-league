@@ -62,7 +62,7 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats }) => 
                     <div className="md:hidden flex items-center gap-2 mt-0.5 text-[10px] font-mono text-gray-400">
                         <span>{entry.wins}W-{entry.losses}L</span>
                         <span className="text-gray-300">|</span>
-                        <span>{entry.pointsFor}/{entry.pointsAgainst}</span>
+                        <span>PTS {entry.pointsFor}/{entry.pointsAgainst}</span>
                     </div>
                   </div>
                 </td>
