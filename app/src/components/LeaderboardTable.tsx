@@ -5,9 +5,10 @@ import type { LeaderboardEntry } from '../types';
 
 interface LeaderboardTableProps {
   stats: LeaderboardEntry[];
+  onTeamClick: (teamName: string) => void;
 }
 
-export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats }) => {
+export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTeamClick }) => {
   
   if (stats.length === 0) return (
     <div className="p-16 text-center flex flex-col items-center justify-center gap-4 text-gray-400 bg-white rounded-2xl border border-gray-100">
@@ -47,7 +48,11 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats }) => 
             const isTop3 = index < 3;
             
             return (
-              <tr key={entry.team} className="border-b border-gray-100 border-dashed last:border-0 hover:bg-gray-50 transition-all duration-200 group">
+              <tr 
+                key={entry.team} 
+                onClick={() => onTeamClick(entry.team)}
+                className="border-b border-gray-100 border-dashed last:border-0 hover:bg-gray-50 transition-all duration-200 group cursor-pointer"
+              >
                 <td className="py-3">
                   <div className={clsx(
                     "w-7 h-7 flex items-center justify-center font-heading font-black text-xs mx-auto transform -skew-x-6",

@@ -41,6 +41,11 @@ export const Leaderboard: React.FC = () => {
     }
   };
 
+  const handleTeamClick = (teamName: string) => {
+    const currentDiv = searchParams.get('division') || activeDivision;
+    navigate(`/matches?division=${encodeURIComponent(currentDiv)}&team=${encodeURIComponent(teamName)}`);
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-[50vh]">
@@ -69,7 +74,7 @@ export const Leaderboard: React.FC = () => {
       />
 
       <div className="space-y-12 px-0 md:px-4">
-        <LeaderboardTable stats={stats} />
+        <LeaderboardTable stats={stats} onTeamClick={handleTeamClick} />
       </div>
     </div>
   );
