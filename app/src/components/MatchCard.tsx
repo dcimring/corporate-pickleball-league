@@ -20,15 +20,24 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
     }).format(date).toUpperCase(); // 14-JAN-26
   };
 
-  return (
-    <div className="w-full bg-white rounded-3xl shadow-soft hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group border border-gray-100/50">
-      
-      {/* Top Accent Bar (Inset) */}
-      <div className="absolute top-0 left-4 md:left-6 right-4 md:right-6 h-2 bg-[rgb(142,209,252)] rounded-b-md z-10" />
+            return (
 
-      <div className="pt-6 md:pt-10 pb-3 px-4 md:px-8 flex flex-col h-full">
-        
-        {/* Teams Container */}
+              <div className="w-full bg-[#FFFEFC] rounded-3xl shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group border border-gray-100">
+
+                {/* Grainy Texture Overlay */}
+
+                <div className="absolute inset-0 opacity-[0.1] pointer-events-none mix-blend-multiply" 
+
+                     style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }} 
+
+                />
+
+              
+
+              {/* Top Accent Bar (Inset) */}
+          <div className="absolute top-0 left-4 md:left-6 right-4 md:right-6 h-2 bg-[rgb(142,209,252)] rounded-b-md z-10" />
+    
+          <div className="pt-6 md:pt-10 pb-3 px-4 md:px-8 flex flex-col h-full relative z-10">        {/* Teams Container */}
         <div className="flex-1 flex flex-col justify-center gap-2 md:gap-4">
             {/* Team 1 */}
             <div className="flex justify-between items-center group/team">
