@@ -290,6 +290,13 @@ function parseCSVAndMap(csvText, { divisions, teams }) {
     const t1Points = parseInt(cols[7]);
     const t2Points = parseInt(cols[8]);
 
+    // Validate Total Games
+    if ((t1Wins + t2Wins) !== 6) {
+      const msg = `Row ${i+1}: Total games (${t1Wins + t2Wins}) does not equal 6 (${team1Name} vs ${team2Name}).`;
+      log(msg);
+      errors.push(msg);
+    }
+
     // Lookup IDs (Case Insensitive)
     const divId = getDivisionId(divNameRaw, divisions);
     if (!divId) {
