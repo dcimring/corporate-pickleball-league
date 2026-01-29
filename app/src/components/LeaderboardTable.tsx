@@ -31,7 +31,7 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats }) => 
             <th className="py-4 text-center font-heading font-black italic text-sm tracking-widest w-[60px] md:w-[80px]">#</th>
             <th className="py-4 pl-4 font-heading font-black italic text-sm tracking-widest">TEAM</th>
             <th className="hidden md:table-cell py-4 text-center font-heading font-black italic text-sm tracking-widest w-[80px]">WINS</th>
-            <th className="py-4 text-center font-heading font-black italic text-sm tracking-widest w-[80px]">PCT</th>
+            <th className="py-4 text-center font-heading font-black italic text-sm tracking-widest w-[80px]">WIN%</th>
             <th className="hidden md:table-cell py-4 text-center font-heading font-black italic text-sm tracking-widest w-[60px] md:w-[100px]">PTS</th>
             <th className="hidden md:table-cell py-4 pr-8 text-right font-heading font-black italic text-sm tracking-widest w-[100px]">DIFF</th>
           </tr>
