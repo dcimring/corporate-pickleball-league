@@ -12,6 +12,7 @@ A professional, responsive, and iframe-optimized website for the Corporate Pickl
 -   **Auto-Resizing:** Real-time height synchronization with the parent window using `postMessage` and `ResizeObserver`.
 -   **Simplified Navigation:** Custom pill-shaped page tabs and a mobile-friendly division dropdown for a clean, widget-like experience.
 -   **Full-Width UI:** Edge-to-edge layout designed to fit perfectly within any parent container.
+-   **Team Match Filtering:** Click any team on the Leaderboard to view their specific match history with interactive filter chips.
 -   **Empty State Handling:** User-friendly "No teams found" and "No matches found" displays for empty divisions.
 -   **Automated Ingestion:** Background service (`run_ingest_service.py`) that monitors Gmail for match results and syncs them automatically every 15 minutes.
 -   **Data Safety:** Built-in validation ensuring new match data never shrinks without explicit override, protecting against accidental data loss.
