@@ -46,6 +46,12 @@ export const Matches: React.FC = () => {
     setSearchParams(newParams);
   };
 
+  const handleTeamClick = (teamName: string) => {
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set('team', teamName);
+    setSearchParams(newParams);
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-[50vh]">
@@ -99,7 +105,7 @@ export const Matches: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
         {matches.length > 0 ? (
           matches.map((match) => (
-            <MatchCard key={match.id} match={match} />
+            <MatchCard key={match.id} match={match} onTeamClick={handleTeamClick} />
           ))
         ) : (
           <div className="col-span-full p-16 text-center flex flex-col items-center justify-center gap-4 text-gray-400 bg-white rounded-2xl border border-gray-100">

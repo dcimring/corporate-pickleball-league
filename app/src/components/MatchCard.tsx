@@ -4,9 +4,10 @@ import type { Match } from '../types';
 
 interface MatchCardProps {
   match: Match;
+  onTeamClick?: (teamName: string) => void;
 }
 
-export const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
+export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
   const isWin1 = match.team1Wins > match.team2Wins || (match.team1Wins === match.team2Wins && match.team1Points > match.team2Points);
   const isWin2 = match.team2Wins > match.team1Wins || (match.team1Wins === match.team2Wins && match.team2Points > match.team1Points);
 
@@ -41,8 +42,10 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
         <div className="flex-1 flex flex-col justify-center gap-2 md:gap-4">
             {/* Team 1 */}
             <div className="flex justify-between items-center group/team">
-                <div className={clsx(
-                  "font-heading font-black italic uppercase text-base md:text-2xl tracking-tight leading-none max-w-[80%]",
+                <div 
+                  onClick={() => onTeamClick?.(match.team1)}
+                  className={clsx(
+                  "font-heading font-black italic uppercase text-base md:text-2xl tracking-tight leading-none max-w-[80%] cursor-pointer hover:text-brand-blue transition-colors",
                   isWin1 ? "text-[rgb(0,85,150)]" : "text-gray-400"
                 )}>
                   {match.team1}
@@ -60,8 +63,10 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
 
             {/* Team 2 */}
             <div className="flex justify-between items-center group/team">
-                <div className={clsx(
-                  "font-heading font-black italic uppercase text-base md:text-2xl tracking-tight leading-none max-w-[80%]",
+                <div 
+                  onClick={() => onTeamClick?.(match.team2)}
+                  className={clsx(
+                  "font-heading font-black italic uppercase text-base md:text-2xl tracking-tight leading-none max-w-[80%] cursor-pointer hover:text-brand-blue transition-colors",
                   isWin2 ? "text-[rgb(0,85,150)]" : "text-gray-400"
                 )}>
                   {match.team2}
