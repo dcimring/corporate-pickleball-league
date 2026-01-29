@@ -21,11 +21,16 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats }) => 
 
   // Option 3: "Precision Grid" - Kinetic Aesthetic
   return (
-    <div className="w-full overflow-hidden bg-white rounded-3xl shadow-soft border border-gray-100/50">
-      {/* Top Accent Bar (Inset) - Matching MatchCard */}
-      <div className="h-2 w-[95%] mx-auto bg-[rgb(142,209,252)] rounded-b-md mb-2" />
+    <div className="w-full overflow-hidden bg-[#FFFEFC] relative rounded-3xl shadow-soft border border-gray-100/50">
+      {/* Grainy Texture Overlay */}
+      <div className="absolute inset-0 opacity-[0.1] pointer-events-none mix-blend-multiply z-0" 
+           style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }} 
+      />
 
-      <table className="w-full text-left border-collapse">
+      {/* Top Accent Bar (Inset) - Matching MatchCard */}
+      <div className="h-2 w-[95%] mx-auto bg-[rgb(142,209,252)] rounded-b-md mb-2 relative z-10" />
+
+      <table className="w-full text-left border-collapse relative z-10">
         <thead>
           <tr className="text-[rgb(0,85,150)] border-b-2 border-[rgb(142,209,252)]">
             <th className="py-4 text-center font-heading font-black italic text-sm tracking-widest w-[40px] md:w-[80px]">#</th>
