@@ -28,7 +28,7 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats }) => 
       <table className="w-full text-left border-collapse">
         <thead>
           <tr className="text-[rgb(0,85,150)] border-b-2 border-[rgb(142,209,252)]">
-            <th className="py-4 text-center font-heading font-black italic text-sm tracking-widest w-[60px] md:w-[80px]">#</th>
+            <th className="py-4 text-center font-heading font-black italic text-sm tracking-widest w-[40px] md:w-[80px]">#</th>
             <th className="py-4 pl-4 font-heading font-black italic text-sm tracking-widest">TEAM</th>
             <th className="hidden md:table-cell py-4 text-center font-heading font-black italic text-sm tracking-widest w-[80px]">WINS</th>
             <th className="py-4 text-center font-heading font-black italic text-sm tracking-widest w-[80px]">WIN%</th>
@@ -59,7 +59,7 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats }) => 
                         {entry.team}
                     </span>
                     {/* Mobile Only Stats Row for density */}
-                    <div className="md:hidden flex items-center gap-2 mt-0.5 text-[10px] font-mono text-gray-400">
+                    <div className="md:hidden flex items-center gap-2 mt-0.5 text-[11px] font-mono text-gray-400">
                         <span>{entry.wins}W-{entry.losses}L</span>
                         <span className="text-gray-300">|</span>
                         <span>PTS {entry.pointsFor}/{entry.pointsAgainst}</span>
