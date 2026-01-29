@@ -67,7 +67,7 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats }) => 
                   </div>
                 </td>
                 <td className="py-3 text-center hidden md:table-cell">
-                  <div className="font-mono font-bold text-gray-600 text-base">
+                  <div className="font-mono font-bold text-gray-600 text-sm">
                     {entry.wins}
                     <span className="text-gray-300 text-xs ml-1">-{entry.losses}</span>
                   </div>
@@ -88,10 +88,12 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats }) => 
                 </td>
                 <td className="hidden md:table-cell py-3 pr-8 text-right">
                   <span className={clsx(
-                    "inline-flex items-center px-2 py-0.5 text-[10px] font-bold rounded-md font-mono",
-                    diff > 0 ? "bg-green-50 text-green-700" : diff < 0 ? "bg-red-50 text-red-700" : "bg-gray-50 text-gray-500"
+                    "inline-flex items-center px-2 py-0.5 text-xs font-bold rounded-sm font-mono transform -skew-x-6",
+                    diff > 0 ? "bg-green-50 text-green-700" : diff < 0 ? "bg-red-50 text-red-700" : "bg-gray-100 text-gray-500"
                   )}>
-                     {diff > 0 ? '+' : ''}{diff}
+                     <span className="skew-x-6">
+                        {diff > 0 ? '+' : ''}{diff}
+                     </span>
                   </span>
                 </td>
               </tr>
