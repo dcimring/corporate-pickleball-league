@@ -2,33 +2,36 @@
 
 ## Project Overview
 
-The **Corporate Pickleball League** is a responsive web application built to manage and display league information, including standings, scores, and statistics. It features a distinct **"Night Court Electric"** aesthetic with a high-contrast UI, designed for mobile-first performance.
+The **Corporate Pickleball League** is a responsive web application built to manage and display league information, including standings, scores, and statistics. It features a distinct **"Roost Kinetic"** aesthetic with a high-contrast, "Warm Paper" UI texture, designed for mobile-first performance and seamless iframe integration.
 
 ### Tech Stack
--   **Framework:** React 18+ (via Vite)
+-   **Framework:** React 19+ (via Vite)
 -   **Language:** TypeScript
 -   **Styling:** Tailwind CSS v4
--   **Routing:** React Router DOM v6+
+-   **Routing:** React Router 7
 -   **Icons:** Lucide React
--   **Data:** Static JSON (`league-data.json`) managed via `src/lib/data.ts`
+-   **Backend:** Supabase (PostgreSQL)
+-   **Ingestion:** Python & Google Apps Script automation
 
 ## Key Directories & Files
 
 -   `app/`: Main application source code.
-    -   `src/components/`: Reusable UI components (e.g., `Card.tsx`, `Layout.tsx`).
-    -   `src/pages/`: Main application views (`Home`, `Leaderboard`, `Scores`, `Stats`).
-    -   `src/lib/`: Data access utilities.
+    -   `src/components/`: Reusable UI components (e.g., `MatchCard.tsx`, `Layout.tsx`, `LeaderboardTable.tsx`).
+    -   `src/pages/`: Main application views (`Leaderboard`, `Matches`).
+    -   `src/lib/`: Data access utilities (Supabase client).
     -   `src/types.ts`: TypeScript definitions for league data entities.
     -   `src/index.css`: Global styles and Tailwind CSS v4 configuration (`@theme`).
-    -   `league-data.json`: Mock database containing teams, matches, and standings.
     -   `ARCHITECTURE.md`: Detailed architectural documentation.
+-   `ingest_matches.py`: CLI tool for CSV ingestion.
+-   `run_ingest_service.py`: Automated ingestion service.
+-   `GoogleAppsScript.js`: Gmail monitoring script.
 
 ## Building and Running
 
 All commands should be run from the `app/` directory.
 
 ### Development Server
-Start the development server with Hot Module Replacement (HMR):
+Start the development server with Hot Module Replacement (HMR) and network access:
 ```bash
 cd app
 npm run dev
@@ -61,19 +64,19 @@ npm run lint
 ### Styling
 -   **Tailwind CSS v4:** The project uses the latest Tailwind CSS features, including CSS variables for theming defined in `src/index.css`.
 -   **Theme Colors:**
-    -   `brand-cream`: #0F172A (Deep Navy Background)
-    -   `brand-ink`: #FFFFFF (Text)
-    -   `brand-acid`: #CCFF00 (Electric Volt Accents)
-    -   `brand-soft-blue`: #1E293B (Card Backgrounds)
+    -   `brand-blue`: #005596 (Cayman Navy)
+    -   `brand-yellow`: #FFC72C (Electric Volt Accents)
+    -   `brand-gray`: #F8FAFC (Subtle Backgrounds)
+    -   `brand-cream`: #FFFEFC (Warm Paper Texture Base)
 -   **Typography:**
-    -   Headings: 'Bebas Neue' (Uppercase, Italic)
-    -   Body: 'Outfit' (Geometric sans-serif)
-    -   Accents: 'Patrick Hand' (Handwritten style)
+    -   Family: 'Raleway' (Variable weights 300-800)
+    -   Styles: ExtraBold Italic for headings, Monospace for data.
 
 ### Data Management
--   Data is read from `league-data.json`.
--   Access data using the typed utility functions in `src/lib/data.ts` to ensure type safety across the application.
+-   Data is fetched from Supabase via `src/context/LeagueContext.tsx`.
+-   Front-loaded data pattern ensures instant navigation between tabs.
 
 ### Components
 -   **Functional Components:** Use React functional components with TypeScript interfaces for props.
 -   **Mobile-First:** Ensure all UI elements are responsive and optimized for mobile devices (e.g., touch-friendly targets, horizontal scrolling wrappers).
+-   **Match Cards:** Use "Roost Kinetic" design with grainy paper texture and hard shadows.
