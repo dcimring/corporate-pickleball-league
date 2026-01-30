@@ -34,11 +34,28 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
       <table className="w-full text-left border-collapse relative z-10">
         <thead>
           <tr className="text-[rgb(0,85,150)] border-b-2 border-[rgb(142,209,252)]">
-            <th className="py-4 text-center font-heading font-black italic text-sm tracking-widest w-[40px] md:w-[80px]">#</th>
-            <th className="py-4 pl-4 font-heading font-black italic text-sm tracking-widest">TEAM</th>
-            <th className="hidden md:table-cell py-4 text-center font-heading font-black italic text-sm tracking-widest w-[80px]">WINS</th>
-            <th className="py-4 text-center font-heading font-black italic text-sm tracking-widest w-[80px]">WIN%</th>
-            <th className="hidden md:table-cell py-4 text-center font-heading font-black italic text-sm tracking-widest w-[60px] md:w-[100px]">PTS</th>
+            {/* Rank */}
+            <th className="py-4 text-center font-heading font-black italic text-sm tracking-widest w-[30px] md:w-[80px]">#</th>
+            
+            {/* Team */}
+            <th className="py-4 pl-1 md:pl-4 font-heading font-black italic text-sm tracking-widest">TEAM</th>
+            
+            {/* Desktop: W-L */}
+            <th className="hidden md:table-cell py-4 text-center font-heading font-black italic text-sm tracking-widest w-[80px]">W-L</th>
+            
+            {/* Mobile: W-L (Combined) */}
+            <th className="md:hidden py-4 text-center font-heading font-black italic text-[10px] tracking-widest w-[55px]">W-L</th>
+
+            {/* Shared: % */}
+            <th className="py-4 text-center font-heading font-black italic text-sm tracking-widest w-[40px] md:w-[80px]">%</th>
+
+            {/* Desktop: PTS (For-Against) */}
+            <th className="hidden md:table-cell py-4 text-center font-heading font-black italic text-sm tracking-widest w-[100px]">PTS</th>
+
+            {/* Mobile: PTS (For only) */}
+            <th className="md:hidden py-4 text-center font-heading font-black italic text-[10px] tracking-widest w-[35px]">PTS</th>
+
+            {/* Desktop: DIFF */}
             <th className="hidden md:table-cell py-4 pr-8 text-right font-heading font-black italic text-sm tracking-widest w-[100px]">DIFF</th>
           </tr>
         </thead>
@@ -51,11 +68,14 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
               <tr 
                 key={entry.team} 
                 onClick={() => onTeamClick(entry.team)}
-                className="border-b border-gray-100 border-dashed last:border-0 hover:bg-gray-50 transition-all duration-200 group cursor-pointer"
+                className="border-b border-gray-100 border-dashed last:border-0 hover:bg-gray-50 transition-all duration-200 group cursor-pointer align-middle"
               >
+                {/* Rank */}
                 <td className="py-3">
                   <div className={clsx(
-                    "w-7 h-7 flex items-center justify-center font-heading font-black text-xs mx-auto transform -skew-x-6",
+                    "flex items-center justify-center font-heading font-black mx-auto transform -skew-x-6",
+                    // Smaller badge on mobile
+                    "w-6 h-6 text-[10px] md:w-7 md:h-7 md:text-xs",
                     index === 0 ? "bg-[rgb(247,191,38)] text-[rgb(0,85,150)] shadow-sm" : 
                     index === 1 ? "bg-gray-200 text-gray-600" :
                     index === 2 ? "bg-orange-100 text-orange-800" : "text-gray-400"
@@ -63,39 +83,60 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
                     <span className="skew-x-6">{index + 1}</span>
                   </div>
                 </td>
-                <td className="py-3 pl-4">
+
+                {/* Team Name */}
+                <td className="py-3 pl-1 md:pl-4">
                   <div className="flex flex-col">
-                    <span className="font-heading font-black italic text-base text-[rgb(0,85,150)] uppercase tracking-tight group-hover:translate-x-1 transition-transform duration-300 leading-tight">
+                    <span className="font-heading font-black italic text-xs md:text-base text-[rgb(0,85,150)] uppercase tracking-tight group-hover:translate-x-1 transition-transform duration-300 leading-tight line-clamp-2">
                         {entry.team}
                     </span>
-                    {/* Mobile Only Stats Row for density */}
-                    <div className="md:hidden flex items-center gap-2 mt-0.5 text-[11px] font-mono text-gray-400">
-                        <span>{entry.wins}W-{entry.losses}L</span>
-                        <span className="text-gray-300">|</span>
-                        <span>PTS {entry.pointsFor}/{entry.pointsAgainst}</span>
-                    </div>
                   </div>
                 </td>
+
+                {/* Desktop: WINS */}
                 <td className="py-3 text-center hidden md:table-cell">
                   <div className="font-mono font-bold text-gray-600 text-sm">
                     {entry.wins}
                     <span className="text-gray-300 text-xs ml-1">-{entry.losses}</span>
                   </div>
                 </td>
-                <td className="py-3 text-center">
-                  <span className={clsx(
-                      "font-heading font-black text-lg tracking-tight",
-                      isTop3 ? "text-[rgb(0,85,150)]" : "text-gray-400"
-                  )}>
-                    {(entry.winPct * 100).toFixed(0)}%
-                  </span>
+
+                {/* Mobile: W-L */}
+                <td className="py-3 text-center md:hidden">
+                  <div className="font-mono font-bold text-gray-600 text-[10px] whitespace-nowrap">
+                    {entry.wins}-{entry.losses}
+                  </div>
                 </td>
+
+                {/* Shared: WIN% */}
+                <td className="py-3 text-center">
+                  <div className="flex items-center justify-center h-full">
+                    <span className={clsx(
+                        "font-heading font-black tracking-tight leading-none",
+                        "text-xs md:text-lg", // Match other columns font size on mobile
+                        isTop3 ? "text-[rgb(0,85,150)]" : "text-gray-400"
+                    )}>
+                      {(entry.winPct * 100).toFixed(0)}%
+                    </span>
+                  </div>
+                </td>
+
+                {/* Desktop: PTS */}
                 <td className="py-3 text-center hidden md:table-cell">
                   <div className="font-mono font-bold text-gray-500 text-sm">
                     {entry.pointsFor}
                     <span className="text-gray-300 text-xs ml-1">-{entry.pointsAgainst}</span>
                   </div>
                 </td>
+
+                {/* Mobile: PTS */}
+                <td className="py-3 text-center md:hidden">
+                  <div className="font-mono font-bold text-gray-500 text-[10px]">
+                    {entry.pointsFor}
+                  </div>
+                </td>
+
+                {/* Desktop: DIFF */}
                 <td className="hidden md:table-cell py-3 pr-8 text-right">
                   <span className={clsx(
                     "inline-flex items-center px-2 py-0.5 text-xs font-bold rounded-sm font-mono transform -skew-x-6",
