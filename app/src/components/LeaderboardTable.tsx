@@ -44,16 +44,16 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
             <th className="hidden md:table-cell py-4 text-center font-heading font-black italic text-sm tracking-widest w-[80px]">W-L</th>
             
             {/* Mobile: W-L (Combined) */}
-            <th className="md:hidden py-4 text-center font-heading font-black italic text-[10px] tracking-widest w-[55px]">W-L</th>
+            <th className="md:hidden py-4 text-center font-heading font-black italic text-xs tracking-widest w-[55px]">W-L</th>
 
             {/* Shared: % */}
-            <th className="py-4 text-center font-heading font-black italic text-sm tracking-widest w-[40px] md:w-[80px]">%</th>
+            <th className="py-4 text-center font-heading font-black italic text-sm tracking-widest w-[45px] md:w-[80px]">%</th>
 
             {/* Desktop: PTS (For-Against) */}
             <th className="hidden md:table-cell py-4 text-center font-heading font-black italic text-sm tracking-widest w-[100px]">PTS</th>
 
             {/* Mobile: PTS (For only) */}
-            <th className="md:hidden py-4 text-center font-heading font-black italic text-[10px] tracking-widest w-[35px]">PTS</th>
+            <th className="md:hidden py-4 text-center font-heading font-black italic text-xs tracking-widest w-[40px]">PTS</th>
 
             {/* Desktop: DIFF */}
             <th className="hidden md:table-cell py-4 pr-8 text-right font-heading font-black italic text-sm tracking-widest w-[100px]">DIFF</th>
@@ -87,7 +87,7 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
                 {/* Team Name */}
                 <td className="py-3 pl-1 md:pl-4">
                   <div className="flex flex-col">
-                    <span className="font-heading font-black italic text-xs md:text-base text-[rgb(0,85,150)] uppercase tracking-tight group-hover:translate-x-1 transition-transform duration-300 leading-tight line-clamp-2">
+                    <span className="font-heading font-black italic text-sm md:text-base text-[rgb(0,85,150)] uppercase tracking-tight group-hover:translate-x-1 transition-transform duration-300 leading-tight line-clamp-2">
                         {entry.team}
                     </span>
                   </div>
@@ -103,7 +103,7 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
 
                 {/* Mobile: W-L */}
                 <td className="py-3 text-center md:hidden">
-                  <div className="font-mono font-bold text-gray-600 text-[10px] whitespace-nowrap">
+                  <div className="font-mono font-bold text-gray-600 text-xs whitespace-nowrap">
                     {entry.wins}-{entry.losses}
                   </div>
                 </td>
@@ -131,7 +131,7 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
 
                 {/* Mobile: PTS */}
                 <td className="py-3 text-center md:hidden">
-                  <div className="font-mono font-bold text-gray-500 text-[10px]">
+                  <div className="font-mono font-bold text-gray-500 text-xs">
                     {entry.pointsFor}
                   </div>
                 </td>
