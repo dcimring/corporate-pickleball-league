@@ -113,7 +113,7 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
                   <div className="flex items-center justify-center h-full">
                     <span className={clsx(
                         "font-heading font-black tracking-tight leading-none",
-                        "text-xs md:text-lg", // Match other columns font size on mobile
+                        "text-base md:text-lg", // Match other columns font size on mobile
                         isTop3 ? "text-[rgb(0,85,150)]" : "text-gray-400"
                     )}>
                       {(entry.winPct * 100).toFixed(0)}%
