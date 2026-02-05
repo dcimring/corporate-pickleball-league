@@ -5,7 +5,7 @@ import { ConnectionError } from './ConnectionError';
 
 export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
-  const { error, refresh } = useLeagueData();
+  const { error, refresh, loading } = useLeagueData();
 
   // RESIZER LOGIC
   useEffect(() => {
@@ -43,7 +43,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       {/* Main Content - No padding, full width */}
       <main className="w-full">
         {error ? (
-          <ConnectionError onRetry={refresh} />
+          <ConnectionError onRetry={refresh} isRetrying={loading} />
         ) : (
           children
         )}

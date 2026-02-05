@@ -1,11 +1,13 @@
 import React from 'react';
 import { WifiOff, RefreshCw } from 'lucide-react';
+import { clsx } from 'clsx';
 
 interface ConnectionErrorProps {
   onRetry: () => void;
+  isRetrying?: boolean;
 }
 
-export const ConnectionError: React.FC<ConnectionErrorProps> = ({ onRetry }) => {
+export const ConnectionError: React.FC<ConnectionErrorProps> = ({ onRetry, isRetrying = false }) => {
   return (
     <div className="flex flex-col items-center justify-center min-h-[50vh] px-4 w-full">
       <div className="w-full max-w-md bg-[#FFFEFC] rounded-3xl shadow-xl relative overflow-hidden border border-gray-100 p-8 text-center group">
@@ -39,10 +41,14 @@ export const ConnectionError: React.FC<ConnectionErrorProps> = ({ onRetry }) => 
 
           <button 
             onClick={onRetry}
-            className="btn-primary group-hover:scale-105 transition-transform duration-300 flex items-center gap-2"
+            disabled={isRetrying}
+            className={clsx(
+                "btn-primary flex items-center gap-2 transition-all duration-300",
+                isRetrying ? "opacity-70 cursor-not-allowed" : "group-hover:scale-105"
+            )}
           >
-            <RefreshCw className="w-4 h-4" />
-            <span>Retry Connection</span>
+            <RefreshCw className={clsx("w-4 h-4", isRetrying && "animate-spin")} />
+            <span>{isRetrying ? 'Connecting...' : 'Retry Connection'}</span>
           </button>
         </div>
       </div>

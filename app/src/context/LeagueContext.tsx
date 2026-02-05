@@ -33,16 +33,28 @@ export const LeagueProvider: React.FC<LeagueProviderProps> = ({
   const [error, setError] = useState<Error | null>(null);
 
   const loadData = async (isBackground = false) => {
+    const startTime = Date.now();
+    
     try {
       if (!isBackground) setLoading(true);
+      
       const fetched = await fetchLeagueData();
       setData(fetched);
+      
       setError(null);
     } catch (err) {
       console.error("Failed to fetch league data:", err);
       setError(err instanceof Error ? err : new Error('Unknown error'));
     } finally {
-      if (!isBackground) setLoading(false);
+      if (!isBackground) {
+        // Ensure minimum loading time of 500ms for UX
+        const elapsed = Date.now() - startTime;
+        const remaining = 500 - elapsed;
+        if (remaining > 0) {
+            await new Promise(resolve => setTimeout(resolve, remaining));
+        }
+        setLoading(false);
+      }
     }
   };
 
