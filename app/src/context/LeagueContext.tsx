@@ -44,7 +44,11 @@ export const LeagueProvider: React.FC<LeagueProviderProps> = ({
       setError(null);
     } catch (err) {
       console.error("Failed to fetch league data:", err);
-      setError(err instanceof Error ? err : new Error('Unknown error'));
+      // Only set error if it's an explicit load (initial or manual retry)
+      // Background refreshes should fail silently to keep showing stale data
+      if (!isBackground) {
+        setError(err instanceof Error ? err : new Error('Unknown error'));
+      }
     } finally {
       if (!isBackground) {
         // Ensure minimum loading time of 500ms for UX
