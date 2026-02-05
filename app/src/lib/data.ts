@@ -1,7 +1,7 @@
 import { supabase } from './supabase';
 import type { LeagueData, DivisionRow, TeamRow, MatchRow, Division, LeaderboardEntry, TeamStats, Match } from '../types';
 
-export const fetchLeagueData = async (): Promise<LeagueData> => {
+const fetchLeagueDataRaw = async (): Promise<LeagueData> => {
   // Fetch all divisions
   const { data: divisionsData, error: divError } = await supabase
     .from('divisions')
@@ -168,6 +168,14 @@ export const fetchLeagueData = async (): Promise<LeagueData> => {
     teamStats,
     matches
   };
+};
+
+export const fetchLeagueData = async (): Promise<LeagueData> => {
+  const timeout = new Promise<never>((_, reject) => {
+      setTimeout(() => reject(new Error('Connection timed out')), 5000);
+  });
+
+  return Promise.race([fetchLeagueDataRaw(), timeout]);
 };
 
 // Keep a placeholder for initial render if needed, or remove if we fully switch to async

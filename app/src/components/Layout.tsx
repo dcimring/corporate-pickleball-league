@@ -1,8 +1,11 @@
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useLeagueData } from '../context/LeagueContext';
+import { ConnectionError } from './ConnectionError';
 
 export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
+  const { error, refresh } = useLeagueData();
 
   // RESIZER LOGIC
   useEffect(() => {
@@ -33,13 +36,17 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         window.removeEventListener('resize', sendHeight);
         observer.disconnect();
     };
-  }, [location.pathname]);
+  }, [location.pathname, error]); // Add error to dependency array to trigger resize on error screen
 
   return (
     <div id="app-container" className="font-body selection:bg-brand-yellow selection:text-brand-blue bg-transparent pt-4 inline-block w-full">
       {/* Main Content - No padding, full width */}
       <main className="w-full">
-        {children}
+        {error ? (
+          <ConnectionError onRetry={refresh} />
+        ) : (
+          children
+        )}
       </main>
     </div>
   );
