@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Loader2 } from 'lucide-react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { LeaderboardTable } from '../components/LeaderboardTable';
 import { Navigation } from '../components/Navigation';
+import { ShareButton } from '../components/ShareButton';
+import { ShareableLeaderboard } from '../components/ShareableLeaderboard';
 import { useLeagueData } from '../context/LeagueContext';
 
 export const Leaderboard: React.FC = () => {
@@ -10,6 +12,7 @@ export const Leaderboard: React.FC = () => {
   const navigate = useNavigate();
   const { data, loading } = useLeagueData();
   const [activeDivision, setActiveDivision] = useState<string>('');
+  const shareRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!loading && data.leaderboard) {
@@ -73,8 +76,18 @@ export const Leaderboard: React.FC = () => {
         onDivisionChange={handleDivisionChange} 
       />
 
-      <div className="space-y-12 px-0 md:px-4">
+      <div className="space-y-4 px-0 md:px-4">
+        <div className="flex justify-end">
+            <ShareButton targetRef={shareRef} />
+        </div>
         <LeaderboardTable stats={stats} onTeamClick={handleTeamClick} />
+      </div>
+
+      {/* Hidden container for generation */}
+      <div className="absolute left-[-9999px] top-[-9999px]">
+        <div ref={shareRef}>
+            <ShareableLeaderboard division={activeDivision} entries={stats} />
+        </div>
       </div>
     </div>
   );
