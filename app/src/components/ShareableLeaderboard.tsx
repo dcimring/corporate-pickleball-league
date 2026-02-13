@@ -12,14 +12,14 @@ export const ShareableLeaderboard: React.FC<ShareableLeaderboardProps> = ({ divi
     <div 
       className="w-[1080px] min-h-[1350px] bg-[#FFFEFC] relative overflow-hidden flex flex-col font-body selection:none pb-8"
     >
-        {/* Grainy Texture Overlay - Very Subtle */}
-        <div className="absolute inset-0 opacity-[0.03] mix-blend-multiply z-0 pointer-events-none" 
+        {/* Grainy Texture Overlay - Extremely Subtle */}
+        <div className="absolute inset-0 opacity-[0.01] mix-blend-multiply z-0 pointer-events-none" 
             style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }} 
         />
 
-        {/* Decorative Background Elements - Extremely Subtle */}
-        <div className="absolute top-[-200px] right-[-100px] w-[800px] h-[800px] bg-[rgb(142,209,252)] rounded-full mix-blend-multiply opacity-[0.05] blur-3xl" />
-        <div className="absolute bottom-[-200px] left-[-100px] w-[600px] h-[600px] bg-[rgb(247,191,38)] rounded-full mix-blend-multiply opacity-[0.08] blur-3xl" />
+        {/* Decorative Background Elements - Near-Invisible */}
+        <div className="absolute top-[-200px] right-[-100px] w-[800px] h-[800px] bg-[rgb(142,209,252)] rounded-full mix-blend-multiply opacity-[0.02] blur-3xl" />
+        <div className="absolute bottom-[-200px] left-[-100px] w-[600px] h-[600px] bg-[rgb(247,191,38)] rounded-full mix-blend-multiply opacity-[0.03] blur-3xl" />
         
         {/* Header Section */}
         <div className="relative z-10 pt-20 px-12 pb-8">
