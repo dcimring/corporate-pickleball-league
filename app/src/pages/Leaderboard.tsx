@@ -77,10 +77,10 @@ export const Leaderboard: React.FC = () => {
       />
 
       <div className="space-y-4 px-0 md:px-4">
-        <div className="flex justify-end">
+        <LeaderboardTable stats={stats} onTeamClick={handleTeamClick} />
+        <div className="flex justify-center pt-4">
             <ShareButton targetRef={shareRef} />
         </div>
-        <LeaderboardTable stats={stats} onTeamClick={handleTeamClick} />
       </div>
 
       {/* Hidden container for generation */}
