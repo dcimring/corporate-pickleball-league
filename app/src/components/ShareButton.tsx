@@ -41,7 +41,9 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
 
       if (!blob) throw new Error('Failed to generate image');
 
-      const file = new File([blob], fileName, { type: 'image/png' });
+      const timestamp = Date.now();
+      const uniqueFileName = fileName.replace('.png', `-${timestamp}.png`);
+      const file = new File([blob], uniqueFileName, { type: 'image/png' });
 
       if (navigator.share && navigator.canShare({ files: [file] })) {
         await navigator.share({
@@ -53,7 +55,7 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
         // Fallback to download
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
-        link.download = fileName;
+        link.download = uniqueFileName;
         link.href = url;
         link.click();
         URL.revokeObjectURL(url);
