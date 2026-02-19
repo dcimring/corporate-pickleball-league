@@ -80,7 +80,7 @@ export const Leaderboard: React.FC = () => {
         <LeaderboardTable stats={stats} onTeamClick={handleTeamClick} />
         
         {/* Share Section */}
-        <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm mt-8 flex flex-col items-center text-center">
+        <div className="bg-white p-8 rounded-3xl shadow-sm mt-8 flex flex-col items-center text-center">
             <h3 className="text-2xl font-heading font-bold text-brand-blue mb-2">Share the Action!</h3>
             <p className="text-gray-500 font-body mb-6 max-w-md">
                 Post the leaderboard to social media or send it to your team.
