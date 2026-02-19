@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Share2 } from 'lucide-react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { LeaderboardTable } from '../components/LeaderboardTable';
 import { Navigation } from '../components/Navigation';
@@ -78,9 +78,16 @@ export const Leaderboard: React.FC = () => {
 
       <div className="space-y-4 px-0 md:px-4">
         <LeaderboardTable stats={stats} onTeamClick={handleTeamClick} />
-        <div className="flex justify-center pt-4">
+        
+        {/* Share Section */}
+        <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm mt-8 flex flex-col items-center text-center">
+            <h3 className="text-2xl font-heading font-bold text-brand-blue mb-2">Share the Action!</h3>
+            <p className="text-gray-500 font-body mb-6 max-w-md">
+                Post the leaderboard to social media or send it to your team.
+            </p>
             <ShareButton targetRef={shareRef} />
         </div>
+
       </div>
 
       {/* Hidden container for generation */}

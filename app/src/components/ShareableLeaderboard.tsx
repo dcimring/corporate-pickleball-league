@@ -28,9 +28,9 @@ export const ShareableLeaderboard: React.FC<ShareableLeaderboardProps> = ({ divi
                     La Roche Posay<br/>Corporate Pickleball League
                 </h1>
                 <div className="flex items-center gap-6">
-                    <span className="bg-[rgb(247,191,38)] text-[rgb(0,85,150)] px-10 py-4 rounded-full font-heading font-black italic text-4xl uppercase tracking-widest transform -skew-x-12 inline-block border-2 border-white">
-                        <span className="skew-x-12 inline-block">{division}</span>
-                    </span>
+                    <div className="bg-[rgb(247,191,38)] text-[rgb(0,85,150)] px-10 py-4 rounded-full font-heading font-black italic text-4xl uppercase tracking-widest transform -skew-x-12 flex items-center border-2 border-white">
+                        <span className="skew-x-12 block">{division}</span>
+                    </div>
                     <span className="font-mono font-bold text-gray-400 uppercase tracking-[0.2em] text-3xl">Standings</span>
                 </div>
             </div>

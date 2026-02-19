@@ -91,20 +91,23 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
       onClick={handleShare}
       disabled={loading}
       className={clsx(
-        "btn-primary flex items-center gap-2 px-6 py-2 text-sm",
+        "flex items-center gap-3 px-8 py-3 bg-gray-50 text-brand-blue font-heading font-bold rounded-2xl border border-white",
+        "shadow-[5px_5px_10px_#d1d5db,-5px_-5px_10px_#ffffff]",
+        "hover:shadow-[inset_5px_5px_10px_#d1d5db,inset_-5px_-5px_10px_#ffffff]",
+        "active:scale-95 transition-all duration-200",
         loading && "opacity-80 cursor-wait",
         className
       )}
     >
       {loading ? (
         <>
-          <Loader2 className="w-4 h-4 animate-spin" />
+          <Loader2 className="w-5 h-5 animate-spin text-brand-blue" />
           <span>Generating...</span>
         </>
       ) : (
         <>
-          <Share2 className="w-4 h-4" />
-          <span>Share Standings</span>
+          <Share2 className="w-5 h-5 text-brand-yellow drop-shadow-sm" />
+          <span>Share Leaderboard</span>
         </>
       )}
     </button>
