@@ -14,6 +14,8 @@ A professional, responsive, and iframe-optimized website for the Corporate Pickl
 -   **Full-Width UI:** Edge-to-edge layout designed to fit perfectly within any parent container.
 -   **Team Match Filtering:** Click any team on the Leaderboard or on a Match Card to view their specific match history with interactive filter chips.
 -   **Empty State Handling:** User-friendly "No teams found" and "No matches found" displays for empty divisions.
+-   **Social Sharing:** Generate beautiful, branded images of leaderboards and match results on the fly for sharing directly to Instagram, WhatsApp, and more.
+-   **Robust Error Handling:** Graceful connection timeout screens with retry logic, plus silent background failure handling to ensure the app stays usable even if the network drops.
 -   **Automated Ingestion:** Background service (`run_ingest_service.py`) that monitors Gmail for match results and syncs them automatically every 15 minutes.
 -   **Data Safety:** Built-in validation ensuring new match data never shrinks without explicit override, protecting against accidental data loss.
 -   **Supabase Backend:** Real-time database integration for managing teams, divisions, and match schedules.
@@ -89,6 +91,18 @@ window.addEventListener('message', function(e) {
 ```
 
 Ensure your iframe has the ID `pickleball-iframe`.
+
+To enable the **Social Sharing** feature (native share menu on mobile), you must add the `allow="web-share"` attribute to your iframe tag:
+
+```html
+<iframe 
+    id="pickleball-iframe"
+    src="https://your-app-url.vercel.app"
+    allow="web-share"
+    width="100%"
+    frameborder="0"
+></iframe>
+```
 
 ## ⚙️ Ingestion Tools
 

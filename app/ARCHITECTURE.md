@@ -31,6 +31,16 @@ Since the primary site navigation is gone, the app uses a nested navigation syst
 - `/matches`: Shows the match schedule.
 - *(Note: Stats and Home pages have been removed to keep the widget focused).*
 
+### 6. Error Handling
+- **Connection Timeout:** The initial data fetch has a strict 5-second timeout. If the connection fails or hangs, the `ConnectionError` component replaces the main layout, offering a "Retry" button.
+- **Background Persistence:** If a background refresh (polling) fails while valid data is already loaded, the error is suppressed to prevent interrupting the user experience. The app continues to display the stale data until a successful refresh occurs.
+
+### 7. Social Sharing
+- **Client-Side Generation:** To avoid server-side rendering complexity, the app uses `html-to-image` to capture specific, hidden DOM elements (`ShareableLeaderboard`, `ShareableMatch`) as high-resolution PNGs.
+- **Hidden Rendering:** These components are rendered off-screen (`top: -9999px`) but are fully styled with the "Roost Kinetic" theme, allowing for distinct designs optimized for social media (e.g., portrait aspect ratio, larger typography) separate from the screen UI.
+- **Native Sharing:** The `ShareButton` utilizes the `navigator.share` API to invoke the native mobile sharing sheet, allowing users to share the generated image directly to apps like Instagram, WhatsApp, or Facebook. On unsupported platforms, it falls back to a file download.
+- **Iframe Permissions:** For this feature to function within an embedded context, the parent `<iframe>` tag **must** include `allow="web-share"`. Without this attribute, the browser blocks the API, and the app defaults to the file download fallback.
+
 ## Data Ingestion
 - **Source:** CSV files emailed to a specific address.
 - **Automation:** `run_ingest_service.py` or Google Apps Script (`GoogleAppsScript.js`) polls for new emails every 15 mins.

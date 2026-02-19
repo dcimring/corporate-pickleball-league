@@ -16,7 +16,7 @@ The **Corporate Pickleball League** is a responsive web application built to man
 ## Key Directories & Files
 
 -   `app/`: Main application source code.
-    -   `src/components/`: Reusable UI components (e.g., `MatchCard.tsx`, `Layout.tsx`, `LeaderboardTable.tsx`).
+    -   `src/components/`: Reusable UI components (e.g., `MatchCard.tsx`, `Layout.tsx`, `LeaderboardTable.tsx`, `ConnectionError.tsx`, `ShareButton.tsx`).
     -   `src/pages/`: Main application views (`Leaderboard`, `Matches`).
     -   `src/lib/`: Data access utilities (Supabase client).
     -   `src/types.ts`: TypeScript definitions for league data entities.
@@ -73,10 +73,15 @@ npm run lint
     -   Styles: ExtraBold Italic for headings, Monospace for data.
 
 ### Data Management
--   Data is fetched from Supabase via `src/context/LeagueContext.tsx`.
--   Front-loaded data pattern ensures instant navigation between tabs.
+-   **Fetching:** Data is fetched from Supabase via `src/context/LeagueContext.tsx` with a 5-second timeout.
+-   **Error Handling:** Initial connection failures trigger a dedicated error screen. Background refreshes fail silently to preserve the user experience.
+-   **Performance:** Front-loaded data pattern ensures instant navigation between tabs.
 
 ### Components
 -   **Functional Components:** Use React functional components with TypeScript interfaces for props.
 -   **Mobile-First:** Ensure all UI elements are responsive and optimized for mobile devices (e.g., touch-friendly targets, horizontal scrolling wrappers).
 -   **Match Cards:** Use "Roost Kinetic" design with grainy paper texture and hard shadows.
+
+### Social Sharing
+-   **Mechanism:** Client-side image generation using `html-to-image` creates branded PNGs for the leaderboard and match results.
+-   **Components:** `ShareButton`, `ShareableLeaderboard`, and `ShareableMatch` handle the rendering and sharing process via the native Web Share API.
