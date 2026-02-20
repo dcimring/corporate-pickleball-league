@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Trophy } from 'lucide-react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { LeaderboardTable } from '../components/LeaderboardTable';
@@ -89,9 +89,9 @@ export const Leaderboard: React.FC = () => {
                 whileHover={{ rotate: -2, scale: 1.02 }}
                 className="bg-white p-8 md:p-10 rounded-2xl shadow-xl border-4 border-dashed border-gray-100 relative transform rotate-1 max-w-lg w-full"
             >
-                {/* "Sticker" badge */}
-                <div className="absolute -top-6 -right-6 bg-brand-yellow text-brand-blue w-14 h-14 md:w-16 md:h-16 flex items-center justify-center rounded-full font-black italic text-lg md:text-xl border-4 border-white shadow-lg transform rotate-12">
-                    WIN
+                {/* Trophy Sticker Badge */}
+                <div className="absolute -top-6 -right-6 bg-brand-yellow text-brand-blue w-14 h-14 md:w-16 md:h-16 flex items-center justify-center rounded-full border-4 border-white shadow-lg transform rotate-12">
+                    <Trophy className="w-7 h-7 md:w-8 md:h-8" />
                 </div>
                 
                 <div className="space-y-6 text-center">

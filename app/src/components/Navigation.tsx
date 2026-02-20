@@ -55,7 +55,7 @@ export const Navigation: React.FC<NavigationProps> = ({
               key={tab.name}
               onClick={() => onPageChange(tab.path)}
               className={clsx(
-                "relative pb-4 text-lg md:text-xl font-heading font-black italic uppercase tracking-tight transition-colors",
+                "relative pb-4 text-xl md:text-3xl font-heading font-black italic uppercase tracking-tighter transition-colors",
                 isActive ? "text-brand-blue" : "text-gray-300 hover:text-gray-400"
               )}
             >
