@@ -5,9 +5,12 @@ export const config = {
   runtime: 'edge',
 };
 
-// Supabase environment variables (handling both VITE_ prefix and standard)
-const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL!;
-const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY!;
+// Supabase environment variables
+// Note: Vercel Edge runtime supports standard process.env but TS may complain without @types/node.
+// We cast to any to bypass the 'process' check if needed, or use a fallback.
+const env = (typeof process !== 'undefined' ? process.env : {}) as Record<string, string>;
+const supabaseUrl = env.VITE_SUPABASE_URL || env.SUPABASE_URL!;
+const supabaseAnonKey = env.VITE_SUPABASE_ANON_KEY || env.SUPABASE_ANON_KEY!;
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 // "Warm Paper" Grainy Texture SVG (Satori-compatible simple pattern)
