@@ -1,8 +1,7 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { clsx } from 'clsx';
 import type { Match } from '../types';
 import { ShareButton } from './ShareButton';
-import { ShareableMatch } from './ShareableMatch';
 
 interface MatchCardProps {
   match: Match;
@@ -10,7 +9,6 @@ interface MatchCardProps {
 }
 
 export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
-  const shareRef = useRef<HTMLDivElement>(null);
   const isWin1 = match.team1Wins > match.team2Wins || (match.team1Wins === match.team2Wins && match.team1Points > match.team2Points);
   const isWin2 = match.team2Wins > match.team1Wins || (match.team1Wins === match.team2Wins && match.team2Points > match.team1Points);
 
@@ -43,7 +41,12 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
 
           {/* Share Button - Absolute Top Right */}
           <div className="absolute top-4 right-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-             <ShareButton targetRef={shareRef} variant="icon" fileName={`match-${match.id}.png`} />
+             <ShareButton 
+                type="match" 
+                matchId={match.id} 
+                variant="icon" 
+                fileName={`match-${match.id}.png`} 
+             />
           </div>
     
           <div className="pt-6 md:pt-10 pb-3 px-4 md:px-8 flex flex-col h-full relative z-10">        {/* Teams Container */}
@@ -104,12 +107,6 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
 
       </div>
 
-      {/* Hidden Shareable Content */}
-      <div className="absolute left-[-9999px] top-[-9999px]">
-        <div ref={shareRef}>
-            <ShareableMatch match={match} />
-        </div>
-      </div>
     </div>
   );
 };

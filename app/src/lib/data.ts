@@ -177,11 +177,3 @@ export const fetchLeagueData = async (): Promise<LeagueData> => {
 
   return Promise.race([fetchLeagueDataRaw(), timeout]);
 };
-
-// Keep a placeholder for initial render if needed, or remove if we fully switch to async
-export const initialLeagueData: LeagueData = {
-  divisions: [],
-  leaderboard: {},
-  teamStats: {},
-  matches: {}
-};

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { fetchLeagueData, initialLeagueData } from '../lib/data';
+import { fetchLeagueData } from '../lib/data';
+import { initialLeagueData } from '../constants';
 import type { LeagueData } from '../types';
 
 interface LeagueContextType {
@@ -11,6 +12,7 @@ interface LeagueContextType {
 
 const LeagueContext = createContext<LeagueContextType | undefined>(undefined);
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useLeagueData = () => {
   const context = useContext(LeagueContext);
   if (!context) {

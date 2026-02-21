@@ -24,6 +24,7 @@ export const Matches: React.FC = () => {
              setActiveDivision(defaultDiv);
         }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading, data, searchParams]);
 
   const handleDivisionChange = (div: string) => {

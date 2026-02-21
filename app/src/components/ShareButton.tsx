@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Share2, Loader2 } from 'lucide-react';
-import { toBlob } from 'html-to-image';
 import { clsx } from 'clsx';
 
 interface ShareButtonProps {
-  targetRef: React.RefObject<HTMLElement | null>;
+  type: 'leaderboard' | 'match';
+  division?: string;
+  matchId?: string;
   fileName?: string;
   className?: string;
   variant?: 'icon' | 'button';
@@ -13,7 +14,9 @@ interface ShareButtonProps {
 }
 
 export const ShareButton: React.FC<ShareButtonProps> = ({ 
-  targetRef, 
+  type,
+  division,
+  matchId,
   fileName = 'pickleball-share.png',
   className,
   variant = 'button',
@@ -24,22 +27,23 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
 
   const handleShare = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (!targetRef.current) return;
-
+    
     try {
       setLoading(true);
       onShareStart?.();
 
-      // Wait a tick to ensure any hidden/rendering states are ready if needed
-      await new Promise(resolve => setTimeout(resolve, 100));
+      const params = new URLSearchParams();
+      params.set('type', type);
+      if (division) params.set('division', division);
+      if (matchId) params.set('matchId', matchId);
 
-      const blob = await toBlob(targetRef.current, {
-        cacheBust: true,
-        backgroundColor: '#FFFEFC', // Ensure background is captured
-        pixelRatio: 2, // High res for retina
-      });
-
-      if (!blob) throw new Error('Failed to generate image');
+      const apiUrl = `/api/og?${params.toString()}`;
+      
+      const response = await fetch(apiUrl);
+      if (!response.ok) throw new Error('Failed to generate image');
+      
+      const blob = await response.blob();
+      if (!blob) throw new Error('Failed to get blob from response');
 
       const timestamp = Date.now();
       const uniqueFileName = fileName.replace('.png', `-${timestamp}.png`);
@@ -62,8 +66,7 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
       }
     } catch (err) {
       console.error('Sharing failed:', err);
-      // Fallback for some browsers/contexts where share API might fail mid-flight
-      alert('Could not share directly. Try taking a screenshot!');
+      alert('Could not generate shareable image. Please try again later.');
     } finally {
       setLoading(false);
       onShareEnd?.();
