@@ -6,9 +6,8 @@ export const config = {
 };
 
 // Supabase environment variables
-// Note: Vercel Edge runtime supports standard process.env but TS may complain without @types/node.
-// We cast to any to bypass the 'process' check if needed, or use a fallback.
-const env = (typeof process !== 'undefined' ? process.env : {}) as Record<string, string>;
+// Accessing via globalThis to satisfy TS without @types/node in the Edge runtime
+const env = (globalThis as any).process?.env || {};
 const supabaseUrl = env.VITE_SUPABASE_URL || env.SUPABASE_URL!;
 const supabaseAnonKey = env.VITE_SUPABASE_ANON_KEY || env.SUPABASE_ANON_KEY!;
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
