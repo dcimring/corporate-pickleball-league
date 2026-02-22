@@ -22,5 +22,10 @@
         }
       ]
     }
-  ]
+  ],
+  "functions": {
+    "api/**/*.js": {
+      "includeFiles": "api/fonts/*.ttf"
+    }
+  }
 }
