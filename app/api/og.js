@@ -5,13 +5,29 @@ export const config = {
   runtime: 'nodejs',
 };
 
+const withTimeout = async (promise, ms, label) => {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), ms);
+  try {
+    return await promise(controller.signal);
+  } finally {
+    clearTimeout(timeout);
+  }
+};
+
 const fetchGoogleFont = async (cssUrl, fontStyle, fontWeight) => {
-  const css = await fetch(cssUrl, {
-    headers: {
-      'User-Agent':
-        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
-    },
-  }).then((res) => res.text());
+  const css = await withTimeout(
+    (signal) =>
+      fetch(cssUrl, {
+        signal,
+        headers: {
+          'User-Agent':
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+        },
+      }).then((res) => res.text()),
+    3000,
+    'font-css'
+  );
 
   const regex = new RegExp(
     `font-style: ${fontStyle};[\\s\\S]*?font-weight: ${fontWeight};[\\s\\S]*?src: url\\(([^)]+)\\) format\\('woff2'\\)`,
@@ -22,7 +38,11 @@ const fetchGoogleFont = async (cssUrl, fontStyle, fontWeight) => {
     throw new Error(`Font not found for ${cssUrl} ${fontStyle} ${fontWeight}`);
   }
 
-  return fetch(match[1]).then((res) => res.arrayBuffer());
+  return withTimeout(
+    (signal) => fetch(match[1], { signal }).then((res) => res.arrayBuffer()),
+    3000,
+    'font-file'
+  );
 };
 
 const fontCache = Promise.all([
@@ -46,23 +66,31 @@ const fontCache = Promise.all([
     'normal',
     700
   ),
-]).then(([montserrat, montserratItalic, openSans, robotoMono]) => ({
-  montserrat,
-  montserratItalic,
-  openSans,
-  robotoMono,
-}));
+])
+  .then(([montserrat, montserratItalic, openSans, robotoMono]) => ({
+    montserrat,
+    montserratItalic,
+    openSans,
+    robotoMono,
+  }))
+  .catch(() => null);
 
 const noiseSvg = `data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E`;
 
 const fetchSupabase = async (url, supabaseKey) => {
-  const res = await fetch(url, {
-    headers: {
-      apikey: supabaseKey,
-      Authorization: `Bearer ${supabaseKey}`,
-      'Content-Type': 'application/json',
-    },
-  });
+  const res = await withTimeout(
+    (signal) =>
+      fetch(url, {
+        signal,
+        headers: {
+          apikey: supabaseKey,
+          Authorization: `Bearer ${supabaseKey}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+    5000,
+    'supabase'
+  );
 
   if (!res.ok) {
     const body = await res.text();
@@ -135,6 +163,7 @@ export default async function handler(req) {
     const { searchParams } = new URL(req.url);
     const type = searchParams.get('type');
     const divisionName = searchParams.get('division');
+    const debug = searchParams.get('debug') === '1';
 
     if (type !== 'leaderboard') {
       return new Response('Unsupported share type.', { status: 400 });
@@ -175,7 +204,30 @@ export default async function handler(req) {
     );
 
     const entries = buildLeaderboard(teams, matches);
-    const { montserrat, montserratItalic, openSans, robotoMono } = await fontCache;
+    const fontResult = await fontCache;
+
+    if (debug) {
+      return new Response(
+        JSON.stringify(
+          {
+            divisionName,
+            teams: teams.length,
+            matches: matches.length,
+            entries: entries.length,
+            fontsLoaded: Boolean(fontResult),
+          },
+          null,
+          2
+        ),
+        {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json',
+            'Cache-Control': 'no-store, max-age=0',
+          },
+        }
+      );
+    }
 
     return new ImageResponse(
       h(
@@ -530,32 +582,34 @@ export default async function handler(req) {
         headers: {
           'Cache-Control': 'no-store, max-age=0',
         },
-        fonts: [
-          {
-            name: 'Montserrat',
-            data: montserrat,
-            weight: 800,
-            style: 'normal',
-          },
-          {
-            name: 'Montserrat',
-            data: montserratItalic,
-            weight: 800,
-            style: 'italic',
-          },
-          {
-            name: 'Open Sans',
-            data: openSans,
-            weight: 400,
-            style: 'normal',
-          },
-          {
-            name: 'Roboto Mono',
-            data: robotoMono,
-            weight: 700,
-            style: 'normal',
-          },
-        ],
+        fonts: fontResult
+          ? [
+              {
+                name: 'Montserrat',
+                data: fontResult.montserrat,
+                weight: 800,
+                style: 'normal',
+              },
+              {
+                name: 'Montserrat',
+                data: fontResult.montserratItalic,
+                weight: 800,
+                style: 'italic',
+              },
+              {
+                name: 'Open Sans',
+                data: fontResult.openSans,
+                weight: 400,
+                style: 'normal',
+              },
+              {
+                name: 'Roboto Mono',
+                data: fontResult.robotoMono,
+                weight: 700,
+                style: 'normal',
+              },
+            ]
+          : [],
       }
     );
   } catch (error) {
