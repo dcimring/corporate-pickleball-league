@@ -1,7 +1,7 @@
-import React from 'react';
-import { ImageResponse } from '@vercel/og';
+const React = require('react');
+const { ImageResponse } = require('@vercel/og');
 
-export const config = {
+module.exports.config = {
   runtime: 'nodejs',
 };
 
@@ -158,7 +158,7 @@ const buildLeaderboard = (teams, matches) => {
 
 const h = React.createElement;
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   try {
     if (req?.url?.includes('ping=1')) {
       res.setHeader('Content-Type', 'text/plain; charset=utf-8');
@@ -689,4 +689,4 @@ export default async function handler(req, res) {
     res.statusCode = 500;
     res.end('Failed to generate image.');
   }
-}
+};
