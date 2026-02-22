@@ -160,9 +160,13 @@ const h = React.createElement;
 
 export default async function handler(req) {
   try {
+    const hostHeader =
+      typeof req.headers?.get === 'function'
+        ? req.headers.get('host')
+        : req.headers?.host || req.headers?.Host || process.env.VERCEL_URL;
     const requestUrl = req.url.startsWith('http')
       ? req.url
-      : `https://${req.headers.get('host')}${req.url}`;
+      : `https://${hostHeader}${req.url}`;
     const { searchParams } = new URL(requestUrl);
     const type = searchParams.get('type');
     const divisionName = searchParams.get('division');
