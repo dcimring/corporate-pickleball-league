@@ -160,7 +160,10 @@ const h = React.createElement;
 
 export default async function handler(req) {
   try {
-    const { searchParams } = new URL(req.url);
+    const requestUrl = req.url.startsWith('http')
+      ? req.url
+      : `https://${req.headers.get('host')}${req.url}`;
+    const { searchParams } = new URL(requestUrl);
     const type = searchParams.get('type');
     const divisionName = searchParams.get('division');
     const debug = searchParams.get('debug') === '1';
