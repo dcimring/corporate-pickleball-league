@@ -323,7 +323,14 @@ export default async function handler(req, res) {
           { style: { padding: '80px 48px 32px', position: 'relative', zIndex: 2 } },
           h(
             'div',
-            { style: { borderBottom: '6px solid rgb(0,85,150)', paddingBottom: 32 } },
+            {
+              style: {
+                borderBottom: '6px solid rgb(0,85,150)',
+                paddingBottom: 32,
+                display: 'flex',
+                flexDirection: 'column',
+              },
+            },
             h(
               'div',
               {
@@ -337,6 +344,8 @@ export default async function handler(req, res) {
                   letterSpacing: '-0.04em',
                   lineHeight: 0.95,
                   marginBottom: 24,
+                  display: 'flex',
+                  flexDirection: 'column',
                 },
               },
               'La Roche Posay',
@@ -591,6 +600,9 @@ export default async function handler(req, res) {
               padding: '64px 0 48px',
               textAlign: 'center',
               zIndex: 2,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
             },
           },
           h('div', {
