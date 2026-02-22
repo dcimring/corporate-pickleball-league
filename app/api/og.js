@@ -1,4 +1,5 @@
 import React from 'react';
+import { readFile } from 'node:fs/promises';
 import { ImageResponse } from '@vercel/og';
 
 export const config = {
@@ -15,57 +16,17 @@ const withTimeout = async (promise, ms, label) => {
   }
 };
 
-const fetchGoogleFont = async (cssUrl, fontStyle, fontWeight) => {
-  const css = await withTimeout(
-    (signal) =>
-      fetch(cssUrl, {
-        signal,
-        headers: {
-          'User-Agent':
-            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
-        },
-      }).then((res) => res.text()),
-    3000,
-    'font-css'
-  );
-
-  const regex = new RegExp(
-    `font-style: ${fontStyle};[\\s\\S]*?font-weight: ${fontWeight};[\\s\\S]*?src: url\\(([^)]+)\\) format\\('woff2'\\)`,
-    'm'
-  );
-  const match = css.match(regex);
-  if (!match) {
-    throw new Error(`Font not found for ${cssUrl} ${fontStyle} ${fontWeight}`);
-  }
-
-  return withTimeout(
-    (signal) => fetch(match[1], { signal }).then((res) => res.arrayBuffer()),
-    3000,
-    'font-file'
-  );
+const readFont = async (relativePath) => {
+  const fileUrl = new URL(relativePath, import.meta.url);
+  const data = await readFile(fileUrl);
+  return data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength);
 };
 
 const fontCache = Promise.all([
-  fetchGoogleFont(
-    'https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,800;1,800&display=swap',
-    'normal',
-    800
-  ),
-  fetchGoogleFont(
-    'https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,800;1,800&display=swap',
-    'italic',
-    800
-  ),
-  fetchGoogleFont(
-    'https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap',
-    'normal',
-    400
-  ),
-  fetchGoogleFont(
-    'https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@700&display=swap',
-    'normal',
-    700
-  ),
+  readFont('./fonts/Montserrat-ExtraBold.ttf'),
+  readFont('./fonts/Montserrat-ExtraBoldItalic.ttf'),
+  readFont('./fonts/OpenSans-Regular.ttf'),
+  readFont('./fonts/RobotoMono-Bold.ttf'),
 ])
   .then(([montserrat, montserratItalic, openSans, robotoMono]) => ({
     montserrat,
@@ -294,6 +255,32 @@ export default async function handler(req, res) {
 
     const entries = buildLeaderboard(teams, matches);
     const fontResult = await fontCache;
+
+    if (debug) {
+      res.setHeader('Content-Type', 'application/json');
+      res.setHeader('Cache-Control', 'no-store, max-age=0');
+      res.statusCode = 200;
+      res.end(
+        JSON.stringify(
+          {
+            divisionName,
+            teams: teams.length,
+            matches: matches.length,
+            entries: entries.length,
+            fontsLoaded: Boolean(fontResult),
+          },
+          null,
+          2
+        )
+      );
+      return;
+    }
+
+    if (!fontResult) {
+      res.statusCode = 500;
+      res.end('Failed to load fonts.');
+      return;
+    }
 
     const imageResponse = new ImageResponse(
       h(
