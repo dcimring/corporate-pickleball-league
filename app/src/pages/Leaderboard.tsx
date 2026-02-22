@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Loader2, Trophy } from 'lucide-react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { LeaderboardTable } from '../components/LeaderboardTable';
 import { Navigation } from '../components/Navigation';
 import { ShareButton } from '../components/ShareButton';
-import { ShareableLeaderboard } from '../components/ShareableLeaderboard';
 import { useLeagueData } from '../context/LeagueContext';
 
 export const Leaderboard: React.FC = () => {
@@ -13,7 +12,6 @@ export const Leaderboard: React.FC = () => {
   const navigate = useNavigate();
   const { data, loading } = useLeagueData();
   const [activeDivision, setActiveDivision] = useState<string>('');
-  const shareRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!loading && data.leaderboard) {
@@ -60,6 +58,9 @@ export const Leaderboard: React.FC = () => {
 
   const divisions = Object.keys(data.leaderboard);
   const stats = data.leaderboard[activeDivision] || [];
+  const shareUrl = activeDivision
+    ? `/api/og?type=leaderboard&division=${encodeURIComponent(activeDivision)}`
+    : undefined;
 
   const pageTabs = [
     { name: 'Leaderboard', path: '/leaderboard' },
@@ -105,7 +106,7 @@ export const Leaderboard: React.FC = () => {
                     </div>
                     
                     <ShareButton 
-                        targetRef={shareRef} 
+                        shareUrl={shareUrl}
                         className="!w-full !justify-center !rounded-full !bg-brand-blue !text-white !border-4 !border-white !shadow-2xl hover:!bg-brand-yellow hover:!text-brand-blue !transition-colors !py-4"
                     />
                 </div>
@@ -114,12 +115,6 @@ export const Leaderboard: React.FC = () => {
 
       </div>
 
-      {/* Hidden container for generation */}
-      <div className="absolute left-[-9999px] top-[-9999px]">
-        <div ref={shareRef}>
-            <ShareableLeaderboard division={activeDivision} entries={stats} />
-        </div>
-      </div>
     </div>
   );
 };

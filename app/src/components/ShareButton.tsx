@@ -4,40 +4,56 @@ import { toBlob } from 'html-to-image';
 import { clsx } from 'clsx';
 
 interface ShareButtonProps {
-  targetRef: React.RefObject<HTMLElement | null>;
+  targetRef?: React.RefObject<HTMLElement | null>;
+  shareUrl?: string;
   fileName?: string;
   className?: string;
   variant?: 'icon' | 'button';
   onShareStart?: () => void;
   onShareEnd?: () => void;
+  shareTitle?: string;
+  shareText?: string;
 }
 
 export const ShareButton: React.FC<ShareButtonProps> = ({ 
-  targetRef, 
+  targetRef,
+  shareUrl,
   fileName = 'pickleball-share.png',
   className,
   variant = 'button',
   onShareStart,
-  onShareEnd
+  onShareEnd,
+  shareTitle = 'Corporate Pickleball League',
+  shareText = 'Check out the latest stats from the Corporate Pickleball League! 🥒🏆'
 }) => {
   const [loading, setLoading] = useState(false);
 
   const handleShare = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (!targetRef.current) return;
+    if (!shareUrl && !targetRef?.current) return;
 
     try {
       setLoading(true);
       onShareStart?.();
 
-      // Wait a tick to ensure any hidden/rendering states are ready if needed
-      await new Promise(resolve => setTimeout(resolve, 100));
+      let blob: Blob | null = null;
 
-      const blob = await toBlob(targetRef.current, {
-        cacheBust: true,
-        backgroundColor: '#FFFEFC', // Ensure background is captured
-        pixelRatio: 2, // High res for retina
-      });
+      if (shareUrl) {
+        const response = await fetch(shareUrl, { cache: 'no-store' });
+        if (!response.ok) {
+          throw new Error(`Failed to fetch share image: ${response.status}`);
+        }
+        blob = await response.blob();
+      } else if (targetRef?.current) {
+        // Wait a tick to ensure any hidden/rendering states are ready if needed
+        await new Promise(resolve => setTimeout(resolve, 100));
+
+        blob = await toBlob(targetRef.current, {
+          cacheBust: true,
+          backgroundColor: '#FFFEFC', // Ensure background is captured
+          pixelRatio: 2, // High res for retina
+        });
+      }
 
       if (!blob) throw new Error('Failed to generate image');
 
@@ -48,8 +64,8 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
       if (navigator.share && navigator.canShare({ files: [file] })) {
         await navigator.share({
           files: [file],
-          title: 'Corporate Pickleball League',
-          text: 'Check out the latest stats from the Corporate Pickleball League! 🥒🏆',
+          title: shareTitle,
+          text: shareText,
         });
       } else {
         // Fallback to download
