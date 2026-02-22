@@ -160,6 +160,16 @@ const h = React.createElement;
 
 export default async function handler(req) {
   try {
+    if (req?.url?.includes('ping=1')) {
+      return new Response('pong', {
+        status: 200,
+        headers: {
+          'Content-Type': 'text/plain; charset=utf-8',
+          'Cache-Control': 'no-store, max-age=0',
+        },
+      });
+    }
+
     const hostHeader =
       typeof req.headers?.get === 'function'
         ? req.headers.get('host')
