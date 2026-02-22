@@ -117,7 +117,26 @@ const buildLeaderboard = (teams, matches) => {
   return entries;
 };
 
-const h = React.createElement;
+const h = (tag, props, ...children) => {
+  if (tag === 'div') {
+    const childCount =
+      children.length === 1 && Array.isArray(children[0]) ? children[0].length : children.length;
+    if (childCount > 1) {
+      const style = props?.style ?? {};
+      if (!('display' in style)) {
+        props = {
+          ...props,
+          style: {
+            display: 'flex',
+            flexDirection: 'column',
+            ...style,
+          },
+        };
+      }
+    }
+  }
+  return React.createElement(tag, props, ...children);
+};
 
 export default async function handler(req, res) {
   try {
