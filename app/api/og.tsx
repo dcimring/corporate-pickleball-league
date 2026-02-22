@@ -1,16 +1,11 @@
 import { ImageResponse } from '@vercel/og';
 import { createClient } from '@supabase/supabase-js';
 
-export const runtime = 'edge';
-export const config = {
-  runtime: 'edge',
-};
+export const runtime = 'nodejs';
 
 // Supabase environment variables
-// Accessing via globalThis to satisfy TS without @types/node in the Edge runtime
-const env = (globalThis as any).process?.env || {};
-const supabaseUrl = env.VITE_SUPABASE_URL || env.SUPABASE_URL!;
-const supabaseAnonKey = env.VITE_SUPABASE_ANON_KEY || env.SUPABASE_ANON_KEY!;
+const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL!;
+const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY!;
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 // "Warm Paper" Grainy Texture SVG (Satori-compatible simple pattern)

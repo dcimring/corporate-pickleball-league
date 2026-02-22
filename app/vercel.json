@@ -1,4 +1,9 @@
 {
+  "functions": {
+    "api/og.tsx": {
+      "runtime": "nodejs20.x"
+    }
+  },
   "rewrites": [
     {
       "source": "/api/(.*)",
