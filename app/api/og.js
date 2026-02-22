@@ -187,6 +187,55 @@ export default async function handler(req) {
       return new Response('Supabase env vars not configured.', { status: 500 });
     }
 
+    if (debug) {
+      const probeUrl = `${supabaseUrl}/rest/v1/divisions?select=id&limit=1`;
+      let probeStatus = null;
+      let probeBody = null;
+      try {
+        const probeRes = await withTimeout(
+          (signal) =>
+            fetch(probeUrl, {
+              signal,
+              headers: {
+                apikey: supabaseKey,
+                Authorization: `Bearer ${supabaseKey}`,
+                'Content-Type': 'application/json',
+              },
+            }),
+          5000,
+          'supabase-probe'
+        );
+        probeStatus = probeRes.status;
+        probeBody = (await probeRes.text()).slice(0, 500);
+      } catch (err) {
+        probeBody = String(err);
+      }
+
+      return new Response(
+        JSON.stringify(
+          {
+            hostHeader,
+            requestUrl,
+            supabaseUrlSet: Boolean(supabaseUrl),
+            supabaseKeySet: Boolean(supabaseKey),
+            supabaseKeyPrefix: supabaseKey ? supabaseKey.slice(0, 6) : null,
+            probeUrl,
+            probeStatus,
+            probeBody,
+          },
+          null,
+          2
+        ),
+        {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json',
+            'Cache-Control': 'no-store, max-age=0',
+          },
+        }
+      );
+    }
+
     const divisions = await fetchSupabase(
       `${supabaseUrl}/rest/v1/divisions?select=id,name&name=eq.${encodeURIComponent(
         divisionName
@@ -212,29 +261,6 @@ export default async function handler(req) {
 
     const entries = buildLeaderboard(teams, matches);
     const fontResult = await fontCache;
-
-    if (debug) {
-      return new Response(
-        JSON.stringify(
-          {
-            divisionName,
-            teams: teams.length,
-            matches: matches.length,
-            entries: entries.length,
-            fontsLoaded: Boolean(fontResult),
-          },
-          null,
-          2
-        ),
-        {
-          status: 200,
-          headers: {
-            'Content-Type': 'application/json',
-            'Cache-Control': 'no-store, max-age=0',
-          },
-        }
-      );
-    }
 
     return new ImageResponse(
       h(
