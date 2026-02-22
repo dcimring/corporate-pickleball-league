@@ -158,16 +158,14 @@ const buildLeaderboard = (teams, matches) => {
 
 const h = React.createElement;
 
-export default async function handler(req) {
+export default async function handler(req, res) {
   try {
     if (req?.url?.includes('ping=1')) {
-      return new Response('pong', {
-        status: 200,
-        headers: {
-          'Content-Type': 'text/plain; charset=utf-8',
-          'Cache-Control': 'no-store, max-age=0',
-        },
-      });
+      res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+      res.setHeader('Cache-Control', 'no-store, max-age=0');
+      res.statusCode = 200;
+      res.end('pong');
+      return;
     }
 
     const hostHeader =
@@ -183,11 +181,15 @@ export default async function handler(req) {
     const debug = searchParams.get('debug') === '1';
 
     if (type !== 'leaderboard') {
-      return new Response('Unsupported share type.', { status: 400 });
+      res.statusCode = 400;
+      res.end('Unsupported share type.');
+      return;
     }
 
     if (!divisionName) {
-      return new Response('Missing division.', { status: 400 });
+      res.statusCode = 400;
+      res.end('Missing division.');
+      return;
     }
 
     const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
@@ -196,7 +198,10 @@ export default async function handler(req) {
 
     if (debug) {
       if (!supabaseUrl || !supabaseKey) {
-        return new Response(
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader('Cache-Control', 'no-store, max-age=0');
+        res.statusCode = 200;
+        res.end(
           JSON.stringify(
             {
               hostHeader,
@@ -206,15 +211,9 @@ export default async function handler(req) {
             },
             null,
             2
-          ),
-          {
-            status: 200,
-            headers: {
-              'Content-Type': 'application/json',
-              'Cache-Control': 'no-store, max-age=0',
-            },
-          }
+          )
         );
+        return;
       }
 
       const probeUrl = `${supabaseUrl}/rest/v1/divisions?select=id&limit=1`;
@@ -240,7 +239,10 @@ export default async function handler(req) {
         probeBody = String(err);
       }
 
-      return new Response(
+      res.setHeader('Content-Type', 'application/json');
+      res.setHeader('Cache-Control', 'no-store, max-age=0');
+      res.statusCode = 200;
+      res.end(
         JSON.stringify(
           {
             hostHeader,
@@ -254,19 +256,15 @@ export default async function handler(req) {
           },
           null,
           2
-        ),
-        {
-          status: 200,
-          headers: {
-            'Content-Type': 'application/json',
-            'Cache-Control': 'no-store, max-age=0',
-          },
-        }
+        )
       );
+      return;
     }
 
     if (!supabaseUrl || !supabaseKey) {
-      return new Response('Supabase env vars not configured.', { status: 500 });
+      res.statusCode = 500;
+      res.end('Supabase env vars not configured.');
+      return;
     }
 
     const divisions = await fetchSupabase(
@@ -277,7 +275,9 @@ export default async function handler(req) {
     );
 
     if (!divisions.length) {
-      return new Response('Division not found.', { status: 404 });
+      res.statusCode = 404;
+      res.end('Division not found.');
+      return;
     }
 
     const divisionId = divisions[0].id;
@@ -295,7 +295,7 @@ export default async function handler(req) {
     const entries = buildLeaderboard(teams, matches);
     const fontResult = await fontCache;
 
-    return new ImageResponse(
+    const imageResponse = new ImageResponse(
       h(
         'div',
         {
@@ -678,8 +678,15 @@ export default async function handler(req) {
           : [],
       }
     );
+    const buffer = Buffer.from(await imageResponse.arrayBuffer());
+    res.setHeader('Content-Type', 'image/png');
+    res.setHeader('Cache-Control', 'no-store, max-age=0');
+    res.statusCode = 200;
+    res.end(buffer);
+    return;
   } catch (error) {
     console.error('OG generation error', error);
-    return new Response('Failed to generate image.', { status: 500 });
+    res.statusCode = 500;
+    res.end('Failed to generate image.');
   }
 }
