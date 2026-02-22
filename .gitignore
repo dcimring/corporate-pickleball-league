@@ -136,3 +136,4 @@ __pycache__/
 .venv/
 \n# Database Backups
 backups/
+.vercel
