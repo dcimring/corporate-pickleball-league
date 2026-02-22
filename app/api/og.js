@@ -157,6 +157,9 @@ export default async function handler(req, res) {
     const supabaseKey =
       process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
 
+    let probeUrl = null;
+    let probeStatus = null;
+    let probeBody = null;
     if (debug) {
       if (!supabaseUrl || !supabaseKey) {
         res.setHeader('Content-Type', 'application/json');
@@ -177,9 +180,7 @@ export default async function handler(req, res) {
         return;
       }
 
-      const probeUrl = `${supabaseUrl}/rest/v1/divisions?select=id&limit=1`;
-      let probeStatus = null;
-      let probeBody = null;
+      probeUrl = `${supabaseUrl}/rest/v1/divisions?select=id&limit=1`;
       try {
         const probeRes = await withTimeout(
           (signal) =>
@@ -199,27 +200,6 @@ export default async function handler(req, res) {
       } catch (err) {
         probeBody = String(err);
       }
-
-      res.setHeader('Content-Type', 'application/json');
-      res.setHeader('Cache-Control', 'no-store, max-age=0');
-      res.statusCode = 200;
-      res.end(
-        JSON.stringify(
-          {
-            hostHeader,
-            requestUrl,
-            supabaseUrlSet: Boolean(supabaseUrl),
-            supabaseKeySet: Boolean(supabaseKey),
-            supabaseKeyPrefix: supabaseKey ? supabaseKey.slice(0, 6) : null,
-            probeUrl,
-            probeStatus,
-            probeBody,
-          },
-          null,
-          2
-        )
-      );
-      return;
     }
 
     if (!supabaseUrl || !supabaseKey) {
@@ -269,6 +249,14 @@ export default async function handler(req, res) {
             entries: entries.length,
             fontsLoaded: Boolean(fontResult && !('error' in fontResult)),
             fontError: fontResult && 'error' in fontResult ? fontResult.error : null,
+            hostHeader,
+            requestUrl,
+            supabaseUrlSet: Boolean(supabaseUrl),
+            supabaseKeySet: Boolean(supabaseKey),
+            supabaseKeyPrefix: supabaseKey ? supabaseKey.slice(0, 6) : null,
+            probeUrl,
+            probeStatus,
+            probeBody,
           },
           null,
           2
@@ -675,6 +663,6 @@ export default async function handler(req, res) {
   } catch (error) {
     console.error('OG generation error', error);
     res.statusCode = 500;
-    res.end('Failed to generate image.');
+    res.end(`Failed to generate image: ${error?.message ?? String(error)}`);
   }
 }
