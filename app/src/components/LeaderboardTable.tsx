@@ -27,25 +27,25 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
           <thead>
             <tr className="text-brand-blue border-b-4 border-brand-yellow">
               {/* Rank */}
-              <th className="py-6 text-center font-heading font-black italic text-xs md:text-sm tracking-widest w-[40px] md:w-[80px] bg-gray-50/50">#</th>
+              <th className="py-3 px-2 text-center font-heading font-black italic text-[10px] md:text-[11px] tracking-widest w-[40px] md:w-[80px] bg-gray-50/50">#</th>
               
               {/* Team */}
-              <th className="py-6 pl-4 md:pl-8 font-heading font-black italic text-xs md:text-sm tracking-widest">TEAM</th>
+              <th className="py-3 pl-3 md:pl-8 font-heading font-black italic text-[10px] md:text-[11px] tracking-widest">TEAM</th>
               
               {/* W-L */}
-              <th className="py-6 text-center font-heading font-black italic text-xs md:text-sm tracking-widest w-[60px] md:w-[100px]">W-L</th>
+              <th className="py-3 px-2 text-center font-heading font-black italic text-[10px] md:text-[11px] tracking-widest w-[60px] md:w-[100px]">W-L</th>
 
               {/* Shared: % */}
-              <th className="py-6 text-center font-heading font-black italic text-xs md:text-sm tracking-widest w-[50px] md:w-[100px]">%</th>
+              <th className="py-3 px-2 text-center font-heading font-black italic text-[10px] md:text-[11px] tracking-widest w-[50px] md:w-[100px]">%</th>
 
               {/* Desktop: PTS (For-Against) */}
-              <th className="hidden md:table-cell py-6 text-center font-heading font-black italic text-sm tracking-widest w-[120px]">PTS</th>
+              <th className="hidden md:table-cell py-3 text-center font-heading font-black italic text-[11px] tracking-widest w-[120px]">PTS</th>
 
               {/* Mobile: PTS (For only) */}
-              <th className="md:hidden py-6 text-center font-heading font-black italic text-xs tracking-widest w-[50px]">PTS</th>
+              <th className="md:hidden py-3 px-2 text-center font-heading font-black italic text-[10px] tracking-widest w-[50px]">PTS</th>
 
               {/* Desktop: DIFF */}
-              <th className="hidden md:table-cell py-6 pr-8 text-right font-heading font-black italic text-sm tracking-widest w-[100px]">DIFF</th>
+              <th className="hidden md:table-cell py-3 pr-8 text-right font-heading font-black italic text-[11px] tracking-widest w-[100px]">DIFF</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100 divide-dashed">
@@ -60,7 +60,7 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
                   className="hover:bg-brand-blue/[0.02] transition-colors duration-200 group cursor-pointer align-middle relative overflow-hidden"
                 >
                   {/* Rank */}
-                  <td className="py-4 bg-gray-50/30">
+                  <td className="py-2.5 px-2 bg-gray-50/30">
                     <div className={clsx(
                       "flex items-center justify-center font-heading font-black mx-auto transform transition-transform group-hover:scale-110",
                       "w-7 h-7 text-[10px] md:w-9 md:h-9 md:text-base -skew-x-12",
@@ -73,9 +73,9 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
                   </td>
 
                   {/* Team Name */}
-                  <td className="py-4 pl-4 md:pl-8">
+                  <td className="py-2.5 pl-3 md:pl-8">
                     <span className={clsx(
-                      "font-heading font-black italic text-sm md:text-xl uppercase tracking-tight group-hover:text-brand-blue transition-colors duration-300 leading-tight line-clamp-2",
+                      "font-heading font-black italic text-xs md:text-lg uppercase tracking-tight group-hover:text-brand-blue transition-colors duration-300 leading-tight line-clamp-2",
                       isTop3 ? "text-brand-blue" : "text-gray-500"
                     )}>
                         {entry.team}
@@ -83,42 +83,42 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
                   </td>
 
                   {/* W-L */}
-                  <td className="py-4 text-center">
-                    <div className="font-mono font-bold text-gray-600 text-xs md:text-base whitespace-nowrap">
+                  <td className="py-2.5 px-2 text-center">
+                    <div className="font-mono font-bold text-[10px] md:text-[13px] whitespace-nowrap text-gray-600">
                       {entry.wins}<span className="text-gray-300 mx-0.5 md:mx-1">-</span>{entry.losses}
                     </div>
                   </td>
 
                   {/* Shared: WIN% */}
-                  <td className="py-4 text-center">
+                  <td className="py-2.5 px-2 text-center">
                     <span className={clsx(
-                        "font-heading font-black tracking-tighter leading-none text-sm md:text-2xl",
+                        "font-heading font-black tracking-tighter leading-none text-xs md:text-lg",
                         isTop3 ? "text-brand-blue" : "text-gray-400"
                     )}>
-                      {(entry.winPct * 100).toFixed(0)}<span className="text-[10px] md:text-sm ml-0.5">%</span>
+                      {(entry.winPct * 100).toFixed(0)}<span className="text-[9px] md:text-[11px] ml-0.5">%</span>
                     </span>
                   </td>
 
                   {/* Desktop: PTS */}
-                  <td className="py-4 text-center hidden md:table-cell">
-                    <div className="font-mono font-bold text-gray-400 text-sm">
+                  <td className="py-2.5 text-center hidden md:table-cell">
+                    <div className="font-mono font-bold text-gray-400 text-xs">
                       {entry.pointsFor}
-                      <span className="text-gray-200 text-xs mx-1">/</span>
+                      <span className="text-gray-200 text-[10px] mx-1">/</span>
                       {entry.pointsAgainst}
                     </div>
                   </td>
 
                   {/* Mobile: PTS */}
-                  <td className="py-4 text-center md:hidden">
-                    <div className="font-mono font-bold text-gray-400 text-xs">
+                  <td className="py-2.5 px-2 text-center md:hidden">
+                    <div className="font-mono font-bold text-gray-400 text-[10px]">
                       {entry.pointsFor}
                     </div>
                   </td>
 
                   {/* Desktop: DIFF */}
-                  <td className="hidden md:table-cell py-4 pr-8 text-right">
+                  <td className="hidden md:table-cell py-2.5 pr-8 text-right">
                     <span className={clsx(
-                      "inline-flex items-center px-3 py-1 text-xs font-bold font-mono border-2",
+                      "inline-flex items-center px-3 py-1 text-[11px] font-bold font-mono border-2",
                       diff > 0 ? "bg-green-50 text-green-700 border-green-100" : 
                       diff < 0 ? "bg-red-50 text-red-700 border-red-100" : 
                       "bg-gray-50 text-gray-400 border-gray-100"

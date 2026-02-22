@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Loader2, Trophy } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { LeaderboardTable } from '../components/LeaderboardTable';
@@ -80,36 +80,31 @@ export const Leaderboard: React.FC = () => {
       <div className="space-y-4 px-0 md:px-4">
         <LeaderboardTable stats={stats} onTeamClick={handleTeamClick} />
         
-        {/* Share Section: THE STICKER SLAP */}
-        <div className="py-6 md:py-10 mt-8 relative overflow-hidden flex items-center justify-center">
-            {/* Decorative Splatter */}
-            <div className="absolute top-0 left-10 w-32 h-32 bg-brand-yellow/10 rounded-full blur-3xl animate-pulse" />
-            
-            <motion.div 
-                whileHover={{ rotate: -2, scale: 1.02 }}
-                className="bg-white p-8 md:p-10 rounded-2xl shadow-xl border-4 border-dashed border-gray-100 relative transform rotate-1 max-w-lg w-full"
-            >
-                {/* Trophy Sticker Badge */}
-                <div className="absolute -top-6 -right-6 bg-brand-yellow text-brand-blue w-14 h-14 md:w-16 md:h-16 flex items-center justify-center rounded-full border-4 border-white shadow-lg transform rotate-12">
-                    <Trophy className="w-7 h-7 md:w-8 md:h-8" />
-                </div>
-                
-                <div className="space-y-6 text-center">
-                    <div className="space-y-3">
-                        <h4 className="text-2xl md:text-3xl font-heading font-black uppercase text-brand-blue tracking-tight">
-                            Share the Action!
-                        </h4>
-                        <p className="text-gray-400 font-mono text-[10px] md:text-xs uppercase font-bold tracking-widest leading-tight">
-                            Post the leaderboard to social media or send it to your team.
-                        </p>
-                    </div>
-                    
-                    <ShareButton 
-                        targetRef={shareRef} 
-                        className="!w-full !justify-center !rounded-full !bg-brand-blue !text-white !border-4 !border-white !shadow-2xl hover:!bg-brand-yellow hover:!text-brand-blue !transition-colors !py-4"
-                    />
-                </div>
-            </motion.div>
+        {/* Share Section */}
+        <div className="py-6 md:py-8 mt-8 flex items-center justify-center">
+          <motion.div 
+            whileHover={{ y: -2 }}
+            className="bg-white rounded-[2rem] border-4 border-brand-yellow max-w-lg w-full relative overflow-hidden"
+          >
+            <div className="px-6 md:px-8 py-6 md:py-7 text-center space-y-4">
+              <div className="space-y-2">
+                <p className="text-[11px] md:text-xs font-heading font-black italic uppercase tracking-[0.18em] text-brand-blue">
+                  Spread the Word
+                </p>
+                <h4 className="text-xl md:text-2xl font-heading font-black uppercase text-brand-blue tracking-tight">
+                  Share the leaderboard with your team
+                </h4>
+                <p className="text-gray-400 font-mono text-[10px] md:text-xs uppercase font-bold tracking-[0.18em] leading-tight">
+                  Post the leaderboard to social media or send it to your team.
+                </p>
+              </div>
+              
+              <ShareButton 
+                targetRef={shareRef} 
+                className="!w-full !justify-center !rounded-xl !bg-brand-blue !text-white !shadow-md hover:!bg-brand-blue/90 !transition-colors !py-3 !text-sm"
+              />
+            </div>
+          </motion.div>
         </div>
 
       </div>
