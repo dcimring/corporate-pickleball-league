@@ -180,14 +180,33 @@ export default async function handler(req) {
       return new Response('Missing division.', { status: 400 });
     }
 
-    const supabaseUrl = process.env.VITE_SUPABASE_URL;
-    const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY;
-
-    if (!supabaseUrl || !supabaseKey) {
-      return new Response('Supabase env vars not configured.', { status: 500 });
-    }
+    const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
+    const supabaseKey =
+      process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
 
     if (debug) {
+      if (!supabaseUrl || !supabaseKey) {
+        return new Response(
+          JSON.stringify(
+            {
+              hostHeader,
+              requestUrl,
+              supabaseUrlSet: Boolean(supabaseUrl),
+              supabaseKeySet: Boolean(supabaseKey),
+            },
+            null,
+            2
+          ),
+          {
+            status: 200,
+            headers: {
+              'Content-Type': 'application/json',
+              'Cache-Control': 'no-store, max-age=0',
+            },
+          }
+        );
+      }
+
       const probeUrl = `${supabaseUrl}/rest/v1/divisions?select=id&limit=1`;
       let probeStatus = null;
       let probeBody = null;
@@ -234,6 +253,10 @@ export default async function handler(req) {
           },
         }
       );
+    }
+
+    if (!supabaseUrl || !supabaseKey) {
+      return new Response('Supabase env vars not configured.', { status: 500 });
     }
 
     const divisions = await fetchSupabase(
