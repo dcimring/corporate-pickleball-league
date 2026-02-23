@@ -91,9 +91,10 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
       onClick={handleShare}
       disabled={loading}
       className={clsx(
-        "flex items-center gap-3 px-8 py-3 bg-gray-50 text-brand-blue font-heading font-bold rounded-2xl border border-white",
+        "relative flex items-center gap-3 px-8 py-3 bg-gray-50 text-brand-blue font-heading font-bold rounded-2xl border border-white",
         "shadow-[5px_5px_10px_#d1d5db,-5px_-5px_10px_#ffffff]",
-        "hover:shadow-[inset_5px_5px_10px_#d1d5db,inset_-5px_-5px_10px_#ffffff]",
+        "before:absolute before:inset-[-2px] before:rounded-2xl before:border-4 before:border-brand-light-blue-strong before:opacity-0 before:scale-125 before:transition-all before:duration-200 before:pointer-events-none",
+        "hover:before:opacity-100 hover:before:scale-100",
         "active:scale-95 transition-all duration-200",
         loading && "opacity-80 cursor-wait",
         className

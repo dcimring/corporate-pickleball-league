@@ -31,6 +31,14 @@ Backend data is stored in Supabase (Postgres). Match ingestion is automated via 
 - Preview: `npm run preview`
 - Lint: `npm run lint`
 
+## Style
+- Theme colors:
+- `brand-blue`: #005596 (Cayman Navy)
+- `brand-yellow`: #FFC72C (Electric Volt Accents)
+- `brand-gray`: #F8FAFC (Subtle Backgrounds)
+- `brand-cream`: #FFFEFC (Warm Paper Texture Base)
+- `brand-light-blue`: #9CCCFF (Hover/outline accents)
+
 ## Behavior Notes
 - Data is fetched once on app mount; background refresh runs silently.
 - Iframe auto-resizes via `postMessage` and `ResizeObserver` in `Layout.tsx`.
