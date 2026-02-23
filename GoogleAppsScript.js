@@ -7,8 +7,7 @@
 // DISCORD_WEBHOOK_URL: Webhook URL for status notifications
 
 const CONFIG = {
-  PROCESSED_LABEL: 'Processed_Pickleball_Results',
-  TEST_RECIPIENT: 'daniel@blackhatmedia.com'
+  PROCESSED_LABEL: 'Processed_Pickleball_Results'
 };
 
 function processMatchResults() {
@@ -147,7 +146,7 @@ function processMatchResults() {
       divisionNameById[division.id] = division.name;
     }
     const { newMatches, modifiedMatches } = diffMatches(matchesToInsert, existingMatches, teamNameById, divisionNameById);
-    const recipient = CONFIG.TEST_RECIPIENT;
+    const recipient = extractEmailAddress(newest.from);
     sendUpdateEmail(recipient, newest, newMatches, modifiedMatches);
     sendDiscordNotification(true, "Ingestion Successful", "Match data has been updated.", stats);
   } else {
