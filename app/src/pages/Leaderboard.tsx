@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Loader2 } from 'lucide-react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import { LeaderboardTable } from '../components/LeaderboardTable';
 import { Navigation } from '../components/Navigation';
 import { ShareButton } from '../components/ShareButton';
@@ -14,6 +14,18 @@ export const Leaderboard: React.FC = () => {
   const { data, loading } = useLeagueData();
   const [activeDivision, setActiveDivision] = useState<string>('');
   const shareRef = useRef<HTMLDivElement>(null);
+  const shareCardRef = useRef<HTMLDivElement>(null);
+  const shareCardInView = useInView(shareCardRef, { once: true, amount: 0.1 });
+  const [shareCardAnimated, setShareCardAnimated] = useState(false);
+
+  useEffect(() => {
+    if (shareCardInView) {
+      setShareCardAnimated(true);
+      return;
+    }
+    const fallback = setTimeout(() => setShareCardAnimated(true), 300);
+    return () => clearTimeout(fallback);
+  }, [shareCardInView]);
 
   useEffect(() => {
     if (!loading && data.leaderboard) {
@@ -82,10 +94,14 @@ export const Leaderboard: React.FC = () => {
         
         {/* Share Section */}
         <div className="pt-3 md:pt-4 pb-0 mt-4 md:mt-5 -mb-2 md:-mb-3 flex items-center justify-center">
-          <motion.div 
-            whileHover={{ y: -2 }}
-            className="bg-white rounded-[2rem] border-4 border-brand-yellow shadow-[0_0_15px_#FFC72C] max-w-lg w-full relative overflow-hidden"
-          >
+        <motion.div 
+          ref={shareCardRef}
+          whileHover={{ y: -2 }}
+          initial={{ x: 80, opacity: 0 }}
+          animate={shareCardAnimated ? { x: 0, opacity: 1 } : { x: 80, opacity: 0 }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
+          className="bg-white rounded-[2rem] border-4 border-brand-yellow shadow-[0_0_15px_#FFC72C] max-w-lg w-full relative overflow-hidden"
+        >
             <div className="px-6 md:px-8 py-6 md:py-7 text-center space-y-4">
               <div className="space-y-2">
                 <p className="text-[11px] md:text-xs font-heading font-black italic uppercase tracking-[0.18em] text-brand-blue">
@@ -104,7 +120,7 @@ export const Leaderboard: React.FC = () => {
                 className="!w-full !justify-center !rounded-xl !bg-brand-blue !text-white !shadow-md hover:!bg-brand-blue/90 !transition-colors !py-3 !text-sm"
               />
             </div>
-          </motion.div>
+        </motion.div>
         </div>
 
       </div>
