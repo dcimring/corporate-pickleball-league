@@ -81,10 +81,10 @@ export const Leaderboard: React.FC = () => {
         <LeaderboardTable stats={stats} onTeamClick={handleTeamClick} />
         
         {/* Share Section */}
-        <div className="pt-3 md:pt-4 pb-0 mt-4 md:mt-5 flex items-center justify-center">
+        <div className="pt-3 md:pt-4 pb-0 mt-4 md:mt-5 -mb-2 md:-mb-3 flex items-center justify-center">
           <motion.div 
             whileHover={{ y: -2 }}
-            className="bg-white rounded-[2rem] border-4 border-brand-yellow max-w-lg w-full relative overflow-hidden"
+            className="bg-white rounded-[2rem] border-4 border-brand-yellow shadow-[0_0_15px_#FFC72C] max-w-lg w-full relative overflow-hidden"
           >
             <div className="px-6 md:px-8 py-6 md:py-7 text-center space-y-4">
               <div className="space-y-2">
