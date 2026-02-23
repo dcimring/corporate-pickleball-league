@@ -7,7 +7,8 @@
 // DISCORD_WEBHOOK_URL: Webhook URL for status notifications
 
 const CONFIG = {
-  PROCESSED_LABEL: 'Processed_Pickleball_Results'
+  PROCESSED_LABEL: 'Processed_Pickleball_Results',
+  TEST_RECIPIENT: 'daniel@blackhatmedia.com'
 };
 
 function processMatchResults() {
@@ -60,7 +61,8 @@ function processMatchResults() {
             date: message.getDate(),
             subject: message.getSubject(),
             attachment: attachment,
-            messageId: message.getId()
+            messageId: message.getId(),
+            from: message.getFrom()
           });
           hasCsv = true;
         }
@@ -88,6 +90,11 @@ function processMatchResults() {
   const csvData = newest.attachment.getDataAsString();
   const { matches: matchesToInsert, errors, createdTeams } = parseCSVAndMap(csvData, lookups);
   const newCount = matchesToInsert.length;
+  const existingMatches = fetchExistingMatches();
+  if (!existingMatches) {
+    sendDiscordNotification(false, "Service Error", "Failed to fetch existing matches from Supabase.");
+    return;
+  }
 
   // 5. Data Safety Check
   const currentCount = getMatchCount();
@@ -131,6 +138,17 @@ function processMatchResults() {
 
   if (success) {
     log("Ingestion complete.");
+    const teamNameById = {};
+    for (const team of lookups.teams) {
+      teamNameById[team.id] = team.name;
+    }
+    const divisionNameById = {};
+    for (const division of lookups.divisions) {
+      divisionNameById[division.id] = division.name;
+    }
+    const { newMatches, modifiedMatches } = diffMatches(matchesToInsert, existingMatches, teamNameById, divisionNameById);
+    const recipient = CONFIG.TEST_RECIPIENT;
+    sendUpdateEmail(recipient, newest, newMatches, modifiedMatches);
     sendDiscordNotification(true, "Ingestion Successful", "Match data has been updated.", stats);
   } else {
     log("Ingestion failed.");
@@ -259,6 +277,30 @@ function fetchSupabaseLookups() {
   }
 }
 
+function fetchExistingMatches() {
+  const url = PropertiesService.getScriptProperties().getProperty('SUPABASE_URL');
+  const key = PropertiesService.getScriptProperties().getProperty('SUPABASE_SERVICE_ROLE_KEY');
+
+  const options = {
+    method: 'get',
+    headers: {
+      'apikey': key,
+      'Authorization': `Bearer ${key}`
+    }
+  };
+
+  try {
+    const response = UrlFetchApp.fetch(
+      `${url}/rest/v1/matches?select=id,team1_id,team2_id,date,team1_wins,team2_wins,team1_points_for,team2_points_for&limit=5000`,
+      options
+    );
+    return JSON.parse(response.getContentText());
+  } catch (e) {
+    log("Error fetching existing matches: " + e);
+    return null;
+  }
+}
+
 // --- Parsing & Utilities ---
 
 function parseCSVAndMap(csvText, { divisions, teams }) {
@@ -354,6 +396,101 @@ function parseCSVAndMap(csvText, { divisions, teams }) {
   return { matches: mappedMatches, errors: errors, createdTeams: createdTeams };
 }
 
+function diffMatches(newMatches, existingMatches, teamNameById, divisionNameById) {
+  const existingMap = new Map();
+  for (const match of existingMatches) {
+    const key = makeMatchKey(match.team1_id, match.team2_id, normalizeMatchDate(match.date));
+    existingMap.set(key, match);
+  }
+
+  const newList = [];
+  const modifiedList = [];
+
+  for (const match of newMatches) {
+    const key = makeMatchKey(match.team1_id, match.team2_id, normalizeMatchDate(match.date));
+    const existing = existingMap.get(key);
+    if (!existing) {
+      newList.push(formatMatchSummary(match, teamNameById));
+      continue;
+    }
+    if (isMatchModified(existing, match)) {
+      modifiedList.push(formatMatchSummary(match, teamNameById));
+    }
+  }
+
+  return {
+    newMatches: groupMatchesByDivision(newMatches, newList, divisionNameById),
+    modifiedMatches: groupMatchesByDivision(newMatches, modifiedList, divisionNameById)
+  };
+}
+
+function groupMatchesByDivision(sourceMatches, summaries, divisionNameById) {
+  const summaryByKey = new Map();
+  for (const summary of summaries) {
+    summaryByKey.set(summary.key, summary.text);
+  }
+
+  const grouped = {};
+  for (const match of sourceMatches) {
+    const key = makeMatchKey(match.team1_id, match.team2_id, normalizeMatchDate(match.date));
+    const summary = summaryByKey.get(key);
+    if (!summary) continue;
+    const divisionName = divisionNameById[match.division_id] || 'Unknown Division';
+    if (!grouped[divisionName]) grouped[divisionName] = [];
+    grouped[divisionName].push(summary);
+  }
+
+  return grouped;
+}
+
+function makeMatchKey(team1Id, team2Id, dateStr) {
+  const ids = [team1Id, team2Id].sort().join('|');
+  return `${dateStr}|${ids}`;
+}
+
+function normalizeMatchDate(dateStr) {
+  if (!dateStr) return '';
+  return String(dateStr).split('T')[0];
+}
+
+function isMatchModified(existing, incoming) {
+  const sameOrder =
+    existing.team1_id === incoming.team1_id &&
+    existing.team2_id === incoming.team2_id;
+  const swappedOrder =
+    existing.team1_id === incoming.team2_id &&
+    existing.team2_id === incoming.team1_id;
+
+  if (sameOrder) {
+    return (
+      existing.team1_wins !== incoming.team1_wins ||
+      existing.team2_wins !== incoming.team2_wins ||
+      existing.team1_points_for !== incoming.team1_points_for ||
+      existing.team2_points_for !== incoming.team2_points_for
+    );
+  }
+
+  if (swappedOrder) {
+    return (
+      existing.team1_wins !== incoming.team2_wins ||
+      existing.team2_wins !== incoming.team1_wins ||
+      existing.team1_points_for !== incoming.team2_points_for ||
+      existing.team2_points_for !== incoming.team1_points_for
+    );
+  }
+
+  return true;
+}
+
+function formatMatchSummary(match, teamNameById) {
+  const team1 = teamNameById[match.team1_id] || `Team ${match.team1_id}`;
+  const team2 = teamNameById[match.team2_id] || `Team ${match.team2_id}`;
+  return {
+    key: makeMatchKey(match.team1_id, match.team2_id, normalizeMatchDate(match.date)),
+    text: `${team1} (W ${match.team1_wins}, PF ${match.team1_points_for}) vs ${team2} (W ${match.team2_wins}, PF ${match.team2_points_for}) — ${normalizeMatchDate(match.date)}`
+  };
+}
+
 function getDivisionId(nameRaw, divisions) {
   let name = nameRaw.trim().toLowerCase();
 
@@ -405,6 +542,56 @@ function log(message) {
 
 function formatDate(dateObj) {
   return Utilities.formatDate(dateObj, Session.getScriptTimeZone(), "yyyy-MM-dd HH:mm:ss");
+}
+
+function extractEmailAddress(fromField) {
+  if (!fromField) return '';
+  const match = fromField.match(/<([^>]+)>/);
+  if (match && match[1]) return match[1];
+  return fromField;
+}
+
+function sendUpdateEmail(recipient, newestEmail, newMatches, modifiedMatches) {
+  if (!recipient) return;
+
+  const processedDate = formatDate(newestEmail.date);
+  const subject = `Leaderboard Updated — ${newestEmail.subject}`;
+  const newCount = countGroupedMatches(newMatches);
+  const modifiedCount = countGroupedMatches(modifiedMatches);
+
+  const groupedHtml = (grouped) => {
+    const divisions = Object.keys(grouped);
+    if (divisions.length === 0) return '<p>None</p>';
+    return divisions.map((division) => {
+      const items = grouped[division] || [];
+      return `
+        <h4 style="margin: 12px 0 6px;">${division}</h4>
+        <ul>${items.map(i => `<li>${i}</li>`).join('')}</ul>
+      `;
+    }).join('');
+  };
+
+  const htmlBody = `
+    <div style="font-family: Arial, sans-serif; color: #1f2937;">
+      <h2 style="margin: 0 0 8px;">Leaderboard Updated</h2>
+      <p style="margin: 0 0 16px;">We processed your results email and updated the website.</p>
+      <p style="margin: 0 0 16px;"><strong>Processed Email Date:</strong> ${processedDate}</p>
+      <h3 style="margin: 16px 0 6px;">New Matches (${newCount})</h3>
+      ${groupedHtml(newMatches)}
+      <h3 style="margin: 16px 0 6px;">Modified Matches (${modifiedCount})</h3>
+      ${groupedHtml(modifiedMatches)}
+    </div>
+  `;
+
+  GmailApp.sendEmail(recipient, subject, '', { htmlBody });
+}
+
+function countGroupedMatches(grouped) {
+  let total = 0;
+  for (const division in grouped) {
+    total += grouped[division].length;
+  }
+  return total;
 }
 
 function addLabel(thread) {
