@@ -6,6 +6,7 @@ import { LeaderboardTable } from '../components/LeaderboardTable';
 import { Navigation } from '../components/Navigation';
 import { ShareButton } from '../components/ShareButton';
 import { ShareableLeaderboard } from '../components/ShareableLeaderboard';
+import { TeamFilterHint } from '../components/TeamFilterHint';
 import { useLeagueData } from '../context/LeagueContext';
 
 export const Leaderboard: React.FC = () => {
@@ -90,6 +91,7 @@ export const Leaderboard: React.FC = () => {
       />
 
       <div className="space-y-4 px-0 md:px-4">
+        <TeamFilterHint />
         <LeaderboardTable stats={stats} onTeamClick={handleTeamClick} />
         
         {/* Share Section */}

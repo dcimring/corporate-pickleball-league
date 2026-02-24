@@ -3,6 +3,7 @@ import { Loader2, Info, X } from 'lucide-react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Navigation } from '../components/Navigation';
 import { MatchCard } from '../components/MatchCard';
+import { TeamFilterHint } from '../components/TeamFilterHint';
 import { useLeagueData } from '../context/LeagueContext';
 
 export const Matches: React.FC = () => {
@@ -101,6 +102,8 @@ export const Matches: React.FC = () => {
           </button>
         </div>
       )}
+
+      <TeamFilterHint className="mx-4" />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
         {matches.length > 0 ? (
