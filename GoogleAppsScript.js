@@ -602,31 +602,27 @@ function countGroupedMatches(grouped) {
 function renderMatchesTable(matches) {
   if (!matches || matches.length === 0) return '<p>None</p>';
 
-  const headerCell = (label) => `
-    <th style="padding: 10px 12px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #374151; text-align: left; border-bottom: 1px solid #e5e7eb;">
+  const headerCell = (label, align) => `
+    <th style="padding: 10px 12px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #374151; text-align: ${align || 'left'};">
       ${label}
     </th>
   `;
 
   const rows = matches.map((match) => {
     const winnerIsTeam1 = getWinnerIsTeam1(match);
-    const winner = winnerIsTeam1 ? match.team1 : match.team2;
-    const loser = winnerIsTeam1 ? match.team2 : match.team1;
-    const winnerWins = winnerIsTeam1 ? match.team1_wins : match.team2_wins;
-    const loserWins = winnerIsTeam1 ? match.team2_wins : match.team1_wins;
-    const winnerPf = winnerIsTeam1 ? match.team1_points_for : match.team2_points_for;
-    const loserPf = winnerIsTeam1 ? match.team2_points_for : match.team1_points_for;
+    const team1IsWinner = winnerIsTeam1;
+    const team2IsWinner = !winnerIsTeam1;
 
     return `
       <tr>
-        <td style="padding: 10px 12px; font-size: 14px; color: #111827; border-bottom: 1px solid #e5e7eb;">${formatShortDate(match.date)}</td>
-        <td style="padding: 10px 12px; font-size: 14px; font-weight: 700; color: #111827; border-bottom: 1px solid #e5e7eb; background: #fef3c7;">${winner}</td>
-        <td style="padding: 10px 12px; font-size: 14px; color: #111827; border-bottom: 1px solid #e5e7eb; text-align: center;">${winnerWins}</td>
-        <td style="padding: 10px 12px; font-size: 14px; color: #111827; border-bottom: 1px solid #e5e7eb; text-align: center;">${winnerPf}</td>
-        <td style="padding: 10px 8px; font-size: 12px; color: #6b7280; border-bottom: 1px solid #e5e7eb; text-align: center;">vs</td>
-        <td style="padding: 10px 12px; font-size: 14px; color: #111827; border-bottom: 1px solid #e5e7eb;">${loser}</td>
-        <td style="padding: 10px 12px; font-size: 14px; color: #111827; border-bottom: 1px solid #e5e7eb; text-align: center;">${loserWins}</td>
-        <td style="padding: 10px 12px; font-size: 14px; color: #111827; border-bottom: 1px solid #e5e7eb; text-align: center;">${loserPf}</td>
+        <td style="padding: 10px 12px; font-size: 14px; color: #111827;">${formatShortDate(match.date)}</td>
+        <td style="padding: 10px 12px; font-size: 14px; color: #111827; font-weight: ${team1IsWinner ? 700 : 400};">${match.team1}</td>
+        <td style="padding: 10px 12px; font-size: 14px; color: #111827; text-align: center; font-weight: ${team1IsWinner ? 700 : 400};">${match.team1_wins}</td>
+        <td style="padding: 10px 12px; font-size: 14px; color: #111827; text-align: center; font-weight: ${team1IsWinner ? 700 : 400};">${match.team1_points_for}</td>
+        <td style="padding: 10px 8px; font-size: 12px; color: #6b7280; text-align: center;">vs</td>
+        <td style="padding: 10px 12px; font-size: 14px; color: #111827; font-weight: ${team2IsWinner ? 700 : 400};">${match.team2}</td>
+        <td style="padding: 10px 12px; font-size: 14px; color: #111827; text-align: center; font-weight: ${team2IsWinner ? 700 : 400};">${match.team2_wins}</td>
+        <td style="padding: 10px 12px; font-size: 14px; color: #111827; text-align: center; font-weight: ${team2IsWinner ? 700 : 400};">${match.team2_points_for}</td>
       </tr>
     `;
   }).join('');
@@ -637,13 +633,13 @@ function renderMatchesTable(matches) {
       <thead style="background: #f3f4f6;">
         <tr>
           ${headerCell('Date')}
-          ${headerCell('Winning Team')}
-          ${headerCell('Wins')}
-          ${headerCell('PF')}
-          ${headerCell('vs')}
-          ${headerCell('Losing Team')}
-          ${headerCell('Wins')}
-          ${headerCell('PF')}
+          ${headerCell('Team 1')}
+          ${headerCell('Wins', 'center')}
+          ${headerCell('PF', 'center')}
+          ${headerCell('vs', 'center')}
+          ${headerCell('Team 2')}
+          ${headerCell('Wins', 'center')}
+          ${headerCell('PF', 'center')}
         </tr>
       </thead>
       <tbody>
