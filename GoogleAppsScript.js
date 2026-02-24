@@ -426,7 +426,7 @@ function diffMatches(newMatches, existingMatches, teamNameById, divisionNameById
 function groupMatchesByDivision(sourceMatches, summaries, divisionNameById) {
   const summaryByKey = new Map();
   for (const summary of summaries) {
-    summaryByKey.set(summary.key, summary.text);
+    summaryByKey.set(summary.key, summary);
   }
 
   const grouped = {};
@@ -486,7 +486,13 @@ function formatMatchSummary(match, teamNameById) {
   const team2 = teamNameById[match.team2_id] || `Team ${match.team2_id}`;
   return {
     key: makeMatchKey(match.team1_id, match.team2_id, normalizeMatchDate(match.date)),
-    text: `${team1} (W ${match.team1_wins}, PF ${match.team1_points_for}) vs ${team2} (W ${match.team2_wins}, PF ${match.team2_points_for}) — ${normalizeMatchDate(match.date)}`
+    date: normalizeMatchDate(match.date),
+    team1,
+    team2,
+    team1_wins: match.team1_wins,
+    team2_wins: match.team2_wins,
+    team1_points_for: match.team1_points_for,
+    team2_points_for: match.team2_points_for
   };
 }
 
@@ -564,8 +570,8 @@ function sendUpdateEmail(recipient, newestEmail, newMatches, modifiedMatches) {
     return divisions.map((division) => {
       const items = grouped[division] || [];
       return `
-        <h4 style="margin: 12px 0 6px;">${division}</h4>
-        <ul>${items.map(i => `<li>${i}</li>`).join('')}</ul>
+        <h4 style="margin: 16px 0 8px;">${division}</h4>
+        ${renderMatchesTable(items)}
       `;
     }).join('');
   };
@@ -573,7 +579,7 @@ function sendUpdateEmail(recipient, newestEmail, newMatches, modifiedMatches) {
   const htmlBody = `
     <div style="font-family: Arial, sans-serif; color: #1f2937;">
       <h2 style="margin: 0 0 8px;">Leaderboard Updated</h2>
-      <p style="margin: 0 0 16px;">We processed your results email and updated the website.</p>
+      <p style="margin: 0 0 16px;">Results email processed and website updated.</p>
       <p style="margin: 0 0 16px;"><strong>Processed Email Date:</strong> ${processedDate}</p>
       <h3 style="margin: 16px 0 6px;">New Matches (${newCount})</h3>
       ${groupedHtml(newMatches)}
@@ -591,6 +597,78 @@ function countGroupedMatches(grouped) {
     total += grouped[division].length;
   }
   return total;
+}
+
+function renderMatchesTable(matches) {
+  if (!matches || matches.length === 0) return '<p>None</p>';
+
+  const headerCell = (label) => `
+    <th style="padding: 10px 12px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #374151; text-align: left; border-bottom: 1px solid #e5e7eb;">
+      ${label}
+    </th>
+  `;
+
+  const rows = matches.map((match) => {
+    const winnerIsTeam1 = getWinnerIsTeam1(match);
+    const winner = winnerIsTeam1 ? match.team1 : match.team2;
+    const loser = winnerIsTeam1 ? match.team2 : match.team1;
+    const winnerWins = winnerIsTeam1 ? match.team1_wins : match.team2_wins;
+    const loserWins = winnerIsTeam1 ? match.team2_wins : match.team1_wins;
+    const winnerPf = winnerIsTeam1 ? match.team1_points_for : match.team2_points_for;
+    const loserPf = winnerIsTeam1 ? match.team2_points_for : match.team1_points_for;
+
+    return `
+      <tr>
+        <td style="padding: 10px 12px; font-size: 14px; color: #111827; border-bottom: 1px solid #e5e7eb;">${formatShortDate(match.date)}</td>
+        <td style="padding: 10px 12px; font-size: 14px; font-weight: 700; color: #111827; border-bottom: 1px solid #e5e7eb; background: #fef3c7;">${winner}</td>
+        <td style="padding: 10px 12px; font-size: 14px; color: #111827; border-bottom: 1px solid #e5e7eb; text-align: center;">${winnerWins}</td>
+        <td style="padding: 10px 12px; font-size: 14px; color: #111827; border-bottom: 1px solid #e5e7eb; text-align: center;">${winnerPf}</td>
+        <td style="padding: 10px 8px; font-size: 12px; color: #6b7280; border-bottom: 1px solid #e5e7eb; text-align: center;">vs</td>
+        <td style="padding: 10px 12px; font-size: 14px; color: #111827; border-bottom: 1px solid #e5e7eb;">${loser}</td>
+        <td style="padding: 10px 12px; font-size: 14px; color: #111827; border-bottom: 1px solid #e5e7eb; text-align: center;">${loserWins}</td>
+        <td style="padding: 10px 12px; font-size: 14px; color: #111827; border-bottom: 1px solid #e5e7eb; text-align: center;">${loserPf}</td>
+      </tr>
+    `;
+  }).join('');
+
+  return `
+    <div style="max-width: 720px; width: 100%; margin: 0 0 12px;">
+    <table cellspacing="0" cellpadding="0" style="width: 100%; border-collapse: collapse; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden;">
+      <thead style="background: #f3f4f6;">
+        <tr>
+          ${headerCell('Date')}
+          ${headerCell('Winning Team')}
+          ${headerCell('Wins')}
+          ${headerCell('PF')}
+          ${headerCell('vs')}
+          ${headerCell('Losing Team')}
+          ${headerCell('Wins')}
+          ${headerCell('PF')}
+        </tr>
+      </thead>
+      <tbody>
+        ${rows}
+      </tbody>
+    </table>
+    </div>
+  `;
+}
+
+function getWinnerIsTeam1(match) {
+  if (match.team1_wins !== match.team2_wins) {
+    return match.team1_wins > match.team2_wins;
+  }
+  if (match.team1_points_for !== match.team2_points_for) {
+    return match.team1_points_for > match.team2_points_for;
+  }
+  return true;
+}
+
+function formatShortDate(dateStr) {
+  if (!dateStr) return '';
+  const dateObj = new Date(dateStr);
+  if (isNaN(dateObj.getTime())) return dateStr;
+  return Utilities.formatDate(dateObj, Session.getScriptTimeZone(), "MMM d");
 }
 
 function addLabel(thread) {
