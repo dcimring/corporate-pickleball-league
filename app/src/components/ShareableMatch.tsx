@@ -43,7 +43,7 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({ match }) => {
             </div>
 
             {/* Scoreboard */}
-            <div className="w-full bg-white rounded-[60px] shadow-2xl p-16 border border-gray-100 flex flex-col gap-12 relative overflow-hidden">
+            <div className="w-full bg-white rounded-[60px] shadow-none p-16 border border-gray-100 flex flex-col gap-12 relative overflow-hidden">
                 {/* Accent Bar */}
                 <div className="absolute top-0 left-16 right-16 h-4 bg-[rgb(142,209,252)] rounded-b-2xl" />
 
@@ -96,7 +96,7 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({ match }) => {
             </div>
 
             {/* Winner Badge */}
-            <div className="bg-[rgb(0,85,150)] text-white px-12 py-6 rounded-full shadow-[0_16px_30px_rgba(0,0,0,0.18)] border-4 border-white">
+            <div className="bg-[rgb(0,85,150)] text-white px-12 py-6 rounded-full shadow-none border-4 border-white">
                 <span className="font-heading font-black italic text-4xl uppercase tracking-widest">
                     {isTie ? 'Game Was a Tie' : `${isWin1 ? match.team1 : match.team2} Wins!`}
                 </span>
