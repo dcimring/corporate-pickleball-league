@@ -12,6 +12,19 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({ match }) => {
   const isTie = winsEqual && pointsEqual;
   const isWin1 = !isTie && (match.team1Wins > match.team2Wins || (winsEqual && match.team1Points > match.team2Points));
   const isWin2 = !isTie && (match.team2Wins > match.team1Wins || (winsEqual && match.team2Points > match.team1Points));
+  const formatDateNoTz = (dateStr: string) => {
+    const datePart = dateStr.split('T')[0];
+    const parts = datePart.split('-');
+    if (parts.length === 3) {
+      const [year, month, day] = parts;
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      const monthIdx = Math.max(1, Math.min(12, Number(month))) - 1;
+      return `${day.padStart(2, '0')} ${months[monthIdx]} ${year}`;
+    }
+    const fallback = new Date(dateStr);
+    if (Number.isNaN(fallback.getTime())) return dateStr;
+    return fallback.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+  };
 
   return (
     <div 
@@ -104,7 +117,7 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({ match }) => {
 
             {/* Date */}
             <div className="font-mono font-bold text-gray-400 text-3xl uppercase tracking-widest mb-2">
-                {new Date(match.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
+                {formatDateNoTz(match.date)}
             </div>
 
         </div>
