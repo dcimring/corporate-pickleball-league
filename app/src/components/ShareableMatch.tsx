@@ -24,8 +24,8 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({ match }) => {
         />
 
         {/* Dynamic Background Gradients */}
-        <div className="absolute top-0 left-0 right-0 h-[600px] bg-gradient-to-b from-[rgb(142,209,252)]/30 to-transparent mix-blend-multiply" />
-        <div className="absolute bottom-0 left-0 right-0 h-[420px] bg-gradient-to-t from-[rgb(247,191,38)]/30 to-transparent mix-blend-multiply" />
+        <div className="absolute top-0 left-0 right-0 h-[600px] bg-gradient-to-b from-[rgb(142,209,252)]/5 to-transparent mix-blend-multiply" />
+        <div className="absolute bottom-0 left-0 right-0 h-[420px] bg-gradient-to-t from-[rgb(247,191,38)]/5 to-transparent mix-blend-multiply" />
 
         <div className="flex flex-col justify-start items-center relative z-10 px-16 gap-8">
 
@@ -96,7 +96,7 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({ match }) => {
             </div>
 
             {/* Winner Badge */}
-            <div className="bg-[rgb(0,85,150)] text-white px-12 py-6 rounded-full shadow-xl border-4 border-white">
+            <div className="bg-[rgb(0,85,150)] text-white px-12 py-6 rounded-full shadow-[0_16px_30px_rgba(0,0,0,0.18)] border-4 border-white">
                 <span className="font-heading font-black italic text-4xl uppercase tracking-widest">
                     {isTie ? 'Game Was a Tie' : `${isWin1 ? match.team1 : match.team2} Wins!`}
                 </span>
