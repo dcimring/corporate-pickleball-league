@@ -43,7 +43,19 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
 
           {/* Share Button - Absolute Top Right */}
           <div className="absolute top-4 right-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-             <ShareButton targetRef={shareRef} variant="icon" fileName={`match-${match.id}.png`} />
+             <ShareButton
+               targetRef={shareRef}
+               variant="icon"
+               fileName={`match-${match.id}.png`}
+               className="md:hidden"
+             />
+             <ShareButton
+               targetRef={shareRef}
+               variant="icon"
+               fileName={`match-${match.id}.png`}
+               preferDownload
+               className="hidden md:inline-flex"
+             />
           </div>
     
           <div className="pt-6 md:pt-10 pb-3 px-4 md:px-8 flex flex-col h-full relative z-10">        {/* Teams Container */}
