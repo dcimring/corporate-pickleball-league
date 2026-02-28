@@ -112,14 +112,23 @@ export const Leaderboard: React.FC = () => {
                 <h4 className="text-xl md:text-2xl font-heading font-black uppercase text-brand-blue tracking-tight">
                   Share the leaderboard with your team
                 </h4>
-                <p className="text-gray-400 font-mono text-[10px] md:text-xs uppercase font-bold tracking-[0.18em] leading-tight">
+                <p className="text-gray-400 font-mono text-[10px] md:text-xs uppercase font-bold tracking-[0.18em] leading-tight md:hidden">
                   Post the leaderboard to social media or send it to your team.
+                </p>
+                <p className="text-gray-400 font-mono text-[10px] md:text-xs uppercase font-bold tracking-[0.18em] leading-tight hidden md:block">
+                  Open the site on mobile to post direct to social media or WhatsApp.
                 </p>
               </div>
               
               <ShareButton 
                 targetRef={shareRef} 
-                className="!w-full !justify-center !rounded-xl !bg-brand-blue !text-white !shadow-md hover:!bg-brand-blue/90 !transition-colors !py-3 !text-sm"
+                className="!w-full !justify-center !rounded-xl !bg-brand-blue !text-white !shadow-md hover:!bg-brand-blue/90 !transition-colors !py-3 !text-sm md:hidden"
+              />
+              <ShareButton 
+                targetRef={shareRef}
+                buttonLabel="Download Leaderboard"
+                preferDownload
+                className="!w-full !justify-center !rounded-xl !bg-brand-blue !text-white !shadow-md hover:!bg-brand-blue/90 !transition-colors !py-3 !text-sm hidden md:flex"
               />
             </div>
         </motion.div>

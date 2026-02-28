@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Share2, Loader2 } from 'lucide-react';
+import { Share2, Loader2, Download } from 'lucide-react';
 import { toBlob } from 'html-to-image';
 import { clsx } from 'clsx';
 
@@ -8,6 +8,9 @@ interface ShareButtonProps {
   fileName?: string;
   className?: string;
   variant?: 'icon' | 'button';
+  buttonLabel?: string;
+  loadingLabel?: string;
+  preferDownload?: boolean;
   onShareStart?: () => void;
   onShareEnd?: () => void;
 }
@@ -17,6 +20,9 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
   fileName = 'pickleball-share.png',
   className,
   variant = 'button',
+  buttonLabel = 'Share Leaderboard',
+  loadingLabel = 'Generating...',
+  preferDownload = false,
   onShareStart,
   onShareEnd
 }) => {
@@ -45,7 +51,7 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
       const uniqueFileName = fileName.replace('.png', `-${timestamp}.png`);
       const file = new File([blob], uniqueFileName, { type: 'image/png' });
 
-      if (navigator.share && navigator.canShare({ files: [file] })) {
+      if (!preferDownload && navigator.share && navigator.canShare({ files: [file] })) {
         await navigator.share({
           files: [file],
           title: 'Corporate Pickleball League',
@@ -103,12 +109,16 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
       {loading ? (
         <>
           <Loader2 className="w-5 h-5 animate-spin text-brand-blue" />
-          <span>Generating...</span>
+          <span>{loadingLabel}</span>
         </>
       ) : (
         <>
-          <Share2 className="w-5 h-5 text-brand-yellow drop-shadow-sm" />
-          <span>Share Leaderboard</span>
+          {preferDownload ? (
+            <Download className="w-5 h-5 text-brand-yellow drop-shadow-sm" />
+          ) : (
+            <Share2 className="w-5 h-5 text-brand-yellow drop-shadow-sm" />
+          )}
+          <span>{buttonLabel}</span>
         </>
       )}
     </button>
