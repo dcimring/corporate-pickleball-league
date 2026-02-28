@@ -96,7 +96,7 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({ match }) => {
             </div>
 
             {/* Winner Badge */}
-            <div className="bg-[rgb(0,85,150)] text-white px-12 py-6 rounded-full shadow-none border-4 border-white">
+            <div className="bg-brand-yellow text-brand-blue px-12 py-6 rounded-full shadow-none border-4 border-white">
                 <span className="font-heading font-black italic text-4xl uppercase tracking-widest">
                     {isTie ? 'Game Was a Tie' : `${isWin1 ? match.team1 : match.team2} Wins!`}
                 </span>
