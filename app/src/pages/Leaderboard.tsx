@@ -102,7 +102,7 @@ export const Leaderboard: React.FC = () => {
           initial={{ x: 80, opacity: 0 }}
           animate={shareCardAnimated ? { x: 0, opacity: 1 } : { x: 80, opacity: 0 }}
           transition={{ duration: 0.7, ease: "easeOut" }}
-          className="bg-white rounded-[2rem] border-4 border-brand-yellow shadow-[0_0_15px_#FFC72C] max-w-lg w-full relative overflow-hidden"
+          className="bg-white rounded-[2rem] border-4 border-brand-yellow shadow-[0_0_15px_#FFC72C] max-w-[340px] w-full md:max-w-lg relative overflow-hidden"
         >
             <div className="px-6 md:px-8 py-6 md:py-7 text-center space-y-4">
               <div className="space-y-2">
