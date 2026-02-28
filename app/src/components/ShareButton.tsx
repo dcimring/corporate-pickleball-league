@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, forwardRef, useImperativeHandle } from 'react';
 import { Share2, Loader2, Download } from 'lucide-react';
 import { toBlob } from 'html-to-image';
 import { clsx } from 'clsx';
+
+export interface ShareButtonHandle {
+  triggerShare: () => void;
+}
 
 interface ShareButtonProps {
   targetRef: React.RefObject<HTMLElement | null>;
@@ -11,25 +15,27 @@ interface ShareButtonProps {
   buttonLabel?: string;
   loadingLabel?: string;
   preferDownload?: boolean;
+  tabIndex?: number;
   onShareStart?: () => void;
   onShareEnd?: () => void;
 }
 
-export const ShareButton: React.FC<ShareButtonProps> = ({ 
-  targetRef, 
+export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
+  targetRef,
   fileName = 'pickleball-share.png',
   className,
   variant = 'button',
   buttonLabel = 'Share Leaderboard',
   loadingLabel = 'Generating...',
   preferDownload = false,
+  tabIndex,
   onShareStart,
   onShareEnd
-}) => {
+}, ref) => {
   const [loading, setLoading] = useState(false);
 
-  const handleShare = async (e: React.MouseEvent) => {
-    e.stopPropagation();
+  const handleShare = async (e?: React.MouseEvent) => {
+    e?.stopPropagation();
     if (!targetRef.current) return;
 
     try {
@@ -76,11 +82,18 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
     }
   };
 
+  useImperativeHandle(ref, () => ({
+    triggerShare: () => {
+      void handleShare();
+    },
+  }));
+
   if (variant === 'icon') {
     return (
       <button 
         onClick={handleShare}
         disabled={loading}
+        tabIndex={tabIndex}
         className={clsx(
           "p-2 rounded-full hover:bg-gray-100 text-gray-400 hover:text-brand-blue transition-colors relative",
           className
@@ -96,6 +109,7 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
     <button 
       onClick={handleShare}
       disabled={loading}
+      tabIndex={tabIndex}
       className={clsx(
         "relative flex items-center gap-3 px-8 py-3 bg-gray-50 text-brand-blue font-heading font-bold rounded-2xl border border-white",
         "shadow-[5px_5px_10px_#d1d5db,-5px_-5px_10px_#ffffff]",
@@ -123,4 +137,6 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
       )}
     </button>
   );
-};
+});
+
+ShareButton.displayName = 'ShareButton';

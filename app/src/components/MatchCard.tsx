@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { clsx } from 'clsx';
 import type { Match } from '../types';
-import { ShareButton } from './ShareButton';
+import { ShareButton, type ShareButtonHandle } from './ShareButton';
 import { ShareableMatch } from './ShareableMatch';
 
 interface MatchCardProps {
@@ -11,6 +11,8 @@ interface MatchCardProps {
 
 export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
   const shareRef = useRef<HTMLDivElement>(null);
+  const mobileShareButtonRef = useRef<ShareButtonHandle>(null);
+  const desktopShareButtonRef = useRef<ShareButtonHandle>(null);
   const isWin1 = match.team1Wins > match.team2Wins || (match.team1Wins === match.team2Wins && match.team1Points > match.team2Points);
   const isWin2 = match.team2Wins > match.team1Wins || (match.team1Wins === match.team2Wins && match.team2Points > match.team1Points);
 
@@ -22,6 +24,22 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
       year: '2-digit',
       timeZone: 'UTC'
     }).format(date).toUpperCase(); // 14-JAN-26
+  };
+
+  const handleShareRowClick = () => {
+    const isDesktop = typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches;
+    if (isDesktop) {
+      desktopShareButtonRef.current?.triggerShare();
+      return;
+    }
+    mobileShareButtonRef.current?.triggerShare();
+  };
+
+  const handleShareRowKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      handleShareRowClick();
+    }
   };
 
             return (
@@ -41,23 +59,6 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
               {/* Top Accent Bar (Inset) */}
           <div className="absolute top-0 left-4 md:left-6 right-4 md:right-6 h-2 bg-[rgb(142,209,252)] rounded-b-md z-10" />
 
-          {/* Share Button - Absolute Top Right */}
-          <div className="absolute top-4 right-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-             <ShareButton
-               targetRef={shareRef}
-               variant="icon"
-               fileName={`match-${match.id}.png`}
-               className="md:hidden"
-             />
-             <ShareButton
-               targetRef={shareRef}
-               variant="icon"
-               fileName={`match-${match.id}.png`}
-               preferDownload
-               className="hidden md:inline-flex"
-             />
-          </div>
-    
           <div className="pt-6 md:pt-10 pb-3 px-4 md:px-8 flex flex-col h-full relative z-10">        {/* Teams Container */}
         <div className="flex-1 flex flex-col justify-center gap-2 md:gap-4">
             {/* Team 1 */}
@@ -101,16 +102,47 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
         </div>
 
         {/* Footer (Date & Points) */}
-        <div className="mt-2 md:mt-4 pt-3 border-t border-gray-100 flex justify-between items-end">
-            <div className="font-heading font-bold text-[rgb(142,209,252)] text-xs tracking-[0.2em] uppercase">
-                {formatDate(match.date)}
+        <div className="mt-2 md:mt-4 pt-3 border-t border-gray-100">
+            <div className="flex justify-between items-end">
+                <div className="font-heading font-bold text-[rgb(142,209,252)] text-xs tracking-[0.2em] uppercase">
+                    {formatDate(match.date)}
+                </div>
+                
+                <div className="flex items-center gap-2 font-mono text-[10px] font-bold text-gray-400">
+                    <span className="tracking-widest uppercase">PTS:</span>
+                    <span className={clsx("text-sm", isWin1 ? "text-[rgb(0,85,150)]" : "text-gray-400")}>{match.team1Points}</span>
+                    <span className="text-gray-300">/</span>
+                    <span className={clsx("text-sm", isWin2 ? "text-[rgb(0,85,150)]" : "text-gray-400")}>{match.team2Points}</span>
+                </div>
             </div>
-            
-            <div className="flex items-center gap-2 font-mono text-[10px] font-bold text-gray-400">
-                <span className="tracking-widest uppercase">PTS:</span>
-                <span className={clsx("text-sm", isWin1 ? "text-[rgb(0,85,150)]" : "text-gray-400")}>{match.team1Points}</span>
-                <span className="text-gray-300">/</span>
-                <span className={clsx("text-sm", isWin2 ? "text-[rgb(0,85,150)]" : "text-gray-400")}>{match.team2Points}</span>
+
+            <div
+              className="mt-3 flex items-center justify-between text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 cursor-pointer transition-colors duration-200 hover:text-brand-blue"
+              role="button"
+              tabIndex={0}
+              onClick={handleShareRowClick}
+              onKeyDown={handleShareRowKeyDown}
+            >
+                <span className="font-heading">Share match</span>
+                <div className="flex items-center gap-2">
+                    <ShareButton
+                      ref={mobileShareButtonRef}
+                      targetRef={shareRef}
+                      variant="icon"
+                      fileName={`match-${match.id}.png`}
+                      className="md:hidden pointer-events-none"
+                      tabIndex={-1}
+                    />
+                    <ShareButton
+                      ref={desktopShareButtonRef}
+                      targetRef={shareRef}
+                      variant="icon"
+                      fileName={`match-${match.id}.png`}
+                      preferDownload
+                      className="hidden md:inline-flex pointer-events-none"
+                      tabIndex={-1}
+                    />
+                </div>
             </div>
         </div>
 
