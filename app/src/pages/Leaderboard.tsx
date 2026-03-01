@@ -96,7 +96,7 @@ export const Leaderboard: React.FC = () => {
         <LeaderboardTable stats={stats} onTeamClick={handleTeamClick} />
         
         {/* Share Section */}
-        <div className="pt-8 md:pt-12 pb-4 flex items-center justify-center">
+        <div className="pt-4 md:pt-6 pb-2 flex items-center justify-center">
         <motion.div 
           ref={shareCardRef}
           initial={{ y: 20, opacity: 0 }}
