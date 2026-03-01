@@ -126,7 +126,7 @@ export const Leaderboard: React.FC = () => {
               />
 
               <p className="text-gray-400 font-mono text-[10px] md:text-xs uppercase font-bold tracking-[0.18em] leading-tight md:hidden">
-                Post the leaderboard to social media or send it to your team.
+                Post the leaderboard to social media or share it on WhatsApp.
               </p>
               <p className="text-gray-400 font-mono text-[10px] md:text-xs uppercase font-bold tracking-[0.18em] leading-tight hidden md:block">
                 Open the site on mobile to post direct to social media or WhatsApp.
