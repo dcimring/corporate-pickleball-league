@@ -15,17 +15,17 @@ export const ShareableLeaderboard: React.FC<ShareableLeaderboardProps> = ({
 }) => {
   const isPost = layout === 'post';
   
-  // Limit entries for post layout to keep it clean (top 5 usually fits well in 630px height)
-  const displayEntries = isPost ? entries.slice(0, 5) : entries.slice(0, 10);
+  // Post: 5 entries (630px), Story: 12 entries (1920px)
+  const displayEntries = isPost ? entries.slice(0, 5) : entries.slice(0, 12);
 
   return (
     <div 
       className={clsx(
         "bg-[#FFFEFC] relative overflow-hidden flex flex-col font-body selection:none",
-        isPost ? "w-[1200px] h-[630px] p-8" : "w-[1080px] h-[1920px] pb-12"
+        isPost ? "w-[1200px] h-[630px] p-8" : "w-[1080px] h-[1920px] pb-8"
       )}
     >
-        {/* Grainy Texture Overlay - Slightly more visible for character */}
+        {/* Grainy Texture Overlay */}
         <div className="absolute inset-0 opacity-[0.02] mix-blend-multiply z-0 pointer-events-none" 
             style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }} 
         />
@@ -45,7 +45,7 @@ export const ShareableLeaderboard: React.FC<ShareableLeaderboardProps> = ({
         )} />
         
         {/* Header Section */}
-        <div className={clsx("relative z-10", isPost ? "mb-6" : "pt-24 px-12 pb-4")}>
+        <div className={clsx("relative z-10", isPost ? "mb-6" : "pt-16 px-12 pb-4")}>
             <div className={clsx("border-[rgb(0,85,150)]", isPost ? "border-b-4 pb-4 flex justify-between items-end" : "border-b-[6px] pb-4")}>
                 <div>
                     <h1 className={clsx(
@@ -88,35 +88,35 @@ export const ShareableLeaderboard: React.FC<ShareableLeaderboardProps> = ({
         {/* Table Header */}
         <div className={clsx(
             "flex items-center text-gray-500 font-heading font-black italic uppercase tracking-widest",
-            isPost ? "px-4 pt-2 pb-1 text-lg" : "px-12 pt-4 pb-2 text-2xl"
+            isPost ? "px-4 pt-2 pb-1 text-lg" : "px-12 pt-4 pb-2 text-xl"
         )}>
              <div className={clsx("text-center", isPost ? "w-16" : "w-24")}>{/* Rank */}</div>
              <div className="flex-1 flex items-center ml-[-10px] pl-8 pr-6">
                  <div className="flex-1">Team</div>
-                 <div className={clsx("text-center", isPost ? "w-24" : "w-36")}>W-L</div>
-                 <div className={clsx("text-center", isPost ? "w-24" : "w-36")}>%</div>
-                 <div className={clsx("text-center", isPost ? "w-20" : "w-28")}>PTS</div>
+                 <div className={clsx("text-center", isPost ? "w-24" : "w-32")}>W-L</div>
+                 <div className={clsx("text-center", isPost ? "w-24" : "w-32")}>%</div>
+                 <div className={clsx("text-center", isPost ? "w-20" : "w-24")}>PTS</div>
              </div>
         </div>
 
         {/* List Section */}
-        <div className={clsx("relative z-10 flex flex-col", isPost ? "px-4 gap-2" : "flex-1 px-12 gap-4")}>
+        <div className={clsx("relative z-10 flex flex-col", isPost ? "px-4 gap-2" : "flex-1 px-12 gap-3")}>
             {displayEntries.map((entry, index) => (
-                <div key={entry.team} className={clsx("flex items-center group relative", isPost ? "h-16" : "h-24")}>
+                <div key={entry.team} className={clsx("flex items-center group relative", isPost ? "h-16" : "h-20")}>
                     {/* Rank Badge */}
-                    <div className={clsx("flex items-center justify-center relative z-20", isPost ? "w-16 h-16" : "w-24 h-24")}>
+                    <div className={clsx("flex items-center justify-center relative z-20", isPost ? "w-16 h-16" : "w-24 h-20")}>
                         {index < 3 ? (
                             <div className={clsx(
                                 "w-full h-full flex items-center justify-center font-heading font-black transform -skew-x-12 border-2 border-white",
                                 index === 0 ? "bg-[rgb(247,191,38)] text-[rgb(0,85,150)]" : 
                                 index === 1 ? "bg-gray-200 text-gray-700" :
                                 "bg-orange-100 text-orange-900",
-                                isPost ? "text-2xl" : "text-4xl"
+                                isPost ? "text-2xl" : "text-3xl"
                             )}>
                                 <span className="skew-x-12">{index + 1}</span>
                             </div>
                         ) : (
-                            <span className={clsx("font-heading font-black text-gray-300", isPost ? "text-2xl" : "text-4xl")}>
+                            <span className={clsx("font-heading font-black text-gray-300", isPost ? "text-2xl" : "text-3xl")}>
                                 {index + 1}
                             </span>
                         )}
@@ -128,7 +128,7 @@ export const ShareableLeaderboard: React.FC<ShareableLeaderboardProps> = ({
                         <div className="flex-1 pr-4">
                              <span className={clsx(
                                 "font-heading font-black italic text-[rgb(0,85,150)] uppercase tracking-tight line-clamp-1 leading-none",
-                                isPost ? "text-2xl" : "text-4xl"
+                                isPost ? "text-2xl" : "text-3xl"
                              )}>
                                 {entry.team}
                              </span>
@@ -139,7 +139,7 @@ export const ShareableLeaderboard: React.FC<ShareableLeaderboardProps> = ({
                             {/* W-L */}
                             <div className={clsx(
                                 "text-center font-mono font-black text-gray-700",
-                                isPost ? "w-24 text-xl" : "w-36 text-3xl"
+                                isPost ? "w-24 text-xl" : "w-32 text-2xl"
                             )}>
                                 {entry.wins}-{entry.losses}
                             </div>
@@ -148,7 +148,7 @@ export const ShareableLeaderboard: React.FC<ShareableLeaderboardProps> = ({
                             <div className={clsx(
                                 "text-center font-heading font-black italic tracking-tighter",
                                 index < 3 ? "text-[rgb(0,85,150)]" : "text-gray-500",
-                                isPost ? "w-24 text-2xl" : "w-36 text-4xl"
+                                isPost ? "w-24 text-2xl" : "w-32 text-3xl"
                             )}>
                                 {(entry.winPct * 100).toFixed(0)}%
                             </div>
@@ -156,7 +156,7 @@ export const ShareableLeaderboard: React.FC<ShareableLeaderboardProps> = ({
                             {/* PTS */}
                             <div className={clsx(
                                 "text-center font-mono font-black text-gray-600",
-                                isPost ? "w-20 text-xl" : "w-28 text-3xl"
+                                isPost ? "w-20 text-xl" : "w-24 text-2xl"
                             )}>
                                 {entry.pointsFor}
                             </div>
@@ -172,12 +172,20 @@ export const ShareableLeaderboard: React.FC<ShareableLeaderboardProps> = ({
                     </p>
                 </div>
             )}
+            
+            {!isPost && entries.length > 12 && (
+                <div className="text-center pt-1">
+                    <p className="font-heading font-black italic text-gray-400 uppercase tracking-widest text-lg">
+                        + {entries.length - 12} more teams in {division}
+                    </p>
+                </div>
+            )}
         </div>
 
         {/* Footer (Story only) */}
         {!isPost && (
-            <div className="relative z-10 pt-16 pb-12 text-center mt-auto">
-                <div className="w-48 h-2 bg-[rgb(142,209,252)] mx-auto rounded-full mb-8" />
+            <div className="relative z-10 pt-8 pb-8 text-center mt-auto">
+                <div className="w-48 h-2 bg-[rgb(142,209,252)] mx-auto rounded-full mb-6" />
                 <p className="font-heading font-black uppercase tracking-[0.4em] text-3xl text-[rgb(0,85,150)]">
                     Corporate Pickleball League
                 </p>
