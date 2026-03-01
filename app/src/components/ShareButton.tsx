@@ -32,7 +32,7 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
   loadingLabel = 'Generating...',
   preferDownload = false,
   imageFormat = 'jpeg',
-  imageQuality = 0.95,
+  imageQuality = 1,
   pixelRatio = 1,
   tabIndex,
   onShareStart,
@@ -42,7 +42,8 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
 
   const handleShare = async (e?: React.MouseEvent) => {
     e?.stopPropagation();
-    if (!targetRef.current) return;
+    const node = targetRef.current;
+    if (!node) return;
 
     try {
       setLoading(true);
@@ -59,11 +60,11 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
 
       const blob = imageFormat === 'jpeg'
         ? await (async () => {
-            const dataUrl = await toJpeg(targetRef.current, { ...exportOptions, quality: imageQuality });
+            const dataUrl = await toJpeg(node, { ...exportOptions, quality: imageQuality });
             const response = await fetch(dataUrl);
             return response.blob();
           })()
-        : await toBlob(targetRef.current, exportOptions);
+        : await toBlob(node, exportOptions);
 
       if (!blob) throw new Error('Failed to generate image');
 
