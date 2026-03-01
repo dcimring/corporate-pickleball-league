@@ -78,14 +78,18 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
       const uniqueFileName = `${baseName}-${timestamp}.${extension}`;
       const file = new File([blob], uniqueFileName, { type: imageFormat === 'jpeg' ? 'image/jpeg' : 'image/png' });
 
-      if (!preferDownload && navigator.share && navigator.canShare({ files: [file] })) {
+      // Check if we are on a mobile/tablet device
+      const isMobileOrTablet = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+                              (navigator.maxTouchPoints > 0 && window.innerWidth < 1024);
+
+      if (!preferDownload && isMobileOrTablet && navigator.share && navigator.canShare({ files: [file] })) {
         await navigator.share({
           files: [file],
           title: shareTitle,
           text: shareText,
         });
       } else {
-        // Fallback to download
+        // Desktop or forced download: Trigger download
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.download = uniqueFileName;
