@@ -22,7 +22,7 @@ export const ShareableLeaderboard: React.FC<ShareableLeaderboardProps> = ({
     <div 
       className={clsx(
         "bg-[#FFFEFC] relative overflow-hidden flex flex-col font-body selection:none",
-        isPost ? "pt-4 px-10 pb-2" : "pb-8"
+        isPost ? "w-[1200px] h-[630px] pt-4 px-10 pb-2" : "w-[1080px] h-[1920px] pb-8"
       )}
       style={{
         width: isPost ? '1200px' : '1080px',
@@ -206,12 +206,12 @@ const LeaderboardRow: React.FC<{ entry: LeaderboardEntry, index: number, isPost:
             )}>
                  {/* Team Name */}
                 <div className="flex-1 pr-2">
-                     <span className={clsx(
+                    <span className={clsx(
                         "font-heading font-black italic text-[rgb(0,85,150)] uppercase tracking-tight line-clamp-1 leading-none",
                         isPost ? "text-xl" : "text-3xl"
-                     )}>
+                    )}>
                         {entry.team}
-                     </span>
+                    </span>
                 </div>
                 
                 {/* Stats Columns */}

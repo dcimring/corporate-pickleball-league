@@ -8,6 +8,29 @@ interface ShareableMatchProps {
   layout?: 'post' | 'story';
 }
 
+/* Helper for "Directional Speed Trails" */
+const SpeedTrails: React.FC<{ 
+    className?: string;
+    count?: number;
+    color?: string;
+    direction?: 'left' | 'right';
+}> = ({ className, count = 3, color = 'rgb(247,191,38)', direction = 'left' }) => (
+    <div className={clsx("absolute flex flex-col gap-1.5 pointer-events-none", className)}>
+        {Array.from({ length: count }).map((_, i) => (
+            <div 
+                key={i}
+                className="h-1 rounded-full opacity-40"
+                style={{ 
+                    backgroundColor: color,
+                    width: `${80 - (i * 20)}px`,
+                    transform: direction === 'left' ? 'translateX(-100%)' : 'translateX(100%) scaleX(-1)',
+                    marginLeft: direction === 'left' ? '-12px' : '12px'
+                }}
+            />
+        ))}
+    </div>
+);
+
 export const ShareableMatch: React.FC<ShareableMatchProps> = ({ 
   match,
   layout = 'story'
@@ -174,7 +197,7 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({
                     <div className="absolute top-0 left-16 right-16 h-6 bg-[rgb(142,209,252)] rounded-b-3xl" />
 
                     {/* Team 1 */}
-                    <div className="flex justify-between items-center">
+                    <div className="flex justify-between items-center relative">
                         <div className="flex flex-col gap-4 max-w-[70%]">
                             <span className={clsx(
                                 "font-heading font-black italic text-7xl uppercase tracking-tighter leading-tight",
@@ -186,12 +209,20 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({
                                 PTS {match.team1Points}
                             </div>
                         </div>
-                        <span className={clsx(
-                            "font-heading font-black text-[180px] leading-none",
-                            isWin1 ? "text-[rgb(0,85,150)] drop-shadow-[8px_8px_0px_rgb(247,191,38)]" : "text-gray-100"
-                        )}>
-                            {match.team1Wins}
-                        </span>
+                        <div className="relative">
+                            {isWin1 ? (
+                                <>
+                                    <SpeedTrails className="right-full top-1/2 -translate-y-1/2" />
+                                    <span className="font-heading font-black text-[180px] leading-none text-[rgb(0,85,150)] drop-shadow-[8px_8px_0px_rgb(247,191,38)] relative z-10">
+                                        {match.team1Wins}
+                                    </span>
+                                </>
+                            ) : (
+                                <span className="font-heading font-black text-[180px] leading-none text-gray-100">
+                                    {match.team1Wins}
+                                </span>
+                            )}
+                        </div>
                     </div>
 
                     <div className="h-px bg-gray-100 w-full relative">
@@ -199,7 +230,7 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({
                     </div>
 
                     {/* Team 2 */}
-                    <div className="flex justify-between items-center">
+                    <div className="flex justify-between items-center relative">
                         <div className="flex flex-col gap-4 max-w-[70%]">
                             <span className={clsx(
                                 "font-heading font-black italic text-7xl uppercase tracking-tighter leading-tight",
@@ -211,12 +242,20 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({
                                 PTS {match.team2Points}
                             </div>
                         </div>
-                        <span className={clsx(
-                            "font-heading font-black text-[180px] leading-none",
-                            isWin2 ? "text-[rgb(0,85,150)] drop-shadow-[8px_8px_0px_rgb(247,191,38)]" : "text-gray-100"
-                        )}>
-                            {match.team2Wins}
-                        </span>
+                        <div className="relative">
+                            {isWin2 ? (
+                                <>
+                                    <SpeedTrails className="right-full top-1/2 -translate-y-1/2" />
+                                    <span className="font-heading font-black text-[180px] leading-none text-[rgb(0,85,150)] drop-shadow-[8px_8px_0px_rgb(247,191,38)] relative z-10">
+                                        {match.team2Wins}
+                                    </span>
+                                </>
+                            ) : (
+                                <span className="font-heading font-black text-[180px] leading-none text-gray-100">
+                                    {match.team2Wins}
+                                </span>
+                            )}
+                        </div>
                     </div>
 
                     <div className="pt-8 border-t border-gray-100 text-center font-mono font-black text-3xl uppercase tracking-[0.3em] text-[rgb(0,85,150)]">
@@ -225,8 +264,10 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({
                 </div>
 
                 {/* Winner Badge Story */}
-                <div className="bg-brand-yellow text-brand-blue px-16 py-10 rounded-[50px] shadow-none border-[6px] border-white w-full">
-                    <div className="flex flex-col items-center gap-4 text-center">
+                <div className="bg-brand-yellow text-brand-blue px-16 py-10 rounded-[50px] shadow-none border-[6px] border-white w-full relative overflow-hidden">
+                    <SpeedTrails className="left-[-20px] top-1/2 -translate-y-1/2" count={2} color="white" />
+                    <SpeedTrails className="right-[-60px] top-1/2 -translate-y-1/2" count={2} color="white" direction="right" />
+                    <div className="flex flex-col items-center gap-4 text-center relative z-10">
                         <div className="flex items-center gap-4">
                             <Trophy className="w-10 h-10" strokeWidth={3} />
                             <span className="font-heading font-black italic text-4xl uppercase tracking-[0.3em]">
