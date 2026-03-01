@@ -96,60 +96,60 @@ export const Leaderboard: React.FC = () => {
         <LeaderboardTable stats={stats} onTeamClick={handleTeamClick} />
         
         {/* Share Section */}
-        <div className="pt-3 md:pt-4 pb-0 mt-4 md:mt-5 -mb-2 md:-mb-3 flex items-center justify-center">
+        <div className="pt-8 md:pt-12 pb-4 flex items-center justify-center">
         <motion.div 
           ref={shareCardRef}
-          whileHover={{ y: -2 }}
-          initial={{ x: 80, opacity: 0 }}
-          animate={shareCardAnimated ? { x: 0, opacity: 1 } : { x: 80, opacity: 0 }}
+          initial={{ y: 20, opacity: 0 }}
+          animate={shareCardAnimated ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
           transition={{ duration: 0.7, ease: "easeOut" }}
-          className="bg-white rounded-[2rem] border-4 border-brand-yellow shadow-[0_0_15px_#FFC72C] max-w-[340px] md:max-w-xl w-full relative overflow-hidden"
+          className="max-w-4xl w-full relative overflow-hidden"
         >
-            <div className="px-5 md:px-8 py-5 md:py-7 text-center space-y-4 md:space-y-6">
+            <div className="px-5 py-5 text-center space-y-6 md:space-y-8">
               <div className="space-y-2">
                 <p className="text-[11px] md:text-xs font-heading font-black italic uppercase tracking-[0.18em] text-brand-blue">
                   Spread the Word
                 </p>
-                <h4 className="text-lg md:text-2xl font-heading font-black uppercase text-brand-blue tracking-tight">
+                <h4 className="text-xl md:text-3xl font-heading font-black uppercase text-brand-blue tracking-tight">
                   Share the leaderboard with your team
                 </h4>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+              <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6">
                 {/* Story Option */}
-                <div className="space-y-2">
+                <div className="w-full md:w-auto space-y-2">
                   <ShareButton 
                     targetRef={storyShareRef} 
                     buttonLabel="Share Story"
                     fileName={`LRP-Pickleball-Leaderboard-Story-${activeDivision}.jpg`}
                     shareText={`Check out the latest standings for ${activeDivision} in the La Roche Posay Corporate Pickleball League! 🥒🏆`}
-                    className="!w-full !justify-center !rounded-xl !bg-brand-blue !text-white !shadow-md hover:!bg-brand-blue/90 !transition-colors !py-3 !text-sm"
+                    className="!w-full md:!w-48 !justify-center !rounded-xl !bg-brand-blue !text-white !shadow-sm hover:!bg-brand-blue/90 !transition-colors !py-3 !text-sm"
                   />
-                  <p className="text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest">Portrait 9:16</p>
+                  <p className="text-[9px] font-mono font-bold text-gray-400 uppercase tracking-widest">Portrait 9:16</p>
                 </div>
 
                 {/* Post Option */}
-                <div className="space-y-2">
+                <div className="w-full md:w-auto space-y-2">
                   <ShareButton 
                     targetRef={postShareRef} 
                     buttonLabel="Share Post"
                     fileName={`LRP-Pickleball-Leaderboard-Post-${activeDivision}.jpg`}
                     shareText={`We're climbing the leaderboard in the La Roche Posay Corporate Pickleball League! 🔥`}
-                    className="!w-full !justify-center !rounded-xl !bg-[rgb(142,209,252)] !text-brand-blue !shadow-md hover:!bg-[rgb(122,189,232)] !transition-colors !py-3 !text-sm"
+                    className="!w-full md:!w-48 !justify-center !rounded-xl !bg-[rgb(142,209,252)] !text-brand-blue !shadow-sm hover:!bg-[rgb(122,189,232)] !transition-colors !py-3 !text-sm"
                   />
-                  <p className="text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest">Landscape 1.91:1</p>
+                  <p className="text-[9px] font-mono font-bold text-gray-400 uppercase tracking-widest">Landscape 1.91:1</p>
                 </div>
-              </div>
 
-              {/* WhatsApp Option (Always Story Layout) */}
-              <div className="pt-2">
+                {/* WhatsApp Option */}
+                <div className="w-full md:w-auto space-y-2">
                   <ShareButton 
                     targetRef={storyShareRef} 
-                    buttonLabel="Share to WhatsApp"
+                    buttonLabel="WhatsApp"
                     fileName={`LRP-Pickleball-Leaderboard-WA-${activeDivision}.jpg`}
                     shareText={`Check out the ${activeDivision} standings! 🥒🏆\n\nSee more at: pickleball.ky`}
-                    className="!w-full !justify-center !rounded-xl !bg-[#25D366] !text-white !shadow-md hover:!bg-[#20ba5a] !transition-colors !py-3 !text-sm"
+                    className="!w-full md:!w-48 !justify-center !rounded-xl !bg-[#25D366] !text-white !shadow-sm hover:!bg-[#20ba5a] !transition-colors !py-3 !text-sm"
                   />
+                  <p className="text-[9px] font-mono font-bold text-gray-400 uppercase tracking-widest">Portrait 9:16</p>
+                </div>
               </div>
 
               <p className="text-gray-400 font-mono text-[10px] md:text-xs uppercase font-bold tracking-[0.18em] leading-tight">
