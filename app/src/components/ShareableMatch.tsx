@@ -1,5 +1,6 @@
 import React from 'react';
 import { clsx } from 'clsx';
+import { Trophy } from 'lucide-react';
 import type { Match } from '../types';
 
 interface ShareableMatchProps {
@@ -109,10 +110,18 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({ match }) => {
             </div>
 
             {/* Winner Badge */}
-            <div className="bg-brand-yellow text-brand-blue px-12 py-6 rounded-full shadow-none border-4 border-white">
-                <span className="font-heading font-black italic text-4xl uppercase tracking-widest">
-                    {isTie ? 'Game Was a Tie' : `${isWin1 ? match.team1 : match.team2} Wins!`}
-                </span>
+            <div className="bg-brand-yellow text-brand-blue px-12 py-5 rounded-full shadow-none border-4 border-white">
+                <div className="flex flex-col items-center gap-2 text-center">
+                    <div className="flex items-center gap-3">
+                        <Trophy className="w-7 h-7" strokeWidth={2} />
+                        <span className="font-heading font-black italic text-3xl uppercase tracking-[0.35em]">
+                            {isTie ? 'Tie' : 'Winner'}
+                        </span>
+                    </div>
+                    <span className="font-heading font-black italic text-4xl uppercase tracking-widest">
+                        {isTie ? 'No Winner' : (isWin1 ? match.team1 : match.team2)}
+                    </span>
+                </div>
             </div>
 
             {/* Date */}
