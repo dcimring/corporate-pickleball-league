@@ -19,22 +19,26 @@ interface ShareButtonProps {
   imageQuality?: number;
   pixelRatio?: number;
   tabIndex?: number;
+  shareTitle?: string;
+  shareText?: string;
   onShareStart?: () => void;
   onShareEnd?: () => void;
 }
 
 export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
   targetRef,
-  fileName = 'pickleball-share.png',
+  fileName = 'pickleball-share.jpg',
   className,
   variant = 'button',
   buttonLabel = 'Share Leaderboard',
   loadingLabel = 'Generating...',
   preferDownload = false,
   imageFormat = 'jpeg',
-  imageQuality = 1,
-  pixelRatio = 1,
+  imageQuality = 0.95,
+  pixelRatio = 2,
   tabIndex,
+  shareTitle = 'Corporate Pickleball League',
+  shareText = 'Check out the latest stats from the Corporate Pickleball League! 🥒🏆',
   onShareStart,
   onShareEnd
 }, ref) => {
@@ -50,7 +54,7 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
       onShareStart?.();
 
       // Wait a tick to ensure any hidden/rendering states are ready if needed
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise(resolve => setTimeout(resolve, 200));
 
       const exportOptions = {
         cacheBust: true,
@@ -77,8 +81,8 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
       if (!preferDownload && navigator.share && navigator.canShare({ files: [file] })) {
         await navigator.share({
           files: [file],
-          title: 'Corporate Pickleball League',
-          text: 'Check out the latest stats from the Corporate Pickleball League! 🥒🏆',
+          title: shareTitle,
+          text: shareText,
         });
       } else {
         // Fallback to download

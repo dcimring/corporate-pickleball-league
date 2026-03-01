@@ -10,11 +10,17 @@ interface MatchCardProps {
 }
 
 export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
-  const shareRef = useRef<HTMLDivElement>(null);
-  const mobileShareButtonRef = useRef<ShareButtonHandle>(null);
-  const desktopShareButtonRef = useRef<ShareButtonHandle>(null);
+  const storyShareRef = useRef<HTMLDivElement>(null);
+  const postShareRef = useRef<HTMLDivElement>(null);
+  const mobileStoryShareButtonRef = useRef<ShareButtonHandle>(null);
+  const desktopStoryShareButtonRef = useRef<ShareButtonHandle>(null);
+  const mobilePostShareButtonRef = useRef<ShareButtonHandle>(null);
+  const desktopPostShareButtonRef = useRef<ShareButtonHandle>(null);
+  const mobileWhatsAppShareButtonRef = useRef<ShareButtonHandle>(null);
+  const desktopWhatsAppShareButtonRef = useRef<ShareButtonHandle>(null);
+  
   const isWin1 = match.team1Wins > match.team2Wins || (match.team1Wins === match.team2Wins && match.team1Points > match.team2Points);
-  const isWin2 = match.team2Wins > match.team1Wins || (match.team1Wins === match.team2Wins && match.team2Points > match.team1Points);
+  const isWin2 = match.team2Wins > match.team1Wins || (match.team2Wins === match.team1Wins && match.team2Points > match.team1Points);
 
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);
@@ -26,40 +32,48 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
     }).format(date).toUpperCase(); // 14-JAN-26
   };
 
-  const handleShareRowClick = () => {
+  const handleShareStory = (e: React.MouseEvent) => {
+    e.stopPropagation();
     const isDesktop = typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches;
     if (isDesktop) {
-      desktopShareButtonRef.current?.triggerShare();
-      return;
-    }
-    mobileShareButtonRef.current?.triggerShare();
-  };
-
-  const handleShareRowKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      handleShareRowClick();
+      desktopStoryShareButtonRef.current?.triggerShare();
+    } else {
+      mobileStoryShareButtonRef.current?.triggerShare();
     }
   };
 
-            return (
+  const handleSharePost = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const isDesktop = typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches;
+    if (isDesktop) {
+      desktopPostShareButtonRef.current?.triggerShare();
+    } else {
+      mobilePostShareButtonRef.current?.triggerShare();
+    }
+  };
 
-              <div className="w-full bg-[#FFFEFC] rounded-3xl shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group border border-gray-100">
+  const handleShareWhatsApp = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const isDesktop = typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches;
+    if (isDesktop) {
+      desktopWhatsAppShareButtonRef.current?.triggerShare();
+    } else {
+      mobileWhatsAppShareButtonRef.current?.triggerShare();
+    }
+  };
 
-                {/* Grainy Texture Overlay */}
+  return (
+    <div className="w-full bg-[#FFFEFC] rounded-3xl shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group border border-gray-100">
+      {/* Grainy Texture Overlay */}
+      <div className="absolute inset-0 opacity-[0.1] pointer-events-none mix-blend-multiply" 
+           style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }} 
+      />
 
-                <div className="absolute inset-0 opacity-[0.1] pointer-events-none mix-blend-multiply" 
+      {/* Top Accent Bar (Inset) */}
+      <div className="absolute top-0 left-4 md:left-6 right-4 md:right-6 h-2 bg-[rgb(142,209,252)] rounded-b-md z-10" />
 
-                     style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }} 
-
-                />
-
-              
-
-              {/* Top Accent Bar (Inset) */}
-          <div className="absolute top-0 left-4 md:left-6 right-4 md:right-6 h-2 bg-[rgb(142,209,252)] rounded-b-md z-10" />
-
-          <div className="pt-6 md:pt-10 pb-3 px-4 md:px-8 flex flex-col h-full relative z-10">        {/* Teams Container */}
+      <div className="pt-6 md:pt-10 pb-3 px-4 md:px-8 flex flex-col h-full relative z-10">
+        {/* Teams Container */}
         <div className="flex-1 flex flex-col justify-center gap-2 md:gap-4">
             {/* Team 1 */}
             <div className="flex justify-between items-center group/team">
@@ -103,7 +117,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
 
         {/* Footer (Date & Points) */}
         <div className="mt-2 md:mt-4 pt-3 border-t border-gray-100">
-            <div className="flex justify-between items-end">
+            <div className="flex justify-between items-end mb-3">
                 <div className="font-heading font-bold text-[rgb(142,209,252)] text-xs tracking-[0.2em] uppercase">
                     {formatDate(match.date)}
                 </div>
@@ -116,42 +130,91 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
                 </div>
             </div>
 
-            <div
-              className="mt-3 flex items-center justify-between text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 cursor-pointer transition-colors duration-200 hover:text-brand-blue"
-              role="button"
-              tabIndex={0}
-              onClick={handleShareRowClick}
-              onKeyDown={handleShareRowKeyDown}
-            >
-                <span className="font-heading">Share match</span>
-                <div className="flex items-center gap-2">
-                    <ShareButton
-                      ref={mobileShareButtonRef}
-                      targetRef={shareRef}
-                      variant="icon"
-                      fileName={`match-${match.id}.png`}
-                      className="md:hidden pointer-events-none"
-                      tabIndex={-1}
-                    />
-                    <ShareButton
-                      ref={desktopShareButtonRef}
-                      targetRef={shareRef}
-                      variant="icon"
-                      fileName={`match-${match.id}.png`}
-                      preferDownload
-                      className="hidden md:inline-flex pointer-events-none"
-                      tabIndex={-1}
-                    />
+            <div className="flex items-center justify-between pt-2 border-t border-gray-50">
+                <span className="text-[9px] font-heading font-black uppercase tracking-[0.2em] text-gray-400">Share Result</span>
+                <div className="flex items-center gap-1">
+                    {/* Story Button */}
+                    <button 
+                        onClick={handleShareStory}
+                        className="px-3 py-1 rounded-full bg-brand-blue text-white text-[9px] font-heading font-black uppercase tracking-widest hover:bg-brand-blue/90 transition-colors"
+                        title="Share as Story"
+                    >
+                        Story
+                    </button>
+                    {/* Post Button */}
+                    <button 
+                        onClick={handleSharePost}
+                        className="px-3 py-1 rounded-full bg-[rgb(142,209,252)] text-brand-blue text-[9px] font-heading font-black uppercase tracking-widest hover:bg-[rgb(122,189,232)] transition-colors"
+                        title="Share as Post"
+                    >
+                        Post
+                    </button>
+                    {/* WhatsApp Button */}
+                    <button 
+                        onClick={handleShareWhatsApp}
+                        className="px-3 py-1 rounded-full bg-[#25D366] text-white text-[9px] font-heading font-black uppercase tracking-widest hover:bg-[#20ba5a] transition-colors"
+                        title="Share to WhatsApp"
+                    >
+                        WA
+                    </button>
+                    
+                    {/* Hidden Actual ShareButtons */}
+                    <div className="hidden">
+                        <ShareButton
+                          ref={mobileStoryShareButtonRef}
+                          targetRef={storyShareRef}
+                          variant="icon"
+                          fileName={`LRP-Pickleball-Match-${match.team1}-vs-${match.team2}-story.jpg`}
+                          shareText={`Match result: ${match.team1} vs ${match.team2}! 🥒🏆\n\nFull stats at caymanpickleball.com`}
+                        />
+                        <ShareButton
+                          ref={desktopStoryShareButtonRef}
+                          targetRef={storyShareRef}
+                          variant="icon"
+                          fileName={`LRP-Pickleball-Match-${match.team1}-vs-${match.team2}-story.jpg`}
+                          preferDownload
+                        />
+                        <ShareButton
+                          ref={mobilePostShareButtonRef}
+                          targetRef={postShareRef}
+                          variant="icon"
+                          fileName={`LRP-Pickleball-Match-${match.team1}-vs-${match.team2}-post.jpg`}
+                          shareText={`Pickleball Match Result: ${match.team1} vs ${match.team2}! 🔥`}
+                        />
+                        <ShareButton
+                          ref={desktopPostShareButtonRef}
+                          targetRef={postShareRef}
+                          variant="icon"
+                          fileName={`LRP-Pickleball-Match-${match.team1}-vs-${match.team2}-post.jpg`}
+                          preferDownload
+                        />
+                        <ShareButton
+                          ref={mobileWhatsAppShareButtonRef}
+                          targetRef={storyShareRef}
+                          variant="icon"
+                          fileName={`LRP-Pickleball-Match-WA-${match.team1}-vs-${match.team2}.jpg`}
+                          shareText={`Check out this match result! 🥒🏆\n\n${match.team1} vs ${match.team2}\n\nSee the schedule: caymanpickleball.com`}
+                        />
+                        <ShareButton
+                          ref={desktopWhatsAppShareButtonRef}
+                          targetRef={storyShareRef}
+                          variant="icon"
+                          fileName={`LRP-Pickleball-Match-WA-${match.team1}-vs-${match.team2}.jpg`}
+                          preferDownload
+                        />
+                    </div>
                 </div>
             </div>
         </div>
-
       </div>
 
       {/* Hidden Shareable Content */}
       <div className="absolute left-[-9999px] top-[-9999px]">
-        <div ref={shareRef}>
-            <ShareableMatch match={match} />
+        <div ref={storyShareRef}>
+            <ShareableMatch match={match} layout="story" />
+        </div>
+        <div ref={postShareRef}>
+            <ShareableMatch match={match} layout="post" />
         </div>
       </div>
     </div>
