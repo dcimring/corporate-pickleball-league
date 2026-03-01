@@ -57,7 +57,7 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({ match }) => {
             </div>
 
             {/* Scoreboard */}
-            <div className="w-full bg-white rounded-[60px] shadow-none p-16 border border-gray-100 flex flex-col gap-12 relative overflow-hidden">
+            <div className="w-full bg-white rounded-[60px] shadow-none pt-16 px-16 pb-6 border border-gray-100 flex flex-col gap-12 relative overflow-hidden">
                 {/* Accent Bar */}
                 <div className="absolute top-0 left-16 right-16 h-4 bg-[rgb(142,209,252)] rounded-b-2xl" />
 
@@ -108,7 +108,7 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({ match }) => {
                     </span>
                 </div>
 
-                <div className="pt-6 mt-2 border-t border-gray-100 text-center font-mono text-2xl uppercase tracking-[0.25em] text-gray-400">
+                <div className="pt-3 mt-1 border-t border-gray-100 text-center font-mono text-2xl uppercase tracking-[0.25em] text-gray-400 pb-0">
                     {formatDateNoTz(match.date)}
                 </div>
             </div>
