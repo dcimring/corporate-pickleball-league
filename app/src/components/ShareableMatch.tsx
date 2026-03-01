@@ -108,7 +108,7 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({ match }) => {
                     </span>
                 </div>
 
-                <div className="pt-3 mt-1 border-t border-gray-100 text-center font-mono text-2xl uppercase tracking-[0.25em] text-gray-400 pb-0">
+                <div className="pt-3 mt-1 border-t border-gray-100 text-center font-mono font-bold text-2xl uppercase tracking-[0.25em] text-brand-blue pb-0">
                     {formatDateNoTz(match.date)}
                 </div>
             </div>
