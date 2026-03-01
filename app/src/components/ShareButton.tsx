@@ -23,6 +23,8 @@ interface ShareButtonProps {
   tabIndex?: number;
   shareTitle?: string;
   shareText?: string;
+  toastPosition?: 'fixed' | 'absolute';
+  hidden?: boolean;
   onShareStart?: () => void;
   onShareEnd?: () => void;
 }
@@ -41,6 +43,8 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
   tabIndex,
   shareTitle = 'Corporate Pickleball League',
   shareText = 'Check out the latest stats from the Corporate Pickleball League! 🥒🏆',
+  toastPosition = 'fixed',
+  hidden = false,
   onShareStart,
   onShareEnd
 }, ref) => {
@@ -122,9 +126,21 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
     },
   }));
 
+  const renderToast = () => (
+    <Toast 
+      show={showToast} 
+      onClose={() => setShowToast(false)} 
+      position={toastPosition} 
+    />
+  );
+
+  if (hidden) {
+    return renderToast();
+  }
+
   if (variant === 'icon') {
     return (
-      <>
+      <div className="relative inline-block">
         <button 
           onClick={handleShare}
           disabled={loading}
@@ -137,13 +153,13 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
         >
           {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Share2 className="w-5 h-5" />}
         </button>
-        <Toast show={showToast} onClose={() => setShowToast(false)} />
-      </>
+        {renderToast()}
+      </div>
     );
   }
 
   return (
-    <>
+    <div className={clsx("relative", className?.includes('!w-full') ? 'w-full' : 'inline-block')}>
       <button 
         onClick={handleShare}
         disabled={loading}
@@ -174,47 +190,50 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
           </>
         )}
       </button>
-      <Toast show={showToast} onClose={() => setShowToast(false)} />
-    </>
+      {renderToast()}
+    </div>
   );
 });
 
-/* Internal Toast Component with Portal */
-const Toast: React.FC<{ show: boolean; onClose: () => void }> = ({ show, onClose }) => {
+/* Internal Toast Component with Portal/Absolute Support */
+const Toast: React.FC<{ show: boolean; onClose: () => void; position: 'fixed' | 'absolute' }> = ({ show, onClose, position }) => {
   if (typeof document === 'undefined') return null;
 
-  return createPortal(
+  const content = (
     <AnimatePresence>
       {show && (
         <motion.div
-          initial={{ x: 400, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          exit={{ x: 400, opacity: 0 }}
+          initial={position === 'fixed' ? { x: 400, opacity: 0 } : { y: 20, opacity: 0 }}
+          animate={position === 'fixed' ? { x: 0, opacity: 1 } : { y: 0, opacity: 1 }}
+          exit={position === 'fixed' ? { x: 400, opacity: 0 } : { y: 20, opacity: 0 }}
           transition={{ type: "spring", damping: 20, stiffness: 100 }}
-          className="fixed bottom-6 right-6 z-[9999] max-w-sm"
+          className={clsx(
+            "z-[9999] w-[320px] md:w-[380px] visible pointer-events-auto",
+            position === 'fixed' ? "fixed bottom-6 right-6" : "absolute bottom-full right-0 mb-4"
+          )}
         >
-          <div className="bg-brand-blue text-white p-5 rounded-2xl shadow-2xl border-2 border-brand-yellow relative overflow-hidden">
+          <div className="bg-brand-blue text-white p-4 md:p-5 rounded-2xl shadow-2xl border-2 border-brand-yellow relative overflow-hidden">
             {/* Texture Overlay */}
             <div className="absolute inset-0 opacity-10 pointer-events-none mix-blend-overlay" 
                  style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")` }} 
             />
             
-            <div className="flex gap-4 relative z-10">
+            <div className="flex gap-3 md:gap-4 relative z-10">
               <div className="bg-brand-yellow/20 p-2 rounded-xl self-start">
-                <CheckCircle2 className="w-6 h-6 text-brand-yellow" />
+                <CheckCircle2 className="w-5 h-5 md:w-6 md:h-6 text-brand-yellow" />
               </div>
               
               <div className="flex-1 space-y-1 text-left">
-                <h5 className="font-heading font-black italic uppercase tracking-wider text-lg leading-tight">
+                <h5 className="font-heading font-black italic uppercase tracking-wider text-base md:text-lg leading-tight">
                   Image Downloaded!
                 </h5>
-                <p className="text-sm font-body text-blue-50 leading-snug">
+                <p className="text-[13px] md:text-sm font-body text-blue-50 leading-snug">
                   Check your <span className="font-bold underline decoration-brand-yellow underline-offset-2">Downloads</span> folder to share.
                 </p>
                 
                 <div className="pt-2 mt-2 border-t border-white/10 flex items-start gap-2">
-                  <Smartphone className="w-4 h-4 text-brand-yellow mt-0.5 flex-shrink-0" />
-                  <p className="text-[11px] font-mono leading-tight text-blue-100 italic">
+                  <Smartphone className="w-3.5 h-3.5 md:w-4 md:h-4 text-brand-yellow mt-0.5 flex-shrink-0" />
+                  <p className="text-[10px] md:text-[11px] font-mono leading-tight text-blue-100 italic">
                     Tip: Open this site on mobile for direct one-tap sharing.
                   </p>
                 </div>
@@ -224,15 +243,20 @@ const Toast: React.FC<{ show: boolean; onClose: () => void }> = ({ show, onClose
                 onClick={onClose}
                 className="text-white/40 hover:text-white transition-colors self-start"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4 md:w-5 md:h-5" />
               </button>
             </div>
           </div>
         </motion.div>
       )}
-    </AnimatePresence>,
-    document.body
+    </AnimatePresence>
   );
+
+  if (position === 'fixed') {
+    return createPortal(content, document.body);
+  }
+
+  return content;
 };
 
 ShareButton.displayName = 'ShareButton';

@@ -20,7 +20,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
   const desktopWhatsAppShareButtonRef = useRef<ShareButtonHandle>(null);
   
   const isWin1 = match.team1Wins > match.team2Wins || (match.team1Wins === match.team2Wins && match.team1Points > match.team2Points);
-  const isWin2 = match.team2Wins > match.team1Wins || (match.team2Wins === match.team1Wins && match.team2Points > match.team1Points);
+  const isWin2 = match.team2Wins > match.team1Wins || (match.team1Wins === match.team2Wins && match.team2Points > match.team1Points);
 
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);
@@ -63,149 +63,158 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
   };
 
   return (
-    <div className="w-full bg-[#FFFEFC] rounded-3xl shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group border border-gray-100">
-      {/* Grainy Texture Overlay */}
-      <div className="absolute inset-0 opacity-[0.1] pointer-events-none mix-blend-multiply" 
-           style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }} 
-      />
+    <div className="w-full relative group">
+      {/* Visual Card Container (Handles overflow and background) */}
+      <div className="w-full bg-[#FFFEFC] rounded-3xl shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden border border-gray-100">
+        {/* Grainy Texture Overlay */}
+        <div className="absolute inset-0 opacity-[0.1] pointer-events-none mix-blend-multiply" 
+             style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }} 
+        />
 
-      {/* Top Accent Bar (Inset) */}
-      <div className="absolute top-0 left-4 md:left-6 right-4 md:right-6 h-2 bg-[rgb(142,209,252)] rounded-b-md z-10" />
+        {/* Top Accent Bar (Inset) */}
+        <div className="absolute top-0 left-4 md:left-6 right-4 md:right-6 h-2 bg-[rgb(142,209,252)] rounded-b-md z-10" />
 
-      <div className="pt-6 md:pt-10 pb-3 px-4 md:px-8 flex flex-col h-full relative z-10">
-        {/* Teams Container */}
-        <div className="flex-1 flex flex-col justify-center gap-2 md:gap-4">
-            {/* Team 1 */}
-            <div className="flex justify-between items-center group/team">
-                <div 
-                  onClick={() => onTeamClick?.(match.team1)}
-                  className={clsx(
-                  "font-heading font-black italic uppercase text-base md:text-2xl tracking-tight leading-none max-w-[80%] cursor-pointer hover:text-brand-blue transition-colors",
-                  isWin1 ? "text-[rgb(0,85,150)]" : "text-gray-400"
-                )}>
-                  {match.team1}
-                </div>
-                <div className={clsx(
-                  "font-heading font-black text-3xl md:text-5xl relative",
-                  isWin1 ? "text-[rgb(0,85,150)] drop-shadow-[1px_1px_0px_rgb(247,191,38)] md:drop-shadow-[2px_2px_0px_rgb(247,191,38)]" : "text-gray-200"
-                )}>
-                  {match.team1Wins}
-                </div>
-            </div>
+        <div className="pt-6 md:pt-10 pb-3 px-4 md:px-8 flex flex-col h-full relative z-10">
+          {/* Teams Container */}
+          <div className="flex-1 flex flex-col justify-center gap-2 md:gap-4">
+              {/* Team 1 */}
+              <div className="flex justify-between items-center group/team">
+                  <div 
+                    onClick={() => onTeamClick?.(match.team1)}
+                    className={clsx(
+                    "font-heading font-black italic uppercase text-base md:text-2xl tracking-tight leading-none max-w-[80%] cursor-pointer hover:text-brand-blue transition-colors",
+                    isWin1 ? "text-[rgb(0,85,150)]" : "text-gray-400"
+                  )}>
+                    {match.team1}
+                  </div>
+                  <div className={clsx(
+                    "font-heading font-black text-3xl md:text-5xl relative",
+                    isWin1 ? "text-[rgb(0,85,150)] drop-shadow-[1px_1px_0px_rgb(247,191,38)] md:drop-shadow-[2px_2px_0px_rgb(247,191,38)]" : "text-gray-200"
+                  )}>
+                    {match.team1Wins}
+                  </div>
+              </div>
 
-            {/* Subtle Divider */}
-            <div className="h-px bg-gray-50 w-full" />
+              {/* Subtle Divider */}
+              <div className="h-px bg-gray-50 w-full" />
 
-            {/* Team 2 */}
-            <div className="flex justify-between items-center group/team">
-                <div 
-                  onClick={() => onTeamClick?.(match.team2)}
-                  className={clsx(
-                  "font-heading font-black italic uppercase text-base md:text-2xl tracking-tight leading-none max-w-[80%] cursor-pointer hover:text-brand-blue transition-colors",
-                  isWin2 ? "text-[rgb(0,85,150)]" : "text-gray-400"
-                )}>
-                  {match.team2}
-                </div>
-                <div className={clsx(
-                  "font-heading font-black text-3xl md:text-5xl relative",
-                  isWin2 ? "text-[rgb(0,85,150)] drop-shadow-[1px_1px_0px_rgb(247,191,38)] md:drop-shadow-[2px_2px_0px_rgb(247,191,38)]" : "text-gray-200"
-                )}>
-                  {match.team2Wins}
-                </div>
-            </div>
+              {/* Team 2 */}
+              <div className="flex justify-between items-center group/team">
+                  <div 
+                    onClick={() => onTeamClick?.(match.team2)}
+                    className={clsx(
+                    "font-heading font-black italic uppercase text-base md:text-2xl tracking-tight leading-none max-w-[80%] cursor-pointer hover:text-brand-blue transition-colors",
+                    isWin2 ? "text-[rgb(0,85,150)]" : "text-gray-400"
+                  )}>
+                    {match.team2}
+                  </div>
+                  <div className={clsx(
+                    "font-heading font-black text-3xl md:text-5xl relative",
+                    isWin2 ? "text-[rgb(0,85,150)] drop-shadow-[1px_1px_0px_rgb(247,191,38)] md:drop-shadow-[2px_2px_0px_rgb(247,191,38)]" : "text-gray-200"
+                  )}>
+                    {match.team2Wins}
+                  </div>
+              </div>
+          </div>
+
+          {/* Footer (Date & Points) */}
+          <div className="mt-2 md:mt-4 pt-3 border-t border-gray-100">
+              <div className="flex justify-between items-end mb-3">
+                  <div className="font-heading font-bold text-[rgb(142,209,252)] text-xs tracking-[0.2em] uppercase">
+                      {formatDate(match.date)}
+                  </div>
+                  
+                  <div className="flex items-center gap-2 font-mono text-[10px] font-bold text-gray-400">
+                      <span className="tracking-widest uppercase">PTS:</span>
+                      <span className={clsx("text-sm", isWin1 ? "text-[rgb(0,85,150)]" : "text-gray-400")}>{match.team1Points}</span>
+                      <span className="text-gray-300">/</span>
+                      <span className={clsx("text-sm", isWin2 ? "text-[rgb(0,85,150)]" : "text-gray-400")}>{match.team2Points}</span>
+                  </div>
+              </div>
+
+              <div className="flex items-center justify-between pt-2 border-t border-gray-50 relative">
+                  <span className="text-[9px] font-heading font-black uppercase tracking-[0.2em] text-gray-400">Share Result</span>
+                  <div className="flex items-center gap-1">
+                      {/* Story Button */}
+                      <button 
+                          onClick={handleShareStory}
+                          className="px-3 py-1 rounded-full bg-brand-blue text-white text-[9px] font-heading font-black uppercase tracking-widest hover:bg-brand-blue/90 transition-colors"
+                          title="Share as Story"
+                      >
+                          Story
+                      </button>
+                      {/* Post Button */}
+                      <button 
+                          onClick={handleSharePost}
+                          className="px-3 py-1 rounded-full bg-[rgb(142,209,252)] text-brand-blue text-[9px] font-heading font-black uppercase tracking-widest hover:bg-[rgb(122,189,232)] transition-colors"
+                          title="Share as Post"
+                      >
+                          Post
+                      </button>
+                      {/* WhatsApp Button */}
+                      <button 
+                          onClick={handleShareWhatsApp}
+                          className="px-3 py-1 rounded-full bg-[#25D366] text-white text-[9px] font-heading font-black uppercase tracking-widest hover:bg-[#20ba5a] transition-colors"
+                          title="Share to WhatsApp"
+                      >
+                          WhatsApp
+                      </button>
+                  </div>
+              </div>
+          </div>
         </div>
+      </div>
 
-        {/* Footer (Date & Points) */}
-        <div className="mt-2 md:mt-4 pt-3 border-t border-gray-100">
-            <div className="flex justify-between items-end mb-3">
-                <div className="font-heading font-bold text-[rgb(142,209,252)] text-xs tracking-[0.2em] uppercase">
-                    {formatDate(match.date)}
-                </div>
-                
-                <div className="flex items-center gap-2 font-mono text-[10px] font-bold text-gray-400">
-                    <span className="tracking-widest uppercase">PTS:</span>
-                    <span className={clsx("text-sm", isWin1 ? "text-[rgb(0,85,150)]" : "text-gray-400")}>{match.team1Points}</span>
-                    <span className="text-gray-300">/</span>
-                    <span className={clsx("text-sm", isWin2 ? "text-[rgb(0,85,150)]" : "text-gray-400")}>{match.team2Points}</span>
-                </div>
-            </div>
-
-            <div className="flex items-center justify-between pt-2 border-t border-gray-50">
-                <span className="text-[9px] font-heading font-black uppercase tracking-[0.2em] text-gray-400">Share Result</span>
-                <div className="flex items-center gap-1">
-                    {/* Story Button */}
-                    <button 
-                        onClick={handleShareStory}
-                        className="px-3 py-1 rounded-full bg-brand-blue text-white text-[9px] font-heading font-black uppercase tracking-widest hover:bg-brand-blue/90 transition-colors"
-                        title="Share as Story"
-                    >
-                        Story
-                    </button>
-                    {/* Post Button */}
-                    <button 
-                        onClick={handleSharePost}
-                        className="px-3 py-1 rounded-full bg-[rgb(142,209,252)] text-brand-blue text-[9px] font-heading font-black uppercase tracking-widest hover:bg-[rgb(122,189,232)] transition-colors"
-                        title="Share as Post"
-                    >
-                        Post
-                    </button>
-                    {/* WhatsApp Button */}
-                    <button 
-                        onClick={handleShareWhatsApp}
-                        className="px-3 py-1 rounded-full bg-[#25D366] text-white text-[9px] font-heading font-black uppercase tracking-widest hover:bg-[#20ba5a] transition-colors"
-                        title="Share to WhatsApp"
-                    >
-                        WhatsApp
-                    </button>
-                    
-                    {/* Actual ShareButtons (Hidden but functional for Toast) */}
-                    <div className="invisible absolute pointer-events-none">
-                        <ShareButton
-                          ref={mobileStoryShareButtonRef}
-                          targetRef={storyShareRef}
-                          variant="icon"
-                          fileName={`LRP-Pickleball-Match-${match.team1}-vs-${match.team2}-story.jpg`}
-                          shareText={`Match result: ${match.team1} vs ${match.team2}! 🥒🏆\n\nFull stats at pickleball.ky`}
-                        />
-                        <ShareButton
-                          ref={desktopStoryShareButtonRef}
-                          targetRef={storyShareRef}
-                          variant="icon"
-                          fileName={`LRP-Pickleball-Match-${match.team1}-vs-${match.team2}-story.jpg`}
-                          preferDownload
-                        />
-                        <ShareButton
-                          ref={mobilePostShareButtonRef}
-                          targetRef={postShareRef}
-                          variant="icon"
-                          fileName={`LRP-Pickleball-Match-${match.team1}-vs-${match.team2}-post.jpg`}
-                          shareText={`Pickleball Match Result: ${match.team1} vs ${match.team2}! 🔥`}
-                        />
-                        <ShareButton
-                          ref={desktopPostShareButtonRef}
-                          targetRef={postShareRef}
-                          variant="icon"
-                          fileName={`LRP-Pickleball-Match-${match.team1}-vs-${match.team2}-post.jpg`}
-                          preferDownload
-                        />
-                        <ShareButton
-                          ref={mobileWhatsAppShareButtonRef}
-                          targetRef={storyShareRef}
-                          variant="icon"
-                          fileName={`LRP-Pickleball-Match-WA-${match.team1}-vs-${match.team2}.jpg`}
-                          shareText={`Check out this match result! 🥒🏆\n\n${match.team1} vs ${match.team2}\n\nSee the schedule: pickleball.ky`}
-                        />
-                        <ShareButton
-                          ref={desktopWhatsAppShareButtonRef}
-                          targetRef={storyShareRef}
-                          variant="icon"
-                          fileName={`LRP-Pickleball-Match-WA-${match.team1}-vs-${match.team2}.jpg`}
-                          preferDownload
-                        />
-                    </div>
-                </div>
-            </div>
-        </div>
+      {/* Actual ShareButtons (Anchoring point for Absolute Toasts) */}
+      <div className="absolute right-4 bottom-4 w-0 h-0 overflow-visible z-[100] pointer-events-none">
+          <ShareButton
+            ref={mobileStoryShareButtonRef}
+            targetRef={storyShareRef}
+            hidden
+            toastPosition="absolute"
+            fileName={`LRP-Pickleball-Match-${match.team1}-vs-${match.team2}-story.jpg`}
+            shareText={`Match result: ${match.team1} vs ${match.team2}! 🥒🏆\n\nFull stats at pickleball.ky`}
+          />
+          <ShareButton
+            ref={desktopStoryShareButtonRef}
+            targetRef={storyShareRef}
+            hidden
+            toastPosition="absolute"
+            fileName={`LRP-Pickleball-Match-${match.team1}-vs-${match.team2}-story.jpg`}
+            preferDownload
+          />
+          <ShareButton
+            ref={mobilePostShareButtonRef}
+            targetRef={postShareRef}
+            hidden
+            toastPosition="absolute"
+            fileName={`LRP-Pickleball-Match-${match.team1}-vs-${match.team2}-post.jpg`}
+            shareText={`Pickleball Match Result: ${match.team1} vs ${match.team2}! 🔥`}
+          />
+          <ShareButton
+            ref={desktopPostShareButtonRef}
+            targetRef={postShareRef}
+            hidden
+            toastPosition="absolute"
+            fileName={`LRP-Pickleball-Match-${match.team1}-vs-${match.team2}-post.jpg`}
+            preferDownload
+          />
+          <ShareButton
+            ref={mobileWhatsAppShareButtonRef}
+            targetRef={storyShareRef}
+            hidden
+            toastPosition="absolute"
+            fileName={`LRP-Pickleball-Match-WA-${match.team1}-vs-${match.team2}.jpg`}
+            shareText={`Check out this match result! 🥒🏆\n\n${match.team1} vs ${match.team2}\n\nSee the schedule: pickleball.ky`}
+          />
+          <ShareButton
+            ref={desktopWhatsAppShareButtonRef}
+            targetRef={storyShareRef}
+            hidden
+            toastPosition="absolute"
+            fileName={`LRP-Pickleball-Match-WA-${match.team1}-vs-${match.team2}.jpg`}
+            preferDownload
+          />
       </div>
 
       {/* Hidden Shareable Content */}
