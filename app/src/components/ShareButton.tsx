@@ -1,4 +1,5 @@
 import React, { useState, forwardRef, useImperativeHandle } from 'react';
+import { createPortal } from 'react-dom';
 import { Share2, Loader2, Download, CheckCircle2, X, Smartphone } from 'lucide-react';
 import { toBlob, toJpeg } from 'html-to-image';
 import { clsx } from 'clsx';
@@ -178,55 +179,60 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
   );
 });
 
-/* Internal Toast Component */
-const Toast: React.FC<{ show: boolean; onClose: () => void }> = ({ show, onClose }) => (
-  <AnimatePresence>
-    {show && (
-      <motion.div
-        initial={{ x: 400, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        exit={{ x: 400, opacity: 0 }}
-        transition={{ type: "spring", damping: 20, stiffness: 100 }}
-        className="fixed bottom-6 right-6 z-[9999] max-w-sm"
-      >
-        <div className="bg-brand-blue text-white p-5 rounded-2xl shadow-2xl border-2 border-brand-yellow relative overflow-hidden">
-          {/* Texture Overlay */}
-          <div className="absolute inset-0 opacity-10 pointer-events-none mix-blend-overlay" 
-               style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")` }} 
-          />
-          
-          <div className="flex gap-4 relative z-10">
-            <div className="bg-brand-yellow/20 p-2 rounded-xl self-start">
-              <CheckCircle2 className="w-6 h-6 text-brand-yellow" />
-            </div>
-            
-            <div className="flex-1 space-y-1 text-left">
-              <h5 className="font-heading font-black italic uppercase tracking-wider text-lg leading-tight">
-                Image Downloaded!
-              </h5>
-              <p className="text-sm font-body text-blue-50 leading-snug">
-                Check your <span className="font-bold underline decoration-brand-yellow underline-offset-2">Downloads</span> folder to share.
-              </p>
-              
-              <div className="pt-2 mt-2 border-t border-white/10 flex items-start gap-2">
-                <Smartphone className="w-4 h-4 text-brand-yellow mt-0.5 flex-shrink-0" />
-                <p className="text-[11px] font-mono leading-tight text-blue-100 italic">
-                  Tip: Open this site on mobile for direct one-tap sharing.
-                </p>
-              </div>
-            </div>
+/* Internal Toast Component with Portal */
+const Toast: React.FC<{ show: boolean; onClose: () => void }> = ({ show, onClose }) => {
+  if (typeof document === 'undefined') return null;
 
-            <button 
-              onClick={onClose}
-              className="text-white/40 hover:text-white transition-colors self-start"
-            >
-              <X className="w-5 h-5" />
-            </button>
+  return createPortal(
+    <AnimatePresence>
+      {show && (
+        <motion.div
+          initial={{ x: 400, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          exit={{ x: 400, opacity: 0 }}
+          transition={{ type: "spring", damping: 20, stiffness: 100 }}
+          className="fixed bottom-6 right-6 z-[9999] max-w-sm"
+        >
+          <div className="bg-brand-blue text-white p-5 rounded-2xl shadow-2xl border-2 border-brand-yellow relative overflow-hidden">
+            {/* Texture Overlay */}
+            <div className="absolute inset-0 opacity-10 pointer-events-none mix-blend-overlay" 
+                 style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")` }} 
+            />
+            
+            <div className="flex gap-4 relative z-10">
+              <div className="bg-brand-yellow/20 p-2 rounded-xl self-start">
+                <CheckCircle2 className="w-6 h-6 text-brand-yellow" />
+              </div>
+              
+              <div className="flex-1 space-y-1 text-left">
+                <h5 className="font-heading font-black italic uppercase tracking-wider text-lg leading-tight">
+                  Image Downloaded!
+                </h5>
+                <p className="text-sm font-body text-blue-50 leading-snug">
+                  Check your <span className="font-bold underline decoration-brand-yellow underline-offset-2">Downloads</span> folder to share.
+                </p>
+                
+                <div className="pt-2 mt-2 border-t border-white/10 flex items-start gap-2">
+                  <Smartphone className="w-4 h-4 text-brand-yellow mt-0.5 flex-shrink-0" />
+                  <p className="text-[11px] font-mono leading-tight text-blue-100 italic">
+                    Tip: Open this site on mobile for direct one-tap sharing.
+                  </p>
+                </div>
+              </div>
+
+              <button 
+                onClick={onClose}
+                className="text-white/40 hover:text-white transition-colors self-start"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
           </div>
-        </div>
-      </motion.div>
-    )}
-  </AnimatePresence>
-);
+        </motion.div>
+      )}
+    </AnimatePresence>,
+    document.body
+  );
+};
 
 ShareButton.displayName = 'ShareButton';

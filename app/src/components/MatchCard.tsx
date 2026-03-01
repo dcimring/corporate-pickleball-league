@@ -158,8 +158,8 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
                         WhatsApp
                     </button>
                     
-                    {/* Hidden Actual ShareButtons */}
-                    <div className="hidden">
+                    {/* Actual ShareButtons (Hidden but functional for Toast) */}
+                    <div className="invisible absolute pointer-events-none">
                         <ShareButton
                           ref={mobileStoryShareButtonRef}
                           targetRef={storyShareRef}
