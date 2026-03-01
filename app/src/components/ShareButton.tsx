@@ -1,6 +1,6 @@
 import React, { useState, forwardRef, useImperativeHandle } from 'react';
 import { Share2, Loader2, Download } from 'lucide-react';
-import { toBlob } from 'html-to-image';
+import { toBlob, toJpeg } from 'html-to-image';
 import { clsx } from 'clsx';
 
 export interface ShareButtonHandle {
@@ -15,6 +15,9 @@ interface ShareButtonProps {
   buttonLabel?: string;
   loadingLabel?: string;
   preferDownload?: boolean;
+  imageFormat?: 'jpeg' | 'png';
+  imageQuality?: number;
+  pixelRatio?: number;
   tabIndex?: number;
   onShareStart?: () => void;
   onShareEnd?: () => void;
@@ -28,6 +31,9 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
   buttonLabel = 'Share Leaderboard',
   loadingLabel = 'Generating...',
   preferDownload = false,
+  imageFormat = 'jpeg',
+  imageQuality = 0.95,
+  pixelRatio = 1,
   tabIndex,
   onShareStart,
   onShareEnd
@@ -45,17 +51,27 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
       // Wait a tick to ensure any hidden/rendering states are ready if needed
       await new Promise(resolve => setTimeout(resolve, 100));
 
-      const blob = await toBlob(targetRef.current, {
+      const exportOptions = {
         cacheBust: true,
-        backgroundColor: '#FFFEFC', // Ensure background is captured
-        pixelRatio: 2, // High res for retina
-      });
+        backgroundColor: '#FFFEFC',
+        pixelRatio,
+      };
+
+      const blob = imageFormat === 'jpeg'
+        ? await (async () => {
+            const dataUrl = await toJpeg(targetRef.current, { ...exportOptions, quality: imageQuality });
+            const response = await fetch(dataUrl);
+            return response.blob();
+          })()
+        : await toBlob(targetRef.current, exportOptions);
 
       if (!blob) throw new Error('Failed to generate image');
 
       const timestamp = Date.now();
-      const uniqueFileName = fileName.replace('.png', `-${timestamp}.png`);
-      const file = new File([blob], uniqueFileName, { type: 'image/png' });
+      const extension = imageFormat === 'jpeg' ? 'jpg' : 'png';
+      const baseName = fileName.replace(/\.(png|jpg|jpeg)$/i, '');
+      const uniqueFileName = `${baseName}-${timestamp}.${extension}`;
+      const file = new File([blob], uniqueFileName, { type: imageFormat === 'jpeg' ? 'image/jpeg' : 'image/png' });
 
       if (!preferDownload && navigator.share && navigator.canShare({ files: [file] })) {
         await navigator.share({
