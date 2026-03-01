@@ -107,6 +107,10 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({ match }) => {
                         {match.team2Wins}
                     </span>
                 </div>
+
+                <div className="pt-6 mt-2 border-t border-gray-100 text-center font-mono text-2xl uppercase tracking-[0.25em] text-gray-400">
+                    {formatDateNoTz(match.date)}
+                </div>
             </div>
 
             {/* Winner Badge */}
@@ -122,11 +126,6 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({ match }) => {
                         {isTie ? 'No Winner' : (isWin1 ? match.team1 : match.team2)}
                     </span>
                 </div>
-            </div>
-
-            {/* Date */}
-            <div className="font-mono font-bold text-gray-400 text-3xl uppercase tracking-widest mb-2">
-                {formatDateNoTz(match.date)}
             </div>
 
         </div>
