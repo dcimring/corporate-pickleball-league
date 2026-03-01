@@ -104,19 +104,19 @@ export const Leaderboard: React.FC = () => {
           transition={{ duration: 0.7, ease: "easeOut" }}
           className="bg-white rounded-[2rem] border-4 border-brand-yellow shadow-[0_0_15px_#FFC72C] max-w-[340px] w-full md:max-w-lg relative overflow-hidden"
         >
-            <div className="px-6 md:px-8 py-6 md:py-7 text-center space-y-4">
+            <div className="px-5 md:px-8 py-5 md:py-7 text-center space-y-3 md:space-y-4">
               <div className="space-y-2">
                 <p className="text-[11px] md:text-xs font-heading font-black italic uppercase tracking-[0.18em] text-brand-blue">
                   Spread the Word
                 </p>
-                <h4 className="text-xl md:text-2xl font-heading font-black uppercase text-brand-blue tracking-tight">
+                <h4 className="text-lg md:text-2xl font-heading font-black uppercase text-brand-blue tracking-tight">
                   Share the leaderboard with your team
                 </h4>
               </div>
               
               <ShareButton 
                 targetRef={shareRef} 
-                className="!w-full !justify-center !rounded-xl !bg-brand-blue !text-white !shadow-md hover:!bg-brand-blue/90 !transition-colors !py-3 !text-sm md:hidden"
+                className="!w-full !justify-center !rounded-xl !bg-brand-blue !text-white !shadow-md hover:!bg-brand-blue/90 !transition-colors !py-2.5 !text-sm md:hidden"
               />
               <ShareButton 
                 targetRef={shareRef}
