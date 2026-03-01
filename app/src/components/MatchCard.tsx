@@ -209,11 +209,11 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
       </div>
 
       {/* Hidden Shareable Content */}
-      <div className="absolute left-[-9999px] top-[-9999px]">
-        <div ref={storyShareRef}>
+      <div className="absolute left-[-9999px] top-[-9999px] w-max">
+        <div ref={storyShareRef} className="w-fit">
             <ShareableMatch match={match} layout="story" />
         </div>
-        <div ref={postShareRef}>
+        <div ref={postShareRef} className="w-fit">
             <ShareableMatch match={match} layout="post" />
         </div>
       </div>

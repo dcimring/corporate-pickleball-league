@@ -162,11 +162,11 @@ export const Leaderboard: React.FC = () => {
       </div>
 
       {/* Hidden containers for generation */}
-      <div className="absolute left-[-9999px] top-[-9999px]">
-        <div ref={storyShareRef}>
+      <div className="absolute left-[-9999px] top-[-9999px] w-max">
+        <div ref={storyShareRef} className="w-fit">
             <ShareableLeaderboard layout="story" division={activeDivision} entries={stats} />
         </div>
-        <div ref={postShareRef}>
+        <div ref={postShareRef} className="w-fit">
             <ShareableLeaderboard layout="post" division={activeDivision} entries={stats} />
         </div>
       </div>

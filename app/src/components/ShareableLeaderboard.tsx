@@ -22,8 +22,16 @@ export const ShareableLeaderboard: React.FC<ShareableLeaderboardProps> = ({
     <div 
       className={clsx(
         "bg-[#FFFEFC] relative overflow-hidden flex flex-col font-body selection:none",
-        isPost ? "w-[1200px] h-[630px] pt-4 px-10 pb-2" : "w-[1080px] h-[1920px] pb-8"
+        isPost ? "pt-4 px-10 pb-2" : "pb-8"
       )}
+      style={{
+        width: isPost ? '1200px' : '1080px',
+        height: isPost ? '630px' : '1920px',
+        minWidth: isPost ? '1200px' : '1080px',
+        maxWidth: isPost ? '1200px' : '1080px',
+        minHeight: isPost ? '630px' : '1920px',
+        maxHeight: isPost ? '630px' : '1920px',
+      }}
     >
         {/* Grainy Texture Overlay */}
         <div className="absolute inset-0 opacity-[0.02] mix-blend-multiply z-0 pointer-events-none" 

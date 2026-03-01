@@ -37,9 +37,17 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({
     <div 
       className={clsx(
         "bg-[#FFFEFC] relative overflow-hidden flex flex-col font-body selection:none",
-        isPost ? "w-[1200px] h-[630px] p-12" : "w-[1080px] h-[1920px] pt-4 pb-0"
+        isPost ? "p-12" : "pt-4 pb-0"
       )}
-      style={{ fontFamily: "'Open Sans', sans-serif" }}
+      style={{ 
+        fontFamily: "'Open Sans', sans-serif",
+        width: isPost ? '1200px' : '1080px',
+        height: isPost ? '630px' : '1920px',
+        minWidth: isPost ? '1200px' : '1080px',
+        maxWidth: isPost ? '1200px' : '1080px',
+        minHeight: isPost ? '630px' : '1920px',
+        maxHeight: isPost ? '630px' : '1920px',
+      }}
     >
         {/* Grainy Texture Overlay */}
         <div className="absolute inset-0 opacity-[0.03] z-0 pointer-events-none" 
