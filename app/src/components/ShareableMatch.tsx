@@ -29,7 +29,7 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({ match }) => {
 
   return (
     <div 
-      className="w-[1080px] h-[1600px] bg-[#FFFEFC] relative overflow-hidden flex flex-col font-body selection:none pt-8 pb-0"
+      className="w-[1080px] h-[1660px] bg-[#FFFEFC] relative overflow-hidden flex flex-col font-body selection:none pt-8 pb-0"
       style={{ fontFamily: "'Open Sans', sans-serif" }}
     >
         {/* Grainy Texture Overlay */}
@@ -41,7 +41,7 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({ match }) => {
         <div className="absolute top-0 left-0 right-0 h-[600px] bg-gradient-to-b from-[rgb(142,209,252)]/8 to-transparent mix-blend-multiply" />
         <div className="absolute bottom-0 left-0 right-0 h-[420px] bg-gradient-to-t from-[rgb(247,191,38)]/12 to-transparent mix-blend-multiply" />
 
-        <div className="flex flex-col justify-start items-center relative z-10 px-16 gap-8">
+        <div className="flex flex-col justify-start items-center relative z-10 px-16 gap-8 flex-1">
 
             {/* League Heading */}
             <div className="text-center">
@@ -118,7 +118,7 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({ match }) => {
                             {isTie ? 'Tie' : 'Winner'}
                         </span>
                     </div>
-                    <span className="font-heading font-black italic text-4xl uppercase tracking-widest">
+                    <span className="font-heading font-black italic text-5xl uppercase tracking-widest">
                         {isTie ? 'No Winner' : (isWin1 ? match.team1 : match.team2)}
                     </span>
                 </div>
@@ -132,7 +132,7 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({ match }) => {
         </div>
 
         {/* Footer */}
-        <div className="px-12 py-4 text-center bg-white/50 backdrop-blur-sm mt-16">
+        <div className="px-12 py-4 text-center bg-white/50 backdrop-blur-sm mt-auto">
              <p className="font-heading font-bold uppercase tracking-[0.3em] text-2xl text-[rgb(0,85,150)]">
                 Corporate Pickleball League
              </p>
