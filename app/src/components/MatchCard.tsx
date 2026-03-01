@@ -155,7 +155,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
                         className="px-3 py-1 rounded-full bg-[#25D366] text-white text-[9px] font-heading font-black uppercase tracking-widest hover:bg-[#20ba5a] transition-colors"
                         title="Share to WhatsApp"
                     >
-                        WA
+                        WhatsApp
                     </button>
                     
                     {/* Hidden Actual ShareButtons */}
@@ -165,7 +165,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
                           targetRef={storyShareRef}
                           variant="icon"
                           fileName={`LRP-Pickleball-Match-${match.team1}-vs-${match.team2}-story.jpg`}
-                          shareText={`Match result: ${match.team1} vs ${match.team2}! 🥒🏆\n\nFull stats at caymanpickleball.com`}
+                          shareText={`Match result: ${match.team1} vs ${match.team2}! 🥒🏆\n\nFull stats at pickleball.ky`}
                         />
                         <ShareButton
                           ref={desktopStoryShareButtonRef}
@@ -193,7 +193,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
                           targetRef={storyShareRef}
                           variant="icon"
                           fileName={`LRP-Pickleball-Match-WA-${match.team1}-vs-${match.team2}.jpg`}
-                          shareText={`Check out this match result! 🥒🏆\n\n${match.team1} vs ${match.team2}\n\nSee the schedule: caymanpickleball.com`}
+                          shareText={`Check out this match result! 🥒🏆\n\n${match.team1} vs ${match.team2}\n\nSee the schedule: pickleball.ky`}
                         />
                         <ShareButton
                           ref={desktopWhatsAppShareButtonRef}

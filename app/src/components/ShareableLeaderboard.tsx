@@ -45,12 +45,12 @@ export const ShareableLeaderboard: React.FC<ShareableLeaderboardProps> = ({
         )} />
         
         {/* Header Section */}
-        <div className={clsx("relative z-10", isPost ? "mb-6" : "pt-24 px-12 pb-8")}>
-            <div className={clsx("border-[rgb(0,85,150)]", isPost ? "border-b-4 pb-4 flex justify-between items-end" : "border-b-[6px] pb-8")}>
+        <div className={clsx("relative z-10", isPost ? "mb-6" : "pt-24 px-12 pb-4")}>
+            <div className={clsx("border-[rgb(0,85,150)]", isPost ? "border-b-4 pb-4 flex justify-between items-end" : "border-b-[6px] pb-4")}>
                 <div>
                     <h1 className={clsx(
                         "font-heading font-black italic text-[rgb(0,85,150)] uppercase tracking-tighter leading-[0.9]",
-                        isPost ? "text-5xl" : "text-8xl mb-6"
+                        isPost ? "text-5xl" : "text-8xl mb-0"
                     )}>
                         {isPost ? (
                             <>La Roche Posay<br/>Pickleball League</>
@@ -68,7 +68,7 @@ export const ShareableLeaderboard: React.FC<ShareableLeaderboardProps> = ({
                     )}
                 </div>
                 {!isPost && (
-                    <div className="flex items-center gap-6">
+                    <div className="flex items-center gap-6 mt-6">
                         <div className="bg-[rgb(247,191,38)] text-[rgb(0,85,150)] px-10 py-4 rounded-full font-heading font-black italic text-4xl uppercase tracking-widest transform -skew-x-12 flex items-center border-2 border-white">
                             <span className="skew-x-12 block">{division}</span>
                         </div>
@@ -123,7 +123,7 @@ export const ShareableLeaderboard: React.FC<ShareableLeaderboardProps> = ({
                     </div>
 
                     {/* Row Card */}
-                    <div className="flex-1 h-full flex items-center bg-white border border-gray-100 rounded-r-2xl relative overflow-hidden pl-8 pr-6 ml-[-10px] z-10 shadow-sm">
+                    <div className="flex-1 h-full flex items-center bg-white border border-gray-100 rounded-r-2xl relative overflow-hidden pl-8 pr-6 ml-[-10px] z-10 shadow-none">
                          {/* Team Name */}
                         <div className="flex-1 pr-4">
                              <span className={clsx(
@@ -182,7 +182,7 @@ export const ShareableLeaderboard: React.FC<ShareableLeaderboardProps> = ({
                     Corporate Pickleball League
                 </p>
                 <p className="font-mono font-black text-gray-400 uppercase tracking-[0.2em] text-xl mt-4">
-                    caymanpickleball.com
+                    PICKLEBALL.KY
                 </p>
             </div>
         )}

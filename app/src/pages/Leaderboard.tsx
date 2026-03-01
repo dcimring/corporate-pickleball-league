@@ -147,7 +147,7 @@ export const Leaderboard: React.FC = () => {
                     targetRef={storyShareRef} 
                     buttonLabel="Share to WhatsApp"
                     fileName={`LRP-Pickleball-Leaderboard-WA-${activeDivision}.jpg`}
-                    shareText={`Check out the ${activeDivision} standings! 🥒🏆\n\nSee more at: caymanpickleball.com`}
+                    shareText={`Check out the ${activeDivision} standings! 🥒🏆\n\nSee more at: pickleball.ky`}
                     className="!w-full !justify-center !rounded-xl !bg-[#25D366] !text-white !shadow-md hover:!bg-[#20ba5a] !transition-colors !py-3 !text-sm"
                   />
               </div>
