@@ -74,9 +74,9 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
         {/* Top Accent Bar (Inset) */}
         <div className="absolute top-0 left-4 md:left-6 right-4 md:right-6 h-2 bg-[rgb(142,209,252)] rounded-b-md z-10" />
 
-        <div className="pt-6 md:pt-10 pb-3 px-4 md:px-8 flex flex-col h-full relative z-10">
+        <div className="pt-4 md:pt-6 pb-2.5 px-4 md:px-8 flex flex-col h-full relative z-10">
           {/* Teams Container */}
-          <div className="flex-1 flex flex-col justify-center gap-2 md:gap-4">
+          <div className="flex-1 flex flex-col justify-center gap-1.5 md:gap-2">
               {/* Team 1 */}
               <div className="flex justify-between items-center group/team">
                   <div 
@@ -118,8 +118,8 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
           </div>
 
           {/* Footer (Date & Points) */}
-          <div className="mt-2 md:mt-4 pt-3 border-t border-gray-100">
-              <div className="flex justify-between items-end mb-3">
+          <div className="mt-2 md:mt-3 pt-2 border-t border-gray-100">
+              <div className="flex justify-between items-end mb-2">
                   <div className="font-heading font-bold text-[rgb(142,209,252)] text-xs tracking-[0.2em] uppercase">
                       {formatDate(match.date)}
                   </div>
