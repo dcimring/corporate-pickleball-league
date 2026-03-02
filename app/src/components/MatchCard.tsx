@@ -133,7 +133,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
               </div>
 
               <div className="flex items-center justify-between pt-2 border-t border-gray-50 relative">
-                  <span className="text-[9px] font-heading font-black uppercase tracking-[0.2em] text-gray-400">Share Result</span>
+                  <span className="text-[9px] font-heading font-black uppercase tracking-[0.2em] text-gray-400">Download Result</span>
                   <div className="flex items-center gap-1">
                       {/* Story Button */}
                       <button 
