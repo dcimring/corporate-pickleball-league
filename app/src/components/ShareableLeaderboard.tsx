@@ -14,15 +14,16 @@ export const ShareableLeaderboard: React.FC<ShareableLeaderboardProps> = ({
   layout = 'story' 
 }) => {
   const isPost = layout === 'post';
+  const isSingleColumnPost = isPost && entries.length <= 6;
   
-  // Post: 12 entries (630px, 2 columns), Story: 12 entries (1920px)
+  // Post: 12 entries max, Story: 12 entries max
   const displayEntries = entries.slice(0, 12);
 
   return (
     <div 
       className={clsx(
         "bg-[#FFFEFC] relative overflow-hidden flex flex-col font-body selection:none",
-        isPost ? "w-[1200px] h-[630px] pt-4 px-10 pb-2" : "w-[1080px] h-[1920px] pb-8"
+        isPost ? "pt-4 px-10 pb-2" : "pb-8"
       )}
       style={{
         width: isPost ? '1200px' : '1080px',
@@ -53,8 +54,8 @@ export const ShareableLeaderboard: React.FC<ShareableLeaderboardProps> = ({
         )} />
         
         {/* Header Section */}
-        <div className={clsx("relative z-10", isPost ? "mb-4" : "pt-16 px-12 pb-4")}>
-            <div className={clsx("border-[rgb(0,85,150)]", isPost ? "border-b-4 pb-3 flex justify-between items-end" : "border-b-[6px] pb-4")}>
+        <div className={clsx("relative z-10", isPost ? (isSingleColumnPost ? "mb-1" : "mb-2") : "pt-16 px-12 pb-4")}>
+            <div className={clsx("border-[rgb(0,85,150)]", isPost ? "border-b-4 pb-2 flex justify-between items-end" : "border-b-[6px] pb-4")}>
                 <div>
                     <h1 className={clsx(
                         "font-heading font-black italic text-[rgb(0,85,150)] uppercase tracking-tighter leading-[0.9]",
@@ -99,27 +100,39 @@ export const ShareableLeaderboard: React.FC<ShareableLeaderboardProps> = ({
         {/* List Section */}
         <div className={clsx("relative z-10 flex flex-col flex-1", isPost ? "" : "px-12")}>
             {isPost ? (
-                /* TWO COLUMN GRID FOR POST - 1-6 left, 7-12 right */
-                <div className="flex gap-x-10">
-                    {/* Left Column (1-6) */}
-                    <div className="flex-1 flex flex-col">
-                        <LeaderboardHeader isPost={true} />
-                        <div className="flex flex-col gap-y-2">
-                            {displayEntries.slice(0, 6).map((entry, idx) => (
-                                <LeaderboardRow key={entry.team} entry={entry} index={idx} isPost={true} />
+                isSingleColumnPost ? (
+                    /* SINGLE COLUMN SHOWCASE FOR POST (<= 6 teams) */
+                    <div className="max-w-[900px] mx-auto w-full flex flex-col pt-1">
+                        <LeaderboardHeader isPost={true} isSingleColumnPost={true} />
+                        <div className="flex flex-col gap-y-1.5">
+                            {displayEntries.map((entry, idx) => (
+                                <LeaderboardRow key={entry.team} entry={entry} index={idx} isPost={true} isSingleColumnPost={true} />
                             ))}
                         </div>
                     </div>
-                    {/* Right Column (7-12) */}
-                    <div className="flex-1 flex flex-col">
-                        <LeaderboardHeader isPost={true} />
-                        <div className="flex flex-col gap-y-2">
-                            {displayEntries.slice(6, 12).map((entry, idx) => (
-                                <LeaderboardRow key={entry.team} entry={entry} index={idx + 6} isPost={true} />
-                            ))}
+                ) : (
+                    /* TWO COLUMN GRID FOR POST (> 6 teams) */
+                    <div className="flex gap-x-10">
+                        {/* Left Column (1-6) */}
+                        <div className="flex-1 flex flex-col">
+                            <LeaderboardHeader isPost={true} />
+                            <div className="flex flex-col gap-y-2">
+                                {displayEntries.slice(0, 6).map((entry, idx) => (
+                                    <LeaderboardRow key={entry.team} entry={entry} index={idx} isPost={true} />
+                                ))}
+                            </div>
+                        </div>
+                        {/* Right Column (7-12) */}
+                        <div className="flex-1 flex flex-col">
+                            <LeaderboardHeader isPost={true} />
+                            <div className="flex flex-col gap-y-2">
+                                {displayEntries.slice(6, 12).map((entry, idx) => (
+                                    <LeaderboardRow key={entry.team} entry={entry} index={idx + 6} isPost={true} />
+                                ))}
+                            </div>
                         </div>
                     </div>
-                </div>
+                )
             ) : (
                 /* SINGLE COLUMN FOR STORY */
                 <div className="flex flex-col gap-3">
@@ -156,44 +169,44 @@ export const ShareableLeaderboard: React.FC<ShareableLeaderboardProps> = ({
 };
 
 /* Helper Header Component */
-const LeaderboardHeader: React.FC<{ isPost: boolean }> = ({ isPost }) => (
+const LeaderboardHeader: React.FC<{ isPost: boolean; isSingleColumnPost?: boolean }> = ({ isPost, isSingleColumnPost }) => (
     <div className={clsx(
         "flex items-center text-gray-500 font-heading font-black italic uppercase tracking-widest",
-        isPost ? "text-[10px] mb-1" : "pt-4 pb-2 text-xl"
+        isPost ? (isSingleColumnPost ? "text-[11px] mb-1" : "text-[10px] mb-1") : "pt-4 pb-2 text-xl"
     )}>
-        <div className={clsx("text-center", isPost ? "w-14" : "w-24")}>{/* Rank Space */}</div>
+        <div className={clsx("text-center", isPost ? (isSingleColumnPost ? "w-16" : "w-14") : "w-24")}>{/* Rank Space */}</div>
         <div className={clsx(
             "flex-1 flex items-center",
-            isPost ? "pl-5 pr-4 ml-[-8px]" : "pl-8 pr-6 ml-[-10px]"
+            isPost ? (isSingleColumnPost ? "pl-6 pr-6 ml-[-10px]" : "pl-5 pr-4 ml-[-8px]") : "pl-8 pr-6 ml-[-10px]"
         )}>
             <div className="flex-1">Team</div>
             <div className="flex items-center">
-                <div className={clsx("text-center", isPost ? "w-14" : "w-32")}>W-L</div>
-                <div className={clsx("text-center", isPost ? "w-12" : "w-32")}>%</div>
-                <div className={clsx("text-center", isPost ? "w-14" : "w-24")}>PTS</div>
+                <div className={clsx("text-center", isPost ? (isSingleColumnPost ? "w-24" : "w-14") : "w-32")}>W-L</div>
+                <div className={clsx("text-center", isPost ? (isSingleColumnPost ? "w-24" : "w-12") : "w-32")}>%</div>
+                <div className={clsx("text-center", isPost ? (isSingleColumnPost ? "w-20" : "w-14") : "w-24")}>PTS</div>
             </div>
         </div>
     </div>
 );
 
 /* Helper Row Component for cleaner grid logic */
-const LeaderboardRow: React.FC<{ entry: LeaderboardEntry, index: number, isPost: boolean }> = ({ entry, index, isPost }) => {
+const LeaderboardRow: React.FC<{ entry: LeaderboardEntry, index: number, isPost: boolean, isSingleColumnPost?: boolean }> = ({ entry, index, isPost, isSingleColumnPost }) => {
     return (
-        <div className={clsx("flex items-center group relative", isPost ? "h-[65px]" : "h-20")}>
+        <div className={clsx("flex items-center group relative", isPost ? (isSingleColumnPost ? "h-[66px]" : "h-[65px]") : "h-20")}>
             {/* Rank Badge */}
-            <div className={clsx("flex items-center justify-center relative z-20", isPost ? "w-14 h-14" : "w-24 h-20")}>
+            <div className={clsx("flex items-center justify-center relative z-20", isPost ? (isSingleColumnPost ? "w-16 h-[66px]" : "w-14 h-14") : "w-24 h-20")}>
                 {index < 3 ? (
                     <div className={clsx(
-                        "w-full h-full flex items-center justify-center font-heading font-black transform -skew-x-12 border-2 border-white",
+                        "w-full flex items-center justify-center font-heading font-black transform -skew-x-12 border-2 border-white",
                         index === 0 ? "bg-[rgb(247,191,38)] text-[rgb(0,85,150)]" : 
                         index === 1 ? "bg-gray-200 text-gray-700" :
                         "bg-orange-100 text-orange-900",
-                        isPost ? "text-2xl" : "text-3xl"
+                        isPost ? (isSingleColumnPost ? "h-12 text-2xl" : "h-14 text-2xl") : "h-20 text-3xl"
                     )}>
                         <span className="skew-x-12">{index + 1}</span>
                     </div>
                 ) : (
-                    <span className={clsx("font-heading font-black text-gray-300", isPost ? "text-2xl" : "text-3xl")}>
+                    <span className={clsx("font-heading font-black text-gray-300", isPost ? (isSingleColumnPost ? "text-2xl" : "text-2xl") : "text-3xl")}>
                         {index + 1}
                     </span>
                 )}
@@ -202,13 +215,13 @@ const LeaderboardRow: React.FC<{ entry: LeaderboardEntry, index: number, isPost:
             {/* Row Card */}
             <div className={clsx(
                 "flex-1 h-full flex items-center bg-white border border-gray-100 rounded-r-2xl relative overflow-hidden z-10 shadow-none",
-                isPost ? "pl-5 pr-4 ml-[-8px]" : "pl-8 pr-6 ml-[-10px]"
+                isPost ? (isSingleColumnPost ? "pl-8 pr-6 ml-[-10px]" : "pl-5 pr-4 ml-[-8px]") : "pl-8 pr-6 ml-[-10px]"
             )}>
                  {/* Team Name */}
                 <div className="flex-1 pr-2">
                     <span className={clsx(
                         "font-heading font-black italic text-[rgb(0,85,150)] uppercase tracking-tight line-clamp-1 leading-none",
-                        isPost ? "text-xl" : "text-3xl"
+                        isPost ? (isSingleColumnPost ? "text-2xl" : "text-xl") : "text-3xl"
                     )}>
                         {entry.team}
                     </span>
@@ -219,7 +232,7 @@ const LeaderboardRow: React.FC<{ entry: LeaderboardEntry, index: number, isPost:
                     {/* W-L */}
                     <div className={clsx(
                         "text-center font-mono font-black text-gray-700",
-                        isPost ? "w-14 text-base" : "w-32 text-2xl"
+                        isPost ? (isSingleColumnPost ? "w-24 text-xl" : "w-14 text-base") : "w-32 text-2xl"
                     )}>
                         {entry.wins}-{entry.losses}
                     </div>
@@ -228,7 +241,7 @@ const LeaderboardRow: React.FC<{ entry: LeaderboardEntry, index: number, isPost:
                     <div className={clsx(
                         "text-center font-heading font-black italic tracking-tighter",
                         index < 3 ? "text-[rgb(0,85,150)]" : "text-gray-500",
-                        isPost ? "w-12 text-lg" : "w-32 text-3xl"
+                        isPost ? (isSingleColumnPost ? "w-24 text-2xl" : "w-12 text-lg") : "w-32 text-3xl"
                     )}>
                         {(entry.winPct * 100).toFixed(0)}%
                     </div>
@@ -236,7 +249,7 @@ const LeaderboardRow: React.FC<{ entry: LeaderboardEntry, index: number, isPost:
                     {/* PTS */}
                     <div className={clsx(
                         "text-center font-mono font-black text-gray-600",
-                        isPost ? "w-14 text-base" : "w-24 text-2xl"
+                        isPost ? (isSingleColumnPost ? "w-20 text-xl" : "w-14 text-base") : "w-24 text-2xl"
                     )}>
                         {entry.pointsFor}
                     </div>
