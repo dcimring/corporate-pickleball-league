@@ -107,10 +107,10 @@ export const Leaderboard: React.FC = () => {
             <div className="px-5 py-5 text-center space-y-6 md:space-y-8">
               <div className="space-y-2">
                 <p className="text-[11px] md:text-xs font-heading font-black italic uppercase tracking-[0.18em] text-brand-blue">
-                  Spread the Word
+                  Download the Leaderboard
                 </p>
                 <h4 className="text-xl md:text-3xl font-heading font-black uppercase text-brand-blue tracking-tight">
-                  Share the leaderboard with your team
+                  Share with your team and on social media
                 </h4>
               </div>
               
@@ -119,10 +119,10 @@ export const Leaderboard: React.FC = () => {
                 <div className="w-full md:w-auto space-y-2">
                   <ShareButton 
                     targetRef={storyShareRef} 
-                    buttonLabel="Share Story"
+                    buttonLabel="Story Format"
                     fileName={`LRP-Pickleball-Leaderboard-Story-${activeDivision}.jpg`}
                     shareText={`Check out the latest standings for ${activeDivision} in the La Roche Posay Corporate Pickleball League! 🥒🏆`}
-                    className="!w-full md:!w-48 !justify-center !rounded-xl !bg-brand-blue !text-white !shadow-sm hover:!bg-brand-blue/90 !transition-colors !py-3 !text-sm"
+                    className="!w-full md:!w-48 !h-[52px] !justify-center !rounded-xl !bg-brand-blue !text-white !shadow-sm hover:!bg-brand-blue/90 !transition-colors !text-sm"
                   />
                   <p className="text-[9px] font-mono font-bold text-gray-400 uppercase tracking-widest">Portrait 9:16</p>
                 </div>
@@ -131,10 +131,10 @@ export const Leaderboard: React.FC = () => {
                 <div className="w-full md:w-auto space-y-2">
                   <ShareButton 
                     targetRef={postShareRef} 
-                    buttonLabel="Share Post"
+                    buttonLabel="Post Format"
                     fileName={`LRP-Pickleball-Leaderboard-Post-${activeDivision}.jpg`}
                     shareText={`We're climbing the leaderboard in the La Roche Posay Corporate Pickleball League! 🔥`}
-                    className="!w-full md:!w-48 !justify-center !rounded-xl !bg-[rgb(142,209,252)] !text-brand-blue !shadow-sm hover:!bg-[rgb(122,189,232)] !transition-colors !py-3 !text-sm"
+                    className="!w-full md:!w-48 !h-[52px] !justify-center !rounded-xl !bg-[rgb(142,209,252)] !text-brand-blue !shadow-sm hover:!bg-[rgb(122,189,232)] !transition-colors !text-sm"
                   />
                   <p className="text-[9px] font-mono font-bold text-gray-400 uppercase tracking-widest">Landscape 1.91:1</p>
                 </div>
@@ -146,7 +146,7 @@ export const Leaderboard: React.FC = () => {
                     buttonLabel="WhatsApp"
                     fileName={`LRP-Pickleball-Leaderboard-WA-${activeDivision}.jpg`}
                     shareText={`Check out the ${activeDivision} standings! 🥒🏆\n\nSee more at: pickleball.ky`}
-                    className="!w-full md:!w-48 !justify-center !rounded-xl !bg-[#25D366] !text-white !shadow-sm hover:!bg-[#20ba5a] !transition-colors !py-3 !text-sm"
+                    className="!w-full md:!w-48 !h-[52px] !justify-center !rounded-xl !bg-[#25D366] !text-white !shadow-sm hover:!bg-[#20ba5a] !transition-colors !text-sm"
                   />
                   <p className="text-[9px] font-mono font-bold text-gray-400 uppercase tracking-widest">Portrait 9:16</p>
                 </div>

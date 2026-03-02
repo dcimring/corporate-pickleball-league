@@ -25,6 +25,7 @@ interface ShareButtonProps {
   shareText?: string;
   toastPosition?: 'fixed' | 'absolute';
   hidden?: boolean;
+  hideIcon?: boolean;
   onShareStart?: () => void;
   onShareEnd?: () => void;
 }
@@ -45,6 +46,7 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
   shareText = 'Check out the latest stats from the Corporate Pickleball League! 🥒🏆',
   toastPosition = 'fixed',
   hidden = false,
+  hideIcon = false,
   onShareStart,
   onShareEnd
 }, ref) => {
@@ -181,10 +183,12 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
           </>
         ) : (
           <>
-            {preferDownload ? (
-              <Download className="w-5 h-5 text-brand-yellow drop-shadow-sm" />
-            ) : (
-              <Share2 className="w-5 h-5 text-brand-yellow drop-shadow-sm" />
+            {!hideIcon && (
+              preferDownload ? (
+                <Download className="w-5 h-5 text-brand-yellow drop-shadow-sm" />
+              ) : (
+                <Share2 className="w-5 h-5 text-brand-yellow drop-shadow-sm" />
+              )
             )}
             <span>{buttonLabel}</span>
           </>
