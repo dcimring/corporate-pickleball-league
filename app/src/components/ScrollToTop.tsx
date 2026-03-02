@@ -5,14 +5,21 @@ export const ScrollToTop = () => {
   const { pathname, search } = useLocation();
 
   useEffect(() => {
-    // Smooth scroll internal iframe to top
+    // 1. Smooth scroll internal iframe to top
     window.scrollTo({
       top: 0,
       left: 0,
       behavior: 'smooth'
     });
 
-    // Send signal to parent page to scroll to the top of the iframe embed
+    // 2. Force parent page scroll adjustment via Focus Anchor
+    // Browser will try to bring the focused element into view
+    const anchor = document.getElementById('nav-top-anchor');
+    if (anchor) {
+      anchor.focus({ preventScroll: false }); // We WANT the browser to scroll the parent to see this
+    }
+
+    // 3. Keep messaging signal as backup for advanced parent sites
     try {
       window.parent.postMessage({ type: 'LRP_SCROLL_TOP' }, '*');
     } catch (e) {

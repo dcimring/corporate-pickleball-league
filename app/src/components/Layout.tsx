@@ -39,7 +39,14 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   }, [location.pathname, error]); // Add error to dependency array to trigger resize on error screen
 
   return (
-    <div id="app-container" className="font-body selection:bg-brand-yellow selection:text-brand-blue bg-transparent pt-4 inline-block w-full">
+    <div id="app-container" className="font-body selection:bg-brand-yellow selection:text-brand-blue bg-transparent pt-4 inline-block w-full relative">
+      {/* Scroll Anchor for iframe navigation - Allows forcing parent scroll via focus */}
+      <div 
+        id="nav-top-anchor" 
+        className="absolute top-0 left-0 w-px h-px opacity-0 pointer-events-none" 
+        tabIndex={-1} 
+        aria-hidden="true"
+      />
       {/* Main Content - No padding, full width */}
       <main className="w-full">
         {error ? (
