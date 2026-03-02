@@ -133,12 +133,12 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
               </div>
 
               <div className="flex items-center justify-between pt-2 border-t border-gray-50 relative">
-                  <span className="text-[9px] font-heading font-black uppercase tracking-[0.2em] text-gray-400">Download Result</span>
+                  <span className="text-[8px] font-heading font-black uppercase tracking-[0.2em] text-gray-400">Download Result</span>
                   <div className="flex items-center gap-1">
                       {/* Story Button */}
                       <button 
                           onClick={handleShareStory}
-                          className="px-3 py-1 rounded-full bg-brand-blue text-white text-[9px] font-heading font-black uppercase tracking-widest hover:bg-brand-blue/90 transition-colors"
+                          className="px-2 py-1 rounded-full bg-brand-blue text-white text-[8px] font-heading font-black uppercase tracking-widest hover:bg-brand-blue/90 transition-colors"
                           title="Share as Story"
                       >
                           Story
@@ -146,7 +146,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
                       {/* Post Button */}
                       <button 
                           onClick={handleSharePost}
-                          className="px-3 py-1 rounded-full bg-[rgb(142,209,252)] text-brand-blue text-[9px] font-heading font-black uppercase tracking-widest hover:bg-[rgb(122,189,232)] transition-colors"
+                          className="px-2 py-1 rounded-full bg-[rgb(142,209,252)] text-brand-blue text-[8px] font-heading font-black uppercase tracking-widest hover:bg-[rgb(122,189,232)] transition-colors"
                           title="Share as Post"
                       >
                           Post
@@ -154,7 +154,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
                       {/* WhatsApp Button */}
                       <button 
                           onClick={handleShareWhatsApp}
-                          className="px-3 py-1 rounded-full bg-[#25D366] text-white text-[9px] font-heading font-black uppercase tracking-widest hover:bg-[#20ba5a] transition-colors"
+                          className="px-2 py-1 rounded-full bg-[#25D366] text-white text-[8px] font-heading font-black uppercase tracking-widest hover:bg-[#20ba5a] transition-colors"
                           title="Share to WhatsApp"
                       >
                           WhatsApp
