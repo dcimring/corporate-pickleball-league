@@ -1,5 +1,6 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { clsx } from 'clsx';
+import { Loader2 } from 'lucide-react';
 import type { Match } from '../types';
 import { ShareButton, type ShareButtonHandle } from './ShareButton';
 import { ShareableMatch } from './ShareableMatch';
@@ -18,6 +19,8 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
   const desktopPostShareButtonRef = useRef<ShareButtonHandle>(null);
   const mobileWhatsAppShareButtonRef = useRef<ShareButtonHandle>(null);
   const desktopWhatsAppShareButtonRef = useRef<ShareButtonHandle>(null);
+
+  const [loadingType, setLoadingType] = useState<'story' | 'post' | 'wa' | null>(null);
   
   const isWin1 = match.team1Wins > match.team2Wins || (match.team1Wins === match.team2Wins && match.team1Points > match.team2Points);
   const isWin2 = match.team2Wins > match.team1Wins || (match.team1Wins === match.team2Wins && match.team2Points > match.team1Points);
@@ -138,26 +141,29 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
                       {/* Story Button */}
                       <button 
                           onClick={handleShareStory}
-                          className="px-2 py-1 rounded-full bg-brand-blue text-white text-[8px] font-heading font-black uppercase tracking-widest hover:bg-brand-blue/90 transition-colors"
+                          disabled={loadingType !== null}
+                          className="w-[42px] flex items-center justify-center px-2 py-1 rounded-full bg-brand-blue text-white text-[8px] font-heading font-black uppercase tracking-widest hover:bg-brand-blue/90 transition-colors disabled:opacity-50 h-[18px]"
                           title="Share as Story"
                       >
-                          Story
+                          {loadingType === 'story' ? <Loader2 className="w-2.5 h-2.5 animate-spin" /> : 'Story'}
                       </button>
                       {/* Post Button */}
                       <button 
                           onClick={handleSharePost}
-                          className="px-2 py-1 rounded-full bg-[rgb(142,209,252)] text-brand-blue text-[8px] font-heading font-black uppercase tracking-widest hover:bg-[rgb(122,189,232)] transition-colors"
+                          disabled={loadingType !== null}
+                          className="w-[42px] flex items-center justify-center px-2 py-1 rounded-full bg-[rgb(142,209,252)] text-brand-blue text-[8px] font-heading font-black uppercase tracking-widest hover:bg-[rgb(122,189,232)] transition-colors disabled:opacity-50 h-[18px]"
                           title="Share as Post"
                       >
-                          Post
+                          {loadingType === 'post' ? <Loader2 className="w-2.5 h-2.5 animate-spin" /> : 'Post'}
                       </button>
                       {/* WhatsApp Button */}
                       <button 
                           onClick={handleShareWhatsApp}
-                          className="px-2 py-1 rounded-full bg-[#25D366] text-white text-[8px] font-heading font-black uppercase tracking-widest hover:bg-[#20ba5a] transition-colors"
+                          disabled={loadingType !== null}
+                          className="w-[64px] flex items-center justify-center px-2 py-1 rounded-full bg-[#25D366] text-white text-[8px] font-heading font-black uppercase tracking-widest hover:bg-[#20ba5a] transition-colors disabled:opacity-50 h-[18px]"
                           title="Share to WhatsApp"
                       >
-                          WhatsApp
+                          {loadingType === 'wa' ? <Loader2 className="w-2.5 h-2.5 animate-spin" /> : 'WhatsApp'}
                       </button>
                   </div>
               </div>
@@ -172,6 +178,8 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
             targetRef={storyShareRef}
             hidden
             toastPosition="absolute"
+            onShareStart={() => setLoadingType('story')}
+            onShareEnd={() => setLoadingType(null)}
             fileName={`LRP-Pickleball-Match-${match.team1}-vs-${match.team2}-story.jpg`}
             shareText={`Match result: ${match.team1} vs ${match.team2}! 🥒🏆\n\nFull stats at pickleball.ky`}
           />
@@ -180,6 +188,8 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
             targetRef={storyShareRef}
             hidden
             toastPosition="absolute"
+            onShareStart={() => setLoadingType('story')}
+            onShareEnd={() => setLoadingType(null)}
             fileName={`LRP-Pickleball-Match-${match.team1}-vs-${match.team2}-story.jpg`}
             preferDownload
           />
@@ -188,6 +198,8 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
             targetRef={postShareRef}
             hidden
             toastPosition="absolute"
+            onShareStart={() => setLoadingType('post')}
+            onShareEnd={() => setLoadingType(null)}
             fileName={`LRP-Pickleball-Match-${match.team1}-vs-${match.team2}-post.jpg`}
             shareText={`Pickleball Match Result: ${match.team1} vs ${match.team2}! 🔥`}
           />
@@ -196,6 +208,8 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
             targetRef={postShareRef}
             hidden
             toastPosition="absolute"
+            onShareStart={() => setLoadingType('post')}
+            onShareEnd={() => setLoadingType(null)}
             fileName={`LRP-Pickleball-Match-${match.team1}-vs-${match.team2}-post.jpg`}
             preferDownload
           />
@@ -204,6 +218,8 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
             targetRef={storyShareRef}
             hidden
             toastPosition="absolute"
+            onShareStart={() => setLoadingType('wa')}
+            onShareEnd={() => setLoadingType(null)}
             fileName={`LRP-Pickleball-Match-WA-${match.team1}-vs-${match.team2}.jpg`}
             shareText={`Check out this match result! 🥒🏆\n\n${match.team1} vs ${match.team2}\n\nSee the schedule: pickleball.ky`}
           />
@@ -212,6 +228,8 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
             targetRef={storyShareRef}
             hidden
             toastPosition="absolute"
+            onShareStart={() => setLoadingType('wa')}
+            onShareEnd={() => setLoadingType(null)}
             fileName={`LRP-Pickleball-Match-WA-${match.team1}-vs-${match.team2}.jpg`}
             preferDownload
           />
