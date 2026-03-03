@@ -1,6 +1,6 @@
 import React, { useState, forwardRef, useImperativeHandle } from 'react';
 import { createPortal } from 'react-dom';
-import { Share2, Loader2, Download, CheckCircle2, X, Smartphone } from 'lucide-react';
+import { Share2, Loader2, Download, CheckCircle2, X, Smartphone, Share } from 'lucide-react';
 import { toBlob, toJpeg } from 'html-to-image';
 import { clsx } from 'clsx';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -30,6 +30,12 @@ interface ShareButtonProps {
   onShareEnd?: () => void;
 }
 
+interface ToastConfig {
+  title: string;
+  message: React.ReactNode;
+  icon: 'download' | 'share';
+}
+
 export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
   targetRef,
   fileName = 'pickleball-share.jpg',
@@ -52,6 +58,21 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
 }, ref) => {
   const [loading, setLoading] = useState(false);
   const [showToast, setShowToast] = useState(false);
+  const [toastConfig, setToastConfig] = useState<ToastConfig>({
+    title: 'Image Downloaded!',
+    message: 'Check your Downloads folder.',
+    icon: 'download'
+  });
+
+  const triggerToast = (config: ToastConfig) => {
+    setToastConfig(config);
+    setShowToast(true);
+    // Haptic feedback if supported (vibrate for 50ms)
+    if (typeof navigator !== 'undefined' && navigator.vibrate) {
+      navigator.vibrate(50);
+    }
+    setTimeout(() => setShowToast(false), 6000);
+  };
 
   const handleShare = async (e?: React.MouseEvent) => {
     e?.stopPropagation();
@@ -97,6 +118,13 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
           title: shareTitle,
           text: shareText,
         });
+        
+        // Mobile Success Feedback
+        triggerToast({
+          title: 'Shared Successfully!',
+          message: 'Your league image has been processed.',
+          icon: 'share'
+        });
       } else {
         // Desktop or forced download: Trigger download
         const url = URL.createObjectURL(blob);
@@ -106,10 +134,13 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
         link.click();
         URL.revokeObjectURL(url);
 
-        // Show Toast on Desktop
+        // Desktop Success Feedback
         if (!isMobileOrTablet) {
-          setShowToast(true);
-          setTimeout(() => setShowToast(false), 6000);
+          triggerToast({
+            title: 'Image Downloaded!',
+            message: <>Check your <span className="font-bold underline decoration-brand-yellow underline-offset-2">Downloads</span> folder to share.</>,
+            icon: 'download'
+          });
         }
       }
     } catch (err) {
@@ -132,7 +163,8 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
     <Toast 
       show={showToast} 
       onClose={() => setShowToast(false)} 
-      position={toastPosition} 
+      position={toastPosition}
+      config={toastConfig}
     />
   );
 
@@ -200,7 +232,12 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
 });
 
 /* Internal Toast Component with Portal/Absolute Support */
-const Toast: React.FC<{ show: boolean; onClose: () => void; position: 'fixed' | 'absolute' }> = ({ show, onClose, position }) => {
+const Toast: React.FC<{ 
+  show: boolean; 
+  onClose: () => void; 
+  position: 'fixed' | 'absolute';
+  config: ToastConfig;
+}> = ({ show, onClose, position, config }) => {
   if (typeof document === 'undefined') return null;
 
   const content = (
@@ -224,23 +261,29 @@ const Toast: React.FC<{ show: boolean; onClose: () => void; position: 'fixed' | 
             
             <div className="flex gap-3 md:gap-4 relative z-10">
               <div className="bg-brand-yellow/20 p-2 rounded-xl self-start">
-                <CheckCircle2 className="w-5 h-5 md:w-6 md:h-6 text-brand-yellow" />
+                {config.icon === 'download' ? (
+                  <CheckCircle2 className="w-5 h-5 md:w-6 md:h-6 text-brand-yellow" />
+                ) : (
+                  <Share className="w-5 h-5 md:w-6 md:h-6 text-brand-yellow" />
+                )}
               </div>
               
               <div className="flex-1 space-y-1 text-left">
                 <h5 className="font-heading font-black italic uppercase tracking-wider text-base md:text-lg leading-tight">
-                  Image Downloaded!
+                  {config.title}
                 </h5>
-                <p className="text-[13px] md:text-sm font-body text-blue-50 leading-snug">
-                  Check your <span className="font-bold underline decoration-brand-yellow underline-offset-2">Downloads</span> folder to share.
-                </p>
-                
-                <div className="pt-2 mt-2 border-t border-white/10 flex items-start gap-2">
-                  <Smartphone className="w-3.5 h-3.5 md:w-4 md:h-4 text-brand-yellow mt-0.5 flex-shrink-0" />
-                  <p className="text-[10px] md:text-[11px] font-mono leading-tight text-blue-100 italic">
-                    Tip: Open this site on mobile for direct one-tap sharing.
-                  </p>
+                <div className="text-[13px] md:text-sm font-body text-blue-50 leading-snug">
+                  {config.message}
                 </div>
+                
+                {config.icon === 'download' && (
+                  <div className="pt-2 mt-2 border-t border-white/10 flex items-start gap-2">
+                    <Smartphone className="w-3.5 h-3.5 md:w-4 md:h-4 text-brand-yellow mt-0.5 flex-shrink-0" />
+                    <p className="text-[10px] md:text-[11px] font-mono leading-tight text-blue-100 italic">
+                      Tip: Open this site on mobile for direct one-tap sharing.
+                    </p>
+                  </div>
+                )}
               </div>
 
               <button 
