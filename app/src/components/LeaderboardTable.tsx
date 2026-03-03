@@ -21,122 +21,92 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
   );
 
   return (
-    <div className="w-full overflow-hidden bg-white relative rounded-[2rem]">
-      <div className="overflow-x-auto no-scrollbar">
-        <table className="w-full text-left border-collapse relative z-10 min-w-[320px]">
-          <thead>
-            <tr className="text-brand-blue border-b-4 border-brand-yellow">
-              {/* Rank */}
-              <th className="py-3 px-2 text-center font-heading font-black italic text-[10px] md:text-[11px] tracking-widest w-[40px] md:w-[80px] bg-gray-50/50">#</th>
-              
-              {/* Team */}
-              <th className="py-3 pl-3 md:pl-8 font-heading font-black italic text-[10px] md:text-[11px] tracking-widest">TEAM</th>
-              
-              {/* W-L */}
-              <th className="py-3 px-1 text-center font-heading font-black italic text-[10px] md:text-[11px] tracking-widest w-[46px] md:w-[100px]">W-L</th>
+    <div className="w-full flex flex-col gap-3">
+      {/* Header Row */}
+      <div className="flex items-center px-2 py-1 text-[10px] md:text-xs font-heading font-black italic uppercase tracking-[0.2em] text-gray-400">
+        <div className="w-10 md:w-16 text-center">#</div>
+        <div className="flex-1 pl-4 md:pl-8 text-left">Team</div>
+        <div className="flex items-center justify-end gap-4 md:gap-8 pr-4 md:pr-12">
+            <div className="w-12 md:w-20 text-center">W-L</div>
+            <div className="w-10 md:w-16 text-center">%</div>
+            <div className="w-12 md:w-20 text-center">PTS</div>
+            <div className="hidden md:block w-20 text-right">DIFF</div>
+        </div>
+      </div>
 
-              {/* Shared: % */}
-              <th className="py-3 px-1 text-center font-heading font-black italic text-[10px] md:text-[11px] tracking-widest w-[40px] md:w-[100px]">%</th>
+      {/* Team Rows as Cards */}
+      <div className="flex flex-col gap-2.5">
+        {stats.map((entry, index) => {
+          const diff = entry.pointsFor - entry.pointsAgainst;
+          const isTop3 = index < 3;
+          
+          return (
+            <div 
+              key={entry.team} 
+              onClick={() => onTeamClick(entry.team)}
+              className="flex items-center bg-white rounded-xl md:rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer group relative overflow-hidden h-[52px] md:h-14"
+            >
+              {/* Rank Badge (Skewed) */}
+              <div className="h-full flex items-center justify-center w-10 md:w-12 relative z-20">
+                <div className={clsx(
+                  "absolute inset-0 transform -skew-x-12",
+                  index === 0 ? "bg-brand-yellow shadow-[4px_0_15px_rgba(255,199,44,0.3)]" : 
+                  index === 1 ? "bg-gray-200" :
+                  index === 2 ? "bg-orange-100" : "bg-transparent"
+                )} />
+                <span className={clsx(
+                  "relative z-10 font-heading font-black text-sm md:text-lg italic",
+                  index === 0 ? "text-brand-blue" : 
+                  index === 1 ? "text-gray-600" :
+                  index === 2 ? "text-orange-800" : "text-gray-300"
+                )}>
+                  {index + 1}
+                </span>
+              </div>
 
-              {/* Desktop: PTS (For-Against) */}
-              <th className="hidden md:table-cell py-3 text-center font-heading font-black italic text-[11px] tracking-widest w-[120px]">PTS</th>
+              {/* Team Name */}
+              <div className="flex-1 pl-4 md:pl-6 pr-2 relative z-10 transition-transform duration-200 group-hover:translate-x-1">
+                <span className="font-heading font-black italic text-xs md:text-base uppercase tracking-tight line-clamp-1 leading-none text-brand-blue block transition-colors">
+                    {entry.team}
+                </span>
+              </div>
 
-              {/* Mobile: PTS (For only) */}
-              <th className="md:hidden py-3 px-1 text-center font-heading font-black italic text-[10px] tracking-widest w-[40px]">PTS</th>
+              {/* Stats Group */}
+              <div className="flex items-center justify-end gap-4 md:gap-6 pr-4 md:pr-8 relative z-10 transition-transform duration-200 group-hover:translate-x-1">
+                {/* W-L */}
+                <div className="w-12 md:w-16 text-center font-mono font-black text-[11px] md:text-sm text-gray-700">
+                  {entry.wins}-{entry.losses}
+                </div>
 
-              {/* Desktop: DIFF */}
-              <th className="hidden md:table-cell py-3 pr-8 text-right font-heading font-black italic text-[11px] tracking-widest w-[100px]">DIFF</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-100 divide-dashed">
-            {stats.map((entry, index) => {
-              const diff = entry.pointsFor - entry.pointsAgainst;
-              const isTop3 = index < 3;
-              
-              return (
-                <tr 
-                  key={entry.team} 
-                  onClick={() => onTeamClick(entry.team)}
-                  className="hover:bg-brand-blue/[0.02] transition-colors duration-200 group cursor-pointer align-middle relative overflow-hidden"
-                >
-                  {/* Rank */}
-                  <td className="py-2.5 px-2 bg-gray-50/30">
-                    <div className={clsx(
-                      "flex items-center justify-center font-heading font-black mx-auto transform transition-transform group-hover:scale-110",
-                      "w-7 h-7 text-[10px] md:w-9 md:h-9 md:text-base -skew-x-12",
-                      index === 0 ? "bg-brand-yellow text-brand-blue border-2 border-brand-blue/10 shadow-sm" : 
-                      index === 1 ? "bg-gray-200 text-gray-600" :
-                      index === 2 ? "bg-orange-100 text-orange-800" : "text-gray-300 skew-x-12"
-                    )}>
-                      <span className={clsx(index < 3 && "skew-x-12")}>{index + 1}</span>
-                    </div>
-                  </td>
+                {/* % */}
+                <div className={clsx(
+                    "w-10 md:w-14 text-center font-heading font-black italic text-[13px] md:text-lg tracking-tighter",
+                    isTop3 ? "text-brand-blue" : "text-gray-500"
+                )}>
+                  {(entry.winPct * 100).toFixed(0)}%
+                </div>
 
-                  {/* Team Name */}
-                  <td className="py-2.5 pl-2.5 md:pl-8">
+                {/* PTS */}
+                <div className="w-12 md:w-16 text-center font-mono font-black text-[11px] md:text-sm text-gray-600">
+                  {entry.pointsFor}
+                </div>
+
+                {/* DIFF (Desktop Only) */}
+                <div className="hidden md:block w-16 text-right">
                     <span className={clsx(
-                      "font-heading font-black italic text-xs md:text-lg uppercase tracking-tight group-hover:text-brand-blue transition-colors duration-300 leading-tight line-clamp-2",
-                      isTop3 ? "text-brand-blue" : "text-gray-500"
-                    )}>
-                        {entry.team}
-                    </span>
-                  </td>
-
-                  {/* W-L */}
-                  <td className="py-2.5 px-1 text-center align-middle">
-                    <div className="flex items-center justify-center h-5 md:h-auto font-mono font-bold text-[10px] md:text-[13px] whitespace-nowrap text-gray-600 leading-none">
-                      <span>{entry.wins}</span>
-                      <span className="text-gray-300 mx-0.5 md:mx-1">-</span>
-                      <span>{entry.losses}</span>
-                    </div>
-                  </td>
-
-                  {/* Shared: WIN% */}
-                  <td className="py-2.5 px-1 text-center align-middle">
-                    <span className={clsx(
-                        "inline-flex items-center justify-center h-5 md:h-auto font-heading font-black tracking-tighter leading-none text-xs md:text-lg -translate-y-[2px] md:translate-y-0",
-                        isTop3 ? "text-brand-blue" : "text-gray-400"
-                    )}>
-                      {(entry.winPct * 100).toFixed(0)}<span className="text-[9px] md:text-[11px] ml-0.5 leading-none">%</span>
-                    </span>
-                  </td>
-
-                  {/* Desktop: PTS */}
-                  <td className="py-2.5 text-center hidden md:table-cell">
-                    <div className="font-mono font-bold text-gray-400 text-xs">
-                      {entry.pointsFor}
-                      <span className="text-gray-200 text-[10px] mx-1">/</span>
-                      {entry.pointsAgainst}
-                    </div>
-                  </td>
-
-                  {/* Mobile: PTS */}
-                  <td className="py-2.5 px-1 text-center md:hidden align-middle">
-                    <div className="flex items-center justify-center h-5 font-mono font-bold text-gray-400 text-[10px] leading-none">
-                      {entry.pointsFor}
-                    </div>
-                  </td>
-
-                  {/* Desktop: DIFF */}
-                  <td className="hidden md:table-cell py-2.5 pr-8 text-right">
-                    <span className={clsx(
-                      "inline-flex items-center px-3 py-1 text-[11px] font-bold font-mono border-2",
-                      diff > 0 ? "bg-green-50 text-green-700 border-green-100" : 
-                      diff < 0 ? "bg-red-50 text-red-700 border-red-100" : 
-                      "bg-gray-50 text-gray-400 border-gray-100"
+                      "font-mono font-black text-sm",
+                      diff > 0 ? "text-green-600" : 
+                      diff < 0 ? "text-red-600" : 
+                      "text-gray-400"
                     )}>
                         {diff > 0 ? '+' : ''}{diff}
                     </span>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+                </div>
+              </div>
+            </div>
+          );
+        })}
       </div>
-      
-      {/* Dynamic Background Element (Bottom Right) */}
-      <div className="absolute bottom-[-20px] right-[-20px] w-40 h-40 bg-brand-yellow/5 rounded-full blur-3xl pointer-events-none" />
     </div>
   );
 };
