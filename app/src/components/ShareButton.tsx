@@ -113,17 +113,17 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
                               (navigator.maxTouchPoints > 0 && window.innerWidth < 1024);
 
       if (!preferDownload && isMobileOrTablet && navigator.share && navigator.canShare({ files: [file] })) {
+        // Mobile Success Feedback - Trigger before share sheet takes over
+        triggerToast({
+          title: 'Sharing Image...',
+          message: 'Your league image is ready.',
+          icon: 'share'
+        });
+
         await navigator.share({
           files: [file],
           title: shareTitle,
           text: shareText,
-        });
-        
-        // Mobile Success Feedback
-        triggerToast({
-          title: 'Shared Successfully!',
-          message: 'Your league image has been processed.',
-          icon: 'share'
         });
       } else {
         // Desktop or forced download: Trigger download
