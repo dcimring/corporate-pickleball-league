@@ -65,6 +65,7 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
   });
 
   const triggerToast = (config: ToastConfig) => {
+    // Set config first, then show toast to ensure data is present
     setToastConfig(config);
     setShowToast(true);
     // Haptic feedback if supported (vibrate for 50ms)
@@ -113,18 +114,25 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
                               (navigator.maxTouchPoints > 0 && window.innerWidth < 1024);
 
       if (!preferDownload && isMobileOrTablet && navigator.share && navigator.canShare({ files: [file] })) {
-        // Mobile Success Feedback - Trigger before share sheet takes over
-        triggerToast({
-          title: 'Sharing Image...',
-          message: 'Your league image is ready.',
-          icon: 'share'
-        });
-
-        await navigator.share({
-          files: [file],
-          title: shareTitle,
-          text: shareText,
-        });
+        try {
+          await navigator.share({
+            files: [file],
+            title: shareTitle,
+            text: shareText,
+          });
+          
+          // Mobile Success Feedback - AFTER successful share
+          triggerToast({
+            title: 'Shared Successfully!',
+            message: 'Your league image has been shared.',
+            icon: 'share'
+          });
+        } catch (shareErr) {
+          // Check for AbortError (user cancelled) - don't show toast then
+          if (shareErr instanceof Error && shareErr.name !== 'AbortError') {
+            console.error('Web Share failed:', shareErr);
+          }
+        }
       } else {
         // Desktop or forced download: Trigger download
         const url = URL.createObjectURL(blob);
@@ -269,9 +277,10 @@ const Toast: React.FC<{
               </div>
               
               <div className="flex-1 space-y-1 text-left">
-                <h5 className="font-heading font-black italic uppercase tracking-wider text-base md:text-lg leading-tight">
+                {/* Changed to div with explicit branding for better visibility */}
+                <div className="font-heading font-black italic uppercase tracking-wider text-base md:text-lg leading-tight text-brand-yellow">
                   {config.title}
-                </h5>
+                </div>
                 <div className="text-[13px] md:text-sm font-body text-blue-50 leading-snug">
                   {config.message}
                 </div>
