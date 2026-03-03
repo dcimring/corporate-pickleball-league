@@ -1,24 +1,19 @@
 # 🏓 Corporate Pickleball League
 
-A professional, responsive, and iframe-optimized website for the Corporate Pickleball League, seamlessly integrated with the main Pickleball Cayman brand.
+A professional, responsive, and iframe-optimized website for the Corporate Pickleball League, featuring a distinct **"Roost Kinetic"** aesthetic and seamless high-performance data integration.
 
 ## ✨ Key Features
 
--   **Brand-Aligned Aesthetic:** A professional, clean UI styled to match the main Pickleball Cayman site, featuring **Cayman Blue**, **Pickle Yellow**, and vibrant action colors.
--   **Instant Navigation:** "Front-loaded" data architecture ensures zero-latency switching between Leaderboard and Matches, with automatic background data refreshing.
--   **High-Contrast Tables:** Custom leaderboard design with responsive "Points" pills and clear rank indicators.
--   **Versus Split Cards:** Dramatic match result cards that highlight the winning team and score in a visual split-view layout.
--   **Iframe Integration:** Optimized for embedding as a WordPress widget with zero external layout (no header/footer).
--   **Auto-Resizing:** Real-time height synchronization with the parent window using `postMessage` and `ResizeObserver`.
--   **Simplified Navigation:** Custom pill-shaped page tabs and a mobile-friendly division dropdown for a clean, widget-like experience.
--   **Full-Width UI:** Edge-to-edge layout designed to fit perfectly within any parent container.
--   **Team Match Filtering:** Click any team on the Leaderboard or on a Match Card to view their specific match history with interactive filter chips.
--   **Empty State Handling:** User-friendly "No teams found" and "No matches found" displays for empty divisions.
--   **Social Sharing:** Generate beautiful, branded images of leaderboards and match results on the fly for sharing directly to Instagram, WhatsApp, and more.
--   **Robust Error Handling:** Graceful connection timeout screens with retry logic, plus silent background failure handling to ensure the app stays usable even if the network drops.
--   **Automated Ingestion:** Background service (`run_ingest_service.py`) that monitors Gmail for match results and syncs them automatically every 15 minutes.
--   **Data Safety:** Built-in validation ensuring new match data never shrinks without explicit override, protecting against accidental data loss.
--   **Supabase Backend:** Real-time database integration for managing teams, divisions, and match schedules.
+-   **"Roost Kinetic" Aesthetic:** A high-contrast, bold UI featuring **Cayman Blue (#005596)**, **Pickle Yellow (#FFC72C)**, and a warm paper-textured background.
+-   **Dynamic Social Sharing:** Generate professional, branded JPEG images for any leaderboard or match result. Supports specialized **Story (9:16)**, **Post (1.91:1)**, and **WhatsApp** optimized layouts.
+-   **Kinetic Loading Experience:** A custom-themed "Bouncing Dimple" loading state with squash-and-stretch ball physics and cycling match-intel messaging.
+-   **Card-Based Leaderboard:** A refined, mobile-first standings display featuring skewed rank badges, high-contrast typography, and "Text Shift" interaction feedback.
+-   **Instant Navigation:** "Front-loaded" data architecture ensures zero-latency switching between Leaderboard and Matches with automatic background refreshing.
+-   **Iframe Optimization:** Advanced iframe support including auto-resizing via `ResizeObserver` and "Focus Anchor" techniques to force parent-page scroll adjustments during navigation.
+-   **Versus Split Cards:** Dramatic match result cards that highlight winners and scores with visual impact.
+-   **Team Match Filtering:** Interactive filtering to view specific team histories directly from the leaderboard or match cards.
+-   **Automated Data Ingestion:** Background service (`run_ingest_service.py`) that monitors Gmail for match results and syncs them automatically to Supabase.
+-   **Robust Error Handling:** Graceful connection timeout screens and silent background failure handling to preserve user experience.
 
 ## 🚀 Tech Stack
 
@@ -26,9 +21,9 @@ A professional, responsive, and iframe-optimized website for the Corporate Pickl
 -   **Build Tool:** [Vite](https://vitejs.dev/)
 -   **Database:** [Supabase](https://supabase.com/) (PostgreSQL)
 -   **Styling:** [Tailwind CSS v4](https://tailwindcss.com/)
--   **Typography:** 'Raleway' (Heading & Body)
+-   **Animation:** [Framer Motion](https://www.framer.com/motion/)
 -   **Icons:** [Lucide React](https://lucide.dev/)
--   **Routing:** [React Router 7](https://reactrouter.com/)
+-   **Image Generation:** [html-to-image](https://github.com/bubkoo/html-to-image)
 
 ## 🛠️ Getting Started
 
@@ -63,67 +58,36 @@ A professional, responsive, and iframe-optimized website for the Corporate Pickl
     npm run dev
     ```
 
-## 📦 Project Structure
-
-```text
-app/
-├── src/
-│   ├── components/     # UI Components (DivisionTabs, PageTabs, Layout)
-│   ├── pages/          # Views (Leaderboard, Matches)
-│   ├── lib/            # Data access (Supabase & local logic)
-│   ├── types.ts        # TypeScript interfaces & DB schemas
-│   └── index.css       # Tailwind v4 theme & global styles
-├── index.html          # Local iframe testing harness
-├── vercel.json         # Deployment rewrites
-└── ...
-```
-
 ## 🧩 Iframe Integration
 
-To use this site inside an iframe, add the following script to your WordPress (parent) site to handle automatic height adjustments:
+To use this site inside an iframe, add the following script to your parent site to handle automatic height adjustments and scroll synchronization:
 
 ```javascript
 window.addEventListener('message', function(e) {
+    // Height Adjustment
     if (e.data.height) {
         document.getElementById('pickleball-iframe').style.height = e.data.height + 'px';
+    }
+    // Optional: Listen for scroll signals
+    if (e.data.type === 'LRP_SCROLL_TOP') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 }, false);
 ```
 
-Ensure your iframe has the ID `pickleball-iframe`.
-
-To enable the **Social Sharing** feature (native share menu on mobile), you must add the `allow="web-share"` attribute to your iframe tag:
-
-```html
-<iframe 
-    id="pickleball-iframe"
-    src="https://your-app-url.vercel.app"
-    allow="web-share"
-    width="100%"
-    frameborder="0"
-></iframe>
-```
+Ensure your iframe has the ID `pickleball-iframe` and the `allow="web-share"` attribute enabled.
 
 ## ⚙️ Ingestion Tools
 
-The project includes scripts to automate and manage match data:
-
--   **`run_ingest_service.py`:** The primary automation service. Runs every 15 minutes, checks for specific emails from a designated address (configurable in `.env`), validates row counts, and updates Supabase. Includes smart mapping for division abbreviations (e.g., "CPL" -> "Cayman Premier League").
--   **`ingest_matches.py`:** Manual CLI tool for uploading a CSV. Includes a `--force` flag to bypass safety checks.
--   **`db_backup.py`:** Snapshot your database before making major changes.
-
-**To run the automation:**
-```bash
-python run_ingest_service.py
-```
-
+-   **`run_ingest_service.py`:** Automation service running every 15 minutes to sync Gmail results to Supabase with smart division mapping.
+-   **`ingest_matches.py`:** Manual CLI tool for CSV ingestion with validation safety checks.
+-   **`db_backup.py`:** Snapshot tool for database protection.
 
 ## 🎨 Theme Versions
 
--   **Main Branch:** The iframe friendly version themed for Pickleball Cayman
--   **night-court-theme Branch:** "Night Court Electric" theme
--   **old-theme Branch:** Preserves the original "Organic Clubhouse" design (Cream & Ink).
--   **pickleball-cayman-theme Branch:** full site with Pickleball Cayman theme.
+-   **Main Branch:** The primary production version (pickleball.ky).
+-   **night-court-theme Branch:** "Night Court Electric" high-contrast dark variant.
+-   **old-theme Branch:** Preserves the original "Organic Clubhouse" design.
 
 ## 🇰🇾 Made in Cayman
 
