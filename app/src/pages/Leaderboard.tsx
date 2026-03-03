@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Loader2 } from 'lucide-react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { motion, useInView } from 'framer-motion';
 import { LeaderboardTable } from '../components/LeaderboardTable';
@@ -7,6 +6,7 @@ import { Navigation } from '../components/Navigation';
 import { ShareButton } from '../components/ShareButton';
 import { ShareableLeaderboard } from '../components/ShareableLeaderboard';
 import { TeamFilterHint } from '../components/TeamFilterHint';
+import { LoadingState } from '../components/LoadingState';
 import { useLeagueData } from '../context/LeagueContext';
 
 export const Leaderboard: React.FC = () => {
@@ -64,12 +64,8 @@ export const Leaderboard: React.FC = () => {
     navigate(`/matches?division=${encodeURIComponent(currentDiv)}&team=${encodeURIComponent(teamName)}`);
   };
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-[50vh]">
-        <Loader2 className="w-10 h-10 text-brand-blue animate-spin" />
-      </div>
-    );
+  if (loading || !activeDivision) {
+    return <LoadingState />;
   }
 
   const divisions = Object.keys(data.leaderboard);

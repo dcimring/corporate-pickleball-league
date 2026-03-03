@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Loader2, Info, X } from 'lucide-react';
+import { Info, X } from 'lucide-react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Navigation } from '../components/Navigation';
 import { MatchCard } from '../components/MatchCard';
 import { TeamFilterHint } from '../components/TeamFilterHint';
+import { LoadingState } from '../components/LoadingState';
 import { useLeagueData } from '../context/LeagueContext';
 
 export const Matches: React.FC = () => {
@@ -53,12 +54,8 @@ export const Matches: React.FC = () => {
     setSearchParams(newParams);
   };
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-[50vh]">
-        <Loader2 className="w-10 h-10 text-brand-blue animate-spin" />
-      </div>
-    );
+  if (loading || !activeDivision) {
+    return <LoadingState />;
   }
 
   const divisions = Object.keys(data.matches);
