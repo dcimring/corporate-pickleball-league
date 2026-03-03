@@ -23,14 +23,14 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
   return (
     <div className="w-full flex flex-col gap-3">
       {/* Header Row */}
-      <div className="flex items-center px-2 py-1 text-[10px] md:text-xs font-heading font-black italic uppercase tracking-[0.2em] text-gray-400">
-        <div className="w-10 md:w-16 text-center">#</div>
-        <div className="flex-1 pl-4 md:pl-8 text-left">Team</div>
-        <div className="flex items-center justify-end gap-4 md:gap-8 pr-4 md:pr-12">
-            <div className="w-12 md:w-20 text-center">W-L</div>
-            <div className="w-10 md:w-16 text-center">%</div>
-            <div className="w-12 md:w-20 text-center">PTS</div>
-            <div className="hidden md:block w-20 text-right">DIFF</div>
+      <div className="flex items-center px-0 py-1 text-[10px] md:text-xs font-heading font-black italic uppercase tracking-[0.2em] text-gray-400">
+        <div className="w-10 md:w-12 text-center">#</div>
+        <div className="flex-1 pl-4 md:pl-6 text-left">Team</div>
+        <div className="flex items-center justify-end gap-4 md:gap-6 pr-4 md:pr-8">
+            <div className="w-12 md:w-16 text-center">W-L</div>
+            <div className="w-10 md:w-14 text-center">%</div>
+            <div className="w-12 md:w-16 text-center">PTS</div>
+            <div className="hidden md:block w-16 text-right">DIFF</div>
         </div>
       </div>
 
