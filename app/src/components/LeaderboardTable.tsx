@@ -47,15 +47,15 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
               className="flex items-center bg-white rounded-xl md:rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer group relative overflow-hidden h-[52px] md:h-14"
             >
               {/* Rank Badge (Skewed) */}
-              <div className="h-full flex items-center justify-center w-10 md:w-12 relative z-20">
+              <div className="h-full flex items-center justify-center w-10 md:w-12 relative z-20 overflow-visible">
                 <div className={clsx(
-                  "absolute inset-0 transform -skew-x-12",
+                  "absolute inset-0 transform -skew-x-12 -ml-3 w-[calc(100%+12px)]",
                   index === 0 ? "bg-brand-yellow shadow-[4px_0_15px_rgba(255,199,44,0.3)]" : 
                   index === 1 ? "bg-gray-200" :
                   index === 2 ? "bg-orange-100" : "bg-transparent"
                 )} />
                 <span className={clsx(
-                  "relative z-10 font-heading font-black text-sm md:text-lg italic",
+                  "relative z-10 font-heading font-black text-sm md:text-lg italic -ml-1.5",
                   index === 0 ? "text-brand-blue" : 
                   index === 1 ? "text-gray-600" :
                   index === 2 ? "text-orange-800" : "text-gray-300"
