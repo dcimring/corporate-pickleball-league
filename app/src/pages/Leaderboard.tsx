@@ -109,46 +109,17 @@ export const Leaderboard: React.FC = () => {
         onDivisionChange={handleDivisionChange} 
       />
 
-      {/* COMPARISON OF STYLES - TEMPORARY */}
-      <div className="space-y-12 py-8 bg-brand-cream/50 border-y border-brand-blue/10">
-        <div className="px-4 space-y-2">
-            <h3 className="font-mono text-[10px] font-black text-gray-400 uppercase tracking-widest text-center italic">Style Comparison Mode</h3>
-        </div>
-
-        {/* STYLE 4: TORN LEDGER */}
-        <div className="space-y-2 px-4">
-          <p className="font-mono text-[9px] font-bold text-brand-blue/40 uppercase tracking-tighter">Style 4: Torn Ledger</p>
-          <div className="relative w-full bg-[#f1f3f5] py-2 px-4 overflow-hidden border-b border-dashed border-gray-300">
-            {/* Dot Grid Texture */}
-            <div className="absolute inset-0 opacity-[0.05]" style={{ backgroundImage: 'radial-gradient(#005596 0.5px, transparent 0.5px)', backgroundSize: '10px 10px' }} />
-            <div className="relative flex items-center justify-center">
-              <p className="text-[10px] md:text-xs font-mono font-black tracking-[0.25em] text-brand-blue uppercase">
-                {latestMatchDate ? `MATCHES THROUGH ${formatDate(latestMatchDate)} INCLUDED` : 'NO MATCHES RECORDED'}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* STYLE 5: RECESSED SCOREBOARD */}
-        <div className="space-y-2 px-4">
-          <p className="font-mono text-[9px] font-bold text-brand-blue/40 uppercase tracking-tighter">Style 5: Recessed Scoreboard</p>
-          <div className="w-full bg-brand-blue py-2 flex items-center justify-center shadow-[inset_0_2px_4px_rgba(0,0,0,0.3)] border-b border-white/5">
-            <p className="text-[10px] md:text-xs font-mono font-black tracking-[0.2em] text-brand-yellow uppercase drop-shadow-[0_0_8px_rgba(255,199,44,0.3)]">
-                {latestMatchDate ? `STANDINGS UPDATED: ${formatDate(latestMatchDate)}` : 'AWAITING FIRST MATCH'}
-            </p>
-          </div>
-        </div>
-
-        {/* STYLE 6: EDITORIAL RULE */}
-        <div className="space-y-2 px-4">
-          <p className="font-mono text-[9px] font-bold text-brand-blue/40 uppercase tracking-tighter">Style 6: Editorial Rule</p>
-          <div className="w-full py-4 border-y border-brand-blue/20 flex items-center justify-center">
-            <p className="text-xs md:text-sm font-heading font-black italic tracking-[0.15em] text-brand-blue uppercase">
-               {latestMatchDate ? `Matches through ${formatDate(latestMatchDate)} included` : 'No matches recorded'}
-            </p>
-          </div>
-        </div>
-      </div>
+      {/* Final Selection: Style 6: Editorial Rule */}
+      <motion.div 
+        initial={{ opacity: 0, y: -5 }}
+        animate={{ opacity: 1, y: 0 }}
+        key={`ribbon-${activeDivision}-${latestMatchDate}`}
+        className="w-full py-4 border-y border-brand-blue/20 flex items-center justify-center bg-transparent"
+      >
+        <p className="text-xs md:text-sm font-heading font-black italic tracking-[0.15em] text-brand-blue uppercase">
+            {latestMatchDate ? `Matches through ${formatDate(latestMatchDate)} included` : 'No matches recorded'}
+        </p>
+      </motion.div>
 
       <div className="space-y-4 px-0 md:px-4">
         <TeamFilterHint />
