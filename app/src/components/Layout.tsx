@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useLeagueData } from '../context/LeagueContext';
 import { ConnectionError } from './ConnectionError';
+import { UpdateBanner } from './UpdateBanner';
 
 export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
@@ -40,6 +41,9 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
 
   return (
     <div id="app-container" className="font-body selection:bg-brand-yellow selection:text-brand-blue bg-transparent pt-4 inline-block w-full relative">
+      {/* Update Notification Banner */}
+      <UpdateBanner />
+
       {/* Scroll Anchor for iframe navigation - Allows forcing parent scroll via focus */}
       <div 
         id="nav-top-anchor" 
