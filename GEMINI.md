@@ -24,7 +24,7 @@ The **Corporate Pickleball League** is a responsive web application built to man
     -   `ARCHITECTURE.md`: Detailed architectural documentation.
 -   `ingest_matches.py`: CLI tool for CSV ingestion.
 -   `run_ingest_service.py`: Automated ingestion service.
--   `GoogleAppsScript.js`: Gmail monitoring script.
+-   `GoogleAppsScript.js`: Gmail monitoring script (see `DOCS_INGESTION.md` for more details).
 
 ## Building and Running
 

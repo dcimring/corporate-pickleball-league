@@ -664,7 +664,9 @@ function formatShortDate(dateStr) {
   if (!dateStr) return '';
   const dateObj = new Date(dateStr);
   if (isNaN(dateObj.getTime())) return dateStr;
-  return Utilities.formatDate(dateObj, Session.getScriptTimeZone(), "MMM d");
+  // Use UTC to prevent the date from shifting to the previous day
+  // when the script's local timezone is behind UTC.
+  return Utilities.formatDate(dateObj, "UTC", "MMM d");
 }
 
 function addLabel(thread) {
