@@ -397,48 +397,51 @@ function parseCSVAndMap(csvText, { divisions, teams }) {
 
 function diffMatches(newMatches, existingMatches, teamNameById, divisionNameById) {
   const existingMap = new Map();
+  const existingCounts = {};
+
+  // Store existing matches in a map with an occurrence index to handle 
+  // multiple matches between the same teams on the same day.
   for (const match of existingMatches) {
-    const key = makeMatchKey(match.team1_id, match.team2_id, normalizeMatchDate(match.date));
-    existingMap.set(key, match);
+    const baseKey = makeMatchKey(match.team1_id, match.team2_id, normalizeMatchDate(match.date));
+    const count = (existingCounts[baseKey] || 0);
+    existingCounts[baseKey] = count + 1;
+    existingMap.set(`${baseKey}|${count}`, match);
   }
 
   const newList = [];
   const modifiedList = [];
+  const newCounts = {};
 
   for (const match of newMatches) {
-    const key = makeMatchKey(match.team1_id, match.team2_id, normalizeMatchDate(match.date));
-    const existing = existingMap.get(key);
+    const baseKey = makeMatchKey(match.team1_id, match.team2_id, normalizeMatchDate(match.date));
+    const count = (newCounts[baseKey] || 0);
+    newCounts[baseKey] = count + 1;
+    
+    const existing = existingMap.get(`${baseKey}|${count}`);
+    const summary = formatMatchSummary(match, teamNameById);
+    
     if (!existing) {
-      newList.push(formatMatchSummary(match, teamNameById));
+      newList.push(summary);
       continue;
     }
     if (isMatchModified(existing, match)) {
-      modifiedList.push(formatMatchSummary(match, teamNameById));
+      modifiedList.push(summary);
     }
   }
 
   return {
-    newMatches: groupMatchesByDivision(newMatches, newList, divisionNameById),
-    modifiedMatches: groupMatchesByDivision(newMatches, modifiedList, divisionNameById)
+    newMatches: groupMatchesByDivision(newList, divisionNameById),
+    modifiedMatches: groupMatchesByDivision(modifiedList, divisionNameById)
   };
 }
 
-function groupMatchesByDivision(sourceMatches, summaries, divisionNameById) {
-  const summaryByKey = new Map();
-  for (const summary of summaries) {
-    summaryByKey.set(summary.key, summary);
-  }
-
+function groupMatchesByDivision(summaries, divisionNameById) {
   const grouped = {};
-  for (const match of sourceMatches) {
-    const key = makeMatchKey(match.team1_id, match.team2_id, normalizeMatchDate(match.date));
-    const summary = summaryByKey.get(key);
-    if (!summary) continue;
-    const divisionName = divisionNameById[match.division_id] || 'Unknown Division';
+  for (const summary of summaries) {
+    const divisionName = divisionNameById[summary.division_id] || 'Unknown Division';
     if (!grouped[divisionName]) grouped[divisionName] = [];
     grouped[divisionName].push(summary);
   }
-
   return grouped;
 }
 
@@ -485,8 +488,8 @@ function formatMatchSummary(match, teamNameById) {
   const team1 = teamNameById[match.team1_id] || `Team ${match.team1_id}`;
   const team2 = teamNameById[match.team2_id] || `Team ${match.team2_id}`;
   return {
-    key: makeMatchKey(match.team1_id, match.team2_id, normalizeMatchDate(match.date)),
     date: normalizeMatchDate(match.date),
+    division_id: match.division_id,
     team1,
     team2,
     team1_wins: match.team1_wins,
