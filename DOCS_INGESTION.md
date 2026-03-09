@@ -14,7 +14,7 @@ The service monitors a Gmail account for specific emails containing match result
 4.  **Parsing & Validation**:
     *   Parses the CSV data.
     *   **Auto-creates Teams**: If a team in the CSV doesn't exist in the database, the script automatically creates it in the correct division.
-    *   **Score Validation**: Checks if the total games played match the expected count (8 for CPL, 6 for others).
+    *   **Score Validation**: Checks if the total games played match the expected count (8 or 9 for CPL, 6 for others). CPL matches can go to 9 games if they are tied at 4-4.
 5.  **Data Safety Check**: Compares the number of matches in the new CSV against the current database count. If the new file has fewer matches, the update is aborted to prevent accidental data loss.
 6.  **Database Update**:
     *   Clears the existing `matches` table.

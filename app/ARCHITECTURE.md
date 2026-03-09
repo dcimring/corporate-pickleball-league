@@ -44,7 +44,7 @@ Since the primary site navigation is gone, the app uses a nested navigation syst
 ## Data Ingestion
 - **Source:** CSV files emailed to a specific address.
 - **Automation:** `run_ingest_service.py` or Google Apps Script (`GoogleAppsScript.js`) polls for new emails every 15 mins.
-- **Validation:** Scripts validate total game count (8 for CPL division, 6 for others) before ingestion.
+- **Validation:** Scripts validate total game count (8 or 9 for CPL division, 6 for others) before ingestion. CPL matches tied 4-4 result in a 9th game.
 - **Database:** Parsed results are upserted into Supabase.
 - **Detailed Docs:** See `DOCS_INGESTION.md` in the root directory for a full breakdown of the Google Apps Script workflow.
 
