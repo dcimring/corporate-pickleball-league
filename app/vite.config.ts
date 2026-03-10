@@ -70,7 +70,7 @@ export default defineConfig({
         // Exclude version.json from precache so it always hits the network/Vercel
         globIgnores: ['**/version.json'],
         // Explicitly set what to precache
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,webmanifest}'],
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,webmanifest,json}'],
       }
     })
   ],
