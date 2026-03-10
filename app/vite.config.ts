@@ -77,6 +77,18 @@ export default defineConfig({
         globIgnores: ['**/version.json'],
         // Explicitly set what to precache
         globPatterns: ['**/*.{js,css,html,ico,png,svg,webmanifest,json}'],
+        runtimeCaching: [
+          {
+            urlPattern: ({ url }) => url.pathname === '/' || url.pathname === '/index.html',
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'index-cache',
+              expiration: {
+                maxEntries: 1,
+              },
+            },
+          },
+        ],
       }
     })
   ],

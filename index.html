@@ -117,7 +117,7 @@
         <div class="w-full">
             <iframe 
                 id="corpleague-frame" 
-                src="http://localhost:5174"" 
+                src="https://corporate-pickleball-league.vercel.app/" 
                 class="w-full"
                 style="height: 100vh; border: none; overflow: hidden;" 
                 scrolling="no">
@@ -211,6 +211,13 @@
     </footer>
 
     <script>
+        // Use a dynamic cache-buster to force the iframe to check for updates
+        const frame = document.getElementById('corpleague-frame');
+        if (frame) {
+            const baseUrl = frame.src.split('?')[0];
+            frame.src = `${baseUrl}?t=${Date.now()}`;
+        }
+
         window.addEventListener('message', function(event) {
             if (event.data && event.data.height) {
                 const frame = document.getElementById('corpleague-frame');
