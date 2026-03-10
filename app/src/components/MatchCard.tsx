@@ -26,7 +26,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   
   const isWin1 = match.team1Wins > match.team2Wins || (match.team1Wins === match.team2Wins && match.team1Points > match.team2Points);
-  const isWin2 = match.team2Wins > match.team1Wins || (match.team2Wins === match.team2Wins && match.team2Points > match.team1Points);
+  const isWin2 = match.team2Wins > match.team1Wins || (match.team1Wins === match.team2Wins && match.team2Points > match.team1Points);
 
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);
@@ -84,9 +84,9 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
   };
 
   return (
-    <div className="w-full relative group">
-      {/* Visual Card Container (Handles overflow and background) */}
-      <div className="w-full bg-[#FFFEFC] rounded-3xl shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden border border-gray-100">
+    <div className="w-full relative group hover:-translate-y-1 transition-all duration-300">
+      {/* Decorative Layer (Clipped Background) */}
+      <div className="absolute inset-0 bg-[#FFFEFC] rounded-3xl shadow-xl border border-gray-100 overflow-hidden group-hover:shadow-2xl transition-shadow duration-300">
         {/* Grainy Texture Overlay */}
         <div className="absolute inset-0 opacity-[0.1] pointer-events-none mix-blend-multiply" 
              style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }} 
@@ -94,8 +94,10 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
 
         {/* Top Accent Bar (Inset) */}
         <div className="absolute top-0 left-4 md:left-6 right-4 md:right-6 h-2 bg-[rgb(142,209,252)] rounded-b-md z-10" />
+      </div>
 
-        <div className="pt-4 md:pt-6 pb-2.5 px-4 md:px-8 flex flex-col h-full relative z-10">
+      {/* Content Layer (Not Clipped, allows popover overflow) */}
+      <div className="relative pt-4 md:pt-6 pb-2.5 px-4 md:px-8 flex flex-col h-full z-10">
           {/* Teams Container */}
           <div className="flex-1 flex flex-col justify-center gap-1.5 md:gap-2 relative">
               {/* Winner Vertical Bar - Team 1 */}
@@ -112,13 +114,13 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
                   <div 
                     onClick={() => onTeamClick?.(match.team1)}
                     className={clsx(
-                    "font-heading font-black italic uppercase text-base md:text-2xl tracking-tight leading-none max-w-[80%] cursor-pointer hover:text-brand-blue transition-colors relative z-10",
+                    "font-heading font-black italic uppercase text-xl md:text-2xl tracking-tight leading-none max-w-[80%] cursor-pointer hover:text-brand-blue transition-colors relative z-10",
                     isWin1 ? "text-brand-blue" : "text-gray-400"
                   )}>
                     {match.team1}
                   </div>
                   <div className={clsx(
-                    "font-heading font-black text-3xl md:text-5xl transition-all duration-300",
+                    "font-heading font-black text-4xl md:text-5xl transition-all duration-300",
                     isWin1 ? "text-brand-blue drop-shadow-[2px_2px_0px_#FFC72C] md:drop-shadow-[2.5px_2.5px_0px_#FFC72C]" : "text-gray-200"
                   )}>
                     {match.team1Wins}
@@ -133,13 +135,13 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
                   <div 
                     onClick={() => onTeamClick?.(match.team2)}
                     className={clsx(
-                    "font-heading font-black italic uppercase text-base md:text-2xl tracking-tight leading-none max-w-[80%] cursor-pointer hover:text-brand-blue transition-colors relative z-10",
+                    "font-heading font-black italic uppercase text-xl md:text-2xl tracking-tight leading-none max-w-[80%] cursor-pointer hover:text-brand-blue transition-colors relative z-10",
                     isWin2 ? "text-brand-blue" : "text-gray-400"
                   )}>
                     {match.team2}
                   </div>
                   <div className={clsx(
-                    "font-heading font-black text-3xl md:text-5xl transition-all duration-300",
+                    "font-heading font-black text-4xl md:text-5xl transition-all duration-300",
                     isWin2 ? "text-brand-blue drop-shadow-[2px_2px_0px_#FFC72C] md:drop-shadow-[2.5px_2.5px_0px_#FFC72C]" : "text-gray-200"
                   )}>
                     {match.team2Wins}
@@ -188,29 +190,29 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
                                       initial={{ opacity: 0, scale: 0.95, y: 10 }}
                                       animate={{ opacity: 1, scale: 1, y: 0 }}
                                       exit={{ opacity: 0, scale: 0.95, y: 10 }}
-                                      className="absolute bottom-full right-0 mb-3 w-40 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-[100]"
+                                      className="absolute bottom-full right-0 mb-3 w-48 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-[100]"
                                   >
                                       <div className="p-1.5 flex flex-col gap-1">
                                           <button 
                                               onClick={handleShareStory}
-                                              className="flex items-center gap-2.5 w-full px-3 py-2 rounded-xl hover:bg-brand-gray text-brand-blue transition-colors group"
+                                              className="flex items-center gap-3 w-full px-4 py-2.5 rounded-xl hover:bg-brand-gray text-brand-blue transition-colors group"
                                           >
-                                              <Instagram className="w-4 h-4 text-brand-blue group-hover:scale-110 transition-transform" />
-                                              <span className="font-heading font-bold uppercase text-[9px] tracking-widest">Story</span>
+                                              <Instagram className="w-5 h-5 text-brand-blue group-hover:scale-110 transition-transform" />
+                                              <span className="font-heading font-bold uppercase text-xs tracking-widest text-left">Story</span>
                                           </button>
                                           <button 
                                               onClick={handleSharePost}
-                                              className="flex items-center gap-2.5 w-full px-3 py-2 rounded-xl hover:bg-brand-gray text-brand-blue transition-colors group"
+                                              className="flex items-center gap-3 w-full px-4 py-2.5 rounded-xl hover:bg-brand-gray text-brand-blue transition-colors group"
                                           >
-                                              <ImageIcon className="w-4 h-4 text-brand-blue group-hover:scale-110 transition-transform" />
-                                              <span className="font-heading font-bold uppercase text-[9px] tracking-widest">Post</span>
+                                              <ImageIcon className="w-5 h-5 text-brand-blue group-hover:scale-110 transition-transform" />
+                                              <span className="font-heading font-bold uppercase text-xs tracking-widest text-left">Post</span>
                                           </button>
                                           <button 
                                               onClick={handleShareWhatsApp}
-                                              className="flex items-center gap-2.5 w-full px-3 py-2 rounded-xl hover:bg-[#25D366]/5 text-[#25D366] transition-colors group"
+                                              className="flex items-center gap-3 w-full px-4 py-2.5 rounded-xl hover:bg-[#25D366]/5 text-[#25D366] transition-colors group"
                                           >
-                                              <MessageCircle className="w-4 h-4 fill-[#25D366] group-hover:scale-110 transition-transform" />
-                                              <span className="font-heading font-bold uppercase text-[9px] tracking-widest font-[#25D366]">WhatsApp</span>
+                                              <MessageCircle className="w-5 h-5 fill-[#25D366] group-hover:scale-110 transition-transform" />
+                                              <span className="font-heading font-bold uppercase text-xs tracking-widest text-left font-[#25D366]">WhatsApp</span>
                                           </button>
                                       </div>
                                   </motion.div>
@@ -220,7 +222,6 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
                   </div>
               </div>
           </div>
-        </div>
       </div>
 
       {/* Actual ShareButtons (Anchoring point for Absolute Toasts) */}
