@@ -1,20 +1,39 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { RefreshCw, X } from 'lucide-react';
 import { useRegisterSW } from 'virtual:pwa-register/react';
 
 export const UpdateBanner: React.FC = () => {
+  const registrationRef = useRef<ServiceWorkerRegistration | null>(null);
+  
   const {
     needRefresh: [needRefresh, setNeedRefresh],
     updateServiceWorker,
   } = useRegisterSW({
     onRegistered(r) {
-      console.log('SW Registered: ' + r);
+      if (r) {
+        registrationRef.current = r;
+        console.log('SW Registered and stored for heartbeat checks.');
+      }
     },
     onRegisterError(error) {
       console.error('SW registration error', error);
     },
   });
+
+  // 10-Minute Heartbeat Check
+  useEffect(() => {
+    const checkInterval = 600000; // 10 minutes
+    
+    const interval = setInterval(() => {
+      if (registrationRef.current) {
+        console.log('Heartbeat: Checking for application updates...');
+        registrationRef.current.update();
+      }
+    }, checkInterval);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const handleRefresh = () => {
     updateServiceWorker(true);

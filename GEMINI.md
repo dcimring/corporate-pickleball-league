@@ -22,6 +22,7 @@ The **Corporate Pickleball League** is a responsive web application built to man
     -   `src/types.ts`: TypeScript definitions for league data entities.
     -   `src/index.css`: Global styles and Tailwind CSS v4 configuration (`@theme`).
     -   `ARCHITECTURE.md`: Detailed architectural documentation.
+    -   `docs/update-frequency-strategy.md`: Strategy for 10-minute application update checks.
 -   `ingest_matches.py`: CLI tool for CSV ingestion.
 -   `run_ingest_service.py`: Automated ingestion service.
 -   `GoogleAppsScript.js`: Gmail monitoring script (see `DOCS_INGESTION.md` for more details).
