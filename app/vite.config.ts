@@ -89,6 +89,15 @@ export default defineConfig({
             },
           },
         ],
+        // Root Cause Fix: Prevent SW from ever returning index.html for these paths
+        navigateFallbackDenylist: [
+          /^\/version\.json/,
+          /\.json$/,
+          /\.png$/,
+          /\.jpg$/,
+          /\.svg$/,
+          /^\/api\//
+        ],
       }
     })
   ],
