@@ -1,10 +1,12 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { RefreshCw, X } from 'lucide-react';
 import { useRegisterSW } from 'virtual:pwa-register/react';
 
 export const UpdateBanner: React.FC = () => {
   const registrationRef = useRef<ServiceWorkerRegistration | null>(null);
+  const initialVersionRef = useRef<string | null>(null);
+  const [isFallbackMode, setIsFallbackMode] = useState(false);
   
   const {
     needRefresh: [needRefresh, setNeedRefresh],
@@ -13,34 +15,77 @@ export const UpdateBanner: React.FC = () => {
     onRegistered(r) {
       if (r) {
         registrationRef.current = r;
-        console.log('SW Registered and stored for heartbeat checks.');
+        console.log('UpdateBanner: SW Registered and stored for heartbeat checks.');
       }
     },
     onRegisterError(error) {
-      console.error('SW registration error', error);
+      // SW often fails in cross-origin iframes
+      console.warn('UpdateBanner: SW registration blocked/failed. Entering fallback mode.', error);
+      setIsFallbackMode(true);
     },
   });
+
+  // Capture initial version on load
+  useEffect(() => {
+    const fetchInitialVersion = async () => {
+      try {
+        const response = await fetch('/version.json?t=' + Date.now());
+        const data = await response.json();
+        initialVersionRef.current = String(data.version);
+        console.log('UpdateBanner: Initial build version captured:', initialVersionRef.current);
+      } catch (e) {
+        console.warn('UpdateBanner: Could not fetch version.json fallback.', e);
+      }
+    };
+    fetchInitialVersion();
+  }, []);
 
   // 10-Minute Heartbeat Check
   useEffect(() => {
     const checkInterval = 600000; // 10 minutes
     
-    const interval = setInterval(() => {
+    const interval = setInterval(async () => {
+      // Priority 1: Service Worker Update (Direct View)
       if (registrationRef.current) {
-        console.log('Heartbeat: Checking for application updates...');
+        console.log('UpdateBanner: Heartbeat check via Service Worker...');
         registrationRef.current.update();
+        return;
+      }
+
+      // Priority 2: Version.json Polling (Iframe Fallback)
+      if (initialVersionRef.current) {
+        try {
+          console.log('UpdateBanner: Heartbeat check via version.json fallback...');
+          const response = await fetch('/version.json?t=' + Date.now());
+          const data = await response.json();
+          const currentVersion = String(data.version);
+          
+          if (currentVersion !== initialVersionRef.current) {
+            console.log('UpdateBanner: New version detected via fallback!');
+            setNeedRefresh(true);
+            setIsFallbackMode(true);
+          }
+        } catch (e) {
+          console.warn('UpdateBanner: Heartbeat fallback check failed.', e);
+        }
       }
     }, checkInterval);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [setNeedRefresh]);
 
   const handleRefresh = async () => {
     console.log('UpdateBanner: User triggered application refresh.');
+    
+    if (isFallbackMode) {
+      window.location.reload();
+      return;
+    }
+
     try {
       await updateServiceWorker(true);
     } catch (e) {
-      console.error('UpdateBanner: Refresh failed, triggering manual reload.', e);
+      console.error('UpdateBanner: SW Refresh failed, triggering manual reload.', e);
       window.location.reload();
     }
   };
@@ -64,7 +109,7 @@ export const UpdateBanner: React.FC = () => {
           <div className="max-w-7xl mx-auto px-4 h-12 flex items-center justify-between cursor-pointer group">
             <div className="flex-1 flex justify-center items-center gap-3">
               <RefreshCw size={14} className="text-brand-yellow animate-spin-slow group-hover:rotate-180 transition-transform duration-500" />
-              <p className="text-[10px] md:text-xs font-mono font-black tracking-[0.2em] text-brand-yellow uppercase">
+              <p className="text-[10px] md:text-xs font-mono font-black tracking-[0.2em] text-brand-yellow uppercase text-center">
                 New Version Available • <span className="underline decoration-brand-yellow/30 underline-offset-4">Click to Refresh</span>
               </p>
             </div>
