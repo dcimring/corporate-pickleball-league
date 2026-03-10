@@ -10,18 +10,14 @@ export default defineConfig({
     react(),
     {
       name: 'generate-version-json',
-      apply: 'build',
-      writeBundle() {
+      generateBundle() {
         const buildId = Date.now();
-        const distPath = path.resolve(__dirname, 'dist');
-        if (!fs.existsSync(distPath)) {
-          fs.mkdirSync(distPath, { recursive: true });
-        }
-        fs.writeFileSync(
-          path.resolve(distPath, 'version.json'),
-          JSON.stringify({ version: buildId })
-        );
-        console.log(`Generated version.json with build ID: ${buildId}`);
+        this.emitFile({
+          type: 'asset',
+          fileName: 'version.json',
+          source: JSON.stringify({ version: buildId })
+        });
+        console.log(`Vite: Emitting version.json with build ID: ${buildId}`);
       }
     },
     VitePWA({

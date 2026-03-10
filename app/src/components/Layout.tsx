@@ -59,6 +59,15 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
           children
         )}
       </main>
+
+      <footer className="mt-12 py-8 text-center px-4 space-y-2 opacity-30">
+        <p className="font-heading font-black italic uppercase text-[10px] tracking-[0.2em] text-brand-blue">
+          Cayman Premier League &copy; {new Date().getFullYear()}
+        </p>
+        <p className="text-[8px] font-mono uppercase text-gray-400 tracking-widest">
+          Build: 2026.03.10.02
+        </p>
+      </footer>
     </div>
   );
 };
