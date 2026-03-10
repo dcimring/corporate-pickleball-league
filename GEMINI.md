@@ -13,6 +13,10 @@ The **Corporate Pickleball League** is a responsive web application built to man
 -   **Backend:** Supabase (PostgreSQL)
 -   **Ingestion:** Python & Google Apps Script automation
 
+## Development Workflow Rules
+- Always perform work and code changes on the `staging` branch.
+- After merging changes into `main` and pushing to GitHub, always switch back to the `staging` branch immediately.
+
 ## Key Directories & Files
 
 -   `app/`: Main application source code.
