@@ -35,8 +35,14 @@ export const UpdateBanner: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const handleRefresh = () => {
-    updateServiceWorker(true);
+  const handleRefresh = async () => {
+    console.log('UpdateBanner: User triggered application refresh.');
+    try {
+      await updateServiceWorker(true);
+    } catch (e) {
+      console.error('UpdateBanner: Refresh failed, triggering manual reload.', e);
+      window.location.reload();
+    }
   };
 
   const handleClose = (e: React.MouseEvent) => {

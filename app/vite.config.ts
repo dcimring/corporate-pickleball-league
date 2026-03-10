@@ -29,8 +29,6 @@ export default defineConfig({
       },
       workbox: {
         cleanupOutdatedCaches: true,
-        clientsClaim: true,
-        skipWaiting: true,
       }
     })
   ],
