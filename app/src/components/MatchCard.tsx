@@ -162,22 +162,22 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
                           <span className={clsx("text-xs", isWin2 ? "text-brand-blue font-black" : "text-gray-400")}>{match.team2Points}</span>
                       </div>
 
-                      {/* Option A: Single Action Popover */}
+                      {/* Option A: Single Action Popover (Refined Size) */}
                       <div className="relative" ref={menuRef}>
                           <button 
                             onClick={() => setIsMenuOpen(!isMenuOpen)}
                             disabled={loadingType !== null}
                             className={clsx(
-                                "flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-300 shadow-sm hover:shadow-md",
-                                isMenuOpen ? "bg-brand-blue text-white" : "bg-brand-gray text-brand-blue hover:bg-gray-100"
+                                "flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0",
+                                isMenuOpen ? "bg-brand-yellow text-brand-blue" : "bg-brand-blue text-white"
                             )}
                           >
                               {loadingType !== null ? (
-                                  <Loader2 className="w-3 h-3 animate-spin" />
+                                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
                               ) : (
                                   <>
-                                    <span className="font-heading font-black uppercase italic text-[9px] tracking-widest">Share</span>
-                                    <Share2 className="w-3 h-3" />
+                                    <span className="font-heading font-black uppercase italic text-[10px] tracking-widest">Share</span>
+                                    <Share2 className="w-3.5 h-3.5 fill-current" />
                                   </>
                               )}
                           </button>
