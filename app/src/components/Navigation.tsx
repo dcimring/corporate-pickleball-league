@@ -45,7 +45,7 @@ export const Navigation: React.FC<NavigationProps> = ({
   };
 
   return (
-    <div className="flex flex-col gap-6 px-6 md:px-0">
+    <div className="flex flex-col gap-2 px-6 md:px-0">
       {/* Page Tabs (Underline Glow) */}
       <div className="flex items-center gap-8 pb-px justify-center">
         {pageTabs.map((tab) => {
@@ -55,7 +55,7 @@ export const Navigation: React.FC<NavigationProps> = ({
               key={tab.name}
               onClick={() => onPageChange(tab.path)}
               className={clsx(
-                "relative pb-4 text-xl md:text-2xl font-heading font-black italic uppercase tracking-tighter transition-colors",
+                "relative pb-2 text-xl md:text-2xl font-heading font-black italic uppercase tracking-tighter transition-colors",
                 isActive ? "text-brand-blue" : "text-gray-300 hover:text-gray-400"
               )}
             >

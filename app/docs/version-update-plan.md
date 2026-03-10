@@ -5,29 +5,30 @@ This document outlines the plan for detecting and handling newer versions of the
 ## Core Mechanism: Build-ID Comparison
 
 The strategy uses a "Manifest" check pattern:
-1.  **Build ID Generation:** Generate a unique timestamp-based ID during the build process.
-2.  **Code Injection:** Inject this ID into the application bundle via Vite's `define` feature.
-3.  **Remote Manifest:** Save the same ID into a static `version.json` file in the `public` directory.
-4.  **Verification Loop:** The client periodically fetches `version.json` and compares it to its internal ID.
+1.  **Build ID Generation:** Generate a unique timestamp-based ID during the build process in `vite.config.ts`.
+2.  **Code Injection:** Inject this ID into the application bundle via Vite's `define` feature as `__BUILD_ID__`.
+3.  **Remote Manifest:** Save the same ID into a static `version.json` file in the `dist` directory using a Vite plugin.
+4.  **Verification Loop:** The `UpdateBanner` component periodically fetches `version.json` and compares it to its internal `__BUILD_ID__`.
 
 ## Implementation Details (Internal Strategy)
 
-### 1. Build Process Integration
-Modify `package.json` to generate the `version.json` file automatically after the build completes.
-```bash
-"build": "vite build && echo '{\"version\": \"'$(date +%s)'\"}' > dist/version.json"
-```
-
-### 2. Vite Configuration
-Expose the version to the React app:
+### 1. Vite Configuration
+Expose the version and build time to the React app:
 ```typescript
 define: {
-  __APP_VERSION__: JSON.stringify(Date.now()),
+  __BUILD_TIME__: JSON.stringify(buildTime),
+  __BUILD_ID__: JSON.stringify(buildId),
 }
 ```
 
+### 2. Version JSON Generation
+A custom Vite plugin `generate-version-json` runs on `closeBundle` to create `dist/version.json`.
+A placeholder `public/version.json` exists for development mode.
+
 ### 3. Detection Logic
-Add a `checkVersion` function to `LeagueContext.tsx` that runs during the existing 60-second background refresh.
+The `UpdateBanner.tsx` component handles the logic:
+-   **Priority 1:** Uses `vite-plugin-pwa`'s `useRegisterSW` for service worker updates.
+-   **Priority 2:** 10-minute heartbeat fetch of `/version.json?t=...` as a fallback for iframes/browsers where SW is blocked.
 
 ## Update Handling Options
 

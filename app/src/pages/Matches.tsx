@@ -73,7 +73,7 @@ export const Matches: React.FC = () => {
   ];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4">
       <Navigation 
         pageTabs={pageTabs} 
         activePage="/matches" 
@@ -102,24 +102,24 @@ export const Matches: React.FC = () => {
 
       <TeamFilterHint className="mx-4" />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4 pb-4">
         {matches.length > 0 ? (
           matches.map((match) => (
             <MatchCard key={match.id} match={match} onTeamClick={handleTeamClick} />
           ))
         ) : (
-          <div className="col-span-full p-16 text-center flex flex-col items-center justify-center gap-4 text-gray-400 bg-white rounded-2xl border border-gray-100">
-            <div className="bg-blue-50 p-4 rounded-full">
-              <Info className="w-8 h-8 text-brand-blue" />
+          <div className="col-span-full p-12 text-center flex flex-col items-center justify-center gap-4 text-gray-400 bg-white rounded-2xl border border-gray-100">
+            <div className="bg-blue-50 p-3 rounded-full">
+              <Info className="w-6 h-6 text-brand-blue" />
             </div>
-            <p className="font-heading font-bold text-xl text-brand-blue">
+            <p className="font-heading font-bold text-lg text-brand-blue">
               {selectedTeam ? `No matches found for ${selectedTeam}` : 'No matches found'}
             </p>
-            <p className="font-body text-gray-500">
+            <p className="font-body text-xs text-gray-500">
               {selectedTeam ? 'Try clearing the filter or check back later.' : 'Check back later for the schedule!'}
             </p>
             {selectedTeam && (
-               <button onClick={handleClearFilter} className="mt-2 text-brand-blue font-bold hover:underline">
+               <button onClick={handleClearFilter} className="mt-1 text-brand-blue text-sm font-bold hover:underline">
                  Clear Filter
                </button>
             )}

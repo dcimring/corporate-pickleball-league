@@ -4,18 +4,25 @@ import { VitePWA } from 'vite-plugin-pwa'
 import fs from 'node:fs'
 import path from 'node:path'
 
+// Get current build time once
+const buildTime = new Date().toISOString();
+const buildId = Date.now();
+
 // https://vite.dev/config/
 export default defineConfig({
+  define: {
+    __BUILD_TIME__: JSON.stringify(buildTime),
+    __BUILD_ID__: JSON.stringify(buildId),
+  },
   plugins: [
     react(),
     {
       name: 'generate-version-json',
       closeBundle() {
-        const buildId = Date.now();
         const distPath = path.resolve(__dirname, 'dist');
         const filePath = path.resolve(distPath, 'version.json');
         
-        console.log('!!! VITE PLUGIN STARTING: version.json !!!');
+        console.log('!!! VITE PLUGIN: Generating version.json !!!');
         
         try {
           if (!fs.existsSync(distPath)) {
@@ -27,11 +34,11 @@ export default defineConfig({
             filePath,
             JSON.stringify({ 
               version: buildId,
-              builtAt: new Date().toISOString(),
+              builtAt: buildTime,
               debug: true
             }, null, 2)
           );
-          console.log(`!!! SUCCESS: Generated version.json at ${filePath} !!!`);
+          console.log(`!!! SUCCESS: Generated version.json at ${filePath} with ID: ${buildId} !!!`);
         } catch (err) {
           console.error('!!! ERROR generating version.json:', err);
         }
@@ -60,6 +67,10 @@ export default defineConfig({
       },
       workbox: {
         cleanupOutdatedCaches: true,
+        // Exclude version.json from precache so it always hits the network/Vercel
+        globIgnores: ['**/version.json'],
+        // Explicitly set what to precache
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,webmanifest}'],
       }
     })
   ],

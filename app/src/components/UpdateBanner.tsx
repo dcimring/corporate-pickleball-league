@@ -5,7 +5,8 @@ import { useRegisterSW } from 'virtual:pwa-register/react';
 
 export const UpdateBanner: React.FC = () => {
   const registrationRef = useRef<ServiceWorkerRegistration | null>(null);
-  const initialVersionRef = useRef<string | null>(null);
+  // Priority 1: Use the build-time defined ID as the source of truth for current version
+  const initialVersionRef = useRef<string>(String(__BUILD_ID__));
   const [isFallbackMode, setIsFallbackMode] = useState(false);
   
   const {
@@ -15,8 +16,12 @@ export const UpdateBanner: React.FC = () => {
     onRegistered(r) {
       if (r) {
         registrationRef.current = r;
-        console.log('UpdateBanner: SW Registered and stored for heartbeat checks.');
+        console.log('UpdateBanner: SW Registered (Build ID:', __BUILD_ID__, ')');
       }
+    },
+    onNeedRefresh() {
+      console.log('UpdateBanner: Service Worker detected a new version is available (prompt mode).');
+      setNeedRefresh(true);
     },
     onRegisterError(error) {
       // SW often fails in cross-origin iframes
@@ -25,21 +30,6 @@ export const UpdateBanner: React.FC = () => {
     },
   });
 
-  // Capture initial version on load
-  useEffect(() => {
-    const fetchInitialVersion = async () => {
-      try {
-        const response = await fetch('/version.json?t=' + Date.now());
-        const data = await response.json();
-        initialVersionRef.current = String(data.version);
-        console.log('UpdateBanner: Initial build version captured:', initialVersionRef.current);
-      } catch (e) {
-        console.warn('UpdateBanner: Could not fetch version.json fallback.', e);
-      }
-    };
-    fetchInitialVersion();
-  }, []);
-
   // 10-Minute Heartbeat Check
   useEffect(() => {
     const checkInterval = 600000; // 10 minutes
@@ -47,27 +37,31 @@ export const UpdateBanner: React.FC = () => {
     const interval = setInterval(async () => {
       // Priority 1: Service Worker Update (Direct View)
       if (registrationRef.current) {
-        console.log('UpdateBanner: Heartbeat check via Service Worker...');
+        console.log('UpdateBanner: Heartbeat check via Service Worker update()...');
         registrationRef.current.update();
         return;
       }
 
       // Priority 2: Version.json Polling (Iframe Fallback)
-      if (initialVersionRef.current) {
-        try {
-          console.log('UpdateBanner: Heartbeat check via version.json fallback...');
-          const response = await fetch('/version.json?t=' + Date.now());
-          const data = await response.json();
-          const currentVersion = String(data.version);
-          
-          if (currentVersion !== initialVersionRef.current) {
-            console.log('UpdateBanner: New version detected via fallback!');
-            setNeedRefresh(true);
-            setIsFallbackMode(true);
-          }
-        } catch (e) {
-          console.warn('UpdateBanner: Heartbeat fallback check failed.', e);
+      try {
+        console.log('UpdateBanner: Heartbeat check via version.json fallback...');
+        const response = await fetch('/version.json?t=' + Date.now());
+        const data = await response.json();
+        const currentVersion = String(data.version);
+        
+        // Skip check if we're in development mode (placeholder version.json)
+        if (currentVersion === 'DEV') {
+          console.log('UpdateBanner: Detected development version.json, skipping fallback check.');
+          return;
         }
+
+        if (currentVersion !== initialVersionRef.current) {
+          console.log('UpdateBanner: New version detected via fallback! (Current:', currentVersion, 'Initial:', initialVersionRef.current, ')');
+          setNeedRefresh(true);
+          setIsFallbackMode(true);
+        }
+      } catch (e) {
+        console.warn('UpdateBanner: Heartbeat fallback check failed.', e);
       }
     }, checkInterval);
 

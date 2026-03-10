@@ -99,7 +99,7 @@ export const Leaderboard: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-2">
       <Navigation 
         pageTabs={pageTabs} 
         activePage="/leaderboard" 
@@ -114,19 +114,19 @@ export const Leaderboard: React.FC = () => {
         initial={{ opacity: 0, y: -5 }}
         animate={{ opacity: 1, y: 0 }}
         key={`ribbon-${activeDivision}-${latestMatchDate}`}
-        className="w-full py-4 border-y border-brand-blue/20 flex items-center justify-center bg-transparent"
+        className="w-full py-2 border-y border-brand-blue/20 flex items-center justify-center bg-transparent"
       >
-        <p className="text-xs md:text-sm font-heading font-black italic tracking-[0.15em] text-brand-blue uppercase">
+        <p className="text-[10px] md:text-sm font-heading font-black italic tracking-[0.15em] text-brand-blue uppercase text-center">
             {latestMatchDate ? `Matches through ${formatDate(latestMatchDate)} included` : 'No matches recorded'}
         </p>
       </motion.div>
 
-      <div className="space-y-4 px-0 md:px-4">
+      <div className="space-y-2 px-0 md:px-4">
         <TeamFilterHint />
         <LeaderboardTable stats={stats} onTeamClick={handleTeamClick} />
         
         {/* Share Section */}
-        <div className="pt-4 md:pt-6 pb-2 flex items-center justify-center">
+        <div className="flex items-center justify-center">
         <motion.div 
           ref={shareCardRef}
           initial={{ y: 20, opacity: 0 }}
@@ -134,12 +134,12 @@ export const Leaderboard: React.FC = () => {
           transition={{ duration: 0.7, ease: "easeOut" }}
           className="max-w-4xl w-full relative overflow-hidden"
         >
-            <div className="px-5 py-5 text-center space-y-6 md:space-y-8">
-              <div className="space-y-2">
-                <p className="text-[11px] md:text-xs font-heading font-black italic uppercase tracking-[0.18em] text-brand-blue">
+            <div className="px-5 py-4 text-center space-y-4 md:space-y-6">
+              <div className="space-y-1">
+                <p className="text-[10px] md:text-xs font-heading font-black italic uppercase tracking-[0.18em] text-brand-blue">
                   Download the Leaderboard
                 </p>
-                <h4 className="text-xl md:text-3xl font-heading font-black uppercase text-brand-blue tracking-tight">
+                <h4 className="text-lg md:text-3xl font-heading font-black uppercase text-brand-blue tracking-tight">
                   Share with your team and on social media
                 </h4>
               </div>

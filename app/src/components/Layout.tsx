@@ -60,12 +60,9 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         )}
       </main>
 
-      <footer className="mt-12 py-8 text-center px-4 space-y-2 opacity-30">
-        <p className="font-heading font-black italic uppercase text-[10px] tracking-[0.2em] text-brand-blue">
-          Cayman Premier League &copy; {new Date().getFullYear()}
-        </p>
-        <p className="text-[8px] font-mono uppercase text-gray-400 tracking-widest">
-          Build: 2026.03.10.06
+      <footer className="mt-4 pb-2 text-center px-4 opacity-30">
+        <p className="text-[7px] font-mono uppercase text-gray-400 tracking-widest">
+          Build: {new Date(__BUILD_TIME__).toLocaleString('en-US', { timeZone: 'America/Cayman', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false }).replace(/, /g, '.').replace(/[/:]/g, '.')}
         </p>
       </footer>
     </div>
