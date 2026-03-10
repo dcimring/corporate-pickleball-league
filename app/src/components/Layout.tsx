@@ -65,7 +65,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
           Cayman Premier League &copy; {new Date().getFullYear()}
         </p>
         <p className="text-[8px] font-mono uppercase text-gray-400 tracking-widest">
-          Build: 2026.03.10.03
+          Build: 2026.03.10.04
         </p>
       </footer>
     </div>
