@@ -1,7 +1,9 @@
 {
+  "cleanUrls": true,
+  "trailingSlash": false,
   "rewrites": [
     {
-      "source": "/((?!.*\\.).*)",
+      "source": "/((?!.*\\.[a-z0-9]{2,4}$).*)",
       "destination": "/index.html"
     }
   ],
@@ -16,7 +18,7 @@
       ]
     },
     {
-      "source": "/service-worker.js",
+      "source": "/version.json",
       "headers": [
         {
           "key": "Cache-Control",
@@ -25,11 +27,11 @@
       ]
     },
     {
-      "source": "/(.*)",
+      "source": "/service-worker.js",
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "no-cache"
+          "value": "public, max-age=0, must-revalidate"
         }
       ]
     },
