@@ -6,18 +6,6 @@ import { VitePWA } from 'vite-plugin-pwa'
 export default defineConfig({
   plugins: [
     react(),
-    {
-      name: 'generate-version-json',
-      generateBundle() {
-        const buildId = Date.now();
-        this.emitFile({
-          type: 'asset',
-          fileName: 'version.json',
-          source: JSON.stringify({ version: buildId })
-        });
-        console.log(`Vite: Emitting version.json with build ID: ${buildId}`);
-      }
-    },
     VitePWA({
       registerType: 'prompt',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
