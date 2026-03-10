@@ -1,11 +1,6 @@
 {
-  "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
-    {
-      "source": "/version.json",
-      "destination": "/version.json"
-    },
     {
       "source": "/((?!.*\\.).*)",
       "destination": "/index.html"
