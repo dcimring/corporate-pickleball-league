@@ -46,7 +46,22 @@ export const UpdateBanner: React.FC = () => {
       try {
         console.log('UpdateBanner: Heartbeat check via version.json fallback...');
         const response = await fetch('/version.json?t=' + Date.now());
+        
+        // Ensure it is truly a JSON response and not an HTML rewrite
+        const contentType = response.headers.get('content-type');
+        if (!response.ok || !contentType || !contentType.includes('application/json')) {
+          console.warn('UpdateBanner: Received invalid version response (not JSON or error). Skipping check.');
+          return;
+        }
+
         const data = await response.json();
+        
+        // Verify data structure is as expected
+        if (!data || typeof data.version === 'undefined') {
+          console.warn('UpdateBanner: Received malformed version.json. Skipping check.');
+          return;
+        }
+
         const currentVersion = String(data.version);
         
         // Skip check if we're in development mode (placeholder version.json)

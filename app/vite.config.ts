@@ -18,34 +18,40 @@ export default defineConfig({
     react(),
     {
       name: 'generate-version-json',
+      // Run on closeBundle to overwrite any stale public version in dist
       closeBundle() {
         const distPath = path.resolve(__dirname, 'dist');
-        const filePath = path.resolve(distPath, 'version.json');
+        const publicPath = path.resolve(__dirname, 'public');
+        const distFile = path.resolve(distPath, 'version.json');
+        const publicFile = path.resolve(publicPath, 'version.json');
         
         console.log('!!! VITE PLUGIN: Generating version.json !!!');
         
+        const content = JSON.stringify({ 
+          version: buildId,
+          builtAt: buildTime,
+          debug: true
+        }, null, 2);
+
         try {
-          if (!fs.existsSync(distPath)) {
-            console.log(`Creating dist path: ${distPath}`);
-            fs.mkdirSync(distPath, { recursive: true });
+          // 1. Write to dist (Production)
+          if (fs.existsSync(distPath)) {
+            fs.writeFileSync(distFile, content);
+            console.log(`!!! SUCCESS: Generated version.json at ${distFile} !!!`);
           }
           
-          fs.writeFileSync(
-            filePath,
-            JSON.stringify({ 
-              version: buildId,
-              builtAt: buildTime,
-              debug: true
-            }, null, 2)
-          );
-          console.log(`!!! SUCCESS: Generated version.json at ${filePath} with ID: ${buildId} !!!`);
+          // 2. Also write to public (for next dev run or as a fallback)
+          if (fs.existsSync(publicPath)) {
+            fs.writeFileSync(publicFile, content);
+            console.log(`!!! SUCCESS: Updated version.json at ${publicFile} !!!`);
+          }
         } catch (err) {
           console.error('!!! ERROR generating version.json:', err);
         }
       }
     },
     VitePWA({
-      registerType: 'prompt',
+      registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
       manifest: {
         name: 'Pickleball Cayman Corporate League',
