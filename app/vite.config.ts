@@ -10,24 +10,31 @@ export default defineConfig({
     react(),
     {
       name: 'generate-version-json',
-      writeBundle() {
+      closeBundle() {
         const buildId = Date.now();
         const distPath = path.resolve(__dirname, 'dist');
         const filePath = path.resolve(distPath, 'version.json');
         
-        // Ensure dist exists (Vite should have created it by now in writeBundle)
-        if (!fs.existsSync(distPath)) {
-          fs.mkdirSync(distPath, { recursive: true });
-        }
+        console.log('!!! VITE PLUGIN STARTING: version.json !!!');
         
-        fs.writeFileSync(
-          filePath,
-          JSON.stringify({ 
-            version: buildId,
-            builtAt: new Date().toISOString() 
-          }, null, 2)
-        );
-        console.log(`Vite Plugin: Generated version.json at ${filePath}`);
+        try {
+          if (!fs.existsSync(distPath)) {
+            console.log(`Creating dist path: ${distPath}`);
+            fs.mkdirSync(distPath, { recursive: true });
+          }
+          
+          fs.writeFileSync(
+            filePath,
+            JSON.stringify({ 
+              version: buildId,
+              builtAt: new Date().toISOString(),
+              debug: true
+            }, null, 2)
+          );
+          console.log(`!!! SUCCESS: Generated version.json at ${filePath} !!!`);
+        } catch (err) {
+          console.error('!!! ERROR generating version.json:', err);
+        }
       }
     },
     VitePWA({
