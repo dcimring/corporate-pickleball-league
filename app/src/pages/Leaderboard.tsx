@@ -114,14 +114,14 @@ export const Leaderboard: React.FC = () => {
         initial={{ opacity: 0, y: -5 }}
         animate={{ opacity: 1, y: 0 }}
         key={`ribbon-${activeDivision}-${latestMatchDate}`}
-        className="w-full py-2 border-y border-brand-blue/20 flex items-center justify-center bg-transparent"
+        className="w-full py-1 border-y border-brand-blue/20 flex items-center justify-center bg-transparent"
       >
         <p className="text-[10px] md:text-sm font-heading font-black italic tracking-[0.15em] text-brand-blue uppercase text-center">
             {latestMatchDate ? `Matches through ${formatDate(latestMatchDate)} included` : 'No matches recorded'}
         </p>
       </motion.div>
 
-      <div className="space-y-2 px-0 md:px-4">
+      <div className="space-y-2 px-0 md:px-4 mt-5">
         <TeamFilterHint />
         <LeaderboardTable stats={stats} onTeamClick={handleTeamClick} />
         

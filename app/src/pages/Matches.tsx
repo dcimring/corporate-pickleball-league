@@ -73,7 +73,7 @@ export const Matches: React.FC = () => {
   ];
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-2">
       <Navigation 
         pageTabs={pageTabs} 
         activePage="/matches" 
@@ -100,9 +100,9 @@ export const Matches: React.FC = () => {
         </div>
       )}
 
-      <TeamFilterHint className="mx-4" />
+      <TeamFilterHint className="mx-4 mt-5" />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4 pb-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4 pb-4 mt-5">
         {matches.length > 0 ? (
           matches.map((match) => (
             <MatchCard key={match.id} match={match} onTeamClick={handleTeamClick} />
