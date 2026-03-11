@@ -137,3 +137,4 @@ __pycache__/
 \n# Database Backups
 backups/
 .vercel
+version.json
