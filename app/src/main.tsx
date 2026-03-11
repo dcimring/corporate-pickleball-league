@@ -9,18 +9,21 @@ console.log('App Build ID:', __BUILD_ID__);
 // This actively unregisters any Service Worker to prevent "sticky cache" issues
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.getRegistrations().then((registrations) => {
-    for (const registration of registrations) {
-      registration.unregister();
-      console.log('SW Kill Switch: Unregistered worker at', registration.active?.scriptURL);
-    }
-    // Also clear all caches for maximum cleanliness
     if (registrations.length > 0) {
-      window.caches.keys().then((names) => {
-        for (const name of names) {
-          window.caches.delete(name);
-        }
+      const promises = registrations.map(registration => {
+        console.log('SW Kill Switch: Unregistering worker at', registration.active?.scriptURL);
+        return registration.unregister();
       });
-      console.log('SW Kill Switch: All caches cleared.');
+      
+      Promise.all(promises).then(() => {
+        // Also clear all caches for maximum cleanliness
+        return window.caches.keys().then((names) => {
+          return Promise.all(names.map(name => window.caches.delete(name)));
+        });
+      }).then(() => {
+        console.log('SW Kill Switch: All workers unregistered and caches cleared. Reloading...');
+        window.location.reload();
+      });
     }
   });
 }
