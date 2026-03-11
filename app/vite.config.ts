@@ -1,6 +1,5 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import { VitePWA } from 'vite-plugin-pwa'
 import fs from 'node:fs'
 import path from 'node:path'
 
@@ -49,57 +48,7 @@ export default defineConfig({
           console.error('!!! ERROR generating version.json:', err);
         }
       }
-    },
-    VitePWA({
-      registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
-      manifest: {
-        name: 'Pickleball Cayman Corporate League',
-        short_name: 'Corporate League',
-        description: 'Latest standings and results for the Corporate Pickleball League.',
-        theme_color: '#005596',
-        icons: [
-          {
-            src: 'pwa-192x192.png',
-            sizes: '192x192',
-            type: 'image/png'
-          },
-          {
-            src: 'pwa-512x512.png',
-            sizes: '512x512',
-            type: 'image/png'
-          }
-        ]
-      },
-      workbox: {
-        cleanupOutdatedCaches: true,
-        // Exclude version.json from precache so it always hits the network/Vercel
-        globIgnores: ['**/version.json'],
-        // Explicitly set what to precache
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,webmanifest,json}'],
-        runtimeCaching: [
-          {
-            urlPattern: ({ url }) => url.pathname === '/' || url.pathname === '/index.html',
-            handler: 'NetworkFirst',
-            options: {
-              cacheName: 'index-cache',
-              expiration: {
-                maxEntries: 1,
-              },
-            },
-          },
-        ],
-        // Root Cause Fix: Prevent SW from ever returning index.html for these paths
-        navigateFallbackDenylist: [
-          /^\/version\.json/,
-          /\.json$/,
-          /\.png$/,
-          /\.jpg$/,
-          /\.svg$/,
-          /^\/api\//
-        ],
-      }
-    })
+    }
   ],
   build: {
     cssCodeSplit: false, // Force single CSS file
