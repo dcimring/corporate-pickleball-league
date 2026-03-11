@@ -6,49 +6,61 @@ export const UpdateBanner: React.FC = () => {
   const [needRefresh, setNeedRefresh] = useState(false);
   // Source of truth for the version currently running in the browser
   const initialVersionRef = useRef<string>(String(__BUILD_ID__));
-  
-  // 10-Minute Heartbeat Check
-  useEffect(() => {
-    const checkInterval = 600000; // 10 minutes
-    
-    const interval = setInterval(async () => {
-      // Version.json Polling
-      try {
-        console.log('UpdateBanner: Checking for updates via /version.json...');
-        const response = await fetch('/version.json?t=' + Date.now());
-        
-        // Ensure it is truly a JSON response and not an HTML rewrite
-        const contentType = response.headers.get('content-type');
-        if (!response.ok || !contentType || !contentType.includes('application/json')) {
-          console.warn('UpdateBanner: Received invalid version response (not JSON or error).');
-          return;
-        }
+  const lastCheckRef = useRef<number>(0);
+  const THROTTLE_MS = 120000; // 2 minutes
 
-        const data = await response.json();
-        
-        // Verify data structure is as expected
-        if (!data || typeof data.version === 'undefined') {
-          console.warn('UpdateBanner: Received malformed version.json.');
-          return;
-        }
+  const checkForUpdates = async () => {
+    const now = Date.now();
+    if (now - lastCheckRef.current < THROTTLE_MS) {
+      return;
+    }
+    lastCheckRef.current = now;
 
-        const currentVersion = String(data.version);
-        
-        // Skip check if we're in development mode (placeholder version.json)
-        if (currentVersion === 'DEV') {
-          return;
-        }
-
-        if (currentVersion !== initialVersionRef.current) {
-          console.log('UpdateBanner: New version detected! (Current:', currentVersion, 'Initial:', initialVersionRef.current, ')');
-          setNeedRefresh(true);
-        }
-      } catch (e) {
-        console.warn('UpdateBanner: Update check failed.', e);
+    try {
+      console.log('UpdateBanner: Checking for updates via /version.json...');
+      const response = await fetch('/version.json?t=' + now);
+      
+      const contentType = response.headers.get('content-type');
+      if (!response.ok || !contentType || !contentType.includes('application/json')) {
+        console.warn('UpdateBanner: Received invalid version response.');
+        return;
       }
-    }, checkInterval);
 
-    return () => clearInterval(interval);
+      const data = await response.json();
+      if (!data || typeof data.version === 'undefined') {
+        console.warn('UpdateBanner: Received malformed version.json.');
+        return;
+      }
+
+      const currentVersion = String(data.version);
+      
+      if (currentVersion === 'DEV') {
+        return;
+      }
+
+      if (currentVersion !== initialVersionRef.current) {
+        console.log('UpdateBanner: New version detected! (Current:', currentVersion, 'Initial:', initialVersionRef.current, ')');
+        setNeedRefresh(true);
+      }
+    } catch (e) {
+      console.warn('UpdateBanner: Update check failed.', e);
+    }
+  };
+  
+  // Triggers: On Load and On Visibility Change
+  useEffect(() => {
+    // 1. Initial check on mount
+    checkForUpdates();
+
+    // 2. Check when user returns to the tab
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        checkForUpdates();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
   }, []);
 
   const handleRefresh = () => {
