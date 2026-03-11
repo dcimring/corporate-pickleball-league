@@ -83,49 +83,26 @@ export const Matches: React.FC = () => {
         onDivisionChange={handleDivisionChange} 
       />
 
-      {/* Active Filter Banner with Filter Pop animation */}
-      <AnimatePresence mode="wait">
-        {selectedTeam && (
-          <motion.div 
-            key="filter-banner"
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.8, opacity: 0 }}
-            transition={{ type: "spring", stiffness: 500, damping: 30 }}
-            className="px-4 flex justify-center"
+      {/* Active Filter Banner */}
+      {selectedTeam && (
+        <div className="px-4 flex justify-center">
+          <button 
+            onClick={handleClearFilter}
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-brand-blue text-white rounded-full shadow-md hover:bg-brand-blue/90 hover:-translate-y-0.5 transition-all group"
           >
-            <button 
-              onClick={handleClearFilter}
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-brand-blue text-white rounded-full shadow-md hover:bg-brand-blue/90 hover:-translate-y-0.5 transition-all group relative overflow-hidden"
-            >
-              {/* Subtle background flash effect on entrance */}
-              <motion.div 
-                initial={{ x: '-100%' }}
-                animate={{ x: '100%' }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                className="absolute inset-0 bg-white/20 skew-x-12 pointer-events-none"
-              />
-              <span className="font-heading font-black italic uppercase text-sm tracking-widest relative z-10">
-                {selectedTeam}
-              </span>
-              <div className="bg-white/20 rounded-full p-0.5 group-hover:bg-white/30 relative z-10">
-                <X className="w-4 h-4" />
-              </div>
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            <span className="font-heading font-black italic uppercase text-sm tracking-widest">
+              {selectedTeam}
+            </span>
+            <div className="bg-white/20 rounded-full p-0.5 group-hover:bg-white/30">
+              <X className="w-4 h-4" />
+            </div>
+          </button>
+        </div>
+      )}
 
       <TeamFilterHint className="mx-4" />
 
-      {/* Kinetic Entrance for match list */}
-      <motion.div 
-        key={`${activeDivision}-${selectedTeam}`}
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.4, ease: "easeOut" }}
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4 pb-4"
-      >
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4 pb-4">
         {matches.length > 0 ? (
           matches.map((match) => (
             <MatchCard key={match.id} match={match} onTeamClick={handleTeamClick} />
@@ -148,7 +125,7 @@ export const Matches: React.FC = () => {
             )}
           </div>
         )}
-      </motion.div>
+      </div>
     </div>
   );
 };
