@@ -8,12 +8,8 @@
   ],
   "headers": [
     {
-      "source": "/index.html",
+      "source": "/(.*)", 
       "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "no-cache, no-store, must-revalidate"
-        },
         {
           "key": "Clear-Site-Data",
           "value": "\"cache\""
@@ -21,29 +17,11 @@
       ]
     },
     {
-      "source": "/version.json",
+      "source": "/(sw|service-worker|version).json",
       "headers": [
         {
           "key": "Cache-Control",
           "value": "no-cache, no-store, must-revalidate"
-        }
-      ]
-    },
-    {
-      "source": "/sw.js",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=0, must-revalidate"
-        }
-      ]
-    },
-    {
-      "source": "/service-worker.js",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=0, must-revalidate"
         }
       ]
     },
