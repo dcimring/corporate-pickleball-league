@@ -1,56 +1,26 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { RefreshCw, X } from 'lucide-react';
-import { useRegisterSW } from 'virtual:pwa-register/react';
 
 export const UpdateBanner: React.FC = () => {
-  const registrationRef = useRef<ServiceWorkerRegistration | null>(null);
-  // Priority 1: Use the build-time defined ID as the source of truth for current version
+  const [needRefresh, setNeedRefresh] = useState(false);
+  // Source of truth for the version currently running in the browser
   const initialVersionRef = useRef<string>(String(__BUILD_ID__));
-  const [isFallbackMode, setIsFallbackMode] = useState(false);
   
-  const {
-    needRefresh: [needRefresh, setNeedRefresh],
-    updateServiceWorker,
-  } = useRegisterSW({
-    onRegistered(r) {
-      if (r) {
-        registrationRef.current = r;
-        console.log('UpdateBanner: SW Registered (Build ID:', __BUILD_ID__, ')');
-      }
-    },
-    onNeedRefresh() {
-      console.log('UpdateBanner: Service Worker detected a new version is available (prompt mode).');
-      setNeedRefresh(true);
-    },
-    onRegisterError(error) {
-      // SW often fails in cross-origin iframes
-      console.warn('UpdateBanner: SW registration blocked/failed. Entering fallback mode.', error);
-      setIsFallbackMode(true);
-    },
-  });
-
   // 10-Minute Heartbeat Check
   useEffect(() => {
     const checkInterval = 600000; // 10 minutes
     
     const interval = setInterval(async () => {
-      // Priority 1: Service Worker Update (Direct View)
-      if (registrationRef.current) {
-        console.log('UpdateBanner: Heartbeat check via Service Worker update()...');
-        registrationRef.current.update();
-        return;
-      }
-
-      // Priority 2: Version.json Polling (Iframe Fallback)
+      // Version.json Polling
       try {
-        console.log('UpdateBanner: Heartbeat check via version.json fallback...');
+        console.log('UpdateBanner: Checking for updates via /version.json...');
         const response = await fetch('/version.json?t=' + Date.now());
         
         // Ensure it is truly a JSON response and not an HTML rewrite
         const contentType = response.headers.get('content-type');
         if (!response.ok || !contentType || !contentType.includes('application/json')) {
-          console.warn('UpdateBanner: Received invalid version response (not JSON or error). Skipping check.');
+          console.warn('UpdateBanner: Received invalid version response (not JSON or error).');
           return;
         }
 
@@ -58,7 +28,7 @@ export const UpdateBanner: React.FC = () => {
         
         // Verify data structure is as expected
         if (!data || typeof data.version === 'undefined') {
-          console.warn('UpdateBanner: Received malformed version.json. Skipping check.');
+          console.warn('UpdateBanner: Received malformed version.json.');
           return;
         }
 
@@ -66,37 +36,24 @@ export const UpdateBanner: React.FC = () => {
         
         // Skip check if we're in development mode (placeholder version.json)
         if (currentVersion === 'DEV') {
-          console.log('UpdateBanner: Detected development version.json, skipping fallback check.');
           return;
         }
 
         if (currentVersion !== initialVersionRef.current) {
-          console.log('UpdateBanner: New version detected via fallback! (Current:', currentVersion, 'Initial:', initialVersionRef.current, ')');
+          console.log('UpdateBanner: New version detected! (Current:', currentVersion, 'Initial:', initialVersionRef.current, ')');
           setNeedRefresh(true);
-          setIsFallbackMode(true);
         }
       } catch (e) {
-        console.warn('UpdateBanner: Heartbeat fallback check failed.', e);
+        console.warn('UpdateBanner: Update check failed.', e);
       }
     }, checkInterval);
 
     return () => clearInterval(interval);
-  }, [setNeedRefresh]);
+  }, []);
 
-  const handleRefresh = async () => {
+  const handleRefresh = () => {
     console.log('UpdateBanner: User triggered application refresh.');
-    
-    if (isFallbackMode) {
-      window.location.reload();
-      return;
-    }
-
-    try {
-      await updateServiceWorker(true);
-    } catch (e) {
-      console.error('UpdateBanner: SW Refresh failed, triggering manual reload.', e);
-      window.location.reload();
-    }
+    window.location.reload();
   };
 
   const handleClose = (e: React.MouseEvent) => {
