@@ -78,9 +78,10 @@ npm run lint
     -   Styles: ExtraBold Italic for headings, Monospace for data.
 
 ### Data Management
--   **Fetching:** Data is fetched from Supabase via `src/context/LeagueContext.tsx` with a 5-second timeout.
--   **Error Handling:** Initial connection failures trigger a dedicated error screen. Background refreshes fail silently to preserve the user experience.
--   **Performance:** Front-loaded data pattern ensures instant navigation between tabs.
+- **Fetching:** Data is fetched from Supabase via `src/context/LeagueContext.tsx` with a 5-second timeout.
+- **Error Handling:** Initial connection failures trigger a dedicated error screen. Background refreshes fail silently to preserve the user experience.
+- **Updates:** The application checks for new versions on initial load and whenever the tab becomes visible (visibilitychange), with a 2-minute throttle.
+- **Performance:** Front-loaded data pattern ensures instant navigation between tabs.
 
 ### Components
 -   **Functional Components:** Use React functional components with TypeScript interfaces for props.

@@ -3,33 +3,31 @@
 This document outlines the strategy for ensuring users always have the latest version of the application code, even if they keep the browser tab open for extended periods.
 
 ## Current Behavior
-- Code updates are handled by a Service Worker (PWA).
-- Checks currently only occur on initial load or browser-triggered background events.
-- There is no scheduled "heartbeat" to check for new code while the app is active.
+- **Service Workers Removed**: Service workers have been completely removed and replaced with a "Kill Switch" to prevent sticky cache issues.
+- **Event-Driven Checks**: Updates are no longer checked on a 10-minute heartbeat. Instead, the app checks for updates at key "natural" moments.
 
-## Planned Strategy: Dual-Mode Heartbeat
-To proactively notify users of new versions, we are implementing a scheduled background check that adapts to its environment (Standalone vs. Iframe).
+## Update Strategy: Event-Driven Lifecycle
+To ensure users are notified of new versions without unnecessary background polling, the `UpdateBanner` uses specific lifecycle triggers.
 
-### 1. Mode Shift: 'autoUpdate' to 'prompt'
-- **File**: `app/vite.config.ts`
-- **Change**: Set `registerType: 'prompt'`.
-- **Reason**: This allows the `UpdateBanner` component to intercept the update signal and display a user-friendly notification.
+### 1. Version Source of Truth
+- **File**: `public/version.json`
+- **Mechanism**: A Vite plugin generates this file on every build, containing a unique `buildId` (timestamp) and `builtAt` ISO string.
+- **Cache Busting**: Every fetch to `version.json` appends a unique timestamp (`?t=...`) to bypass browser and CDN caching.
 
-### 2. Implementation of the Heartbeat
-- **File**: `app/src/components/UpdateBanner.tsx`
-- **Standalone Mode**: Uses the Service Worker's `update()` method (Most efficient).
-- **Iframe Fallback Mode**: 
-    - Service Workers are often blocked in cross-origin iframes.
-    - The app generates a `public/version.json` file on every build (configured in `package.json`).
-    - The heartbeat polls this JSON file every 10 minutes and compares the build timestamp.
-    - If a mismatch is detected, the banner is shown.
+### 2. Triggering the Check
+The check is performed in the following scenarios:
+- **On Mount (Page Load)**: When the application first initializes in the browser.
+- **On Visibility Change (Tab Resume)**: When the user switches back to the browser tab after it has been in the background or the device wakes from sleep.
 
-### 3. User Experience
-- When an update is found, the `UpdateBanner` slides down from the top of the screen.
-- Clicking the banner triggers a swap (Standalone) or a hard reload (Iframe).
-- This ensures users are aware of improvements and fixes without interrupting their current session.
+### 3. Throttling
+- **Interval**: 2 Minutes (120,000ms)
+- **Reason**: To prevent redundant network requests if a user rapidly toggles between tabs or apps, the check is throttled so it won't fire more than once every 2 minutes.
+
+### 4. User Experience
+- **Notification**: When a version mismatch is detected between the running app and the server's `version.json`, the `UpdateBanner` slides down from the top.
+- **Action**: Clicking the banner performs a `window.location.reload()`, which, combined with the `Clear-Site-Data: "cache"` header in `vercel.json`, ensures the new version is fetched immediately.
 
 ## Configuration Details
-- **Interval**: 10 Minutes (600,000ms)
-- **Primary Signal**: Service Worker `update()`
-- **Fallback Signal**: `version.json` fetch with cache-busting timestamp.
+- **Primary Signal**: `version.json` fetch.
+- **Local Dev**: In development mode, `version.json` is set to `"version": "DEV"` to suppress the update banner.
+- **Server Headers**: `vercel.json` is configured to serve `index.html` and `version.json` with `no-cache, no-store, must-revalidate`.
