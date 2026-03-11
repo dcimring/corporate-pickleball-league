@@ -45,7 +45,7 @@ export const Navigation: React.FC<NavigationProps> = ({
   };
 
   return (
-    <div className="flex flex-col gap-2 px-6 md:px-0">
+    <div className="flex flex-col gap-8 px-6 md:px-0 mb-6">
       {/* Page Tabs (Underline Glow) */}
       <div className="flex items-center gap-8 pb-px justify-center">
         {pageTabs.map((tab) => {
