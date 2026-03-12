@@ -30,6 +30,7 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
             <div className="w-12 md:w-16 text-center">W-L</div>
             <div className="w-10 md:w-14 text-center">%</div>
             <div className="w-12 md:w-16 text-center">PF</div>
+            <div className="hidden md:block w-12 md:w-16 text-center">PA</div>
             <div className="hidden md:block w-16 text-right">DIFF</div>
         </div>
       </div>
@@ -86,9 +87,14 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
                   {(entry.winPct * 100).toFixed(0)}%
                 </div>
 
-                {/* PTS */}
+                {/* PF */}
                 <div className="w-12 md:w-16 text-center font-mono font-black text-[11px] md:text-sm text-gray-600">
                   {entry.pointsFor}
+                </div>
+
+                {/* PA (Desktop Only) */}
+                <div className="hidden md:block w-12 md:w-16 text-center font-mono font-black text-[11px] md:text-sm text-gray-500">
+                  {entry.pointsAgainst}
                 </div>
 
                 {/* DIFF (Desktop Only) */}
