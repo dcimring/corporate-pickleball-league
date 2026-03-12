@@ -183,7 +183,7 @@ const LeaderboardHeader: React.FC<{ isPost: boolean; isSingleColumnPost?: boolea
             <div className="flex items-center">
                 <div className={clsx("text-center", isPost ? (isSingleColumnPost ? "w-24" : "w-14") : "w-32")}>W-L</div>
                 <div className={clsx("text-center", isPost ? (isSingleColumnPost ? "w-24" : "w-12") : "w-32")}>%</div>
-                <div className={clsx("text-center", isPost ? (isSingleColumnPost ? "w-20" : "w-14") : "w-24")}>PTS</div>
+                <div className={clsx("text-center", isPost ? (isSingleColumnPost ? "w-20" : "w-14") : "w-24")}>PF</div>
             </div>
         </div>
     </div>

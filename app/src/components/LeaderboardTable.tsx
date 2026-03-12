@@ -29,7 +29,7 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
         <div className="flex items-center justify-end gap-4 md:gap-6 pr-4 md:pr-8">
             <div className="w-12 md:w-16 text-center">W-L</div>
             <div className="w-10 md:w-14 text-center">%</div>
-            <div className="w-12 md:w-16 text-center">PTS</div>
+            <div className="w-12 md:w-16 text-center">PF</div>
             <div className="hidden md:block w-16 text-right">DIFF</div>
         </div>
       </div>
