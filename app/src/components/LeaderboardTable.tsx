@@ -29,8 +29,8 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
         <div className="flex items-center justify-end gap-4 md:gap-6 pr-4 md:pr-8">
             <div className="w-12 md:w-16 text-center">W-L</div>
             <div className="w-10 md:w-14 text-center">%</div>
-            <div className="w-12 md:w-16 text-center">PF</div>
-            <div className="hidden md:block w-12 md:w-16 text-center">PA</div>
+            <div className="w-12 md:hidden text-center">PF</div>
+            <div className="hidden md:block w-24 text-center">PF-PA</div>
             <div className="hidden md:block w-16 text-right">DIFF</div>
         </div>
       </div>
@@ -87,14 +87,12 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
                   {(entry.winPct * 100).toFixed(0)}%
                 </div>
 
-                {/* PF */}
-                <div className="w-12 md:w-16 text-center font-mono font-black text-[11px] md:text-sm text-gray-600">
+                {/* PF / PF-PA */}
+                <div className="w-12 md:hidden text-center font-mono font-black text-[11px] text-gray-600">
                   {entry.pointsFor}
                 </div>
-
-                {/* PA (Desktop Only) */}
-                <div className="hidden md:block w-12 md:w-16 text-center font-mono font-black text-[11px] md:text-sm text-gray-500">
-                  {entry.pointsAgainst}
+                <div className="hidden md:block w-24 text-center font-mono font-black text-sm text-gray-600">
+                  {entry.pointsFor}-{entry.pointsAgainst}
                 </div>
 
                 {/* DIFF (Desktop Only) */}
