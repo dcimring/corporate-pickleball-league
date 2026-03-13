@@ -19,6 +19,7 @@ export const Leaderboard: React.FC = () => {
   const shareCardRef = useRef<HTMLDivElement>(null);
   const shareCardInView = useInView(shareCardRef, { once: true, amount: 0.1 });
   const [shareCardAnimated, setShareCardAnimated] = useState(false);
+  const toastPortalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (shareCardInView) {
@@ -99,7 +100,10 @@ export const Leaderboard: React.FC = () => {
   };
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-2 relative">
+      {/* Portal target for Share Toasts - centered at the bottom of the viewport */}
+      <div ref={toastPortalRef} className="fixed bottom-0 left-0 right-0 z-[300] pointer-events-none flex justify-center pb-6" />
+
       <Navigation 
         pageTabs={pageTabs} 
         activePage="/leaderboard" 
@@ -149,6 +153,7 @@ export const Leaderboard: React.FC = () => {
                 <div className="w-full md:w-auto space-y-2">
                   <ShareButton 
                     targetRef={storyShareRef} 
+                    portalTarget={toastPortalRef}
                     buttonLabel="Story Format"
                     fileName={`LRP-Pickleball-Leaderboard-Story-${activeDivision}.jpg`}
                     shareText={`Check out the latest standings for ${activeDivision} in the La Roche Posay Corporate Pickleball League! 🥒🏆`}
@@ -161,6 +166,7 @@ export const Leaderboard: React.FC = () => {
                 <div className="w-full md:w-auto space-y-2">
                   <ShareButton 
                     targetRef={postShareRef} 
+                    portalTarget={toastPortalRef}
                     buttonLabel="Post Format"
                     fileName={`LRP-Pickleball-Leaderboard-Post-${activeDivision}.jpg`}
                     shareText={`We're climbing the leaderboard in the La Roche Posay Corporate Pickleball League! 🔥`}
@@ -173,6 +179,7 @@ export const Leaderboard: React.FC = () => {
                 <div className="w-full md:w-auto space-y-2">
                   <ShareButton 
                     targetRef={storyShareRef} 
+                    portalTarget={toastPortalRef}
                     buttonLabel="WhatsApp"
                     fileName={`LRP-Pickleball-Leaderboard-WA-${activeDivision}.jpg`}
                     shareText={`Check out the ${activeDivision} standings! 🥒🏆\n\nSee more at: pickleball.ky`}

@@ -69,7 +69,6 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
   const triggerToast = (config: ToastConfig) => {
     setToastConfig(config);
     setShowToast(true);
-    // Haptic feedback if supported (vibrate for 50ms)
     if (typeof navigator !== 'undefined' && navigator.vibrate) {
       navigator.vibrate(50);
     }
@@ -85,7 +84,6 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
       setLoading(true);
       onShareStart?.();
 
-      // Wait a tick to ensure any hidden/rendering states are ready if needed
       await new Promise(resolve => setTimeout(resolve, 200));
 
       const exportOptions = {
@@ -110,7 +108,6 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
       const uniqueFileName = `${baseName}-${timestamp}.${extension}`;
       const file = new File([blob], uniqueFileName, { type: imageFormat === 'jpeg' ? 'image/jpeg' : 'image/png' });
 
-      // Check if we are on a mobile/tablet device
       const isMobileOrTablet = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
                               (navigator.maxTouchPoints > 0 && window.innerWidth < 1024);
 
@@ -122,20 +119,17 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
             text: shareText,
           });
           
-          // Mobile Success Feedback - AFTER successful share
           triggerToast({
             title: 'Shared Successfully!',
             message: 'Your league image has been shared.',
             icon: 'share'
           });
         } catch (shareErr) {
-          // Check for AbortError (user cancelled) - don't show toast then
           if (shareErr instanceof Error && shareErr.name !== 'AbortError') {
             console.error('Web Share failed:', shareErr);
           }
         }
       } else {
-        // Desktop or forced download: Trigger download
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.download = uniqueFileName;
@@ -143,7 +137,6 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
         link.click();
         URL.revokeObjectURL(url);
 
-        // Desktop Success Feedback
         if (!isMobileOrTablet) {
           triggerToast({
             title: 'Image Downloaded!',
@@ -154,7 +147,6 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
       }
     } catch (err) {
       console.error('Sharing failed:', err);
-      // Fallback for some browsers/contexts where share API might fail mid-flight
       alert('Could not share directly. Try taking a screenshot!');
     } finally {
       setLoading(false);
@@ -172,7 +164,7 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
     <AnimatePresence mode="wait">
       {showToast && (
         <Toast 
-          key={`toast-${fileName}-${Date.now()}`}
+          key={`toast-${fileName}`}
           show={true} 
           onClose={() => setShowToast(false)} 
           position={toastPosition}
@@ -258,14 +250,16 @@ const Toast: React.FC<{
 
   const content = (
     <motion.div
-      initial={{ y: 50, opacity: 0 }}
+      initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      exit={{ y: 50, opacity: 0 }}
-      transition={{ type: "spring", damping: 20, stiffness: 100 }}
+      exit={{ y: -20, opacity: 0 }}
+      transition={{ type: "spring", damping: 25, stiffness: 200 }}
       style={{ pointerEvents: 'auto' }}
       className={clsx(
         "z-[9999] w-[320px] md:w-[380px] visible",
-        position === 'fixed' ? "fixed bottom-6 right-6" : "absolute bottom-full right-0 mb-4"
+        portalTarget?.current 
+          ? "mt-4" // Use margin when inside the top-centered portal
+          : (position === 'fixed' ? "fixed bottom-6 right-6" : "absolute bottom-full right-0 mb-4")
       )}
     >
       <div className="bg-brand-blue text-white p-4 md:p-5 rounded-2xl shadow-2xl border-2 border-brand-yellow relative overflow-hidden">

@@ -19,6 +19,7 @@ export const Matches: React.FC = () => {
   // Global Sharing State
   const [sharingMatch, setSharingMatch] = useState<Match | null>(null);
   const [sharingType, setSharingType] = useState<'story' | 'post' | 'wa' | null>(null);
+  const [activeToastTarget, setActiveToastTarget] = useState<React.RefObject<HTMLDivElement | null> | null>(null);
   
   const storyShareRef = useRef<HTMLDivElement>(null);
   const postShareRef = useRef<HTMLDivElement>(null);
@@ -29,8 +30,6 @@ export const Matches: React.FC = () => {
   const desktopPostBtnRef = useRef<ShareButtonHandle>(null);
   const mobileWABtnRef = useRef<ShareButtonHandle>(null);
   const desktopWABtnRef = useRef<ShareButtonHandle>(null);
-
-  const toastPortalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!loading && data.matches) {
@@ -73,9 +72,10 @@ export const Matches: React.FC = () => {
     setSearchParams(newParams);
   };
 
-  const handleShare = (match: Match, type: 'story' | 'post' | 'wa') => {
+  const handleShare = (match: Match, type: 'story' | 'post' | 'wa', toastRef: React.RefObject<HTMLDivElement | null>) => {
     setSharingMatch(match);
     setSharingType(type);
+    setActiveToastTarget(toastRef);
   };
 
   // Trigger share once the match is rendered in the hidden container
@@ -101,8 +101,12 @@ export const Matches: React.FC = () => {
   }, [sharingMatch, sharingType]);
 
   const handleShareEnd = () => {
-    setSharingMatch(null);
-    setSharingType(null);
+    // Keep machinery alive for toast
+    setTimeout(() => {
+        setSharingMatch(null);
+        setSharingType(null);
+        setActiveToastTarget(null);
+    }, 5000);
   };
 
   if (loading || !activeDivision) {
@@ -125,9 +129,6 @@ export const Matches: React.FC = () => {
 
   return (
     <div className="space-y-2 relative">
-      {/* Portal target for Share Toasts - placed at the top of the page viewport */}
-      <div ref={toastPortalRef} className="fixed top-0 left-0 right-0 z-[300] pointer-events-none flex justify-center" />
-
       <Navigation 
         pageTabs={pageTabs} 
         activePage="/matches" 
@@ -203,7 +204,7 @@ export const Matches: React.FC = () => {
               <ShareButton
                 ref={mobileStoryBtnRef}
                 targetRef={storyShareRef}
-                portalTarget={toastPortalRef}
+                portalTarget={activeToastTarget || undefined}
                 hidden
                 toastPosition="fixed"
                 onShareEnd={handleShareEnd}
@@ -212,7 +213,7 @@ export const Matches: React.FC = () => {
               <ShareButton
                 ref={desktopStoryBtnRef}
                 targetRef={storyShareRef}
-                portalTarget={toastPortalRef}
+                portalTarget={activeToastTarget || undefined}
                 hidden
                 preferDownload
                 toastPosition="fixed"
@@ -222,7 +223,7 @@ export const Matches: React.FC = () => {
               <ShareButton
                 ref={mobilePostBtnRef}
                 targetRef={postShareRef}
-                portalTarget={toastPortalRef}
+                portalTarget={activeToastTarget || undefined}
                 hidden
                 toastPosition="fixed"
                 onShareEnd={handleShareEnd}
@@ -231,7 +232,7 @@ export const Matches: React.FC = () => {
               <ShareButton
                 ref={desktopPostBtnRef}
                 targetRef={postShareRef}
-                portalTarget={toastPortalRef}
+                portalTarget={activeToastTarget || undefined}
                 hidden
                 preferDownload
                 toastPosition="fixed"
@@ -241,7 +242,7 @@ export const Matches: React.FC = () => {
               <ShareButton
                 ref={mobileWABtnRef}
                 targetRef={storyShareRef}
-                portalTarget={toastPortalRef}
+                portalTarget={activeToastTarget || undefined}
                 hidden
                 toastPosition="fixed"
                 onShareEnd={handleShareEnd}
@@ -250,7 +251,7 @@ export const Matches: React.FC = () => {
               <ShareButton
                 ref={desktopWABtnRef}
                 targetRef={storyShareRef}
-                portalTarget={toastPortalRef}
+                portalTarget={activeToastTarget || undefined}
                 hidden
                 preferDownload
                 toastPosition="fixed"

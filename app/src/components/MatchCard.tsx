@@ -7,12 +7,13 @@ import type { Match } from '../types';
 interface MatchCardProps {
   match: Match;
   onTeamClick?: (teamName: string) => void;
-  onShare?: (match: Match, type: 'story' | 'post' | 'wa') => void;
+  onShare?: (match: Match, type: 'story' | 'post' | 'wa', toastRef: React.RefObject<HTMLDivElement | null>) => void;
   isSharing?: boolean;
 }
 
 export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick, onShare, isSharing }) => {
   const menuRef = useRef<HTMLDivElement>(null);
+  const toastContainerRef = useRef<HTMLDivElement>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   
   const isWin1 = match.team1Wins > match.team2Wins || (match.team1Wins === match.team2Wins && match.team1Points > match.team2Points);
@@ -52,11 +53,14 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick, onShar
   const handleShareClick = (type: 'story' | 'post' | 'wa') => (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsMenuOpen(false);
-    onShare?.(match, type);
+    onShare?.(match, type, toastContainerRef);
   };
 
   return (
     <div className="w-full relative group hover:-translate-y-1 transition-all duration-300">
+      {/* Toast Portal Target - Centered over the card */}
+      <div ref={toastContainerRef} className="absolute inset-0 z-[100] pointer-events-none flex items-center justify-center p-2" />
+
       {/* Decorative Layer (Clipped Background) */}
       <div className="absolute inset-0 bg-[#FFFEFC] rounded-3xl shadow-xl border border-gray-100 overflow-hidden group-hover:shadow-2xl transition-shadow duration-300">
         {/* Grainy Texture Overlay */}
