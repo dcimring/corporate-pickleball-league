@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Info, X } from 'lucide-react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Navigation } from '../components/Navigation';
@@ -6,12 +6,29 @@ import { MatchCard } from '../components/MatchCard';
 import { TeamFilterHint } from '../components/TeamFilterHint';
 import { LoadingState } from '../components/LoadingState';
 import { useLeagueData } from '../context/LeagueContext';
+import { ShareButton, type ShareButtonHandle } from '../components/ShareButton';
+import { ShareableMatch } from '../components/ShareableMatch';
+import type { Match } from '../types';
 
 export const Matches: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const { data, loading } = useLeagueData();
   const [activeDivision, setActiveDivision] = useState<string>('');
+
+  // Global Sharing State
+  const [sharingMatch, setSharingMatch] = useState<Match | null>(null);
+  const [sharingType, setSharingType] = useState<'story' | 'post' | 'wa' | null>(null);
+  
+  const storyShareRef = useRef<HTMLDivElement>(null);
+  const postShareRef = useRef<HTMLDivElement>(null);
+  
+  const mobileStoryBtnRef = useRef<ShareButtonHandle>(null);
+  const desktopStoryBtnRef = useRef<ShareButtonHandle>(null);
+  const mobilePostBtnRef = useRef<ShareButtonHandle>(null);
+  const desktopPostBtnRef = useRef<ShareButtonHandle>(null);
+  const mobileWABtnRef = useRef<ShareButtonHandle>(null);
+  const desktopWABtnRef = useRef<ShareButtonHandle>(null);
 
   useEffect(() => {
     if (!loading && data.matches) {
@@ -53,6 +70,33 @@ export const Matches: React.FC = () => {
     newParams.set('team', teamName);
     setSearchParams(newParams);
   };
+
+  const handleShare = (match: Match, type: 'story' | 'post' | 'wa') => {
+    setSharingMatch(match);
+    setSharingType(type);
+  };
+
+  // Trigger share once the match is rendered in the hidden container
+  useEffect(() => {
+    if (sharingMatch && sharingType) {
+      // Small delay to ensure React has finished rendering the hidden content
+      const timer = setTimeout(() => {
+        const isDesktop = typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches;
+        
+        if (sharingType === 'story') {
+          if (isDesktop) desktopStoryBtnRef.current?.triggerShare();
+          else mobileStoryBtnRef.current?.triggerShare();
+        } else if (sharingType === 'post') {
+          if (isDesktop) desktopPostBtnRef.current?.triggerShare();
+          else mobilePostBtnRef.current?.triggerShare();
+        } else if (sharingType === 'wa') {
+          if (isDesktop) desktopWABtnRef.current?.triggerShare();
+          else mobileWABtnRef.current?.triggerShare();
+        }
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [sharingMatch, sharingType]);
 
   if (loading || !activeDivision) {
     return <LoadingState />;
@@ -105,7 +149,13 @@ export const Matches: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4 pb-4 mt-5">
         {matches.length > 0 ? (
           matches.map((match) => (
-            <MatchCard key={match.id} match={match} onTeamClick={handleTeamClick} />
+            <MatchCard 
+              key={match.id} 
+              match={match} 
+              onTeamClick={handleTeamClick} 
+              onShare={handleShare}
+              isSharing={sharingMatch?.id === match.id}
+            />
           ))
         ) : (
           <div className="col-span-full p-12 text-center flex flex-col items-center justify-center gap-4 text-gray-400 bg-white rounded-2xl border border-gray-100">
@@ -125,6 +175,68 @@ export const Matches: React.FC = () => {
             )}
           </div>
         )}
+      </div>
+
+      {/* GLOBAL SHARE PORTAL (Hidden from view) */}
+      <div className="fixed left-[-9999px] top-[-9999px] invisible pointer-events-none">
+          {sharingMatch && (
+            <>
+              {/* Target Containers for html-to-image */}
+              <div ref={storyShareRef} className="w-fit">
+                  <ShareableMatch match={sharingMatch} layout="story" />
+              </div>
+              <div ref={postShareRef} className="w-fit">
+                  <ShareableMatch match={sharingMatch} layout="post" />
+              </div>
+
+              {/* Machinery */}
+              <ShareButton
+                ref={mobileStoryBtnRef}
+                targetRef={storyShareRef}
+                hidden
+                onShareEnd={() => { setSharingMatch(null); setSharingType(null); }}
+                fileName={`LRP-Match-${sharingMatch.team1}-vs-${sharingMatch.team2}-story.jpg`}
+              />
+              <ShareButton
+                ref={desktopStoryBtnRef}
+                targetRef={storyShareRef}
+                hidden
+                preferDownload
+                onShareEnd={() => { setSharingMatch(null); setSharingType(null); }}
+                fileName={`LRP-Match-${sharingMatch.team1}-vs-${sharingMatch.team2}-story.jpg`}
+              />
+              <ShareButton
+                ref={mobilePostBtnRef}
+                targetRef={postShareRef}
+                hidden
+                onShareEnd={() => { setSharingMatch(null); setSharingType(null); }}
+                fileName={`LRP-Match-${sharingMatch.team1}-vs-${sharingMatch.team2}-post.jpg`}
+              />
+              <ShareButton
+                ref={desktopPostBtnRef}
+                targetRef={postShareRef}
+                hidden
+                preferDownload
+                onShareEnd={() => { setSharingMatch(null); setSharingType(null); }}
+                fileName={`LRP-Match-${sharingMatch.team1}-vs-${sharingMatch.team2}-post.jpg`}
+              />
+              <ShareButton
+                ref={mobileWABtnRef}
+                targetRef={storyShareRef}
+                hidden
+                onShareEnd={() => { setSharingMatch(null); setSharingType(null); }}
+                fileName={`LRP-Match-WA-${sharingMatch.team1}-vs-${sharingMatch.team2}.jpg`}
+              />
+              <ShareButton
+                ref={desktopWABtnRef}
+                targetRef={storyShareRef}
+                hidden
+                preferDownload
+                onShareEnd={() => { setSharingMatch(null); setSharingType(null); }}
+                fileName={`LRP-Match-WA-${sharingMatch.team1}-vs-${sharingMatch.team2}.jpg`}
+              />
+            </>
+          )}
       </div>
     </div>
   );

@@ -9,20 +9,12 @@ import { ShareableMatch } from './ShareableMatch';
 interface MatchCardProps {
   match: Match;
   onTeamClick?: (teamName: string) => void;
+  onShare?: (match: Match, type: 'story' | 'post' | 'wa') => void;
+  isSharing?: boolean;
 }
 
-export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
-  const storyShareRef = useRef<HTMLDivElement>(null);
-  const postShareRef = useRef<HTMLDivElement>(null);
+export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick, onShare, isSharing }) => {
   const menuRef = useRef<HTMLDivElement>(null);
-  const mobileStoryShareButtonRef = useRef<ShareButtonHandle>(null);
-  const desktopStoryShareButtonRef = useRef<ShareButtonHandle>(null);
-  const mobilePostShareButtonRef = useRef<ShareButtonHandle>(null);
-  const desktopPostShareButtonRef = useRef<ShareButtonHandle>(null);
-  const mobileWhatsAppShareButtonRef = useRef<ShareButtonHandle>(null);
-  const desktopWhatsAppShareButtonRef = useRef<ShareButtonHandle>(null);
-
-  const [loadingType, setLoadingType] = useState<'story' | 'post' | 'wa' | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   
   const isWin1 = match.team1Wins > match.team2Wins || (match.team1Wins === match.team2Wins && match.team1Points > match.team2Points);
@@ -59,37 +51,10 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
     };
   }, [isMenuOpen]);
 
-  const handleShareStory = (e: React.MouseEvent) => {
+  const handleShareClick = (type: 'story' | 'post' | 'wa') => (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsMenuOpen(false);
-    const isDesktop = typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches;
-    if (isDesktop) {
-      desktopStoryShareButtonRef.current?.triggerShare();
-    } else {
-      mobileStoryShareButtonRef.current?.triggerShare();
-    }
-  };
-
-  const handleSharePost = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIsMenuOpen(false);
-    const isDesktop = typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches;
-    if (isDesktop) {
-      desktopPostShareButtonRef.current?.triggerShare();
-    } else {
-      mobilePostShareButtonRef.current?.triggerShare();
-    }
-  };
-
-  const handleShareWhatsApp = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIsMenuOpen(false);
-    const isDesktop = typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches;
-    if (isDesktop) {
-      desktopWhatsAppShareButtonRef.current?.triggerShare();
-    } else {
-      mobileWhatsAppShareButtonRef.current?.triggerShare();
-    }
+    onShare?.(match, type);
   };
 
   return (
@@ -177,13 +142,13 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
                       <div className="relative" ref={menuRef}>
                           <button 
                             onClick={() => setIsMenuOpen(!isMenuOpen)}
-                            disabled={loadingType !== null}
+                            disabled={isSharing}
                             className={clsx(
                                 "flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0",
                                 isMenuOpen ? "bg-brand-yellow text-brand-blue" : "bg-brand-blue text-white"
                             )}
                           >
-                              {loadingType !== null ? (
+                              {isSharing ? (
                                   <Loader2 className="w-3.5 h-3.5 animate-spin" />
                               ) : (
                                   <>
@@ -203,21 +168,21 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
                                   >
                                       <div className="p-1.5 flex flex-col gap-1">
                                           <button 
-                                              onClick={handleShareStory}
+                                              onClick={handleShareClick('story')}
                                               className="flex items-center gap-3 w-full px-4 py-2.5 rounded-xl hover:bg-brand-gray text-brand-blue transition-colors group"
                                           >
                                               <Instagram className="w-5 h-5 text-brand-blue group-hover:scale-110 transition-transform" />
                                               <span className="font-heading font-bold uppercase text-xs tracking-widest text-left">Story</span>
                                           </button>
                                           <button 
-                                              onClick={handleSharePost}
+                                              onClick={handleShareClick('post')}
                                               className="flex items-center gap-3 w-full px-4 py-2.5 rounded-xl hover:bg-brand-gray text-brand-blue transition-colors group"
                                           >
                                               <ImageIcon className="w-5 h-5 text-brand-blue group-hover:scale-110 transition-transform" />
                                               <span className="font-heading font-bold uppercase text-xs tracking-widest text-left">Post</span>
                                           </button>
                                           <button 
-                                              onClick={handleShareWhatsApp}
+                                              onClick={handleShareClick('wa')}
                                               className="flex items-center gap-3 w-full px-4 py-2.5 rounded-xl hover:bg-[#25D366]/5 text-[#25D366] transition-colors group"
                                           >
                                               <MessageCircle className="w-5 h-5 fill-[#25D366] group-hover:scale-110 transition-transform" />
@@ -231,80 +196,6 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
                   </div>
               </div>
           </div>
-      </div>
-
-      {/* Actual ShareButtons (Anchoring point for Absolute Toasts) */}
-      <div className="absolute right-4 bottom-4 w-0 h-0 overflow-visible z-[100] pointer-events-none">
-          <ShareButton
-            ref={mobileStoryShareButtonRef}
-            targetRef={storyShareRef}
-            hidden
-            toastPosition="absolute"
-            onShareStart={() => setLoadingType('story')}
-            onShareEnd={() => setLoadingType(null)}
-            fileName={`LRP-Pickleball-Match-${match.team1}-vs-${match.team2}-story.jpg`}
-            shareText={`Match result: ${match.team1} vs ${match.team2}! 🥒🏆\n\nFull stats at pickleball.ky`}
-          />
-          <ShareButton
-            ref={desktopStoryShareButtonRef}
-            targetRef={storyShareRef}
-            hidden
-            toastPosition="absolute"
-            onShareStart={() => setLoadingType('story')}
-            onShareEnd={() => setLoadingType(null)}
-            fileName={`LRP-Pickleball-Match-${match.team1}-vs-${match.team2}-story.jpg`}
-            preferDownload
-          />
-          <ShareButton
-            ref={mobilePostShareButtonRef}
-            targetRef={postShareRef}
-            hidden
-            toastPosition="absolute"
-            onShareStart={() => setLoadingType('post')}
-            onShareEnd={() => setLoadingType(null)}
-            fileName={`LRP-Pickleball-Match-${match.team1}-vs-${match.team2}-post.jpg`}
-            shareText={`Pickleball Match Result: ${match.team1} vs ${match.team2}! 🔥`}
-          />
-          <ShareButton
-            ref={desktopPostShareButtonRef}
-            targetRef={postShareRef}
-            hidden
-            toastPosition="absolute"
-            onShareStart={() => setLoadingType('post')}
-            onShareEnd={() => setLoadingType(null)}
-            fileName={`LRP-Pickleball-Match-${match.team1}-vs-${match.team2}-post.jpg`}
-            preferDownload
-          />
-          <ShareButton
-            ref={mobileWhatsAppShareButtonRef}
-            targetRef={storyShareRef}
-            hidden
-            toastPosition="absolute"
-            onShareStart={() => setLoadingType('wa')}
-            onShareEnd={() => setLoadingType(null)}
-            fileName={`LRP-Pickleball-Match-WA-${match.team1}-vs-${match.team2}.jpg`}
-            shareText={`Check out this match result! 🥒🏆\n\n${match.team1} vs ${match.team2}\n\nSee the schedule: pickleball.ky`}
-          />
-          <ShareButton
-            ref={desktopWhatsAppShareButtonRef}
-            targetRef={storyShareRef}
-            hidden
-            toastPosition="absolute"
-            onShareStart={() => setLoadingType('wa')}
-            onShareEnd={() => setLoadingType(null)}
-            fileName={`LRP-Pickleball-Match-WA-${match.team1}-vs-${match.team2}.jpg`}
-            preferDownload
-          />
-      </div>
-
-      {/* Hidden Shareable Content */}
-      <div className="absolute left-[-9999px] top-[-9999px] w-max">
-        <div ref={storyShareRef} className="w-fit">
-            <ShareableMatch match={match} layout="story" />
-        </div>
-        <div ref={postShareRef} className="w-fit">
-            <ShareableMatch match={match} layout="post" />
-        </div>
       </div>
     </div>
   );
