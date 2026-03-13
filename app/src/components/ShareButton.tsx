@@ -65,14 +65,16 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
   });
 
   const triggerToast = (config: ToastConfig) => {
-    // Set config first, then show toast to ensure data is present
+    console.log('ShareButton: Triggering toast...', config);
     setToastConfig(config);
     setShowToast(true);
-    // Haptic feedback if supported (vibrate for 50ms)
     if (typeof navigator !== 'undefined' && navigator.vibrate) {
       navigator.vibrate(50);
     }
-    setTimeout(() => setShowToast(false), 6000);
+    setTimeout(() => {
+      console.log('ShareButton: Auto-hiding toast');
+      setShowToast(false);
+    }, 6000);
   };
 
   const handleShare = async (e?: React.MouseEvent) => {
@@ -249,6 +251,11 @@ const Toast: React.FC<{
   position: 'fixed' | 'absolute';
   config: ToastConfig;
 }> = ({ onClose, position, config }) => {
+  useEffect(() => {
+    console.log('Toast: Component mounted at position', position);
+    return () => console.log('Toast: Component unmounting');
+  }, [position]);
+
   if (typeof document === 'undefined') return null;
 
   const content = (
