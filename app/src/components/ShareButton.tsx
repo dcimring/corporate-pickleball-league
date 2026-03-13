@@ -1,4 +1,4 @@
-import React, { useState, forwardRef, useImperativeHandle, useEffect } from 'react';
+import React, { useState, forwardRef, useImperativeHandle } from 'react';
 import { createPortal } from 'react-dom';
 import { Share2, Loader2, Download, CheckCircle2, X, Smartphone, Share } from 'lucide-react';
 import { toBlob, toJpeg } from 'html-to-image';
