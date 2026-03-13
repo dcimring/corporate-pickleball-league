@@ -1,4 +1,4 @@
-import React, { useState, forwardRef, useImperativeHandle } from 'react';
+import React, { useState, forwardRef, useImperativeHandle, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { Share2, Loader2, Download, CheckCircle2, X, Smartphone, Share } from 'lucide-react';
 import { toBlob, toJpeg } from 'html-to-image';
@@ -65,16 +65,12 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
   });
 
   const triggerToast = (config: ToastConfig) => {
-    console.log('ShareButton: Triggering toast...', config);
     setToastConfig(config);
     setShowToast(true);
     if (typeof navigator !== 'undefined' && navigator.vibrate) {
       navigator.vibrate(50);
     }
-    setTimeout(() => {
-      console.log('ShareButton: Auto-hiding toast');
-      setShowToast(false);
-    }, 6000);
+    setTimeout(() => setShowToast(false), 6000);
   };
 
   const handleShare = async (e?: React.MouseEvent) => {
@@ -251,11 +247,6 @@ const Toast: React.FC<{
   position: 'fixed' | 'absolute';
   config: ToastConfig;
 }> = ({ onClose, position, config }) => {
-  useEffect(() => {
-    console.log('Toast: Component mounted at position', position);
-    return () => console.log('Toast: Component unmounting');
-  }, [position]);
-
   if (typeof document === 'undefined') return null;
 
   const content = (

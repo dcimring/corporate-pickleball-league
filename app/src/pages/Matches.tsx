@@ -99,12 +99,8 @@ export const Matches: React.FC = () => {
   }, [sharingMatch, sharingType]);
 
   const handleShareEnd = () => {
-    // We delay clearing the match so the toast (which is inside ShareButton) 
-    // has time to be seen before the component is unmounted.
-    setTimeout(() => {
-        setSharingMatch(null);
-        setSharingType(null);
-    }, 5000); // Wait 5s before cleaning up the sharing machinery
+    setSharingMatch(null);
+    setSharingType(null);
   };
 
   if (loading || !activeDivision) {
