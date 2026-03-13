@@ -166,9 +166,10 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
   }));
 
   const renderToast = () => (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       {showToast && (
         <Toast 
+          key={`toast-${fileName}-${Date.now()}`}
           show={true} 
           onClose={() => setShowToast(false)} 
           position={toastPosition}
