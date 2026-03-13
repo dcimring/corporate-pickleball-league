@@ -168,12 +168,16 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
   }));
 
   const renderToast = () => (
-    <Toast 
-      show={showToast} 
-      onClose={() => setShowToast(false)} 
-      position={toastPosition}
-      config={toastConfig}
-    />
+    <AnimatePresence>
+      {showToast && (
+        <Toast 
+          show={true} 
+          onClose={() => setShowToast(false)} 
+          position={toastPosition}
+          config={toastConfig}
+        />
+      )}
+    </AnimatePresence>
   );
 
   if (hidden) {
@@ -239,74 +243,68 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
   );
 });
 
-/* Internal Toast Component with Portal/Absolute Support */
 const Toast: React.FC<{ 
   show: boolean; 
   onClose: () => void; 
   position: 'fixed' | 'absolute';
   config: ToastConfig;
-}> = ({ show, onClose, position, config }) => {
+}> = ({ onClose, position, config }) => {
   if (typeof document === 'undefined') return null;
 
   const content = (
-    <AnimatePresence>
-      {show && (
-        <motion.div
-          initial={{ y: 50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: 50, opacity: 0 }}
-          transition={{ type: "spring", damping: 20, stiffness: 100 }}
-          style={{ pointerEvents: 'auto' }}
-          className={clsx(
-            "z-[9999] w-[320px] md:w-[380px] visible",
-            position === 'fixed' ? "fixed bottom-6 right-6" : "absolute bottom-full right-0 mb-4"
-          )}
-        >
-          <div className="bg-brand-blue text-white p-4 md:p-5 rounded-2xl shadow-2xl border-2 border-brand-yellow relative overflow-hidden">
-            {/* Texture Overlay */}
-            <div className="absolute inset-0 opacity-10 pointer-events-none mix-blend-overlay" 
-                 style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")` }} 
-            />
-            
-            <div className="flex gap-3 md:gap-4 relative z-10">
-              <div className="bg-brand-yellow/20 p-2 rounded-xl self-start">
-                {config.icon === 'download' ? (
-                  <CheckCircle2 className="w-5 h-5 md:w-6 md:h-6 text-brand-yellow" />
-                ) : (
-                  <Share className="w-5 h-5 md:w-6 md:h-6 text-brand-yellow" />
-                )}
-              </div>
-              
-              <div className="flex-1 space-y-1 text-left">
-                {/* Changed to div with explicit branding for better visibility */}
-                <div className="font-heading font-black italic uppercase tracking-wider text-base md:text-lg leading-tight text-brand-yellow">
-                  {config.title}
-                </div>
-                <div className="text-[13px] md:text-sm font-body text-blue-50 leading-snug">
-                  {config.message}
-                </div>
-                
-                {config.icon === 'download' && (
-                  <div className="pt-2 mt-2 border-t border-white/10 flex items-start gap-2">
-                    <Smartphone className="w-3.5 h-3.5 md:w-4 md:h-4 text-brand-yellow mt-0.5 flex-shrink-0" />
-                    <p className="text-[10px] md:text-[11px] font-mono leading-tight text-blue-100 italic">
-                      Tip: Open this site on mobile for direct one-tap sharing.
-                    </p>
-                  </div>
-                )}
-              </div>
-
-              <button 
-                onClick={onClose}
-                className="text-white/40 hover:text-white transition-colors self-start"
-              >
-                <X className="w-4 h-4 md:w-5 md:h-5" />
-              </button>
-            </div>
-          </div>
-        </motion.div>
+    <motion.div
+      initial={{ y: 50, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      exit={{ y: 50, opacity: 0 }}
+      transition={{ type: "spring", damping: 20, stiffness: 100 }}
+      style={{ pointerEvents: 'auto' }}
+      className={clsx(
+        "z-[9999] w-[320px] md:w-[380px] visible",
+        position === 'fixed' ? "fixed bottom-6 right-6" : "absolute bottom-full right-0 mb-4"
       )}
-    </AnimatePresence>
+    >
+      <div className="bg-brand-blue text-white p-4 md:p-5 rounded-2xl shadow-2xl border-2 border-brand-yellow relative overflow-hidden">
+        {/* Texture Overlay */}
+        <div className="absolute inset-0 opacity-10 pointer-events-none mix-blend-overlay" 
+             style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")` }} 
+        />
+        
+        <div className="flex gap-3 md:gap-4 relative z-10">
+          <div className="bg-brand-yellow/20 p-2 rounded-xl self-start">
+            {config.icon === 'download' ? (
+              <CheckCircle2 className="w-5 h-5 md:w-6 md:h-6 text-brand-yellow" />
+            ) : (
+              <Share className="w-5 h-5 md:w-6 md:h-6 text-brand-yellow" />
+            )}
+          </div>
+          
+          <div className="flex-1 space-y-1 text-left">
+            <div className="font-heading font-black italic uppercase tracking-wider text-base md:text-lg leading-tight text-brand-yellow">
+              {config.title}
+            </div>
+            <div className="text-[13px] md:text-sm font-body text-blue-100 leading-snug">
+              {config.message}
+            </div>
+            
+            {config.icon === 'download' && (
+              <div className="pt-2 mt-2 border-t border-white/10 flex items-start gap-2">
+                <Smartphone className="w-3.5 h-3.5 md:w-4 md:h-4 text-brand-yellow mt-0.5 flex-shrink-0" />
+                <p className="text-[10px] md:text-[11px] font-mono leading-tight text-blue-100 italic">
+                  Tip: Open this site on mobile for direct one-tap sharing.
+                </p>
+              </div>
+            )}
+          </div>
+
+          <button 
+            onClick={onClose}
+            className="text-white/40 hover:text-white transition-colors self-start"
+          >
+            <X className="w-4 h-4 md:w-5 md:h-5" />
+          </button>
+        </div>
+      </div>
+    </motion.div>
   );
 
   if (position === 'fixed') {

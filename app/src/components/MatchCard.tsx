@@ -3,8 +3,6 @@ import { clsx } from 'clsx';
 import { Loader2, Share2, MessageCircle, Image as ImageIcon, Instagram } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { Match } from '../types';
-import { ShareButton, type ShareButtonHandle } from './ShareButton';
-import { ShareableMatch } from './ShareableMatch';
 
 interface MatchCardProps {
   match: Match;
