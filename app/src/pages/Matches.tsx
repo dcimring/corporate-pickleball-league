@@ -98,6 +98,15 @@ export const Matches: React.FC = () => {
     }
   }, [sharingMatch, sharingType]);
 
+  const handleShareEnd = () => {
+    // We delay clearing the match so the toast (which is inside ShareButton) 
+    // has time to be seen before the component is unmounted.
+    setTimeout(() => {
+        setSharingMatch(null);
+        setSharingType(null);
+    }, 5000); // Wait 5s before cleaning up the sharing machinery
+  };
+
   if (loading || !activeDivision) {
     return <LoadingState />;
   }
@@ -195,7 +204,7 @@ export const Matches: React.FC = () => {
                 targetRef={storyShareRef}
                 hidden
                 toastPosition="fixed"
-                onShareEnd={() => { setSharingMatch(null); setSharingType(null); }}
+                onShareEnd={handleShareEnd}
                 fileName={`LRP-Match-${sharingMatch.team1}-vs-${sharingMatch.team2}-story.jpg`}
               />
               <ShareButton
@@ -204,7 +213,7 @@ export const Matches: React.FC = () => {
                 hidden
                 preferDownload
                 toastPosition="fixed"
-                onShareEnd={() => { setSharingMatch(null); setSharingType(null); }}
+                onShareEnd={handleShareEnd}
                 fileName={`LRP-Match-${sharingMatch.team1}-vs-${sharingMatch.team2}-story.jpg`}
               />
               <ShareButton
@@ -212,7 +221,7 @@ export const Matches: React.FC = () => {
                 targetRef={postShareRef}
                 hidden
                 toastPosition="fixed"
-                onShareEnd={() => { setSharingMatch(null); setSharingType(null); }}
+                onShareEnd={handleShareEnd}
                 fileName={`LRP-Match-${sharingMatch.team1}-vs-${sharingMatch.team2}-post.jpg`}
               />
               <ShareButton
@@ -221,7 +230,7 @@ export const Matches: React.FC = () => {
                 hidden
                 preferDownload
                 toastPosition="fixed"
-                onShareEnd={() => { setSharingMatch(null); setSharingType(null); }}
+                onShareEnd={handleShareEnd}
                 fileName={`LRP-Match-${sharingMatch.team1}-vs-${sharingMatch.team2}-post.jpg`}
               />
               <ShareButton
@@ -229,7 +238,7 @@ export const Matches: React.FC = () => {
                 targetRef={storyShareRef}
                 hidden
                 toastPosition="fixed"
-                onShareEnd={() => { setSharingMatch(null); setSharingType(null); }}
+                onShareEnd={handleShareEnd}
                 fileName={`LRP-Match-WA-${sharingMatch.team1}-vs-${sharingMatch.team2}.jpg`}
               />
               <ShareButton
@@ -238,7 +247,7 @@ export const Matches: React.FC = () => {
                 hidden
                 preferDownload
                 toastPosition="fixed"
-                onShareEnd={() => { setSharingMatch(null); setSharingType(null); }}
+                onShareEnd={handleShareEnd}
                 fileName={`LRP-Match-WA-${sharingMatch.team1}-vs-${sharingMatch.team2}.jpg`}
               />
             </>
