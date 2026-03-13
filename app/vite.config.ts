@@ -5,13 +5,13 @@ import path from 'node:path'
 
 // Get current build time once
 const buildTime = new Date().toISOString();
-const buildId = Date.now();
+const buildId = process.env.NODE_ENV === 'production' ? Date.now() : 'DEV';
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   define: {
     __BUILD_TIME__: JSON.stringify(buildTime),
-    __BUILD_ID__: JSON.stringify(buildId),
+    __BUILD_ID__: JSON.stringify(mode === 'production' ? buildId : 'DEV'),
   },
   plugins: [
     react(),
@@ -19,6 +19,8 @@ export default defineConfig({
       name: 'generate-version-json',
       // Run on closeBundle to overwrite any stale public version in dist
       closeBundle() {
+        if (mode !== 'production') return;
+
         const distPath = path.resolve(__dirname, 'dist');
         const publicPath = path.resolve(__dirname, 'public');
         const distFile = path.resolve(distPath, 'version.json');
@@ -54,4 +56,4 @@ export default defineConfig({
     cssCodeSplit: false, // Force single CSS file
     assetsInlineLimit: 4096, // Inline small assets
   }
-})
+}))
