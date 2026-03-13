@@ -11,6 +11,7 @@ export interface ShareButtonHandle {
 
 interface ShareButtonProps {
   targetRef: React.RefObject<HTMLElement | null>;
+  portalTarget?: React.RefObject<HTMLElement | null>;
   fileName?: string;
   className?: string;
   variant?: 'icon' | 'button';
@@ -38,6 +39,7 @@ interface ToastConfig {
 
 export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
   targetRef,
+  portalTarget,
   fileName = 'pickleball-share.jpg',
   className,
   variant = 'button',
@@ -67,6 +69,7 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
   const triggerToast = (config: ToastConfig) => {
     setToastConfig(config);
     setShowToast(true);
+    // Haptic feedback if supported (vibrate for 50ms)
     if (typeof navigator !== 'undefined' && navigator.vibrate) {
       navigator.vibrate(50);
     }
@@ -174,6 +177,7 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
           onClose={() => setShowToast(false)} 
           position={toastPosition}
           config={toastConfig}
+          portalTarget={portalTarget}
         />
       )}
     </AnimatePresence>
@@ -242,12 +246,14 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
   );
 });
 
+/* Internal Toast Component with Portal/Absolute Support */
 const Toast: React.FC<{ 
   show: boolean; 
   onClose: () => void; 
   position: 'fixed' | 'absolute';
   config: ToastConfig;
-}> = ({ onClose, position, config }) => {
+  portalTarget?: React.RefObject<HTMLElement | null>;
+}> = ({ onClose, position, config, portalTarget }) => {
   if (typeof document === 'undefined') return null;
 
   const content = (
@@ -307,7 +313,8 @@ const Toast: React.FC<{
   );
 
   if (position === 'fixed') {
-    return createPortal(content, document.body);
+    const target = portalTarget?.current || document.body;
+    return createPortal(content, target);
   }
 
   return content;

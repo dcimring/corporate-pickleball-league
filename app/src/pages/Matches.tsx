@@ -30,6 +30,8 @@ export const Matches: React.FC = () => {
   const mobileWABtnRef = useRef<ShareButtonHandle>(null);
   const desktopWABtnRef = useRef<ShareButtonHandle>(null);
 
+  const toastPortalRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     if (!loading && data.matches) {
         // Initial division selection logic
@@ -122,7 +124,10 @@ export const Matches: React.FC = () => {
   ];
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-2 relative">
+      {/* Portal target for Share Toasts - placed at the top of the page viewport */}
+      <div ref={toastPortalRef} className="fixed top-0 left-0 right-0 z-[300] pointer-events-none flex justify-center" />
+
       <Navigation 
         pageTabs={pageTabs} 
         activePage="/matches" 
@@ -198,6 +203,7 @@ export const Matches: React.FC = () => {
               <ShareButton
                 ref={mobileStoryBtnRef}
                 targetRef={storyShareRef}
+                portalTarget={toastPortalRef}
                 hidden
                 toastPosition="fixed"
                 onShareEnd={handleShareEnd}
@@ -206,6 +212,7 @@ export const Matches: React.FC = () => {
               <ShareButton
                 ref={desktopStoryBtnRef}
                 targetRef={storyShareRef}
+                portalTarget={toastPortalRef}
                 hidden
                 preferDownload
                 toastPosition="fixed"
@@ -215,6 +222,7 @@ export const Matches: React.FC = () => {
               <ShareButton
                 ref={mobilePostBtnRef}
                 targetRef={postShareRef}
+                portalTarget={toastPortalRef}
                 hidden
                 toastPosition="fixed"
                 onShareEnd={handleShareEnd}
@@ -223,6 +231,7 @@ export const Matches: React.FC = () => {
               <ShareButton
                 ref={desktopPostBtnRef}
                 targetRef={postShareRef}
+                portalTarget={toastPortalRef}
                 hidden
                 preferDownload
                 toastPosition="fixed"
@@ -232,6 +241,7 @@ export const Matches: React.FC = () => {
               <ShareButton
                 ref={mobileWABtnRef}
                 targetRef={storyShareRef}
+                portalTarget={toastPortalRef}
                 hidden
                 toastPosition="fixed"
                 onShareEnd={handleShareEnd}
@@ -240,6 +250,7 @@ export const Matches: React.FC = () => {
               <ShareButton
                 ref={desktopWABtnRef}
                 targetRef={storyShareRef}
+                portalTarget={toastPortalRef}
                 hidden
                 preferDownload
                 toastPosition="fixed"
