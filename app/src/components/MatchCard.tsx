@@ -44,10 +44,19 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick }) => {
         setIsMenuOpen(false);
       }
     };
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsMenuOpen(false);
+      }
+    };
     if (isMenuOpen) {
       document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('keydown', handleKeyDown);
     }
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
   }, [isMenuOpen]);
 
   const handleShareStory = (e: React.MouseEvent) => {
