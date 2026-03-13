@@ -252,12 +252,13 @@ const Toast: React.FC<{
     <AnimatePresence>
       {show && (
         <motion.div
-          initial={position === 'fixed' ? { x: 400, opacity: 0 } : { y: 20, opacity: 0 }}
-          animate={position === 'fixed' ? { x: 0, opacity: 1 } : { y: 0, opacity: 1 }}
-          exit={position === 'fixed' ? { x: 400, opacity: 0 } : { y: 20, opacity: 0 }}
+          initial={{ y: 50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: 50, opacity: 0 }}
           transition={{ type: "spring", damping: 20, stiffness: 100 }}
+          style={{ pointerEvents: 'auto' }}
           className={clsx(
-            "z-[9999] w-[320px] md:w-[380px] visible pointer-events-auto",
+            "z-[9999] w-[320px] md:w-[380px] visible",
             position === 'fixed' ? "fixed bottom-6 right-6" : "absolute bottom-full right-0 mb-4"
           )}
         >
