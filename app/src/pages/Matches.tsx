@@ -178,7 +178,7 @@ export const Matches: React.FC = () => {
       </div>
 
       {/* GLOBAL SHARE PORTAL (Hidden from view) */}
-      <div className="fixed left-[-9999px] top-[-9999px] invisible pointer-events-none">
+      <div className="absolute left-[-9999px] top-[-9999px] pointer-events-none">
           {sharingMatch && (
             <>
               {/* Target Containers for html-to-image */}
@@ -194,6 +194,7 @@ export const Matches: React.FC = () => {
                 ref={mobileStoryBtnRef}
                 targetRef={storyShareRef}
                 hidden
+                toastPosition="fixed"
                 onShareEnd={() => { setSharingMatch(null); setSharingType(null); }}
                 fileName={`LRP-Match-${sharingMatch.team1}-vs-${sharingMatch.team2}-story.jpg`}
               />
@@ -202,6 +203,7 @@ export const Matches: React.FC = () => {
                 targetRef={storyShareRef}
                 hidden
                 preferDownload
+                toastPosition="fixed"
                 onShareEnd={() => { setSharingMatch(null); setSharingType(null); }}
                 fileName={`LRP-Match-${sharingMatch.team1}-vs-${sharingMatch.team2}-story.jpg`}
               />
@@ -209,6 +211,7 @@ export const Matches: React.FC = () => {
                 ref={mobilePostBtnRef}
                 targetRef={postShareRef}
                 hidden
+                toastPosition="fixed"
                 onShareEnd={() => { setSharingMatch(null); setSharingType(null); }}
                 fileName={`LRP-Match-${sharingMatch.team1}-vs-${sharingMatch.team2}-post.jpg`}
               />
@@ -217,6 +220,7 @@ export const Matches: React.FC = () => {
                 targetRef={postShareRef}
                 hidden
                 preferDownload
+                toastPosition="fixed"
                 onShareEnd={() => { setSharingMatch(null); setSharingType(null); }}
                 fileName={`LRP-Match-${sharingMatch.team1}-vs-${sharingMatch.team2}-post.jpg`}
               />
@@ -224,6 +228,7 @@ export const Matches: React.FC = () => {
                 ref={mobileWABtnRef}
                 targetRef={storyShareRef}
                 hidden
+                toastPosition="fixed"
                 onShareEnd={() => { setSharingMatch(null); setSharingType(null); }}
                 fileName={`LRP-Match-WA-${sharingMatch.team1}-vs-${sharingMatch.team2}.jpg`}
               />
@@ -232,6 +237,7 @@ export const Matches: React.FC = () => {
                 targetRef={storyShareRef}
                 hidden
                 preferDownload
+                toastPosition="fixed"
                 onShareEnd={() => { setSharingMatch(null); setSharingType(null); }}
                 fileName={`LRP-Match-WA-${sharingMatch.team1}-vs-${sharingMatch.team2}.jpg`}
               />
