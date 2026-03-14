@@ -35,11 +35,11 @@ export const TeamFilterHint: React.FC<TeamFilterHintProps> = ({
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.9, y: 10 }}
         className={clsx(
-          "max-w-md mx-auto w-full relative group",
+          "max-w-md mx-auto w-full relative group px-4 md:px-0",
           className
         )}
       >
-        <div className="relative overflow-hidden rounded-2xl border-2 border-brand-blue bg-brand-yellow px-5 py-4 shadow-[6px_6px_0px_0px_rgba(0,85,150,1)] transition-transform duration-300">
+        <div className="relative overflow-hidden rounded-2xl border-2 border-brand-blue bg-brand-yellow px-5 py-4 shadow-[4px_4px_0px_0px_rgba(0,85,150,1)] md:shadow-[6px_6px_0px_0px_rgba(0,85,150,1)] transition-transform duration-300">
           {/* Grainy Texture Overlay */}
           <div className="absolute inset-0 opacity-[0.05] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]" />
           
