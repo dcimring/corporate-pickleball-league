@@ -58,30 +58,36 @@ export const Navigation: React.FC<NavigationProps> = ({
   };
 
   return (
-    <div className="flex flex-col gap-3 px-6 md:px-0">
-      {/* Page Tabs (Underline Glow) */}
-      <div className="flex items-center gap-8 pb-px justify-center">
-        {pageTabs.map((tab) => {
-          const isActive = activePage === tab.path;
-          return (
-            <button
-              key={tab.name}
-              onClick={() => onPageChange(tab.path)}
-              className={clsx(
-                "relative pb-1 text-xl md:text-2xl font-heading font-black italic uppercase tracking-tighter transition-colors",
-                isActive ? "text-brand-blue" : "text-gray-300 hover:text-gray-400"
-              )}
-            >
-              {tab.name}
-              {isActive && (
-                <motion.div
-                  layoutId="glow-line"
-                  className="absolute bottom-0 left-0 right-0 h-[4px] bg-brand-yellow shadow-[0_0_15px_#FFC72C] rounded-t-sm z-10"
-                />
-              )}
-            </button>
-          );
-        })}
+    <div className="flex flex-col gap-4 px-6 md:px-0">
+      {/* Page Tabs (Dark Blue Kinetic Container) */}
+      <div className="flex justify-center">
+        <div className="bg-brand-blue p-1.5 rounded-2xl flex gap-1 shadow-2xl relative overflow-hidden group">
+          {/* Subtle Grainy Texture Overlay for the nav bar itself */}
+          <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]" />
+          
+          {pageTabs.map((tab) => {
+            const isActive = activePage === tab.path;
+            return (
+              <button
+                key={tab.name}
+                onClick={() => onPageChange(tab.path)}
+                className={clsx(
+                  "relative px-6 md:px-10 py-3 rounded-xl text-lg md:text-xl font-heading font-black italic uppercase tracking-tight transition-colors duration-300 z-10",
+                  isActive ? "text-brand-blue" : "text-white/50 hover:text-white"
+                )}
+              >
+                <span className="relative z-20">{tab.name}</span>
+                {isActive && (
+                  <motion.div
+                    layoutId="active-nav-pill"
+                    className="absolute inset-0 bg-brand-yellow rounded-xl shadow-[0_0_20px_rgba(255,199,44,0.3)]"
+                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                  />
+                )}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {/* Division Selector */}
