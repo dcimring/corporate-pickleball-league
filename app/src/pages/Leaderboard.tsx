@@ -113,18 +113,24 @@ export const Leaderboard: React.FC = () => {
         onDivisionChange={handleDivisionChange} 
       />
 
-      {/* Final Selection: Style 6: Editorial Rule */}
-      <motion.div 
+      {/* Style B: The Mechanical Ticker */}
+      <motion.div
         initial={{ opacity: 0, y: -5 }}
         animate={{ opacity: 1, y: 0 }}
-        key={`ribbon-${activeDivision}-${latestMatchDate}`}
-        className="w-full py-1 border-y border-brand-blue/20 flex items-center justify-center bg-transparent"
+        key={`ticker-${activeDivision}-${latestMatchDate}`}
+        className="w-full py-2.5 bg-brand-gray/50 shadow-[inset_0_2px_10px_rgba(0,0,0,0.05)] border-y border-black/5 flex items-center justify-center relative overflow-hidden"
       >
-        <p className="text-[11px] md:text-sm font-heading font-black italic tracking-[0.15em] text-brand-blue uppercase text-center">
+        {/* Subtle texture overlay */}
+        <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]" />
+
+        <p className="relative z-10 text-[9px] md:text-xs font-mono font-black tracking-[0.3em] text-brand-blue/80 uppercase text-center flex items-center gap-3">
+          <span className="w-1.5 h-1.5 rounded-full bg-brand-yellow shadow-[0_0_8px_rgba(255,199,44,0.8)] animate-pulse" />
+          <span className="drop-shadow-[1px_1px_0px_rgba(255,255,255,1)]">
             {latestMatchDate ? `Matches through ${formatDate(latestMatchDate)} included` : 'No matches recorded'}
+          </span>
+          <span className="w-1.5 h-1.5 rounded-full bg-brand-yellow shadow-[0_0_8px_rgba(255,199,44,0.8)] animate-pulse" />
         </p>
       </motion.div>
-
       <div className="space-y-2 px-0 md:px-4 mt-5">
         <TeamFilterHint />
         <LeaderboardTable stats={stats} onTeamClick={handleTeamClick} />
