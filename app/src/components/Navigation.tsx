@@ -96,30 +96,33 @@ export const Navigation: React.FC<NavigationProps> = ({
           <div className="md:hidden px-6">
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="w-full max-w-xs mx-auto flex items-center justify-between px-4 py-3 bg-brand-blue text-white rounded-none shadow-sm font-heading font-bold text-sm uppercase tracking-wide"
+            className={clsx(
+              "w-full max-w-xs mx-auto flex items-center justify-between px-5 py-4 bg-brand-blue text-white rounded-2xl shadow-xl font-heading font-black italic text-sm uppercase tracking-wider transition-all duration-300 border-2",
+              isOpen ? "border-brand-yellow scale-[1.02]" : "border-transparent"
+            )}
           >
             <span>{shortenDivisionName(activeDivision) || 'Select Division'}</span>
-            <ChevronDown className={clsx("w-5 h-5 transition-transform duration-200", isOpen && "rotate-180")} />
+            <ChevronDown className={clsx("w-5 h-5 transition-transform duration-300 text-brand-yellow", isOpen && "rotate-180")} />
           </button>
             <AnimatePresence>
             {isOpen && (
               <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                className="bg-brand-blue text-white overflow-hidden max-w-xs mx-auto"
+                initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                className="bg-brand-blue text-white overflow-hidden max-w-xs mx-auto rounded-2xl mt-2 shadow-2xl border-2 border-white/10 z-50 relative"
               >
                   {divisions.map((div) => (
                     <button
                       key={div}
                       onClick={() => handleMobileSelect(div)}
                       className={clsx(
-                        "w-full flex items-center justify-between px-4 py-3 text-left font-heading font-bold text-sm uppercase tracking-wide border-t border-white/10 hover:bg-white/10",
-                        activeDivision === div && "bg-white/20"
+                        "w-full flex items-center justify-between px-5 py-4 text-left font-mono font-bold text-xs uppercase tracking-widest border-t border-white/5 hover:bg-white/10 transition-colors",
+                        activeDivision === div && "bg-white/20 text-brand-yellow"
                       )}
                     >
                       {shortenDivisionName(div)}
-                      {activeDivision === div && <Check className="w-4 h-4 text-brand-yellow" />}
+                      {activeDivision === div && <Check className="w-4 h-4" />}
                     </button>
                   ))}
               </motion.div>
@@ -127,8 +130,8 @@ export const Navigation: React.FC<NavigationProps> = ({
           </AnimatePresence>
         </div>
 
-        {/* Desktop Tabs (Pills) */}
-        <div className="hidden md:flex md:flex-wrap gap-3 md:justify-center p-1 bg-gray-50 rounded-lg w-full">
+        {/* Desktop Tabs (Pills - Recessed Style) */}
+        <div className="hidden md:flex md:flex-wrap gap-2 md:justify-center p-1.5 bg-brand-blue/5 rounded-2xl w-full shadow-[inset_0_2px_10px_rgba(0,0,0,0.05)] border border-black/5">
           {divisions.map((div) => {
             const isActive = activeDivision === div;
             return (
@@ -136,14 +139,14 @@ export const Navigation: React.FC<NavigationProps> = ({
                 key={div}
                 onClick={() => onDivisionChange(div)}
                 className={clsx(
-                  "relative px-4 py-1.5 text-xs font-heading font-bold uppercase tracking-widest transition-all whitespace-nowrap flex-shrink-0 rounded-md",
+                  "relative px-5 py-2 text-[10px] font-mono font-bold uppercase tracking-[0.2em] transition-all whitespace-nowrap flex-shrink-0 rounded-xl",
                   isActive 
-                    ? "bg-white text-brand-blue shadow-sm" 
-                    : "text-gray-400 hover:text-gray-600"
+                    ? "bg-white text-brand-blue shadow-md" 
+                    : "text-gray-400 hover:text-gray-600 hover:bg-black/5"
                 )}
               >
                 {shortenDivisionName(div)}
-                {isActive && <motion.div layoutId="glow-pill" className="absolute inset-0 rounded-md ring-1 ring-black/5" />}
+                {isActive && <motion.div layoutId="glow-pill" className="absolute inset-0 rounded-xl ring-1 ring-black/5" />}
               </button>
             );
           })}
