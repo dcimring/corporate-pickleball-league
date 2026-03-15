@@ -42,9 +42,8 @@ export const TeamFilterHint: React.FC<TeamFilterHintProps> = ({
         <div className="flex items-center justify-center gap-3 py-3 border-y border-brand-blue/5 text-gray-400">
           <Info className="h-3.5 w-3.5 shrink-0 opacity-50" />
           
-          <p className="font-mono text-[10px] md:text-[11px] font-medium uppercase tracking-widest text-center leading-none">
-            <span className="text-brand-blue/40 mr-2">Tip:</span>
-            Click any team name to see all matches
+          <p className="font-mono text-[9px] md:text-[10px] font-medium uppercase tracking-widest text-center leading-none">
+            TIP:CLICK TEAM NAME TO SEE ALL THEIR MATCHES
           </p>
 
           <button
