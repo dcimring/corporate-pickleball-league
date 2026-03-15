@@ -43,7 +43,7 @@ export const TeamFilterHint: React.FC<TeamFilterHintProps> = ({
           <Info className="h-3.5 w-3.5 shrink-0 opacity-60" />
           
           <p className="font-mono text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-center leading-none">
-            TIP:CLICK TEAM NAME TO SEE ALL THEIR MATCHES
+            TIP: CLICK TEAM NAME TO SEE ALL THEIR MATCHES
           </p>
 
           <button
