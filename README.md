@@ -4,14 +4,13 @@ A professional, responsive, and iframe-optimized website for the Corporate Pickl
 
 ## ✨ Key Features
 
--   **"Roost Kinetic" Aesthetic:** A high-contrast, bold UI featuring **Cayman Blue (#005596)**, **Pickle Yellow (#FFC72C)**, and a warm paper-textured background.
--   **Dynamic Social Sharing:** Generate professional, branded JPEG images for any leaderboard or match result. Supports specialized **Story (9:16)**, **Post (1.91:1)**, and **WhatsApp** optimized layouts.
+-   **"Roost Kinetic" Aesthetic:** A high-contrast, bold UI featuring **Cayman Blue (#005596)**, **Electric Volt (#FFC72C)**, and a clean, paper-textured background.
+-   **Kinetic Tab Navigation:** A custom dark-blue navigation container with a sliding yellow pill for active states, optimized for both standalone and iframe viewing.
+-   **Mechanical Match Ticker:** A recessed, high-precision ticker showing data recency with pulsing status indicators and monospace typography.
+-   **Dynamic Social Sharing:** Generate professional, branded PNG images for any leaderboard or match result. Supports specialized **Story (9:16)**, **Post (1.91:1)**, and **WhatsApp** optimized layouts.
+-   **Consolidated Stats UI:** A refined leaderboard featuring semantic color-coded "DIFF" pills, unified brand-blue primary data, and consistent hierarchy.
 -   **Kinetic Loading Experience:** A custom-themed "Bouncing Dimple" loading state with squash-and-stretch ball physics and cycling match-intel messaging.
--   **Card-Based Leaderboard:** A refined, mobile-first standings display featuring skewed rank badges, high-contrast typography, and "Text Shift" interaction feedback.
--   **Instant Navigation:** "Front-loaded" data architecture ensures zero-latency switching between Leaderboard and Matches with automatic background refreshing.
--   **Iframe Optimization:** Advanced iframe support including auto-resizing via `ResizeObserver` and "Focus Anchor" techniques to force parent-page scroll adjustments during navigation.
--   **Versus Split Cards:** Dramatic match result cards that highlight winners and scores with visual impact.
--   **Team Match Filtering:** Interactive filtering to view specific team histories directly from the leaderboard or match cards.
+-   **Iframe Optimization:** Advanced iframe support including auto-resizing via `ResizeObserver` and fluid, adaptive navigation to prevent clipping on narrow devices.
 -   **Automated Data Ingestion:** Background service (`run_ingest_service.py`) that monitors Gmail for match results and syncs them automatically to Supabase.
 -   **Robust Error Handling:** Graceful connection timeout screens and silent background failure handling to preserve user experience.
 
@@ -47,11 +46,7 @@ A professional, responsive, and iframe-optimized website for the Corporate Pickl
     ```
 
 3.  **Setup Environment Variables:**
-    Create a `.env` file in the `app` directory with your Supabase credentials:
-    ```env
-    VITE_SUPABASE_URL=your_supabase_url
-    VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
-    ```
+    Create a `.env` file in the `app` directory with your Supabase credentials (see `.env.example`).
 
 4.  **Run in Development:**
     ```bash
@@ -68,10 +63,6 @@ window.addEventListener('message', function(e) {
     if (e.data.height) {
         document.getElementById('pickleball-iframe').style.height = e.data.height + 'px';
     }
-    // Optional: Listen for scroll signals
-    if (e.data.type === 'LRP_SCROLL_TOP') {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
 }, false);
 ```
 
@@ -83,11 +74,12 @@ Ensure your iframe has the ID `pickleball-iframe` and the `allow="web-share"` at
 -   **`ingest_matches.py`:** Manual CLI tool for CSV ingestion with validation safety checks.
 -   **`db_backup.py`:** Snapshot tool for database protection.
 
-## 🎨 Theme Versions
+## 📄 Documentation
 
--   **Main Branch:** The primary production version (pickleball.ky).
--   **night-court-theme Branch:** "Night Court Electric" high-contrast dark variant.
--   **old-theme Branch:** Preserves the original "Organic Clubhouse" design.
+Detailed architectural and feature documentation can be found in the `app/docs/` folder:
+-   `ARCHITECTURE.md`: Technical system overview.
+-   `DOCS_INGESTION.md`: Data pipeline and automation details.
+-   `update-frequency-strategy.md`: Strategy for app updates and versioning.
 
 ## 🇰🇾 Made in Cayman
 
