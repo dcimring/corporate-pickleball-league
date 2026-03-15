@@ -58,10 +58,10 @@ export const Navigation: React.FC<NavigationProps> = ({
   };
 
   return (
-    <div className="flex flex-col gap-3 px-6 md:px-0">
+    <div className="flex flex-col gap-3 px-4 md:px-0">
       {/* Page Tabs (Kinetic Container - Transparent) */}
-      <div className="flex justify-center px-2">
-        <div className="p-1 rounded-2xl flex gap-1 relative overflow-hidden group w-full max-w-md">
+      <div className="flex justify-center w-full overflow-visible">
+        <div className="p-1 rounded-2xl flex gap-1 relative group w-full max-w-[calc(100vw-32px)] md:max-w-md">
           {pageTabs.map((tab) => {
             const isActive = activePage === tab.path;
             return (
@@ -69,7 +69,7 @@ export const Navigation: React.FC<NavigationProps> = ({
                 key={tab.name}
                 onClick={() => onPageChange(tab.path)}
                 className={clsx(
-                  "relative flex-1 px-4 md:px-8 py-3 rounded-xl text-lg md:text-xl font-heading font-black italic uppercase tracking-tight transition-colors duration-300 z-10",
+                  "relative flex-1 px-2 md:px-10 py-3 rounded-xl text-base md:text-xl font-heading font-black italic uppercase tracking-tight transition-colors duration-300 z-10",
                   isActive ? "text-brand-blue" : "text-gray-300 hover:text-gray-400"
                 )}
               >
