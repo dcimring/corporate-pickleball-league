@@ -58,7 +58,7 @@ export const Navigation: React.FC<NavigationProps> = ({
   };
 
   return (
-    <div className="flex flex-col gap-4 px-6 md:px-0">
+    <div className="flex flex-col gap-3 px-6 md:px-0">
       {/* Page Tabs (Kinetic Container - Transparent) */}
       <div className="flex justify-center px-1">
         <div className="p-1 rounded-2xl flex gap-1 relative overflow-hidden group w-full max-w-lg">
