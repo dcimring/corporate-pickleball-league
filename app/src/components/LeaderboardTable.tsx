@@ -39,7 +39,6 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
       <div className="flex flex-col gap-2.5">
         {stats.map((entry, index) => {
           const diff = entry.pointsFor - entry.pointsAgainst;
-          const isTop3 = index < 3;
           
           return (
             <div 
