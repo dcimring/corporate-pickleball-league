@@ -31,41 +31,30 @@ export const TeamFilterHint: React.FC<TeamFilterHintProps> = ({
   return (
     <AnimatePresence>
       <motion.div
-        initial={{ opacity: 0, scale: 0.9, y: 10 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.9, y: 10 }}
+        initial={{ opacity: 0, y: 5 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 5 }}
         className={clsx(
-          "max-w-md mx-auto w-full relative group px-4 md:px-0",
+          "w-full max-w-lg mx-auto px-4",
           className
         )}
       >
-        <div className="relative overflow-hidden rounded-2xl border-2 border-brand-blue bg-brand-yellow px-5 py-4 shadow-[4px_4px_0px_0px_rgba(0,85,150,1)] md:shadow-[6px_6px_0px_0px_rgba(0,85,150,1)] transition-transform duration-300">
-          {/* Grainy Texture Overlay */}
-          <div className="absolute inset-0 opacity-[0.05] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]" />
+        <div className="flex items-center justify-center gap-3 py-3 border-y border-brand-blue/5 text-gray-400">
+          <Info className="h-3.5 w-3.5 shrink-0 opacity-50" />
           
-          <div className="relative z-10 flex items-center gap-4">
-            <div className="shrink-0 rounded-full bg-brand-blue p-2 shadow-inner">
-              <Info className="h-4 w-4 text-brand-yellow" />
-            </div>
-            
-            <div className="flex-1">
-              <p className="font-heading font-black italic uppercase text-[10px] tracking-[0.2em] text-brand-blue leading-none mb-1">
-                Pro Tip
-              </p>
-              <p className="font-mono text-[11px] md:text-xs font-bold text-brand-blue leading-tight uppercase tracking-tight">
-                Click any team name to see all of their matches.
-              </p>
-            </div>
+          <p className="font-mono text-[10px] md:text-[11px] font-medium uppercase tracking-widest text-center leading-none">
+            <span className="text-brand-blue/40 mr-2">Tip:</span>
+            Click any team name to see all matches
+          </p>
 
-            <button
-              type="button"
-              onClick={handleDismiss}
-              aria-label="Dismiss tip"
-              className="shrink-0 inline-flex h-8 w-8 items-center justify-center rounded-full border-2 border-brand-blue bg-white text-brand-blue transition-all hover:bg-brand-blue hover:text-white active:scale-95 shadow-[2px_2px_0px_0px_rgba(0,85,150,1)] hover:shadow-none hover:translate-x-[1px] hover:translate-y-[1px]"
-            >
-              <X className="h-4 w-4" />
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={handleDismiss}
+            aria-label="Dismiss tip"
+            className="ml-2 p-1 hover:text-brand-blue transition-colors rounded-full hover:bg-black/5"
+          >
+            <X className="h-3 w-3" />
+          </button>
         </div>
       </motion.div>
     </AnimatePresence>

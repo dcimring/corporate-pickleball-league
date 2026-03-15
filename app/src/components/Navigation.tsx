@@ -59,12 +59,9 @@ export const Navigation: React.FC<NavigationProps> = ({
 
   return (
     <div className="flex flex-col gap-4 px-6 md:px-0">
-      {/* Page Tabs (Dark Blue Kinetic Container) */}
+      {/* Page Tabs (Kinetic Container - Transparent) */}
       <div className="flex justify-center">
-        <div className="bg-brand-blue p-1.5 rounded-2xl flex gap-1 shadow-2xl relative overflow-hidden group">
-          {/* Subtle Grainy Texture Overlay for the nav bar itself */}
-          <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]" />
-          
+        <div className="p-1 rounded-2xl flex gap-1 relative overflow-hidden group">
           {pageTabs.map((tab) => {
             const isActive = activePage === tab.path;
             return (
@@ -72,8 +69,8 @@ export const Navigation: React.FC<NavigationProps> = ({
                 key={tab.name}
                 onClick={() => onPageChange(tab.path)}
                 className={clsx(
-                  "relative flex-1 px-4 md:px-10 py-3 rounded-xl text-base md:text-xl font-heading font-black italic uppercase tracking-tight transition-colors duration-300 z-10",
-                  isActive ? "text-brand-blue" : "text-white/50 hover:text-white"
+                  "relative flex-1 px-6 md:px-10 py-3 rounded-xl text-lg md:text-xl font-heading font-black italic uppercase tracking-tight transition-colors duration-300 z-10",
+                  isActive ? "text-brand-blue" : "text-gray-300 hover:text-gray-400"
                 )}
               >
                 <span className="relative z-20">{tab.name}</span>
