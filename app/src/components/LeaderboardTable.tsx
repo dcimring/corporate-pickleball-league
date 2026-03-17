@@ -26,7 +26,7 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
       <div className="flex items-center px-0 py-1 text-[10px] md:text-xs font-heading font-black italic uppercase tracking-[0.2em] text-gray-400">
         <div className="w-10 md:w-12 text-center">#</div>
         <div className="flex-1 pl-4 md:pl-6 text-left">Team</div>
-        <div className="flex items-center justify-end gap-4 md:gap-6 pr-4 md:pr-8">
+        <div className="flex items-center justify-end gap-2 md:gap-6 pr-4 md:pr-8">
             <div className="w-12 md:w-16 text-center">W-L</div>
             <div className="w-10 md:w-14 text-center">%</div>
             <div className="w-12 md:hidden text-center">PF</div>
@@ -72,7 +72,7 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
               </div>
 
               {/* Stats Group */}
-              <div className="flex items-center justify-end gap-4 md:gap-6 pr-4 md:pr-8 relative z-10 transition-transform duration-200 group-hover:translate-x-1">
+              <div className="flex items-center justify-end gap-2 md:gap-6 pr-4 md:pr-8 relative z-10 transition-transform duration-200 group-hover:translate-x-1">
                 {/* W-L - Reverted to dark gray */}
                 <div className="w-12 md:w-16 text-center font-mono font-black text-[11px] md:text-sm text-gray-700">
                   {entry.wins}-{entry.losses}
