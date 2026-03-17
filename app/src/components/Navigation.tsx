@@ -94,32 +94,33 @@ export const Navigation: React.FC<NavigationProps> = ({
           <button
             onClick={() => setIsOpen(!isOpen)}
             className={clsx(
-              "w-full max-w-xs mx-auto flex items-center justify-between px-5 py-4 bg-brand-blue text-white rounded-2xl shadow-xl font-heading font-black italic text-sm uppercase tracking-wider transition-all duration-300 border-2",
-              isOpen ? "border-brand-yellow scale-[1.02]" : "border-transparent"
+              "w-full max-w-xs mx-auto flex items-center justify-between px-5 py-3.5 bg-brand-gray rounded-2xl shadow-[inset_0_2px_8px_rgba(0,0,0,0.06)] border border-black/5 font-mono font-bold text-xs uppercase tracking-[0.15em] text-brand-blue transition-all duration-300 relative overflow-hidden",
+              isOpen ? "ring-1 ring-brand-yellow" : ""
             )}
           >
-            <span>{shortenDivisionName(activeDivision) || 'Select Division'}</span>
-            <ChevronDown className={clsx("w-5 h-5 transition-transform duration-300 text-brand-yellow", isOpen && "rotate-180")} />
+            <div className="absolute left-0 top-0 bottom-0 w-1 bg-brand-yellow" />
+            <span className="pl-1">{shortenDivisionName(activeDivision) || 'Select Division'}</span>
+            <ChevronDown className={clsx("w-4 h-4 transition-transform duration-300 opacity-40", isOpen && "rotate-180")} />
           </button>
             <AnimatePresence>
             {isOpen && (
               <motion.div
-                initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                className="bg-brand-blue text-white overflow-hidden max-w-xs mx-auto rounded-2xl mt-2 shadow-2xl border-2 border-white/10 z-50 relative"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                className="bg-brand-gray text-brand-blue overflow-hidden max-w-xs mx-auto rounded-2xl mt-2 border border-black/5 shadow-xl z-50 relative"
               >
                   {divisions.map((div) => (
                     <button
                       key={div}
                       onClick={() => handleMobileSelect(div)}
                       className={clsx(
-                        "w-full flex items-center justify-between px-5 py-4 text-left font-mono font-bold text-xs uppercase tracking-widest border-t border-white/5 hover:bg-white/10 transition-colors",
-                        activeDivision === div && "bg-white/20 text-brand-yellow"
+                        "w-full flex items-center justify-between px-5 py-4 text-left font-mono font-bold text-[10px] uppercase tracking-widest border-t border-black/5 hover:bg-black/5 transition-colors",
+                        activeDivision === div && "bg-white text-brand-blue"
                       )}
                     >
                       {shortenDivisionName(div)}
-                      {activeDivision === div && <Check className="w-4 h-4" />}
+                      {activeDivision === div && <Check className="w-3 h-3 text-brand-yellow" />}
                     </button>
                   ))}
               </motion.div>
