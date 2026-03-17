@@ -84,10 +84,10 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
                 </div>
 
                 {/* PF / PF-PA - Reverted to dark gray */}
-                <div className="w-12 md:hidden text-center font-mono font-black text-[10px] text-gray-600">
+                <div className="w-12 md:hidden text-center font-mono font-black text-[11px] text-gray-700">
                   {entry.pointsFor}
                 </div>
-                <div className="hidden md:block w-24 text-center font-mono font-black text-sm text-gray-600">
+                <div className="hidden md:block w-24 text-center font-mono font-black text-sm text-gray-700">
                   {entry.pointsFor}-{entry.pointsAgainst}
                 </div>
 
