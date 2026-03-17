@@ -1,4 +1,1 @@
-{
-  "version": "DEV",
-  "comment": "In development mode, we use DEV to prevent the update banner from triggering."
-}
+{\n  "version": "DEV",\n  "comment": "In development mode, we use DEV to prevent the update banner from triggering."\n}
