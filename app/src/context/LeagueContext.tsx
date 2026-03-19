@@ -7,6 +7,7 @@ interface LeagueContextType {
   loading: boolean;
   error: Error | null;
   refresh: () => Promise<void>;
+  isIframe: boolean;
 }
 
 const LeagueContext = createContext<LeagueContextType | undefined>(undefined);
@@ -31,6 +32,11 @@ export const LeagueProvider: React.FC<LeagueProviderProps> = ({
   const [data, setData] = useState<LeagueData>(initialLeagueData);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
+  const [isIframe, setIsIframe] = useState(true);
+
+  useEffect(() => {
+    setIsIframe(window.self !== window.top);
+  }, []);
 
   const loadData = async (isBackground = false) => {
     const startTime = Date.now();
@@ -76,7 +82,7 @@ export const LeagueProvider: React.FC<LeagueProviderProps> = ({
   }, [refreshInterval]);
 
   return (
-    <LeagueContext.Provider value={{ data, loading, error, refresh: () => loadData(false) }}>
+    <LeagueContext.Provider value={{ data, loading, error, isIframe, refresh: () => loadData(false) }}>
       {children}
     </LeagueContext.Provider>
   );

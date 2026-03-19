@@ -152,15 +152,15 @@ export const Matches: React.FC = () => {
             >
               <button 
                 onClick={handleClearFilter}
-                className="w-full py-3 bg-brand-blue text-white flex items-center justify-center gap-4 group hover:bg-brand-blue/95 transition-colors relative"
+                className="w-full py-4 bg-secondary text-white flex items-center justify-center gap-6 group hover:bg-secondary/95 transition-colors relative"
               >
-                <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-brand-yellow" />
-                <span className="font-heading font-black italic uppercase text-xs md:text-sm tracking-[0.2em] flex items-center gap-2">
-                  <span className="opacity-50 font-mono not-italic text-[10px] tracking-normal">Filtering:</span>
-                  {selectedTeam}
+                <div className="absolute left-0 top-0 bottom-0 w-2 bg-gradient-to-b from-primary to-primary-container" />
+                <span className="flex items-center gap-3">
+                  <span className="font-display font-bold text-white/30 uppercase tracking-[0.25em] text-[10px]">Filtering</span>
+                  <span className="headline-md !text-lg md:!text-xl tracking-tight leading-none italic">{selectedTeam}</span>
                 </span>
-                <div className="bg-white/10 rounded-full p-1 group-hover:bg-brand-yellow group-hover:text-brand-blue transition-all">
-                  <X className="w-3 h-3" />
+                <div className="bg-white/10 rounded-full p-1.5 group-hover:bg-primary group-hover:text-on-primary transition-all">
+                  <X className="w-3.5 h-3.5" />
                 </div>
               </button>
             </motion.div>

@@ -113,26 +113,23 @@ export const Leaderboard: React.FC = () => {
         onDivisionChange={handleDivisionChange} 
       />
 
-      <div className="mt-4">
-        {/* Style B: The Mechanical Ticker */}
+      <div className="mt-6">
+        {/* Style B: The Mechanical Ticker - Kinetic Editorial Version */}
         <motion.div
           initial={{ opacity: 0, y: -5 }}
           animate={{ opacity: 1, y: 0 }}
           key={`ticker-${activeDivision}-${latestMatchDate}`}
-          className="w-full py-2.5 bg-brand-gray/50 shadow-[inset_0_2px_10px_rgba(0,0,0,0.05)] border-y border-black/5 flex items-center justify-center relative overflow-hidden"
+          className="w-full py-3 bg-surface-container-low flex items-center justify-center relative overflow-hidden"
         >
-          {/* Subtle texture overlay */}
-          <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]" />
-
-          <p className="relative z-10 text-[9px] md:text-xs font-mono font-black tracking-[0.3em] text-brand-blue/80 uppercase text-center flex items-center gap-3">
-            <span className="w-1.5 h-1.5 rounded-full bg-brand-yellow shadow-[0_0_8px_rgba(255,199,44,0.8)] animate-pulse" />
-            <span className="drop-shadow-[1px_1px_0px_rgba(255,255,255,1)]">
+          <p className="relative z-10 label-md text-secondary/80 text-center flex items-center gap-4">
+            <span className="w-2 h-2 rounded-full bg-primary shadow-[0_0_12px_rgba(71,104,0,0.6)] animate-pulse" />
+            <span className="tracking-[0.25em]">
               {latestMatchDate ? `Matches through ${formatDate(latestMatchDate)} included` : 'No matches recorded'}
             </span>
-            <span className="w-1.5 h-1.5 rounded-full bg-brand-yellow shadow-[0_0_8px_rgba(255,199,44,0.8)] animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-primary shadow-[0_0_12px_rgba(71,104,0,0.6)] animate-pulse" />
           </p>
         </motion.div>
-        
+
         <TeamFilterHint />
       </div>
 

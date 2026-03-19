@@ -8,23 +8,22 @@ interface ShareableMatchProps {
   layout?: 'post' | 'story';
 }
 
-/* Helper for "Directional Speed Trails" */
 const SpeedTrails: React.FC<{ 
     className?: string;
     count?: number;
     color?: string;
     direction?: 'left' | 'right';
-}> = ({ className, count = 3, color = 'rgb(247,191,38)', direction = 'left' }) => (
-    <div className={clsx("absolute flex flex-col gap-1.5 pointer-events-none", className)}>
+}> = ({ className, count = 3, color = '#476800', direction = 'left' }) => (
+    <div className={clsx("absolute flex flex-col gap-2 pointer-events-none", className)}>
         {Array.from({ length: count }).map((_, i) => (
             <div 
                 key={i}
-                className="h-1 rounded-full opacity-40"
+                className="h-1.5 rounded-full opacity-20"
                 style={{ 
                     backgroundColor: color,
-                    width: `${80 - (i * 20)}px`,
+                    width: `${120 - (i * 30)}px`,
                     transform: direction === 'left' ? 'translateX(-100%)' : 'translateX(100%) scaleX(-1)',
-                    marginLeft: direction === 'left' ? '-12px' : '12px'
+                    marginLeft: direction === 'left' ? '-16px' : '16px'
                 }}
             />
         ))}
@@ -52,18 +51,16 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({
       return `${day.padStart(2, '0')} ${months[monthIdx]} ${year}`;
     }
     const fallback = new Date(dateStr);
-    if (Number.isNaN(fallback.getTime())) return dateStr;
     return fallback.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
   };
 
   return (
     <div 
       className={clsx(
-        "bg-[#FFFEFC] relative overflow-hidden flex flex-col font-body selection:none",
-        isPost ? "p-12" : "pt-4 pb-0"
+        "bg-[#f7f9fb] relative overflow-hidden flex flex-col font-body selection:none",
+        isPost ? "p-16" : "pt-8 pb-0"
       )}
       style={{ 
-        fontFamily: "'Open Sans', sans-serif",
         width: isPost ? '1200px' : '1080px',
         height: isPost ? '630px' : '1920px',
         minWidth: isPost ? '1200px' : '1080px',
@@ -72,217 +69,169 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({
         maxHeight: isPost ? '630px' : '1920px',
       }}
     >
-        {/* Grainy Texture Overlay */}
-        <div className="absolute inset-0 opacity-[0.03] z-0 pointer-events-none" 
-            style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }} 
-        />
-
-        {/* Dynamic Background Gradients */}
-        <div className={clsx(
-            "absolute top-0 left-0 right-0 mix-blend-multiply",
-            isPost ? "h-[300px] bg-gradient-to-b from-[rgb(142,209,252)]/12 to-transparent" : "h-[600px] bg-gradient-to-b from-[rgb(142,209,252)]/8 to-transparent"
-        )} />
-        <div className={clsx(
-            "absolute bottom-0 left-0 right-0 mix-blend-multiply",
-            isPost ? "h-[200px] bg-gradient-to-t from-[rgb(247,191,38)]/15 to-transparent" : "h-[420px] bg-gradient-to-t from-[rgb(247,191,38)]/12 to-transparent"
-        )} />
+        {/* Background Decorative Glow */}
+        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-primary/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2" />
+        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-secondary/5 blur-[100px] rounded-full translate-y-1/2 -translate-x-1/2" />
 
         {isPost ? (
-            /* Post Layout (Landscape) */
+            /* Post Layout */
             <div className="relative z-10 flex flex-col h-full">
-                <div className="flex justify-between items-start mb-8">
-                    <div>
-                        <p className="font-heading font-black italic text-[rgb(0,85,150)] text-4xl uppercase tracking-[0.1em] leading-tight">
-                            La Roche Posay<br/>Corporate Pickleball League
-                        </p>
-                    </div>
+                <div className="flex justify-between items-start mb-12">
+                    <h1 className="font-display font-extrabold italic text-secondary text-6xl uppercase tracking-tighter leading-none">
+                        Corporate<br/>Pickleball League
+                    </h1>
                     <div className="text-right">
-                        <h3 className="font-heading font-black italic text-gray-500 text-xl tracking-[0.3em] uppercase mb-2">Match Result</h3>
-                        <div className="h-1.5 w-24 ml-auto bg-[rgb(0,85,150)] rounded-full" />
+                        <span className="font-display font-bold text-secondary/30 text-2xl tracking-[0.4em] uppercase">Result</span>
                     </div>
                 </div>
 
-                <div className="flex-1 flex gap-8 items-center">
-                    {/* Scoreboard Post */}
-                    <div className="flex-1 bg-white rounded-[40px] shadow-none p-10 border border-gray-100 flex flex-col gap-6 relative overflow-hidden">
-                        <div className="absolute top-0 left-10 right-10 h-3 bg-[rgb(142,209,252)] rounded-b-xl" />
-                        
+                <div className="flex-1 flex gap-12 items-center">
+                    <div className="flex-1 bg-white rounded-[48px] p-12 shadow-ambient flex flex-col gap-8 relative overflow-hidden">
+                        {/* Team 1 */}
                         <div className="flex justify-between items-center">
-                            <div className="flex flex-col gap-1 flex-1">
+                            <div className="flex flex-col gap-2">
                                 <span className={clsx(
-                                    "font-heading font-black italic text-4xl uppercase tracking-tighter leading-tight",
-                                    isWin1 ? "text-[rgb(0,85,150)]" : "text-gray-400"
+                                    "font-display font-black italic text-5xl uppercase tracking-tight",
+                                    isWin1 ? "text-secondary" : "text-secondary/20"
                                 )}>
                                     {match.team1}
                                 </span>
-                                <span className="font-mono font-black text-xl text-gray-400 uppercase tracking-widest">
-                                    PTS {match.team1Points}
+                                <span className="font-display font-bold text-xl text-secondary/30 uppercase tracking-[0.2em]">
+                                    Points {match.team1Points}
                                 </span>
                             </div>
                             <span className={clsx(
-                                "font-heading font-black text-7xl ml-6",
-                                isWin1 ? "text-[rgb(0,85,150)] drop-shadow-[3px_3px_0px_rgb(247,191,38)]" : "text-gray-200"
+                                "font-display font-black text-8xl",
+                                isWin1 ? "text-primary italic" : "text-secondary/5"
                             )}>
                                 {match.team1Wins}
                             </span>
                         </div>
 
-                        <div className="h-px bg-gray-100 w-full" />
+                        <div className="h-px bg-secondary/5 w-full" />
 
+                        {/* Team 2 */}
                         <div className="flex justify-between items-center">
-                            <div className="flex flex-col gap-1 flex-1">
+                            <div className="flex flex-col gap-2">
                                 <span className={clsx(
-                                    "font-heading font-black italic text-4xl uppercase tracking-tighter leading-tight",
-                                    isWin2 ? "text-[rgb(0,85,150)]" : "text-gray-400"
+                                    "font-display font-black italic text-5xl uppercase tracking-tight",
+                                    isWin2 ? "text-secondary" : "text-secondary/20"
                                 )}>
                                     {match.team2}
                                 </span>
-                                <span className="font-mono font-black text-xl text-gray-400 uppercase tracking-widest">
-                                    PTS {match.team2Points}
+                                <span className="font-display font-bold text-xl text-secondary/30 uppercase tracking-[0.2em]">
+                                    Points {match.team2Points}
                                 </span>
                             </div>
                             <span className={clsx(
-                                "font-heading font-black text-7xl ml-6",
-                                isWin2 ? "text-[rgb(0,85,150)] drop-shadow-[3px_3px_0px_rgb(247,191,38)]" : "text-gray-200"
+                                "font-display font-black text-8xl",
+                                isWin2 ? "text-primary italic" : "text-secondary/5"
                             )}>
                                 {match.team2Wins}
                             </span>
                         </div>
                     </div>
 
-                    {/* Winner Column Post */}
-                    <div className="w-[400px] flex flex-col gap-6 items-center justify-center">
-                        <div className="bg-brand-yellow text-brand-blue px-10 py-6 rounded-[30px] border-4 border-white shadow-none w-full text-center">
-                            <div className="flex flex-col items-center gap-2">
-                                <div className="flex items-center gap-3">
-                                    <Trophy className="w-8 h-8" strokeWidth={3} />
-                                    <span className="font-heading font-black italic text-2xl uppercase tracking-[0.2em]">
-                                        {isTie ? 'Tie' : 'Winner'}
-                                    </span>
-                                </div>
-                                <span className="font-heading font-black italic text-4xl uppercase tracking-widest leading-none">
-                                    {isTie ? 'No Winner' : (isWin1 ? match.team1 : match.team2)}
+                    <div className="w-[380px] flex flex-col gap-8 items-center justify-center">
+                        <div className="bg-gradient-to-br from-primary to-primary-container text-white px-12 py-10 rounded-[40px] shadow-ambient w-full text-center relative overflow-hidden">
+                            <div className="relative z-10 flex flex-col items-center gap-4">
+                                <Trophy className="w-12 h-12 text-white/40" strokeWidth={2.5} />
+                                <span className="font-display font-black italic text-5xl uppercase tracking-tight leading-none">
+                                    {isTie ? 'Tie' : (isWin1 ? match.team1 : match.team2)}
                                 </span>
                             </div>
                         </div>
-                        <div className="font-mono font-black text-2xl uppercase tracking-[0.2em] text-brand-blue">
+                        <div className="font-display font-bold text-2xl uppercase tracking-[0.3em] text-secondary/40">
                             {formatDateNoTz(match.date)}
                         </div>
                     </div>
                 </div>
 
-                <div className="mt-8 text-center">
-                    <p className="font-heading font-black uppercase tracking-[0.4em] text-xl text-gray-400">
+                <div className="mt-auto text-center opacity-20">
+                    <p className="font-display font-black uppercase tracking-[0.5em] text-xl text-secondary">
                         PICKLEBALL.KY
                     </p>
                 </div>
             </div>
         ) : (
-            /* Story Layout (Portrait) */
-            <div className="flex flex-col justify-start items-center relative z-10 px-16 gap-8 flex-1">
-                {/* League Heading Story */}
-                <div className="text-center pt-16">
-                    <p className="font-heading font-black italic text-[rgb(0,85,150)] text-[100px] uppercase tracking-[0.1em] leading-[0.95] mb-8">
-                        La Roche Posay<br/>Pickleball League
-                    </p>
-                    <div className="h-3 w-48 mx-auto bg-[rgb(247,191,38)] rounded-full" />
-                </div>
-                
-                <div className="text-center">
-                    <h3 className="font-heading font-black italic text-gray-500 text-4xl tracking-[0.4em] uppercase mb-0">Match Result</h3>
+            /* Story Layout */
+            <div className="flex flex-col justify-start items-center relative z-10 px-16 gap-12 flex-1">
+                <div className="text-center pt-24 mb-4">
+                    <h1 className="font-display font-extrabold italic text-secondary text-[110px] uppercase tracking-tighter leading-[0.85] mb-12">
+                        Corporate<br/>Pickleball<br/>League
+                    </h1>
+                    <span className="font-display font-bold text-secondary/20 text-4xl tracking-[0.5em] uppercase">Match Result</span>
                 </div>
 
-                {/* Scoreboard Story */}
-                <div className="w-full bg-white rounded-[80px] shadow-none pt-16 px-16 pb-12 border border-gray-100 flex flex-col gap-12 relative overflow-hidden">
-                    <div className="absolute top-0 left-16 right-16 h-6 bg-[rgb(142,209,252)] rounded-b-3xl" />
-
+                <div className="w-full bg-white rounded-[100px] shadow-ambient pt-20 px-16 pb-16 flex flex-col gap-16 relative overflow-hidden">
                     {/* Team 1 */}
                     <div className="flex justify-between items-center relative">
-                        <div className="flex flex-col gap-4 max-w-[70%]">
+                        <div className="flex flex-col gap-4 max-w-[65%]">
                             <span className={clsx(
-                                "font-heading font-black italic text-7xl uppercase tracking-tighter leading-tight",
-                                isWin1 ? "text-[rgb(0,85,150)]" : "text-gray-400"
+                                "font-display font-black italic text-7xl uppercase tracking-tight leading-tight",
+                                isWin1 ? "text-secondary" : "text-secondary/20"
                             )}>
                                 {match.team1}
                             </span>
-                            <div className="font-mono font-black text-3xl uppercase tracking-[0.2em] text-gray-500">
-                                PTS {match.team1Points}
+                            <div className="font-display font-bold text-3xl uppercase tracking-[0.2em] text-secondary/30">
+                                Points {match.team1Points}
                             </div>
                         </div>
                         <div className="relative">
-                            {isWin1 ? (
-                                <>
-                                    <SpeedTrails className="right-full top-1/2 -translate-y-1/2" />
-                                    <span className="font-heading font-black text-[180px] leading-none text-[rgb(0,85,150)] drop-shadow-[8px_8px_0px_rgb(247,191,38)] relative z-10">
-                                        {match.team1Wins}
-                                    </span>
-                                </>
-                            ) : (
-                                <span className="font-heading font-black text-[180px] leading-none text-gray-100">
-                                    {match.team1Wins}
-                                </span>
-                            )}
+                            {isWin1 && <SpeedTrails className="right-full top-1/2 -translate-y-1/2" />}
+                            <span className={clsx(
+                                "font-display font-black text-[200px] leading-none",
+                                isWin1 ? "text-primary italic" : "text-secondary/5"
+                            )}>
+                                {match.team1Wins}
+                            </span>
                         </div>
                     </div>
 
-                    <div className="h-px bg-gray-100 w-full relative">
-                        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-8 text-gray-300 font-black italic text-4xl">VS</div>
+                    <div className="h-px bg-secondary/5 w-full relative">
+                        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-10 text-secondary/10 font-display font-black italic text-5xl tracking-widest">VS</div>
                     </div>
 
                     {/* Team 2 */}
                     <div className="flex justify-between items-center relative">
-                        <div className="flex flex-col gap-4 max-w-[70%]">
+                        <div className="flex flex-col gap-4 max-w-[65%]">
                             <span className={clsx(
-                                "font-heading font-black italic text-7xl uppercase tracking-tighter leading-tight",
-                                isWin2 ? "text-[rgb(0,85,150)]" : "text-gray-400"
+                                "font-display font-black italic text-7xl uppercase tracking-tight leading-tight",
+                                isWin2 ? "text-secondary" : "text-secondary/20"
                             )}>
                                 {match.team2}
                             </span>
-                            <div className="font-mono font-black text-3xl uppercase tracking-[0.2em] text-gray-500">
-                                PTS {match.team2Points}
+                            <div className="font-display font-bold text-3xl uppercase tracking-[0.2em] text-secondary/30">
+                                Points {match.team2Points}
                             </div>
                         </div>
                         <div className="relative">
-                            {isWin2 ? (
-                                <>
-                                    <SpeedTrails className="right-full top-1/2 -translate-y-1/2" />
-                                    <span className="font-heading font-black text-[180px] leading-none text-[rgb(0,85,150)] drop-shadow-[8px_8px_0px_rgb(247,191,38)] relative z-10">
-                                        {match.team2Wins}
-                                    </span>
-                                </>
-                            ) : (
-                                <span className="font-heading font-black text-[180px] leading-none text-gray-100">
-                                    {match.team2Wins}
-                                </span>
-                            )}
+                            {isWin2 && <SpeedTrails className="right-full top-1/2 -translate-y-1/2" />}
+                            <span className={clsx(
+                                "font-display font-black text-[200px] leading-none",
+                                isWin2 ? "text-primary italic" : "text-secondary/5"
+                            )}>
+                                {match.team2Wins}
+                            </span>
                         </div>
                     </div>
 
-                    <div className="pt-8 border-t border-gray-100 text-center font-mono font-black text-3xl uppercase tracking-[0.3em] text-[rgb(0,85,150)]">
+                    <div className="pt-12 border-t border-secondary/5 text-center font-display font-bold text-4xl uppercase tracking-[0.4em] text-secondary/30">
                         {formatDateNoTz(match.date)}
                     </div>
                 </div>
 
-                {/* Winner Badge Story */}
-                <div className="bg-brand-yellow text-brand-blue px-16 py-10 rounded-[50px] shadow-none border-[6px] border-white w-full relative overflow-hidden">
-                    <SpeedTrails className="left-[-20px] top-1/2 -translate-y-1/2" count={2} color="white" />
-                    <SpeedTrails className="right-[-60px] top-1/2 -translate-y-1/2" count={2} color="white" direction="right" />
-                    <div className="flex flex-col items-center gap-4 text-center relative z-10">
-                        <div className="flex items-center gap-4">
-                            <Trophy className="w-10 h-10" strokeWidth={3} />
-                            <span className="font-heading font-black italic text-4xl uppercase tracking-[0.3em]">
-                                {isTie ? 'Tie' : 'Winner'}
-                            </span>
-                        </div>
-                        <span className="font-heading font-black italic text-7xl uppercase tracking-widest leading-none">
-                            {isTie ? 'No Winner' : (isWin1 ? match.team1 : match.team2)}
+                <div className="w-full bg-gradient-to-br from-primary to-primary-container text-white px-16 py-12 rounded-[60px] shadow-ambient relative overflow-hidden mt-4">
+                    <div className="flex flex-col items-center gap-6 text-center relative z-10">
+                        <Trophy className="w-16 h-12 text-white/30" strokeWidth={2.5} />
+                        <span className="font-display font-black italic text-8xl uppercase tracking-tighter leading-none">
+                            {isTie ? 'Tie' : (isWin1 ? match.team1 : match.team2)}
                         </span>
                     </div>
                 </div>
 
-                {/* Footer Story */}
-                <div className="mt-auto pb-12 text-center">
-                     <p className="font-heading font-black uppercase tracking-[0.5em] text-3xl text-[rgb(0,85,150)]">
+                <div className="mt-auto pb-20 opacity-20">
+                     <p className="font-display font-black uppercase tracking-[0.6em] text-4xl text-secondary">
                         PICKLEBALL.KY
                      </p>
                 </div>

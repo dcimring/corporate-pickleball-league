@@ -3,10 +3,11 @@ import { useLocation } from 'react-router-dom';
 import { useLeagueData } from '../context/LeagueContext';
 import { ConnectionError } from './ConnectionError';
 import { UpdateBanner } from './UpdateBanner';
+import { clsx } from 'clsx';
 
 export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
-  const { error, refresh, loading } = useLeagueData();
+  const { error, refresh, loading, isIframe } = useLeagueData();
 
   // RESIZER LOGIC
   useEffect(() => {
@@ -40,7 +41,13 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   }, [location.pathname, error]); // Add error to dependency array to trigger resize on error screen
 
   return (
-    <div id="app-container" className="font-body selection:bg-brand-yellow selection:text-brand-blue bg-transparent pt-4 inline-block w-full relative">
+    <div 
+      id="app-container" 
+      className={clsx(
+        "font-body selection:bg-primary/20 selection:text-primary inline-block w-full relative min-h-screen transition-colors duration-700",
+        isIframe ? "bg-transparent" : "bg-surface"
+      )}
+    >
       {/* Update Notification Banner */}
       <UpdateBanner />
 
@@ -52,7 +59,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         aria-hidden="true"
       />
       {/* Main Content - No padding, full width */}
-      <main className="w-full">
+      <main className="w-full pt-4">
         {error ? (
           <ConnectionError onRetry={refresh} isRetrying={loading} />
         ) : (
@@ -60,9 +67,9 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         )}
       </main>
 
-      <footer className="mt-4 pb-2 text-center px-4 opacity-30">
-        <p className="text-[7px] font-mono uppercase text-gray-400 tracking-widest">
-          Build: {new Date(__BUILD_TIME__).toLocaleString('en-US', { timeZone: 'America/Cayman', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false }).replace(/, /g, '.').replace(/[/:]/g, '.')}
+      <footer className="mt-8 pb-4 text-center px-4 opacity-20">
+        <p className="label-md !text-[7px] text-secondary tracking-[0.3em]">
+          ENGINE VERSION: {new Date(__BUILD_TIME__).toLocaleString('en-US', { timeZone: 'America/Cayman', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false }).replace(/, /g, '.').replace(/[/:]/g, '.')}
         </p>
       </footer>
     </div>
