@@ -90,13 +90,13 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick, onShar
                   <div 
                     onClick={() => onTeamClick?.(match.team1)}
                     className={clsx(
-                    "font-heading font-black italic uppercase text-xl md:text-2xl tracking-tight leading-none max-w-[80%] cursor-pointer hover:text-brand-blue transition-colors relative z-10",
+                    "font-heading font-semibold italic uppercase text-xl md:text-2xl tracking-tight leading-none max-w-[80%] cursor-pointer hover:text-brand-blue transition-colors relative z-10",
                     isWin1 ? "text-brand-blue" : "text-gray-400"
                   )}>
                     {match.team1}
                   </div>
                   <div className={clsx(
-                    "font-heading font-black text-4xl md:text-5xl transition-all duration-300",
+                    "font-heading font-semibold text-4xl md:text-5xl transition-all duration-300",
                     isWin1 ? "text-brand-blue drop-shadow-[2px_2px_0px_#FFC72C] md:drop-shadow-[2.5px_2.5px_0px_#FFC72C]" : "text-gray-200"
                   )}>
                     {match.team1Wins}
@@ -111,13 +111,13 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick, onShar
                   <div 
                     onClick={() => onTeamClick?.(match.team2)}
                     className={clsx(
-                    "font-heading font-black italic uppercase text-xl md:text-2xl tracking-tight leading-none max-w-[80%] cursor-pointer hover:text-brand-blue transition-colors relative z-10",
+                    "font-heading font-semibold italic uppercase text-xl md:text-2xl tracking-tight leading-none max-w-[80%] cursor-pointer hover:text-brand-blue transition-colors relative z-10",
                     isWin2 ? "text-brand-blue" : "text-gray-400"
                   )}>
                     {match.team2}
                   </div>
                   <div className={clsx(
-                    "font-heading font-black text-4xl md:text-5xl transition-all duration-300",
+                    "font-heading font-semibold text-4xl md:text-5xl transition-all duration-300",
                     isWin2 ? "text-brand-blue drop-shadow-[2px_2px_0px_#FFC72C] md:drop-shadow-[2.5px_2.5px_0px_#FFC72C]" : "text-gray-200"
                   )}>
                     {match.team2Wins}
