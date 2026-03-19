@@ -23,7 +23,7 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
   return (
     <div className="w-full flex flex-col gap-3">
       {/* Header Row */}
-      <div className="flex items-center px-0 py-1 text-[10px] md:text-xs font-heading font-bold italic uppercase tracking-[0.2em] text-gray-400">
+      <div className="flex items-center px-0 py-1 text-[10px] md:text-xs font-heading font-semibold italic uppercase tracking-[0.2em] text-gray-400">
         <div className="w-10 md:w-12 text-center">#</div>
         <div className="flex-1 pl-4 md:pl-6 text-left">Team</div>
         <div className="flex items-center justify-end gap-2 md:gap-6 pr-4 md:pr-8">
@@ -74,27 +74,27 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
               {/* Stats Group */}
               <div className="flex items-center justify-end gap-2 md:gap-6 pr-4 md:pr-8 relative z-10 transition-transform duration-200 group-hover:translate-x-1">
                 {/* W-L - Reverted to dark gray */}
-                <div className="w-12 md:w-16 text-center font-mono font-bold text-[11px] md:text-sm text-gray-700">
+                <div className="w-12 md:w-16 text-center font-mono font-semibold text-[11px] md:text-sm text-gray-700">
                   {entry.wins}-{entry.losses}
                 </div>
 
                 {/* % - Consolidated to Brand Blue for all teams */}
-                <div className="w-10 md:w-14 text-center font-heading font-bold italic text-[13px] md:text-lg tracking-tighter text-brand-blue">
+                <div className="w-10 md:w-14 text-center font-heading font-semibold italic text-[13px] md:text-lg tracking-tighter text-brand-blue">
                   {(entry.winPct * 100).toFixed(0)}%
                 </div>
 
                 {/* PF / PF-PA - Reverted to dark gray */}
-                <div className="w-12 md:hidden text-center font-mono font-bold text-[11px] text-gray-700">
+                <div className="w-12 md:hidden text-center font-mono font-semibold text-[11px] text-gray-700">
                   {entry.pointsFor}
                 </div>
-                <div className="hidden md:block w-24 text-center font-mono font-bold text-sm text-gray-700">
+                <div className="hidden md:block w-24 text-center font-mono font-semibold text-sm text-gray-700">
                   {entry.pointsFor}-{entry.pointsAgainst}
                 </div>
 
                 {/* DIFF (Desktop Only) - Semantic Kinetic Pills */}
                 <div className="hidden md:block w-16 text-right">
                     <span className={clsx(
-                      "inline-block min-w-[40px] px-2 py-0.5 rounded font-mono font-bold text-xs text-center",
+                      "inline-block min-w-[40px] px-2 py-0.5 rounded font-mono font-semibold text-xs text-center",
                       diff > 0 ? "bg-green-100 text-green-700" : 
                       diff < 0 ? "bg-red-100 text-red-700" : 
                       "bg-gray-100 text-gray-400"
