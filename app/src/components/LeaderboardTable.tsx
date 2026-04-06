@@ -91,7 +91,7 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
                 <div className="hidden md:block w-16 text-right">
                     <span className={clsx(
                       "inline-block min-w-[44px] px-2 py-1 rounded-md font-heading font-bold text-[10px] text-center uppercase tracking-wider",
-                      diff > 0 ? "bg-brand-yellow text-brand-blue" : 
+                      diff > 0 ? "bg-green-100 text-green-700" : 
                       diff < 0 ? "bg-brand-red/10 text-brand-red" : 
                       "bg-brand-gray text-brand-ink/30"
                     )}>
