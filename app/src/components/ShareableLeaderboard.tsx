@@ -22,7 +22,7 @@ export const ShareableLeaderboard: React.FC<ShareableLeaderboardProps> = ({
   return (
     <div 
       className={clsx(
-        "bg-[#FFFEFC] relative overflow-hidden flex flex-col font-body selection:none",
+        "bg-white relative overflow-hidden flex flex-col font-body selection:none",
         isPost ? "pt-4 px-10 pb-2" : "pb-8"
       )}
       style={{
@@ -35,31 +35,31 @@ export const ShareableLeaderboard: React.FC<ShareableLeaderboardProps> = ({
       }}
     >
         {/* Grainy Texture Overlay */}
-        <div className="absolute inset-0 opacity-[0.02] mix-blend-multiply z-0 pointer-events-none" 
-            style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }} 
+        <div className="absolute inset-0 opacity-[0.03] mix-blend-multiply z-0 pointer-events-none" 
+            style={{ backgroundImage: `url("https://www.transparenttextures.com/patterns/stardust.png")` }} 
         />
 
         {/* Decorative Background Elements */}
         <div className={clsx(
             "absolute rounded-full mix-blend-multiply blur-3xl",
             isPost 
-                ? "top-[-80px] right-[-40px] w-[350px] h-[350px] bg-[rgb(142,209,252)] opacity-[0.05]" 
-                : "top-[-200px] right-[-100px] w-[800px] h-[800px] bg-[rgb(142,209,252)] opacity-[0.03]"
+                ? "top-[-80px] right-[-40px] w-[350px] h-[350px] bg-[#E0F2FE] opacity-40" 
+                : "top-[-200px] right-[-100px] w-[800px] h-[800px] bg-[#E0F2FE] opacity-30"
         )} />
         <div className={clsx(
             "absolute rounded-full mix-blend-multiply blur-3xl",
             isPost 
-                ? "bottom-[-80px] left-[-40px] w-[250px] h-[250px] bg-[rgb(247,191,38)] opacity-[0.06]" 
-                : "bottom-[-200px] left-[-100px] w-[600px] h-[600px] bg-[rgb(247,191,38)] opacity-[0.04]"
+                ? "bottom-[-80px] left-[-40px] w-[250px] h-[250px] bg-[#FFC72C] opacity-20" 
+                : "bottom-[-200px] left-[-100px] w-[600px] h-[600px] bg-[#FFC72C] opacity-15"
         )} />
         
         {/* Header Section */}
         <div className={clsx("relative z-10", isPost ? (isSingleColumnPost ? "mb-1" : "mb-2") : "pt-16 px-12 pb-4")}>
-            <div className={clsx("border-[rgb(0,85,150)]", isPost ? "border-b-4 pb-2 flex justify-between items-end" : "border-b-[6px] pb-4")}>
+            <div className={clsx("border-[#005596]/10", isPost ? "border-b-4 pb-2 flex justify-between items-end" : "border-b-[6px] pb-4")}>
                 <div>
                     <h1 className={clsx(
-                        "font-heading font-black italic text-[rgb(0,85,150)] uppercase tracking-tighter leading-[0.9]",
-                        isPost ? "text-5xl" : "text-8xl mb-0"
+                        "font-heading font-black italic text-[#005596] uppercase tracking-tighter leading-[0.9]",
+                        isPost ? "text-5xl" : "text-[120px] mb-4"
                     )}>
                         {isPost ? (
                             <>La Roche Posay<br/>Pickleball League</>
@@ -69,27 +69,27 @@ export const ShareableLeaderboard: React.FC<ShareableLeaderboardProps> = ({
                     </h1>
                     {isPost && (
                          <div className="flex items-center gap-4 mt-2">
-                            <div className="bg-[rgb(247,191,38)] text-[rgb(0,85,150)] px-6 py-2 rounded-full font-heading font-black italic text-xl uppercase tracking-widest transform -skew-x-12 border-2 border-white">
-                                <span className="skew-x-12 block">{division}</span>
+                            <div className="bg-[#FFC72C] text-[#005596] px-6 py-2 rounded-full font-heading font-black italic text-xl uppercase tracking-widest border-2 border-white shadow-sm">
+                                <span>{division}</span>
                             </div>
-                            <span className="font-mono font-black text-gray-500 uppercase tracking-[0.2em] text-xl">Standings</span>
+                            <span className="font-heading font-black text-[#005596]/40 uppercase tracking-[0.2em] text-xl">Standings</span>
                          </div>
                     )}
                 </div>
                 {!isPost && (
                     <div className="flex items-center gap-6 mt-6">
-                        <div className="bg-[rgb(247,191,38)] text-[rgb(0,85,150)] px-10 py-4 rounded-full font-heading font-black italic text-4xl uppercase tracking-widest transform -skew-x-12 flex items-center border-2 border-white">
-                            <span className="skew-x-12 block">{division}</span>
+                        <div className="bg-[#FFC72C] text-[#005596] px-10 py-4 rounded-full font-heading font-black italic text-4xl uppercase tracking-widest border-2 border-white shadow-sm">
+                            <span>{division}</span>
                         </div>
-                        <span className="font-mono font-black text-gray-500 uppercase tracking-[0.2em] text-3xl">Standings</span>
+                        <span className="font-heading font-black text-[#005596]/40 uppercase tracking-[0.2em] text-4xl">Standings</span>
                     </div>
                 )}
                 {isPost && (
                     <div className="text-right pb-1">
-                        <p className="font-heading font-black uppercase tracking-[0.4em] text-base text-[rgb(0,85,150)] mb-1">
+                        <p className="font-heading font-black uppercase tracking-[0.4em] text-base text-[#005596] mb-1">
                            PICKLEBALL.KY
                         </p>
-                        <p className="font-heading font-black uppercase tracking-[0.2em] text-xs text-gray-400">
+                        <p className="font-heading font-black uppercase tracking-[0.2em] text-xs text-[#005596]/30">
                            Corporate Pickleball League
                         </p>
                     </div>
@@ -143,7 +143,7 @@ export const ShareableLeaderboard: React.FC<ShareableLeaderboardProps> = ({
                     
                     {entries.length > 12 && (
                         <div className="text-center pt-1">
-                            <p className="font-heading font-black italic text-gray-400 uppercase tracking-widest text-lg">
+                            <p className="font-heading font-black italic text-[#005596]/30 uppercase tracking-widest text-2xl">
                                 + {entries.length - 12} more teams in {division}
                             </p>
                         </div>
@@ -155,11 +155,11 @@ export const ShareableLeaderboard: React.FC<ShareableLeaderboardProps> = ({
         {/* Footer (Story only) */}
         {!isPost && (
             <div className="relative z-10 pt-8 pb-8 text-center mt-auto">
-                <div className="w-48 h-2 bg-[rgb(142,209,252)] mx-auto rounded-full mb-6" />
-                <p className="font-heading font-black uppercase tracking-[0.4em] text-3xl text-[rgb(0,85,150)]">
+                <div className="w-48 h-2 bg-[#E0F2FE] mx-auto rounded-full mb-10" />
+                <p className="font-heading font-black uppercase tracking-[0.4em] text-4xl text-[#005596]">
                     Corporate Pickleball League
                 </p>
-                <p className="font-mono font-black text-gray-400 uppercase tracking-[0.2em] text-xl mt-4">
+                <p className="font-heading font-black text-[#005596]/30 uppercase tracking-[0.2em] text-2xl mt-6">
                     PICKLEBALL.KY
                 </p>
             </div>
@@ -171,10 +171,10 @@ export const ShareableLeaderboard: React.FC<ShareableLeaderboardProps> = ({
 /* Helper Header Component */
 const LeaderboardHeader: React.FC<{ isPost: boolean; isSingleColumnPost?: boolean }> = ({ isPost, isSingleColumnPost }) => (
     <div className={clsx(
-        "flex items-center text-gray-500 font-heading font-black italic uppercase tracking-widest",
-        isPost ? (isSingleColumnPost ? "text-[11px] mb-1" : "text-[10px] mb-1") : "pt-4 pb-2 text-xl"
+        "flex items-center text-[#005596]/40 font-heading font-bold uppercase tracking-widest",
+        isPost ? (isSingleColumnPost ? "text-[11px] mb-1" : "text-[10px] mb-1") : "pt-4 pb-2 text-2xl"
     )}>
-        <div className={clsx("text-center", isPost ? (isSingleColumnPost ? "w-16" : "w-14") : "w-24")}>{/* Rank Space */}</div>
+        <div className={clsx("text-center", isPost ? (isSingleColumnPost ? "w-16" : "w-14") : "w-24")}>#</div>
         <div className={clsx(
             "flex-1 flex items-center",
             isPost ? (isSingleColumnPost ? "pl-6 pr-6 ml-[-10px]" : "pl-5 pr-4 ml-[-8px]") : "pl-8 pr-6 ml-[-10px]"
@@ -183,7 +183,7 @@ const LeaderboardHeader: React.FC<{ isPost: boolean; isSingleColumnPost?: boolea
             <div className="flex items-center">
                 <div className={clsx("text-center", isPost ? (isSingleColumnPost ? "w-24" : "w-14") : "w-32")}>W-L</div>
                 <div className={clsx("text-center", isPost ? (isSingleColumnPost ? "w-24" : "w-12") : "w-32")}>%</div>
-                <div className={clsx("text-center", isPost ? (isSingleColumnPost ? "w-20" : "w-14") : "w-24")}>PF</div>
+                <div className={clsx("text-center", isPost ? (isSingleColumnPost ? "w-20" : "w-14") : "w-24")}>DIFF</div>
             </div>
         </div>
     </div>
@@ -191,37 +191,32 @@ const LeaderboardHeader: React.FC<{ isPost: boolean; isSingleColumnPost?: boolea
 
 /* Helper Row Component for cleaner grid logic */
 const LeaderboardRow: React.FC<{ entry: LeaderboardEntry, index: number, isPost: boolean, isSingleColumnPost?: boolean }> = ({ entry, index, isPost, isSingleColumnPost }) => {
+    const diff = entry.pointsFor - entry.pointsAgainst;
     return (
-        <div className={clsx("flex items-center group relative", isPost ? (isSingleColumnPost ? "h-[66px]" : "h-[65px]") : "h-20")}>
+        <div className={clsx("flex items-center group relative", isPost ? (isSingleColumnPost ? "h-[66px]" : "h-[65px]") : "h-24")}>
             {/* Rank Badge */}
-            <div className={clsx("flex items-center justify-center relative z-20", isPost ? (isSingleColumnPost ? "w-16 h-[66px]" : "w-14 h-14") : "w-24 h-20")}>
-                {index < 3 ? (
-                    <div className={clsx(
-                        "w-full flex items-center justify-center font-heading font-black transform -skew-x-12 border-2 border-white",
-                        index === 0 ? "bg-[rgb(247,191,38)] text-[rgb(0,85,150)]" : 
-                        index === 1 ? "bg-gray-200 text-gray-700" :
-                        "bg-orange-100 text-orange-900",
-                        isPost ? (isSingleColumnPost ? "h-12 text-2xl" : "h-14 text-2xl") : "h-20 text-3xl"
-                    )}>
-                        <span className="skew-x-12">{index + 1}</span>
-                    </div>
-                ) : (
-                    <span className={clsx("font-heading font-black text-gray-300", isPost ? (isSingleColumnPost ? "text-2xl" : "text-2xl") : "text-3xl")}>
-                        {index + 1}
-                    </span>
-                )}
+            <div className={clsx("flex items-center justify-center relative z-20", isPost ? (isSingleColumnPost ? "w-16 h-[66px]" : "w-14 h-14") : "w-24 h-24")}>
+                <span className={clsx(
+                    "font-heading font-black italic transition-transform duration-300",
+                    index === 0 ? "text-[#005596] drop-shadow-[2px_2px_0px_#FFC72C]" : 
+                    index === 1 ? "text-[#005596]/60" :
+                    index === 2 ? "text-[#005596]/40" : "text-[#005596]/20",
+                    isPost ? (isSingleColumnPost ? "text-3xl" : "text-2xl") : "text-[80px] -ml-8"
+                )}>
+                    {index + 1}
+                </span>
             </div>
 
             {/* Row Card */}
             <div className={clsx(
-                "flex-1 h-full flex items-center bg-white border border-gray-100 rounded-r-2xl relative overflow-hidden z-10 shadow-none",
-                isPost ? (isSingleColumnPost ? "pl-8 pr-6 ml-[-10px]" : "pl-5 pr-4 ml-[-8px]") : "pl-8 pr-6 ml-[-10px]"
+                "flex-1 h-full flex items-center bg-white border border-[#0F172A]/10 rounded-lg relative overflow-hidden z-10 shadow-[0_4px_24px_-4px_rgba(15,23,42,0.06)]",
+                isPost ? (isSingleColumnPost ? "pl-8 pr-6 ml-[-10px]" : "pl-5 pr-4 ml-[-8px]") : "pl-12 pr-10 ml-[-20px]"
             )}>
                  {/* Team Name */}
                 <div className="flex-1 pr-2">
                     <span className={clsx(
-                        "font-heading font-black italic text-[rgb(0,85,150)] uppercase tracking-tight line-clamp-1 leading-none",
-                        isPost ? (isSingleColumnPost ? "text-2xl" : "text-xl") : "text-3xl"
+                        "font-heading font-black uppercase text-[#005596] tracking-tight line-clamp-1 leading-none",
+                        isPost ? (isSingleColumnPost ? "text-2xl" : "text-xl") : "text-4xl"
                     )}>
                         {entry.team}
                     </span>
@@ -231,7 +226,7 @@ const LeaderboardRow: React.FC<{ entry: LeaderboardEntry, index: number, isPost:
                 <div className="flex items-center">
                     {/* W-L */}
                     <div className={clsx(
-                        "text-center font-mono font-black text-gray-700",
+                        "text-center font-heading font-bold text-[#005596]/60",
                         isPost ? (isSingleColumnPost ? "w-24 text-xl" : "w-14 text-base") : "w-32 text-2xl"
                     )}>
                         {entry.wins}-{entry.losses}
@@ -239,19 +234,25 @@ const LeaderboardRow: React.FC<{ entry: LeaderboardEntry, index: number, isPost:
                     
                     {/* % */}
                     <div className={clsx(
-                        "text-center font-heading font-black italic tracking-tighter",
-                        index < 3 ? "text-[rgb(0,85,150)]" : "text-gray-500",
-                        isPost ? (isSingleColumnPost ? "w-24 text-2xl" : "w-12 text-lg") : "w-32 text-3xl"
+                        "text-center font-heading font-black italic tracking-tighter text-[#005596]",
+                        isPost ? (isSingleColumnPost ? "text-2xl w-24" : "text-xl w-12") : "text-4xl w-32"
                     )}>
                         {(entry.winPct * 100).toFixed(0)}%
                     </div>
 
-                    {/* PTS */}
+                    {/* DIFF */}
                     <div className={clsx(
-                        "text-center font-mono font-black text-gray-600",
-                        isPost ? (isSingleColumnPost ? "w-20 text-xl" : "w-14 text-base") : "w-24 text-2xl"
+                        "text-center font-heading font-black",
+                        isPost ? (isSingleColumnPost ? "w-20 text-lg" : "w-14 text-sm") : "w-24 text-xl"
                     )}>
-                        {entry.pointsFor}
+                        <span className={clsx(
+                            "inline-block min-w-[44px] px-2 py-1 rounded-md uppercase tracking-wider",
+                            diff > 0 ? "bg-green-100 text-green-700" : 
+                            diff < 0 ? "bg-[#E31837]/10 text-[#E31837]" : 
+                            "bg-gray-100 text-gray-400"
+                        )}>
+                            {diff > 0 ? '+' : ''}{diff}
+                        </span>
                     </div>
                 </div>
             </div>
