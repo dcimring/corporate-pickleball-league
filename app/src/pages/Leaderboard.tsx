@@ -136,7 +136,7 @@ export const Leaderboard: React.FC = () => {
         <TeamFilterHint />
       </div>
 
-      <div className="space-y-2 px-0 md:px-4 mt-4">
+      <div className="space-y-2 px-2 md:px-4 mt-4">
         <LeaderboardTable stats={stats} onTeamClick={handleTeamClick} />
         
         {/* Share Section */}
