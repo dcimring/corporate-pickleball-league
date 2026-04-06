@@ -52,9 +52,9 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
               <div className="h-full flex items-center justify-center w-12 md:w-16 relative z-20">
                 <span className={clsx(
                   "display-sm italic -ml-4 transition-transform duration-300 group-hover:scale-110",
-                  index === 0 ? "text-brand-blue drop-shadow-[2px_2px_0px_#FFC72C]" : 
-                  index === 1 ? "text-brand-blue/60" :
-                  index === 2 ? "text-brand-blue/40" : "text-brand-blue/20"
+                  index === 0 ? "text-[#FFC72C]" : 
+                  index === 1 ? "text-[#A1A1AA]" :
+                  index === 2 ? "text-[#B45309]" : "text-brand-blue/20"
                 )}>
                   {index + 1}
                 </span>
