@@ -50,14 +50,25 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
             >
               {/* Rank Badge - Kinetic Overlap */}
               <div className="h-full flex items-center justify-center w-12 md:w-16 relative z-20">
-                <span className={clsx(
-                  "display-sm italic -ml-4 transition-transform duration-300 group-hover:scale-110",
-                  index === 0 ? "text-brand-blue drop-shadow-[2px_2px_0px_#FFC72C]" : 
-                  index === 1 ? "text-brand-blue/60" :
-                  index === 2 ? "text-brand-blue/40" : "text-brand-blue/20"
-                )}>
-                  {index + 1}
-                </span>
+                {isTop3 ? (
+                  <div className={clsx(
+                    "w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center shadow-sm -ml-4 transition-transform duration-300 group-hover:scale-110",
+                    index === 0 ? "bg-brand-yellow" : 
+                    "bg-brand-gray border border-outline-variant"
+                  )}>
+                    <span className={clsx(
+                      "font-heading font-black italic text-xl md:text-2xl",
+                      index === 0 ? "text-brand-blue" : 
+                      index === 1 ? "text-brand-blue/60" : "text-brand-blue/40"
+                    )}>
+                      {index + 1}
+                    </span>
+                  </div>
+                ) : (
+                  <span className="display-sm italic -ml-4 text-brand-blue/20">
+                    {index + 1}
+                  </span>
+                )}
               </div>
 
               {/* Team Name - Editorial Style */}
