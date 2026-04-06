@@ -70,7 +70,7 @@ export const Navigation: React.FC<NavigationProps> = ({
                 onClick={() => onPageChange(tab.path)}
                 className={clsx(
                   "relative flex-1 px-2 md:px-10 py-3 rounded-xl text-base md:text-xl font-heading font-black italic uppercase tracking-tight transition-colors duration-300 z-10",
-                  isActive ? "text-brand-blue" : "text-gray-300 hover:text-gray-400"
+                  isActive ? "text-brand-blue" : "text-brand-blue/30 hover:text-brand-blue/50"
                 )}
               >
                 <span className="relative z-20">{tab.name}</span>
@@ -94,7 +94,7 @@ export const Navigation: React.FC<NavigationProps> = ({
           <button
             onClick={() => setIsOpen(!isOpen)}
             className={clsx(
-              "w-full max-w-xs mx-auto flex items-center justify-between px-5 py-3.5 bg-brand-gray rounded-2xl shadow-[inset_0_2px_8px_rgba(0,0,0,0.06)] border border-black/5 font-mono font-bold text-xs uppercase tracking-[0.15em] text-brand-blue transition-all duration-300 relative overflow-hidden",
+              "w-full max-w-xs mx-auto flex items-center justify-between px-5 py-3.5 bg-brand-gray rounded-2xl shadow-[inset_0_2px_8px_rgba(0,0,0,0.06)] border border-outline-variant font-heading font-bold text-xs uppercase tracking-[0.15em] text-brand-blue transition-all duration-300 relative overflow-hidden",
               isOpen ? "ring-1 ring-brand-yellow" : ""
             )}
           >
@@ -108,15 +108,15 @@ export const Navigation: React.FC<NavigationProps> = ({
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
-                className="bg-brand-gray text-brand-blue overflow-hidden max-w-xs mx-auto rounded-2xl mt-2 border border-black/5 shadow-xl z-50 relative"
+                className="bg-brand-gray text-brand-blue overflow-hidden max-w-xs mx-auto rounded-2xl mt-2 border border-outline-variant shadow-xl z-50 relative"
               >
                   {divisions.map((div) => (
                     <button
                       key={div}
                       onClick={() => handleMobileSelect(div)}
                       className={clsx(
-                        "w-full flex items-center justify-between px-5 py-4 text-left font-mono font-bold text-[10px] uppercase tracking-widest border-t border-black/5 hover:bg-black/5 transition-colors",
-                        activeDivision === div && "bg-white text-brand-blue"
+                        "w-full flex items-center justify-between px-5 py-4 text-left font-heading font-bold text-[10px] uppercase tracking-widest border-t border-outline-variant hover:bg-brand-light-blue transition-colors",
+                        activeDivision === div && "bg-brand-yellow/20 text-brand-blue"
                       )}
                     >
                       {shortenDivisionName(div)}
@@ -129,7 +129,7 @@ export const Navigation: React.FC<NavigationProps> = ({
         </div>
 
         {/* Desktop Tabs (Pills - Recessed Style) */}
-        <div className="hidden md:flex md:flex-wrap gap-2 md:justify-center p-1.5 bg-brand-blue/5 rounded-2xl w-full shadow-[inset_0_2px_10px_rgba(0,0,0,0.05)] border border-black/5">
+        <div className="hidden md:flex md:flex-wrap gap-2 md:justify-center p-1.5 bg-brand-blue/5 rounded-2xl w-full shadow-[inset_0_2px_10px_rgba(0,0,0,0.05)] border border-outline-variant">
           {divisions.map((div) => {
             const isActive = activeDivision === div;
             return (
@@ -137,14 +137,14 @@ export const Navigation: React.FC<NavigationProps> = ({
                 key={div}
                 onClick={() => onDivisionChange(div)}
                 className={clsx(
-                  "relative px-5 py-2 text-[10px] font-mono font-bold uppercase tracking-[0.2em] transition-all whitespace-nowrap flex-shrink-0 rounded-xl",
+                  "relative px-5 py-2 text-[10px] font-heading font-bold uppercase tracking-[0.2em] transition-all whitespace-nowrap flex-shrink-0 rounded-xl",
                   isActive 
-                    ? "bg-white text-brand-blue shadow-md" 
-                    : "text-gray-400 hover:text-gray-600 hover:bg-black/5"
+                    ? "bg-brand-yellow text-brand-blue shadow-md" 
+                    : "text-brand-blue/40 hover:text-brand-blue/60 hover:bg-brand-blue/5"
                 )}
               >
                 {shortenDivisionName(div)}
-                {isActive && <motion.div layoutId="glow-pill" className="absolute inset-0 rounded-xl ring-1 ring-black/5" />}
+                {isActive && <motion.div layoutId="glow-pill" className="absolute inset-0 rounded-xl ring-1 ring-brand-blue/10" />}
               </button>
             );
           })}
