@@ -116,7 +116,7 @@ export const Navigation: React.FC<NavigationProps> = ({
                       onClick={() => handleMobileSelect(div)}
                       className={clsx(
                         "w-full flex items-center justify-between px-5 py-4 text-left font-heading font-bold text-[10px] uppercase tracking-widest border-t border-outline-variant hover:bg-brand-light-blue transition-colors",
-                        activeDivision === div && "bg-brand-yellow/20 text-brand-blue"
+                        activeDivision === div && "bg-white text-brand-blue shadow-sm"
                       )}
                     >
                       {shortenDivisionName(div)}
@@ -139,7 +139,7 @@ export const Navigation: React.FC<NavigationProps> = ({
                 className={clsx(
                   "relative px-5 py-2 text-[10px] font-heading font-bold uppercase tracking-[0.2em] transition-all whitespace-nowrap flex-shrink-0 rounded-xl",
                   isActive 
-                    ? "bg-brand-yellow text-brand-blue shadow-md" 
+                    ? "bg-white text-brand-blue shadow-md" 
                     : "text-brand-blue/40 hover:text-brand-blue/60 hover:bg-brand-blue/5"
                 )}
               >
