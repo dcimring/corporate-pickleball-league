@@ -80,7 +80,7 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
 
                 {/* % */}
                 <div className={clsx(
-                  "w-14 md:w-24 text-center font-stat font-black text-base md:text-3xl tracking-tighter",
+                  "w-14 md:w-24 text-center font-stat font-black text-xl md:text-3xl tracking-tighter",
                   isTop3 ? "text-primary" : "text-primary/80"
                 )}>
                   {(entry.winPct * 100).toFixed(0)}<span className="text-[0.6em] opacity-40 ml-0.5">%</span>
