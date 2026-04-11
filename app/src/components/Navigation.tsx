@@ -58,32 +58,52 @@ export const Navigation: React.FC<NavigationProps> = ({
 
   return (
     <div className="flex flex-col gap-3 w-full">
-      {/* Page Tabs - Editorial Style - Centered Pills */}
-      <div className="flex justify-center w-full gap-3">
-          {pageTabs.map((tab) => {
-            const isActive = activePage === tab.path;
-            return (
-              <button
-                key={tab.name}
-                onClick={() => onPageChange(tab.path)}
-                className={clsx(
-                  "relative px-6 py-3 md:px-16 md:py-5 transition-all duration-300 group rounded-none overflow-hidden flex-1 md:flex-none max-w-[200px] md:max-w-none",
-                  isActive 
-                    ? "text-on-secondary-container" 
-                    : "text-primary/40 hover:text-primary hover:bg-primary/5"
-                )}
-              >
-                <span className="relative z-20 label-md md:text-xl md:tracking-[0.1em] font-bold uppercase">{tab.name}</span>
-                {isActive && (
-                  <motion.div
-                    layoutId="active-pill-bg"
-                    className="absolute inset-0 bg-secondary shadow-ambient"
-                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                  />
-                )}
-              </button>
-            );
-          })}
+      {/* Page Tabs - Editorial Style - Centered Pills with Court Markers */}
+      <div className="relative w-full flex justify-center py-2">
+          {/* Court Markers - Desktop Only */}
+          <div className="hidden md:flex absolute inset-0 items-center justify-between pointer-events-none px-4">
+              {/* Left Slashes */}
+              <div className="flex gap-1.5 opacity-40">
+                  <div className="w-1.5 h-8 bg-secondary skew-x-[-20deg]" />
+                  <div className="w-1.5 h-8 bg-secondary skew-x-[-20deg]" />
+                  <div className="w-1.5 h-8 bg-secondary skew-x-[-20deg]" />
+              </div>
+              
+              {/* Right Barcode */}
+              <div className="flex items-end gap-1 opacity-20">
+                  <div className="w-1 h-6 bg-primary" />
+                  <div className="w-3 h-6 bg-primary" />
+                  <div className="w-0.5 h-6 bg-primary" />
+                  <div className="w-2 h-6 bg-primary" />
+              </div>
+          </div>
+
+          <div className="flex justify-center gap-3 w-full md:w-auto relative px-0 md:px-8">
+              {pageTabs.map((tab) => {
+                const isActive = activePage === tab.path;
+                return (
+                  <button
+                    key={tab.name}
+                    onClick={() => onPageChange(tab.path)}
+                    className={clsx(
+                      "relative px-6 py-4 md:px-16 md:py-5 transition-all duration-300 group rounded-none overflow-hidden flex-1 md:flex-none",
+                      isActive 
+                        ? "text-on-secondary-container" 
+                        : "text-primary/40 hover:text-primary hover:bg-primary/5"
+                    )}
+                  >
+                    <span className="relative z-20 label-md md:text-xl md:tracking-[0.1em] font-bold uppercase">{tab.name}</span>
+                    {isActive && (
+                      <motion.div
+                        layoutId="active-pill-bg"
+                        className="absolute inset-0 bg-secondary shadow-ambient"
+                        transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                      />
+                    )}
+                  </button>
+                );
+              })}
+          </div>
       </div>
 
       {/* Division Selector */}
