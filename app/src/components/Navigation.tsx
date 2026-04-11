@@ -12,6 +12,11 @@ interface NavigationProps {
   onDivisionChange: (division: string) => void;
 }
 
+const shortenDivisionName = (name: string) => {
+  if (name === 'Cayman Premier League') return 'CPL';
+  return name.replace('Division ', 'Div ');
+};
+
 export const Navigation: React.FC<NavigationProps> = ({ 
   pageTabs, 
   activePage, 
@@ -52,9 +57,9 @@ export const Navigation: React.FC<NavigationProps> = ({
   };
 
   return (
-    <div className="flex flex-col gap-8 w-full">
-      {/* Page Tabs - Editorial Style */}
-      <div className="flex justify-center md:justify-start w-full gap-4">
+    <div className="flex flex-col gap-3 w-full">
+      {/* Page Tabs - Editorial Style - Centered */}
+      <div className="flex justify-center w-full gap-8">
           {pageTabs.map((tab) => {
             const isActive = activePage === tab.path;
             return (
@@ -62,7 +67,7 @@ export const Navigation: React.FC<NavigationProps> = ({
                 key={tab.name}
                 onClick={() => onPageChange(tab.path)}
                 className={clsx(
-                  "relative px-4 md:px-0 py-2 headline-md uppercase tracking-tighter transition-all duration-500 group",
+                  "relative px-4 py-2 headline-md uppercase tracking-tighter transition-all duration-500 group",
                   isActive ? "text-primary" : "text-on-surface-variant opacity-30 hover:opacity-100"
                 )}
               >
@@ -80,9 +85,9 @@ export const Navigation: React.FC<NavigationProps> = ({
           })}
       </div>
 
-      {/* Division Selector - Tournament Chips */}
+      {/* Division Selector */}
       <div className="w-full relative" ref={containerRef}>
-          {/* Mobile Dropdown */}
+          {/* Mobile Dropdown - Remains as refined version */}
           <div className="md:hidden">
           <button
             onClick={() => setIsOpen(!isOpen)}
@@ -120,8 +125,8 @@ export const Navigation: React.FC<NavigationProps> = ({
           </AnimatePresence>
         </div>
 
-        {/* Desktop Tournament Chips (Pill-shaped) */}
-        <div className="hidden md:flex flex-wrap gap-3">
+        {/* Desktop Tabs (Pills - Recessed Style restored - Now Square & Transparent) */}
+        <div className="hidden md:flex md:flex-wrap gap-2 md:justify-center p-1.5 rounded-none w-full border border-outline-variant/10">
           {divisions.map((div) => {
             const isActive = activeDivision === div;
             return (
@@ -129,13 +134,14 @@ export const Navigation: React.FC<NavigationProps> = ({
                 key={div}
                 onClick={() => onDivisionChange(div)}
                 className={clsx(
-                  "relative px-6 py-2 label-md rounded-full transition-all duration-300 whitespace-nowrap",
+                  "relative px-6 py-2.5 text-[11px] font-stat font-bold uppercase tracking-[0.2em] transition-all whitespace-nowrap flex-shrink-0 rounded-none",
                   isActive 
-                    ? "bg-secondary-container text-on-secondary-container shadow-sm" 
-                    : "bg-surface-container-highest text-primary/60 hover:bg-surface-container-high hover:text-primary"
+                    ? "bg-white text-primary shadow-md" 
+                    : "text-primary/40 hover:text-primary/60 hover:bg-white/50"
                 )}
               >
-                {div}
+                {shortenDivisionName(div)}
+                {isActive && <motion.div layoutId="glow-pill" className="absolute inset-0 rounded-none ring-1 ring-primary/5" />}
               </button>
             );
           })}

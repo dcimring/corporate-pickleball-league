@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 interface TeamFilterHintProps {
   className?: string;
   storageKey?: string;
+  transparent?: boolean;
 }
 
 const DEFAULT_STORAGE_KEY = 'cl_team_filter_hint_dismissed';
@@ -13,6 +14,7 @@ const DEFAULT_STORAGE_KEY = 'cl_team_filter_hint_dismissed';
 export const TeamFilterHint: React.FC<TeamFilterHintProps> = ({
   className,
   storageKey = DEFAULT_STORAGE_KEY,
+  transparent = false,
 }) => {
   const [isDismissed, setIsDismissed] = useState<boolean>(() => {
     if (typeof window !== 'undefined') {
@@ -39,7 +41,10 @@ export const TeamFilterHint: React.FC<TeamFilterHintProps> = ({
           className
         )}
       >
-        <div className="flex items-center justify-center gap-4 py-3 bg-surface-container-high text-primary/60 px-6">
+        <div className={clsx(
+          "flex items-center justify-center gap-4 py-1.5 text-primary/60",
+          !transparent && "bg-surface-container-high px-6"
+        )}>
           <Info className="h-4 w-4 shrink-0 opacity-40" />
           
           <p className="label-sm font-bold tracking-widest text-center leading-none">

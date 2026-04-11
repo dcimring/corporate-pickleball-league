@@ -99,33 +99,8 @@ export const Leaderboard: React.FC = () => {
       {/* Portal target for Share Toasts */}
       <div ref={toastPortalRef} className="fixed bottom-0 left-0 right-0 z-[300] pointer-events-none flex justify-center pb-6" />
 
-      {/* THE HERO SLOT - Editorial 3D Effect */}
-      <div className="relative w-full h-[300px] md:h-[500px] flex items-center px-6 md:px-12 bg-surface-container-low overflow-hidden">
-          {/* Background Text (Stadium Voice) */}
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
-              <h1 className="display-lg text-primary opacity-5 whitespace-nowrap">
-                  THE CORPORATE LEAGUE
-              </h1>
-          </div>
-
-          <div className="relative z-10 max-w-4xl">
-              <h2 className="display-lg text-primary uppercase">
-                  THE<br />
-                  <span className="text-secondary">ELITE</span><br />
-                  SQUAD
-              </h2>
-          </div>
-
-          {/* Overlapping "Athlete" Placeholder */}
-          <div className="absolute right-[-10%] bottom-[-10%] w-[350px] md:w-[600px] h-[400px] md:h-[700px] z-20 pointer-events-none">
-              <div className="w-full h-full bg-linear-to-tr from-primary to-primary-container opacity-20 transform rotate-12 scale-110 shadow-ambient" 
-                   style={{ clipPath: 'polygon(20% 0%, 100% 40%, 80% 100%, 0% 80%)' }} />
-          </div>
-          
-          <div className="absolute inset-0 opacity-[0.05] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] mix-blend-multiply" />
-      </div>
-
-      <div className="px-6 md:px-12 py-12 space-y-12">
+      {/* Unified Header Block */}
+      <header className="bg-surface-container-low pt-4 pb-4 px-6 md:px-12 space-y-4">
         <Navigation 
           pageTabs={pageTabs} 
           activePage="/leaderboard" 
@@ -135,30 +110,27 @@ export const Leaderboard: React.FC = () => {
           onDivisionChange={handleDivisionChange} 
         />
 
-        <div className="space-y-6">
-          {/* Editorial Ticker */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            key={`ticker-${activeDivision}-${latestMatchDate}`}
-            className="w-full py-6 bg-surface-container-low flex items-center justify-center relative overflow-hidden"
-          >
-            <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]" />
+        {/* Editorial Ticker - No Background */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          key={`ticker-${activeDivision}-${latestMatchDate}`}
+          className="w-full py-1 flex items-center justify-center relative overflow-hidden"
+        >
+          <p className="relative z-10 label-sm text-primary/60 text-center flex items-center gap-4">
+            <span className="w-1.5 h-1.5 bg-secondary shadow-[0_0_8px_rgba(255,199,44,0.8)] animate-pulse" />
+            <span>
+              {latestMatchDate ? `DATA CURRENT THROUGH ${formatDate(latestMatchDate)}` : 'AWAITING MATCH DATA'}
+            </span>
+            <span className="w-1.5 h-1.5 bg-secondary shadow-[0_0_8px_rgba(255,199,44,0.8)] animate-pulse" />
+          </p>
+        </motion.div>
+        
+        <TeamFilterHint transparent />
+      </header>
 
-            <p className="relative z-10 label-md text-primary/80 text-center flex items-center gap-4">
-              <span className="w-2 h-2 bg-secondary shadow-[0_0_12px_rgba(255,199,44,0.8)] animate-pulse" />
-              <span>
-                {latestMatchDate ? `DATA CURRENT THROUGH ${formatDate(latestMatchDate)}` : 'AWAITING MATCH DATA'}
-              </span>
-              <span className="w-2 h-2 bg-secondary shadow-[0_0_12px_rgba(255,199,44,0.8)] animate-pulse" />
-            </p>
-          </motion.div>
-          
-          <TeamFilterHint />
-        </div>
-
-        <div className="space-y-12">
-          <LeaderboardTable stats={stats} onTeamClick={handleTeamClick} />
+      <div className="px-6 md:px-12 pt-6 pb-12 space-y-8">
+        <LeaderboardTable stats={stats} onTeamClick={handleTeamClick} />
           
           {/* Share Section - Editorial Layout */}
           <div className="flex items-center justify-center py-12">
@@ -221,7 +193,6 @@ export const Leaderboard: React.FC = () => {
             </motion.div>
           </div>
         </div>
-      </div>
 
       {/* Hidden containers for generation */}
       <div className="absolute left-[-9999px] top-[-9999px] w-max">

@@ -127,32 +127,8 @@ export const Matches: React.FC = () => {
 
   return (
     <div className="space-y-0 relative overflow-hidden bg-surface">
-      {/* THE HERO SLOT - Editorial 3D Effect */}
-      <div className="relative w-full h-[300px] md:h-[500px] flex items-center px-6 md:px-12 bg-surface-container-low overflow-hidden">
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
-              <h1 className="display-lg text-primary opacity-5 whitespace-nowrap">
-                  MATCH DAY COVERAGE
-              </h1>
-          </div>
-
-          <div className="relative z-10 max-w-4xl">
-              <h2 className="display-lg text-primary uppercase">
-                  GAME<br />
-                  <span className="text-secondary">CHANGERS</span><br />
-                  LIVE
-              </h2>
-          </div>
-
-          {/* Overlapping Placeholder */}
-          <div className="absolute right-[-10%] bottom-[-10%] w-[350px] md:w-[600px] h-[400px] md:h-[700px] z-20 pointer-events-none">
-              <div className="w-full h-full bg-linear-to-bl from-primary to-primary-container opacity-20 transform -rotate-6 scale-110 shadow-ambient" 
-                   style={{ clipPath: 'polygon(10% 20%, 90% 0%, 100% 90%, 0% 100%)' }} />
-          </div>
-          
-          <div className="absolute inset-0 opacity-[0.05] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] mix-blend-multiply" />
-      </div>
-
-      <div className="px-6 md:px-12 py-12 space-y-12">
+      {/* Unified Header Block */}
+      <header className="bg-surface-container-low pt-4 pb-4 px-6 md:px-12 space-y-4">
         <Navigation 
           pageTabs={pageTabs} 
           activePage="/matches" 
@@ -162,7 +138,7 @@ export const Matches: React.FC = () => {
           onDivisionChange={handleDivisionChange} 
         />
 
-        <div className="space-y-6">
+        <div className="space-y-2">
           {/* Active Filter Ribbon - Editorial Style */}
           <AnimatePresence mode="wait">
             {selectedTeam && (
@@ -173,28 +149,30 @@ export const Matches: React.FC = () => {
                 className="overflow-hidden"
               >
                 <div 
-                  className="w-full py-6 bg-primary text-on-primary flex items-center justify-center gap-6 relative"
+                  className="w-full py-2 bg-primary text-on-primary flex items-center justify-center gap-6 relative"
                 >
                   <div className="absolute left-0 top-0 bottom-0 w-2 bg-secondary" />
-                  <span className="label-md font-black tracking-[0.3em] flex items-center gap-4">
+                  <span className="label-sm font-black tracking-[0.3em] flex items-center gap-4">
                     <span className="opacity-40 font-stat">FILTERED BY</span>
                     <span className="text-secondary">{selectedTeam}</span>
                   </span>
                   <button 
                     onClick={handleClearFilter}
-                    className="p-2 bg-white/10 hover:bg-secondary hover:text-primary transition-all rounded-none"
+                    className="p-1 hover:bg-secondary hover:text-primary transition-all rounded-none"
                   >
-                    <X className="w-5 h-5" />
+                    <X className="w-4 h-4" />
                   </button>
                 </div>
               </motion.div>
             )}
           </AnimatePresence>
 
-          <TeamFilterHint />
+          <TeamFilterHint transparent />
         </div>
+      </header>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+      <div className="px-6 md:px-12 pt-6 pb-12 space-y-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {matches.length > 0 ? (
             matches.map((match) => (
               <MatchCard 
