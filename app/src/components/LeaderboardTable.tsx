@@ -56,7 +56,7 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
                   index === 1 ? "text-primary/70" :
                   index === 2 ? "text-primary/50" : "text-primary/20"
                 )}>
-                  {(index + 1).toString().padStart(2, '0')}
+                  {index + 1}
                 </span>
               </div>
 

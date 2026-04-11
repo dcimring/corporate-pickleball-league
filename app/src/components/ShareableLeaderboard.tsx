@@ -183,7 +183,7 @@ const LeaderboardRow: React.FC<{ entry: LeaderboardEntry, index: number, isPost:
                     index === 1 ? "text-[#003e6f]/70" :
                     index === 2 ? "text-[#003e6f]/50" : "text-[#003e6f]/20"
                 )}>
-                    {(index + 1).toString().padStart(2, '0')}
+                    {index + 1}
                 </span>
             </div>
 
