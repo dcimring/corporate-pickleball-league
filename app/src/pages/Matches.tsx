@@ -172,7 +172,7 @@ export const Matches: React.FC = () => {
       </header>
 
       <div className="px-6 md:px-12 pt-6 pb-12 space-y-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
           {matches.length > 0 ? (
             matches.map((match) => (
               <MatchCard 
