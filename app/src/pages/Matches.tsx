@@ -2,9 +2,7 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Info, X } from 'lucide-react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Navigation } from '../components/Navigation';
 import { MatchCard } from '../components/MatchCard';
-import { TeamFilterHint } from '../components/TeamFilterHint';
 import { LoadingState } from '../components/LoadingState';
 import { useLeagueData } from '../context/LeagueContext';
 import { ShareButton, type ShareButtonHandle } from '../components/ShareButton';
@@ -117,24 +115,10 @@ export const Matches: React.FC = () => {
     matches = matches.filter(m => m.team1 === selectedTeam || m.team2 === selectedTeam);
   }
 
-  const pageTabs = [
-    { name: 'Leaderboard', path: '/leaderboard' },
-    { name: 'Matches', path: '/matches' },
-  ];
-
   return (
     <div className="space-y-0 relative overflow-hidden">
-      {/* Unified Header Block */}
-      <header className="pt-4 pb-4 px-6 md:px-12 space-y-4">
-        <Navigation 
-          pageTabs={pageTabs} 
-          activePage="/matches" 
-          divisions={divisions} 
-          activeDivision={activeDivision} 
-          onPageChange={handlePageChange} 
-          onDivisionChange={handleDivisionChange} 
-        />
-
+      {/* Page-Specific Content below Layout Header */}
+      <div className="pt-0 pb-4 px-6 md:px-12">
         <div className="space-y-2">
           {/* Active Filter Ribbon - Editorial Style */}
           <AnimatePresence mode="wait">
@@ -163,10 +147,8 @@ export const Matches: React.FC = () => {
               </motion.div>
             )}
           </AnimatePresence>
-
-          <TeamFilterHint transparent />
         </div>
-      </header>
+      </div>
 
       <div className="px-6 md:px-12 pt-6 pb-12 space-y-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">

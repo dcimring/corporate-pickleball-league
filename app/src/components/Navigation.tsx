@@ -69,7 +69,7 @@ export const Navigation: React.FC<NavigationProps> = ({
                 className={clsx(
                   "relative px-6 py-3 md:px-16 md:py-5 transition-all duration-300 group rounded-none overflow-hidden flex-1 md:flex-none max-w-[200px] md:max-w-none",
                   isActive 
-                    ? "bg-secondary text-on-secondary-container shadow-ambient" 
+                    ? "text-on-secondary-container" 
                     : "text-primary/40 hover:text-primary hover:bg-primary/5"
                 )}
               >
@@ -77,7 +77,7 @@ export const Navigation: React.FC<NavigationProps> = ({
                 {isActive && (
                   <motion.div
                     layoutId="active-pill-bg"
-                    className="absolute inset-0 bg-secondary"
+                    className="absolute inset-0 bg-secondary shadow-ambient"
                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                   />
                 )}
