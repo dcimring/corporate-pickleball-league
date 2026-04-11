@@ -40,21 +40,6 @@ export const Leaderboard: React.FC = () => {
     return () => clearTimeout(fallback);
   }, [shareCardInView]);
 
-  const handleDivisionChange = (div: string) => {
-    const newParams = new URLSearchParams(searchParams);
-    newParams.set('division', div);
-    newParams.delete('team');
-    setSearchParams(newParams);
-  };
-
-  const handlePageChange = (path: string) => {
-    if (activeDivision) {
-        navigate(`${path}?division=${encodeURIComponent(activeDivision)}`);
-    } else {
-        navigate(path);
-    }
-  };
-
   const handleTeamClick = (teamName: string) => {
     if (activeDivision) {
         navigate(`/matches?division=${encodeURIComponent(activeDivision)}&team=${encodeURIComponent(teamName)}`);
@@ -65,7 +50,6 @@ export const Leaderboard: React.FC = () => {
     return <LoadingState />;
   }
 
-  const divisions = Object.keys(data.leaderboard);
   const stats = data.leaderboard[activeDivision] || [];
 
   const divisionMatches = data.matches[activeDivision] || [];
