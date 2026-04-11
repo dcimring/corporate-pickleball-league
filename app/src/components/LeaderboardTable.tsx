@@ -66,7 +66,7 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
 
               {/* Team Name - Editorial Voice */}
               <div className="flex-1 pl-2 md:pl-12 pr-2">
-                <span className="headline-md uppercase tracking-tight line-clamp-1 leading-none text-primary block transition-transform duration-500 group-hover:translate-x-4 text-sm md:text-2xl">
+                <span className="headline-md uppercase tracking-tight line-clamp-1 leading-none text-primary block transition-transform duration-500 group-hover:translate-x-4 text-sm md:text-2xl lg:text-3xl">
                     {entry.team}
                 </span>
               </div>

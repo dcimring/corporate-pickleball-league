@@ -57,12 +57,12 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick, onShar
   };
 
   return (
-    <div className="w-full h-full relative group transition-all duration-300 z-10 hover:z-20">
+    <div className="w-full h-full relative group z-10">
       <div ref={toastContainerRef} className="absolute inset-0 z-[100] pointer-events-none flex items-center justify-center p-2" />
 
-      <div className="editorial-card h-full relative overflow-hidden group-hover:scale-[1.01] transition-transform duration-500 flex flex-col">
+      <div className="editorial-card h-full relative overflow-hidden flex flex-col">
         {/* Subtle tonal layering background shift on hover */}
-        <div className="absolute inset-0 bg-surface-container-low opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        <div className="absolute inset-0 bg-surface-container-low opacity-0 group-hover:opacity-100" />
         
         <div className="relative p-5 md:p-6 flex flex-col gap-6 z-10 h-full">
             {/* Top Metadata Bar */}
@@ -84,7 +84,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick, onShar
                           onClick={() => setIsMenuOpen(!isMenuOpen)}
                           disabled={isSharing}
                           className={clsx(
-                              "flex items-center justify-center p-1.5 transition-all duration-300 rounded-none",
+                              "flex items-center justify-center p-1.5 rounded-none",
                               isMenuOpen ? "text-secondary" : "text-primary opacity-30 hover:opacity-100"
                           )}
                         >
@@ -145,14 +145,11 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick, onShar
                     )}>
                       {match.team1}
                       {isWin1 && (
-                        <motion.div 
-                          layoutId={`win-dot-${match.id}`}
-                          className="absolute -left-3 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-secondary shadow-[0_0_8px_rgba(255,199,44,0.8)]" 
-                        />
+                        <div className="absolute -left-3 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-secondary shadow-[0_0_8px_rgba(255,199,44,0.8)]" />
                       )}
                     </div>
                     <div className={clsx(
-                      "font-stat font-black text-4xl md:text-5xl lg:text-6xl tracking-tighter transition-all duration-500 flex-shrink-0",
+                      "font-stat font-black text-4xl md:text-5xl lg:text-6xl tracking-tighter flex-shrink-0",
                       isWin1 ? "text-primary" : "text-on-surface-variant opacity-10"
                     )}>
                       {match.team1Wins}
@@ -169,14 +166,11 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick, onShar
                     )}>
                       {match.team2}
                       {isWin2 && (
-                        <motion.div 
-                          layoutId={`win-dot-${match.id}`}
-                          className="absolute -left-3 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-secondary shadow-[0_0_8px_rgba(255,199,44,0.8)]" 
-                        />
+                        <div className="absolute -left-3 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-secondary shadow-[0_0_8px_rgba(255,199,44,0.8)]" />
                       )}
                     </div>
                     <div className={clsx(
-                      "font-stat font-black text-4xl md:text-5xl lg:text-6xl tracking-tighter transition-all duration-500 flex-shrink-0",
+                      "font-stat font-black text-4xl md:text-5xl lg:text-6xl tracking-tighter flex-shrink-0",
                       isWin2 ? "text-primary" : "text-on-surface-variant opacity-10"
                     )}>
                       {match.team2Wins}

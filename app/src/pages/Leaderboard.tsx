@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { motion, useInView } from 'framer-motion';
 import { LeaderboardTable } from '../components/LeaderboardTable';
@@ -13,7 +13,18 @@ export const Leaderboard: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const { data, loading } = useLeagueData();
-  const [activeDivision, setActiveDivision] = useState<string>('');
+
+  // Unified Active Division Logic - Derive directly from URL to prevent dual-render flicker
+  const activeDivision = useMemo(() => {
+    if (loading || !data.leaderboard) return '';
+    const divisions = Object.keys(data.leaderboard);
+    const paramDiv = searchParams.get('division');
+    
+    if (paramDiv && divisions.includes(paramDiv)) return paramDiv;
+    
+    return divisions.includes('Division A') ? 'Division A' : divisions[0] || '';
+  }, [loading, data.leaderboard, searchParams]);
+
   const postShareRef = useRef<HTMLDivElement>(null);
   const storyShareRef = useRef<HTMLDivElement>(null);
   const shareCardRef = useRef<HTMLDivElement>(null);
@@ -31,38 +42,24 @@ export const Leaderboard: React.FC = () => {
     return () => clearTimeout(fallback);
   }, [shareCardInView]);
 
-  useEffect(() => {
-    if (!loading && data.leaderboard) {
-        const divisions = Object.keys(data.leaderboard);
-        const paramDiv = searchParams.get('division');
-        const defaultDiv = paramDiv && divisions.includes(paramDiv) 
-          ? paramDiv 
-          : (divisions.includes('Division A') ? 'Division A' : divisions[0] || '');
-        
-        if (activeDivision === '' || (paramDiv && activeDivision !== paramDiv)) {
-             // eslint-disable-next-line react-hooks/set-state-in-effect
-             setActiveDivision(defaultDiv);
-        }
-    }
-  }, [loading, data, searchParams, activeDivision]);
-
   const handleDivisionChange = (div: string) => {
-    setActiveDivision(div);
-    setSearchParams({ division: div });
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set('division', div);
+    setSearchParams(newParams);
   };
 
   const handlePageChange = (path: string) => {
-    const currentDiv = searchParams.get('division') || activeDivision;
-    if (currentDiv) {
-        navigate(`${path}?division=${encodeURIComponent(currentDiv)}`);
+    if (activeDivision) {
+        navigate(`${path}?division=${encodeURIComponent(activeDivision)}`);
     } else {
         navigate(path);
     }
   };
 
   const handleTeamClick = (teamName: string) => {
-    const currentDiv = searchParams.get('division') || activeDivision;
-    navigate(`/matches?division=${encodeURIComponent(currentDiv)}&team=${encodeURIComponent(teamName)}`);
+    if (activeDivision) {
+        navigate(`/matches?division=${encodeURIComponent(activeDivision)}&team=${encodeURIComponent(teamName)}`);
+    }
   };
 
   if (loading || !activeDivision) {

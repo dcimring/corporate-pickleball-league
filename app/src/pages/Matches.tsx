@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Info, X } from 'lucide-react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -15,7 +15,18 @@ export const Matches: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const { data, loading } = useLeagueData();
-  const [activeDivision, setActiveDivision] = useState<string>('');
+
+  // Unified Active Division Logic - Derive directly from URL to prevent dual-render flicker
+  const activeDivision = useMemo(() => {
+    if (loading || !data.matches) return '';
+    const divisions = Object.keys(data.matches);
+    const paramDiv = searchParams.get('division');
+    
+    if (paramDiv && divisions.includes(paramDiv)) return paramDiv;
+    
+    // Default to Division A or first available
+    return divisions.includes('Division A') ? 'Division A' : divisions[0] || '';
+  }, [loading, data.matches, searchParams]);
 
   // Global Sharing State
   const [sharingMatch, setSharingMatch] = useState<Match | null>(null);
@@ -32,30 +43,15 @@ export const Matches: React.FC = () => {
   const mobileWABtnRef = useRef<ShareButtonHandle>(null);
   const desktopWABtnRef = useRef<ShareButtonHandle>(null);
 
-  useEffect(() => {
-    if (!loading && data.matches) {
-        const divisions = Object.keys(data.matches);
-        const paramDiv = searchParams.get('division');
-        const defaultDiv = paramDiv && divisions.includes(paramDiv) 
-          ? paramDiv 
-          : (divisions.includes('Division A') ? 'Division A' : divisions[0] || '');
-        
-        if (activeDivision === '' || (paramDiv && activeDivision !== paramDiv)) {
-             // eslint-disable-next-line react-hooks/set-state-in-effect
-             setActiveDivision(defaultDiv);
-        }
-    }
-  }, [loading, data, searchParams, activeDivision]);
-
   const handleDivisionChange = (div: string) => {
-    setActiveDivision(div);
-    setSearchParams({ division: div });
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set('division', div);
+    setSearchParams(newParams);
   };
 
   const handlePageChange = (path: string) => {
-    const currentDiv = searchParams.get('division') || activeDivision;
-    if (currentDiv) {
-        navigate(`${path}?division=${encodeURIComponent(currentDiv)}`);
+    if (activeDivision) {
+        navigate(`${path}?division=${encodeURIComponent(activeDivision)}`);
     } else {
         navigate(path);
     }
