@@ -9,33 +9,35 @@ interface ConnectionErrorProps {
 
 export const ConnectionError: React.FC<ConnectionErrorProps> = ({ onRetry, isRetrying = false }) => {
   return (
-    <div className="flex flex-col items-center justify-center min-h-[50vh] px-4 w-full">
-      <div className="w-full max-w-md bg-[#FFFEFC] rounded-3xl shadow-xl relative overflow-hidden border border-gray-100 p-8 text-center group">
+    <div className="flex flex-col items-center justify-center min-h-[50vh] px-6 w-full py-20">
+      <div className="editorial-card w-full max-w-2xl bg-surface-container-low p-12 text-center relative overflow-hidden group">
         
-        {/* Grainy Texture Overlay */}
-        <div className="absolute inset-0 opacity-[0.1] pointer-events-none mix-blend-multiply z-0" 
-             style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }} 
+        {/* Magazine Texture Overlay */}
+        <div className="absolute inset-0 opacity-[0.05] pointer-events-none mix-blend-multiply z-0" 
+             style={{ backgroundImage: `url("https://www.transparenttextures.com/patterns/stardust.png")` }} 
         />
 
         {/* Top Accent Bar */}
-        <div className="absolute top-0 left-6 right-6 h-2 bg-[rgb(142,209,252)] rounded-b-md z-10" />
+        <div className="absolute top-0 left-0 right-0 h-4 bg-primary z-10" />
 
-        <div className="relative z-10 flex flex-col items-center gap-6 pt-4">
+        <div className="relative z-10 flex flex-col items-center gap-12 pt-8">
           
-          {/* Icon Container with subtle animation */}
           <div className="relative">
-            <div className="absolute inset-0 bg-red-100 rounded-full scale-150 animate-pulse opacity-50" />
-            <div className="bg-white p-4 rounded-full shadow-soft relative">
-              <WifiOff className="w-10 h-10 text-[rgb(0,85,150)]" />
+            <div className="absolute inset-0 bg-primary/5 scale-150 animate-pulse" />
+            <div className="bg-surface-container-lowest p-8 shadow-ambient relative">
+              <WifiOff className="w-16 h-16 text-primary opacity-20" />
             </div>
           </div>
 
-          <div className="space-y-2">
-            <h2 className="font-heading font-black italic uppercase text-2xl text-[rgb(0,85,150)] tracking-tight">
-              Connection Issue
+          <div className="space-y-4">
+            <p className="label-md text-secondary font-black tracking-[0.2em]">
+              SYSTEM INTERRUPTED
+            </p>
+            <h2 className="display-sm text-primary uppercase">
+              CONNECTION ISSUE
             </h2>
-            <p className="font-body text-gray-500 max-w-[280px] mx-auto leading-relaxed">
-              We're having trouble connecting to the league server. Please try again later.
+            <p className="body-lg text-on-surface-variant opacity-60 max-w-md mx-auto">
+              The editorial feed has been disconnected. We're having trouble reaching the tournament server.
             </p>
           </div>
 
@@ -43,12 +45,12 @@ export const ConnectionError: React.FC<ConnectionErrorProps> = ({ onRetry, isRet
             onClick={onRetry}
             disabled={isRetrying}
             className={clsx(
-                "btn-primary flex items-center gap-2 transition-all duration-300",
-                isRetrying ? "opacity-70 cursor-not-allowed" : "group-hover:scale-105"
+                "btn-primary flex items-center gap-4 transition-all duration-300",
+                isRetrying ? "opacity-70 cursor-not-allowed" : "hover:scale-105"
             )}
           >
-            <RefreshCw className={clsx("w-4 h-4", isRetrying && "animate-spin")} />
-            <span>{isRetrying ? 'Connecting...' : 'Retry Connection'}</span>
+            <RefreshCw className={clsx("w-5 h-5", isRetrying && "animate-spin")} />
+            <span className="label-md">{isRetrying ? 'RECONNECTING...' : 'RETRY CONNECTION'}</span>
           </button>
         </div>
       </div>

@@ -11,93 +11,99 @@ interface LeaderboardTableProps {
 export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTeamClick }) => {
   
   if (stats.length === 0) return (
-    <div className="p-16 text-center flex flex-col items-center justify-center gap-4 text-gray-400 bg-white rounded-2xl border-4 border-dashed border-gray-100">
-      <div className="bg-blue-50 p-4 rounded-full">
-        <Info className="w-8 h-8 text-brand-blue" />
+    <div className="p-20 text-center flex flex-col items-center justify-center gap-6 bg-surface-container-low">
+      <div className="bg-primary/5 p-8 rounded-none">
+        <Info className="w-12 h-12 text-primary opacity-20" />
       </div>
-      <p className="font-heading font-bold text-xl text-brand-blue">No teams found</p>
-      <p className="font-body text-gray-500">Check back later for the schedule!</p>
+      <div className="space-y-4">
+        <h3 className="display-sm text-primary uppercase">No teams found</h3>
+        <p className="body-lg text-on-surface-variant opacity-60 max-w-md mx-auto">The league is preparing for action. Check back soon for the latest standings and results.</p>
+      </div>
     </div>
   );
 
   return (
-    <div className="w-full flex flex-col gap-3">
-      {/* Header Row */}
-      <div className="flex items-center px-0 py-1 text-[10px] md:text-xs font-heading font-semibold italic uppercase tracking-[0.2em] text-gray-400">
-        <div className="w-10 md:w-12 text-center">#</div>
-        <div className="flex-1 pl-4 md:pl-6 text-left">Team</div>
-        <div className="flex items-center justify-end gap-2 md:gap-6 pr-4 md:pr-8">
-            <div className="w-12 md:w-16 text-center">W-L</div>
-            <div className="w-10 md:w-14 text-center">%</div>
-            <div className="w-12 md:hidden text-center">PF</div>
-            <div className="hidden md:block w-24 text-center">PF-PA</div>
-            <div className="hidden md:block w-16 text-right">DIFF</div>
+    <div className="w-full flex flex-col gap-0">
+      {/* Header Row - Tightened for mobile */}
+      <div className="flex items-center px-1 md:px-6 py-4 bg-surface-container-high label-sm md:label-md text-on-surface-variant opacity-80">
+        <div className="w-10 md:w-20 text-center">Rank</div>
+        <div className="flex-1 pl-2 md:pl-12 text-left">Team</div>
+        <div className="flex items-center justify-end gap-1 md:gap-12">
+            <div className="w-14 md:w-24 text-center">W-L</div>
+            <div className="w-14 md:w-24 text-center">Win %</div>
+            <div className="hidden md:block w-32 text-center">Pts For/Against</div>
+            <div className="w-10 md:w-20 text-right">
+              <span className="md:hidden">Pts</span>
+              <span className="hidden md:inline">Diff</span>
+            </div>
         </div>
       </div>
 
-      {/* Team Rows as Cards */}
-      <div className="flex flex-col gap-2.5">
+      {/* Team Rows */}
+      <div className="flex flex-col gap-0">
         {stats.map((entry, index) => {
           const diff = entry.pointsFor - entry.pointsAgainst;
+          const isTop3 = index < 3;
           
           return (
             <div 
               key={entry.team} 
               onClick={() => onTeamClick(entry.team)}
-              className="flex items-center bg-white rounded-xl md:rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer group relative overflow-hidden h-[52px] md:h-14 border border-black/[0.03]"
+              className="flex items-center transition-all duration-500 cursor-pointer group relative overflow-visible h-20 md:h-24 bg-surface-container-lowest hover:bg-surface-container-low z-10 border-b border-outline-variant/5 md:border-none px-1 md:px-0"
             >
-              {/* Rank Badge (Original Logic as requested) */}
-              <div className="h-full flex items-center justify-center w-10 md:w-12 relative z-20 overflow-visible">
-                <div className={clsx(
-                  "absolute inset-0 transform -skew-x-12 -ml-3 w-[calc(100%+12px)]",
-                  index === 0 ? "bg-brand-yellow shadow-[4px_0_15px_rgba(255,199,44,0.3)]" : 
-                  index === 1 ? "bg-gray-200" :
-                  index === 2 ? "bg-orange-100" : "bg-transparent"
-                )} />
+              {/* Rank */}
+              <div className="h-full flex items-center justify-center w-10 md:w-20 relative">
                 <span className={clsx(
-                  "relative z-10 font-heading font-black text-sm md:text-lg italic -ml-1.5",
-                  index === 0 ? "text-brand-blue" : 
-                  index === 1 ? "text-gray-600" :
-                  index === 2 ? "text-orange-800" : "text-gray-300"
+                  "display-sm transition-transform duration-500 group-hover:scale-110",
+                  index === 0 ? "text-primary" : 
+                  index === 1 ? "text-primary/70" :
+                  index === 2 ? "text-primary/50" : "text-primary/20",
+                  "text-3xl md:text-4xl"
                 )}>
                   {index + 1}
                 </span>
               </div>
 
-              {/* Team Name - Strong Brand Blue */}
-              <div className="flex-1 pl-4 md:pl-6 pr-2 relative z-10 transition-transform duration-200 group-hover:translate-x-1">
-                <span className="font-heading font-black italic text-xs md:text-base uppercase tracking-tight line-clamp-1 leading-none text-brand-blue block">
+              {/* Team Name - Editorial Voice */}
+              <div className="flex-1 pl-2 md:pl-12 pr-2">
+                <span className="headline-md uppercase tracking-tight line-clamp-1 leading-none text-primary block transition-transform duration-500 group-hover:translate-x-4 text-sm md:text-2xl lg:text-3xl">
                     {entry.team}
                 </span>
               </div>
 
-              {/* Stats Group */}
-              <div className="flex items-center justify-end gap-2 md:gap-6 pr-4 md:pr-8 relative z-10 transition-transform duration-200 group-hover:translate-x-1">
-                {/* W-L - Reverted to dark gray */}
-                <div className="w-12 md:w-16 text-center font-mono font-semibold text-[11px] md:text-sm text-gray-700">
+              {/* Stats Group - Optimized gaps for mobile */}
+              <div className="flex items-center justify-end gap-1 md:gap-12 pr-1 md:pr-6">
+                {/* W-L */}
+                <div className="w-14 md:w-24 text-center font-stat font-bold text-base md:text-xl text-primary/60">
                   {entry.wins}-{entry.losses}
                 </div>
 
-                {/* % - Consolidated to Brand Blue for all teams */}
-                <div className="w-10 md:w-14 text-center font-heading font-semibold italic text-[13px] md:text-lg tracking-tighter text-brand-blue">
-                  {(entry.winPct * 100).toFixed(0)}%
+                {/* % */}
+                <div className={clsx(
+                  "w-14 md:w-24 text-center font-stat font-black text-base md:text-3xl tracking-tighter",
+                  isTop3 ? "text-primary" : "text-primary/80"
+                )}>
+                  {(entry.winPct * 100).toFixed(0)}<span className="text-[0.6em] opacity-40 ml-0.5">%</span>
                 </div>
 
-                {/* PF / PF-PA - Reverted to dark gray */}
-                <div className="w-12 md:hidden text-center font-mono font-semibold text-[11px] text-gray-700">
-                  {entry.pointsFor}
-                </div>
-                <div className="hidden md:block w-24 text-center font-mono font-semibold text-sm text-gray-700">
-                  {entry.pointsFor}-{entry.pointsAgainst}
+                {/* PF-PA (Desktop Only) */}
+                <div className="hidden md:block w-32 text-center font-stat font-medium text-sm text-on-surface-variant opacity-40">
+                  {entry.pointsFor} <span className="mx-1 opacity-20">/</span> {entry.pointsAgainst}
                 </div>
 
-                {/* DIFF (Desktop Only) - Semantic Kinetic Pills */}
-                <div className="hidden md:block w-16 text-right">
+                {/* Pts (Mobile) / DIFF (Desktop) */}
+                <div className="w-10 md:w-20 text-right">
+                    {/* Mobile: Show Points For */}
+                    <span className="md:hidden font-stat font-black text-base text-primary/60">
+                        {entry.pointsFor}
+                    </span>
+                    
+                    {/* Desktop: Show Diff */}
                     <span className={clsx(
-                      "inline-block min-w-[40px] px-2 py-0.5 rounded font-mono font-semibold text-xs text-center",
-                      diff > 0 ? "bg-green-100 text-green-700" : 
-                      diff < 0 ? "bg-red-100 text-red-700" : 
-                      "bg-gray-100 text-gray-400"
+                      "hidden md:inline font-stat font-black md:text-lg",
+                      diff > 0 ? "text-[#00A651]" : 
+                      diff < 0 ? "text-[#E31837]" : 
+                      "text-on-surface-variant opacity-20"
                     )}>
                         {diff > 0 ? '+' : ''}{diff}
                     </span>

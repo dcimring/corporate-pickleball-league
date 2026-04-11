@@ -1,31 +1,38 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400;1,700&family=Open+Sans:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,100..900;1,100..900&family=Public+Sans:ital,wght@0,100..900;1,100..900&family=Lexend:wght@100..900&display=swap');
 @import "tailwindcss";
 
 @theme {
-  /* Cayman Theme Colors */
-  --color-brand-blue: #005596;
-  --color-brand-yellow: #FFC72C;
-  --color-brand-red: #E31837;
-  --color-brand-green: #00A651;
-  --color-brand-light-blue: #E0F2FE;
-  --color-brand-light-blue-strong: #9CCCFF;
-  --color-brand-gray: #F8FAFC;
-  --color-text-main: #0F172A;
+  /* Editorial Athlete Design System Colors */
+  --color-surface: #f7f9fb;
+  --color-surface-container-low: #f2f4f6;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-high: #ebeef1;
+  --color-surface-container-highest: #e4e8ec;
   
-  /* Retain generic names mapped to new theme for compatibility, or update components */
-  --color-brand-cream: #FFFFFF; /* Main BG is now white */
-  --color-brand-ink: #0F172A;   /* Main Text */
-  --color-brand-acid: #FFC72C;  /* Accents are now Yellow */
-  --color-brand-soft-blue: #F1F5F9; /* Card BG is now very light gray/white */
-
-  --font-heading: 'Montserrat', sans-serif;
-  --font-body: 'Open Sans', sans-serif;
+  --color-primary: #005a87;
+  --color-primary-container: #005a87;
+  --color-on-primary: #ffffff;
   
-  --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --color-secondary: #ffc72c;
+  --color-secondary-container: #ffc72c;
+  --color-on-secondary-container: #005a87;
+  
+  --color-on-surface: #0f172a;
+  --color-on-surface-variant: #414750;
+  
+  --color-outline-variant: rgba(15, 23, 42, 0.15);
 
+  /* Typography */
+  --font-display: 'Epilogue', sans-serif;
+  --font-heading: 'Epilogue', sans-serif;
+  --font-body: 'Public Sans', sans-serif;
+  --font-stat: 'Lexend', sans-serif;
+  
+  /* Shadows & Depth */
+  --shadow-ambient: 0 12px 32px rgba(25, 28, 30, 0.06);
+
+  /* Animations */
   --animate-float: float 6s ease-in-out infinite;
-
   @keyframes float {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-10px); }
@@ -35,29 +42,56 @@
 @layer base {
   body {
     font-family: var(--font-body);
-    @apply text-brand-ink bg-white antialiased;
+    background-color: var(--color-surface);
+    background-image: linear-gradient(
+      to bottom, 
+      #ffffff 0px, 
+      var(--color-surface) 300px, 
+      var(--color-surface) calc(100% - 300px), 
+      #ffffff 100%
+    );
+    background-attachment: scroll;
+    color: var(--color-on-surface);
+    @apply antialiased;
   }
+  
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
-    @apply font-bold text-brand-blue;
+    @apply font-bold tracking-tight;
   }
+
+  /* Editorial Typographic Scale */
+  .display-lg { font-size: clamp(3rem, 8vw, 5rem); line-height: 0.9; font-family: var(--font-display); font-weight: 900; letter-spacing: -0.04em; }
+  .display-sm { font-size: 2.5rem; line-height: 1.1; font-family: var(--font-display); font-weight: 800; letter-spacing: -0.02em; }
+  .headline-md { font-size: 1.75rem; line-height: 1.2; font-family: var(--font-heading); font-weight: 700; }
+  .body-lg { font-size: 1.125rem; line-height: 1.6; font-family: var(--font-body); }
+  .body-md { font-size: 1rem; line-height: 1.6; font-family: var(--font-body); }
+  .label-md { font-size: 0.75rem; line-height: 1.5; font-family: var(--font-stat); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+  .label-sm { font-size: 0.65rem; line-height: 1.5; font-family: var(--font-stat); font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; }
 }
 
 @layer components {
   .btn-primary {
-    @apply inline-flex items-center justify-center px-8 py-3 bg-brand-yellow text-brand-blue font-heading font-bold uppercase tracking-wide rounded-full hover:bg-yellow-400 transition-all shadow-sm hover:shadow-md text-sm md:text-base;
-  }
-  .card-modern {
-    @apply bg-white border border-gray-100 rounded-2xl shadow-soft hover:shadow-hover transition-all duration-300;
+    @apply inline-flex items-center justify-center px-6 py-3 bg-linear-to-r from-primary to-primary-container text-on-primary font-heading font-bold rounded-[4px] hover:opacity-90 transition-all shadow-ambient;
   }
   
-  /* Hide scrollbar for Chrome, Safari and Opera */
+  .btn-secondary {
+    @apply inline-flex items-center justify-center px-6 py-3 bg-secondary-container text-on-secondary-container font-heading font-bold rounded-[4px] hover:opacity-90 transition-all shadow-ambient;
+  }
+
+  .glass-nav {
+    @apply backdrop-blur-[24px] bg-surface/80;
+  }
+
+  .editorial-card {
+    @apply bg-surface-container-lowest rounded-none shadow-ambient transition-all duration-300 border-none;
+  }
+  
   .no-scrollbar::-webkit-scrollbar {
       display: none;
   }
-  /* Hide scrollbar for IE, Edge and Firefox */
   .no-scrollbar {
-      -ms-overflow-style: none;  /* IE and Edge */
-      scrollbar-width: none;  /* Firefox */
+      -ms-overflow-style: none;
+      scrollbar-width: none;
   }
 }

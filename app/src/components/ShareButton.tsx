@@ -88,7 +88,7 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
 
       const exportOptions = {
         cacheBust: true,
-        backgroundColor: '#FFFEFC',
+        backgroundColor: '#f7f9fb',
         pixelRatio,
       };
 
@@ -120,8 +120,8 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
           });
           
           triggerToast({
-            title: 'Shared Successfully!',
-            message: 'Your league image has been shared.',
+            title: 'SHARED SUCCESSFULLY',
+            message: 'Your league coverage has been shared.',
             icon: 'share'
           });
         } catch (shareErr) {
@@ -139,8 +139,8 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
 
         if (!isMobileOrTablet) {
           triggerToast({
-            title: 'Image Downloaded!',
-            message: <>Check your <span className="font-bold underline decoration-brand-yellow underline-offset-2">Downloads</span> folder to share.</>,
+            title: 'ASSET EXPORTED',
+            message: <>Check your <span className="font-bold underline decoration-secondary underline-offset-4">Downloads</span> folder to share.</>,
             icon: 'download'
           });
         }
@@ -187,7 +187,7 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
           disabled={loading}
           tabIndex={tabIndex}
           className={clsx(
-            "p-2 rounded-full hover:bg-gray-100 text-gray-400 hover:text-brand-blue transition-colors relative",
+            "p-3 bg-surface-container-high text-primary hover:bg-surface-container-highest transition-colors relative",
             className
           )}
           title="Share"
@@ -206,30 +206,26 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
         disabled={loading}
         tabIndex={tabIndex}
         className={clsx(
-          "relative flex items-center gap-3 px-8 py-3 bg-gray-50 text-brand-blue font-heading font-bold rounded-2xl border border-white",
-          "shadow-[5px_5px_10px_#d1d5db,-5px_-5px_10px_#ffffff]",
-          "before:absolute before:inset-[-2px] before:rounded-2xl before:border-4 before:border-brand-light-blue-strong before:opacity-0 before:scale-125 before:transition-all before:duration-200 before:pointer-events-none",
-          "hover:before:opacity-100 hover:before:scale-100",
-          "active:scale-95 transition-all duration-200",
+          "relative flex items-center justify-center gap-4 px-10 py-4 bg-primary text-on-primary font-heading font-black uppercase tracking-widest rounded-none shadow-ambient active:scale-95 transition-all duration-300",
           loading && "opacity-80 cursor-wait",
           className
         )}
       >
         {loading ? (
           <>
-            <Loader2 className="w-5 h-5 animate-spin text-brand-blue" />
-            <span>{loadingLabel}</span>
+            <Loader2 className="w-6 h-6 animate-spin text-on-primary" />
+            <span className="label-md">{loadingLabel.toUpperCase()}</span>
           </>
         ) : (
           <>
             {!hideIcon && (
               preferDownload ? (
-                <Download className="w-5 h-5 text-brand-yellow drop-shadow-sm" />
+                <Download className="w-6 h-6 text-secondary" />
               ) : (
-                <Share2 className="w-5 h-5 text-brand-yellow drop-shadow-sm" />
+                <Share2 className="w-6 h-6 text-secondary" />
               )
             )}
-            <span>{buttonLabel}</span>
+            <span className="label-md">{buttonLabel.toUpperCase()}</span>
           </>
         )}
       </button>
@@ -238,7 +234,6 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
   );
 });
 
-/* Internal Toast Component with Portal/Absolute Support */
 const Toast: React.FC<{ 
   show: boolean; 
   onClose: () => void; 
@@ -256,39 +251,39 @@ const Toast: React.FC<{
       transition={{ type: "spring", damping: 25, stiffness: 200 }}
       style={{ pointerEvents: 'auto' }}
       className={clsx(
-        "z-[9999] w-[320px] md:w-[380px] visible",
+        "z-[9999] w-[320px] md:w-[420px] visible",
         portalTarget?.current 
-          ? "mt-4" // Use margin when inside the top-centered portal
-          : (position === 'fixed' ? "fixed bottom-6 right-6" : "absolute bottom-full right-0 mb-4")
+          ? "mt-4" 
+          : (position === 'fixed' ? "fixed bottom-12 right-12" : "absolute bottom-full right-0 mb-6")
       )}
     >
-      <div className="bg-brand-blue text-white p-4 md:p-5 rounded-2xl shadow-2xl border-2 border-brand-yellow relative overflow-hidden">
-        {/* Texture Overlay */}
-        <div className="absolute inset-0 opacity-10 pointer-events-none mix-blend-overlay" 
-             style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")` }} 
+      <div className="bg-primary text-on-primary p-6 shadow-ambient relative overflow-hidden">
+        {/* Magazine Texture Overlay */}
+        <div className="absolute inset-0 opacity-[0.1] pointer-events-none mix-blend-overlay" 
+             style={{ backgroundImage: `url("https://www.transparenttextures.com/patterns/stardust.png")` }} 
         />
         
-        <div className="flex gap-3 md:gap-4 relative z-10">
-          <div className="bg-brand-yellow/20 p-2 rounded-xl self-start">
+        <div className="flex gap-6 relative z-10">
+          <div className="bg-white/10 p-4 self-start">
             {config.icon === 'download' ? (
-              <CheckCircle2 className="w-5 h-5 md:w-6 md:h-6 text-brand-yellow" />
+              <CheckCircle2 className="w-8 h-8 text-secondary" />
             ) : (
-              <Share className="w-5 h-5 md:w-6 md:h-6 text-brand-yellow" />
+              <Share className="w-8 h-8 text-secondary" />
             )}
           </div>
           
-          <div className="flex-1 space-y-1 text-left">
-            <div className="font-heading font-black italic uppercase tracking-wider text-base md:text-lg leading-tight text-brand-yellow">
+          <div className="flex-1 space-y-2 text-left">
+            <div className="label-md font-black tracking-widest text-secondary">
               {config.title}
             </div>
-            <div className="text-[13px] md:text-sm font-body text-blue-100 leading-snug">
+            <div className="body-md text-on-primary/80 leading-snug">
               {config.message}
             </div>
             
             {config.icon === 'download' && (
-              <div className="pt-2 mt-2 border-t border-white/10 flex items-start gap-2">
-                <Smartphone className="w-3.5 h-3.5 md:w-4 md:h-4 text-brand-yellow mt-0.5 flex-shrink-0" />
-                <p className="text-[10px] md:text-[11px] font-mono leading-tight text-blue-100 italic">
+              <div className="pt-4 mt-4 border-t border-white/10 flex items-start gap-3">
+                <Smartphone className="w-5 h-5 text-secondary opacity-60 mt-0.5 flex-shrink-0" />
+                <p className="label-sm opacity-40 italic">
                   Tip: Open this site on mobile for direct one-tap sharing.
                 </p>
               </div>
@@ -297,9 +292,9 @@ const Toast: React.FC<{
 
           <button 
             onClick={onClose}
-            className="text-white/40 hover:text-white transition-colors self-start"
+            className="text-white/20 hover:text-white transition-colors self-start"
           >
-            <X className="w-4 h-4 md:w-5 md:h-5" />
+            <X className="w-5 h-5" />
           </button>
         </div>
       </div>

@@ -68,10 +68,12 @@ npm run lint
     -   `brand-blue`: #005596 (Cayman Navy)
     -   `brand-yellow`: #FFC72C (Electric Volt Accents)
     -   `brand-gray`: #F8FAFC (Subtle Backgrounds)
-    -   `brand-cream`: #FFFEFC (Warm Paper Texture Base)
+    -   `brand-cream`: #FFFFFF (Warm Paper Texture Base)
+    -   `brand-ink`: #0F172A (Main Text)
+    -   `brand-light-blue`: #E0F2FE (Hover/outline accents)
 -   **Typography:**
-    -   Family: 'Raleway' (Variable weights 300-800)
-    -   Styles: ExtraBold Italic for headings, Monospace for data.
+    -   Family: 'Montserrat' (Headings, bold/black italic), 'Open Sans' (Body text).
+    -   Styles: High-contrast editorial look with large, bold data points.
 
 ### Data Management
 - **Fetching:** Data is fetched from Supabase via `src/context/LeagueContext.tsx` with a 5-second timeout.
@@ -82,8 +84,10 @@ npm run lint
 ### Components
 -   **Functional Components:** Use React functional components with TypeScript interfaces for props.
 -   **Mobile-First:** Ensure all UI elements are responsive and optimized for mobile devices (e.g., touch-friendly targets, horizontal scrolling wrappers).
+-   **Leaderboard:** Features a 2px horizontal padding on mobile view (`px-2`) and semantic coloring for the DIFF column (positive values are green on light green).
 -   **Match Cards:** Use "Roost Kinetic" design with grainy paper texture and hard shadows.
 
 ### Social Sharing
 -   **Mechanism:** Client-side image generation using `html-to-image` creates branded PNGs for the leaderboard and match results.
 -   **Components:** `ShareButton`, `ShareableLeaderboard`, and `ShareableMatch` handle the rendering and sharing process via the native Web Share API.
+-   **Layouts:** Supports "Story" (portrait) and "Post" (landscape) formats with optimized typography and layouts.

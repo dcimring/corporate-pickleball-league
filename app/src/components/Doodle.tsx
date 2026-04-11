@@ -3,24 +3,25 @@ import React from 'react';
 export const Squiggle: React.FC<{ className?: string }> = ({ className }) => (
   <svg viewBox="0 0 100 20" className={className} preserveAspectRatio="none">
     <path
-      d="M0,20 L20,0 L40,20 L60,0 L80,20 L100,0"
+      d="M0,10 Q25,0 50,10 T100,10"
       fill="none"
       stroke="currentColor"
-      strokeWidth="4"
+      strokeWidth="2"
       strokeLinejoin="round"
+      className="opacity-20"
     />
   </svg>
 );
 
 export const CircleHighlight: React.FC<{ className?: string }> = ({ className }) => (
   <svg viewBox="0 0 200 100" className={className} preserveAspectRatio="none">
-    {/* Sharp Brackets */}
+    {/* Refined Bracket / Corner Focus */}
     <path
-      d="M20,20 L0,20 L0,80 L20,80 M180,20 L200,20 L200,80 L180,80"
+      d="M40,10 L10,10 L10,90 L40,90 M160,10 L190,10 L190,90 L160,90"
       fill="none"
       stroke="currentColor"
-      strokeWidth="4"
-      className="opacity-80"
+      strokeWidth="2"
+      className="opacity-30"
     />
   </svg>
 );
@@ -28,9 +29,9 @@ export const CircleHighlight: React.FC<{ className?: string }> = ({ className })
 export const Underline: React.FC<{ className?: string }> = ({ className }) => (
   <svg viewBox="0 0 200 20" className={className} preserveAspectRatio="none">
     <rect
-      x="0" y="0" width="200" height="20"
+      x="0" y="5" width="200" height="10"
       fill="currentColor"
-      className="opacity-30 skew-x-[-20deg]"
+      className="opacity-10"
     />
   </svg>
 );

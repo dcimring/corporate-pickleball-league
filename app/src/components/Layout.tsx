@@ -40,7 +40,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   }, [location.pathname, error]); // Add error to dependency array to trigger resize on error screen
 
   return (
-    <div id="app-container" className="font-body selection:bg-brand-yellow selection:text-brand-blue bg-transparent pt-4 inline-block w-full relative">
+    <div id="app-container" className="selection:bg-secondary-container selection:text-on-secondary-container bg-transparent pt-4 inline-block w-full relative">
       {/* Update Notification Banner */}
       <UpdateBanner />
 
@@ -60,10 +60,15 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         )}
       </main>
 
-      <footer className="mt-4 pb-2 text-center px-4 opacity-30">
-        <p className="text-[7px] font-mono uppercase text-gray-400 tracking-widest">
-          Build: {new Date(__BUILD_TIME__).toLocaleString('en-US', { timeZone: 'America/Cayman', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false }).replace(/, /g, '.').replace(/[/:]/g, '.')}
-        </p>
+      <footer className="mt-8 pb-4 text-center px-4">
+        <div className="flex flex-col items-center gap-2">
+          <div className="text-[10px] md:text-xs font-stat font-bold uppercase tracking-[0.2em] text-primary/60 flex items-center gap-1.5">
+            Leaderboard module built with <span className="normal-case text-sm">❤️</span> in Cayman by <a href="https://danielcimring.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-secondary transition-colors underline decoration-secondary/30 underline-offset-4 decoration-2">Daniel Cimring</a>
+          </div>
+          <p className="text-[7px] font-mono uppercase text-gray-400 tracking-widest opacity-30 mt-1">
+            Build: {new Date(__BUILD_TIME__).toLocaleString('en-US', { timeZone: 'America/Cayman', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false }).replace(/, /g, '.').replace(/[/:]/g, '.')}
+          </p>
+        </div>
       </footer>
     </div>
   );

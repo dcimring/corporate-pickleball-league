@@ -32,18 +32,22 @@ Backend data is stored in Supabase (Postgres). Match ingestion is automated via 
 - Lint: `npm run lint`
 
 ## Style
-- Theme colors:
-- `brand-blue`: #005596 (Cayman Navy)
-- `brand-yellow`: #FFC72C (Electric Volt Accents)
-- `brand-gray`: #F8FAFC (Subtle Backgrounds)
-- `brand-cream`: #FFFEFC (Warm Paper Texture Base)
-- `brand-light-blue`: #9CCCFF (Hover/outline accents)
+- **Aesthetic:** "Roost Kinetic" with high-contrast, editorial typography and "Warm Paper" UI textures.
+- **Typography:** Montserrat (Headings, bold/black italic), Open Sans (Body).
+- **Theme colors:**
+  - `brand-blue`: #005596 (Cayman Navy)
+  - `brand-yellow`: #FFC72C (Electric Volt Accents)
+  - `brand-gray`: #F8FAFC (Subtle Backgrounds)
+  - `brand-cream`: #FFFFFF (Warm Paper Texture Base)
+  - `brand-light-blue`: #E0F2FE (Hover/outline accents)
+  - `brand-ink`: #0F172A (Main Text)
+- **UI Patterns:** White backgrounds for selected navigation items and division pills to provide clear visual focus.
 
 ## Behavior Notes
 - Data is fetched once on app mount; background refresh runs silently.
 - Iframe auto-resizes via `postMessage` and `ResizeObserver` in `Layout.tsx`.
 - Team name clicks route to matches filtered via URL search params.
-- Share images are generated server-side via `/api/og` edge function.
+- Share images are generated client-side using `html-to-image` capturing hidden, styled DOM containers (`ShareableLeaderboard`, `ShareableMatch`).
 
 ## Ingestion Notes
 - Python service polls Gmail every 15 minutes, validates game counts, and upserts into Supabase.
