@@ -58,16 +58,18 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({
             /* Post Layout (Landscape) - FIXED OVERFLOW */
             <div className="relative z-10 flex flex-col h-full w-full">
                 {/* Branding Anchor Top Left */}
-                <div className="absolute top-0 left-0 flex flex-col items-start gap-2">
+                <div className="absolute top-0 left-0">
                     <h1 className="font-display font-black text-[#005a87] text-[64px] uppercase tracking-tighter leading-none">
                         LA ROCHE POSAY PICKLEBALL LEAGUE
                     </h1>
-                    <div className="flex items-center gap-3">
-                        <div className="w-12 h-1.5 bg-[#ffc72c]" />
-                        <p className="font-stat font-black tracking-[0.4em] text-[#005a87] opacity-40 uppercase text-xs">
-                            MATCH RESULT
-                        </p>
-                    </div>
+                </div>
+
+                {/* Match Result Label Top Right */}
+                <div className="absolute top-1 right-0 flex flex-col items-end gap-2">
+                    <div className="w-12 h-1.5 bg-[#ffc72c]" />
+                    <p className="font-stat font-black tracking-[0.4em] text-[#005a87] opacity-40 uppercase text-xs">
+                        MATCH RESULT
+                    </p>
                 </div>
 
                 {/* Main Duel Stage - Constrained width */}
