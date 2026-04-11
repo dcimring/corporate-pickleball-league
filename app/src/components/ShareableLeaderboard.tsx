@@ -161,7 +161,7 @@ const LeaderboardHeader: React.FC<{ isPost: boolean }> = ({ isPost }) => (
         <div className={clsx("text-center", isPost ? "w-16" : "w-32")}>#</div>
         <div className="flex-1 pl-8">Team</div>
         <div className="flex items-center gap-8">
-            <div className={clsx("text-center", isPost ? "w-24" : "w-40")}>Record</div>
+            <div className={clsx("text-center", isPost ? "w-24" : "w-40")}>W-L</div>
             <div className={clsx("text-center", isPost ? "w-24" : "w-40")}>Win %</div>
             <div className={clsx("text-center", isPost ? "w-20" : "w-32")}>Diff</div>
         </div>

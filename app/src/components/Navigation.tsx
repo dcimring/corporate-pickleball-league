@@ -58,8 +58,8 @@ export const Navigation: React.FC<NavigationProps> = ({
 
   return (
     <div className="flex flex-col gap-3 w-full">
-      {/* Page Tabs - Editorial Style - Centered */}
-      <div className="flex justify-center w-full gap-8">
+      {/* Page Tabs - Editorial Style - Centered Pills */}
+      <div className="flex justify-center w-full gap-3">
           {pageTabs.map((tab) => {
             const isActive = activePage === tab.path;
             return (
@@ -67,19 +67,20 @@ export const Navigation: React.FC<NavigationProps> = ({
                 key={tab.name}
                 onClick={() => onPageChange(tab.path)}
                 className={clsx(
-                  "relative px-4 py-2 headline-md uppercase tracking-tighter transition-all duration-500 group",
-                  isActive ? "text-primary" : "text-on-surface-variant opacity-30 hover:opacity-100"
+                  "relative px-6 py-3 md:px-16 md:py-5 transition-all duration-300 group rounded-none overflow-hidden flex-1 md:flex-none max-w-[200px] md:max-w-none",
+                  isActive 
+                    ? "bg-primary text-on-primary shadow-ambient" 
+                    : "text-primary/40 hover:text-primary hover:bg-primary/5"
                 )}
               >
-                <span className="relative z-20">{tab.name}</span>
+                <span className="relative z-20 label-md md:text-sm md:tracking-[0.2em]">{tab.name}</span>
                 {isActive && (
                   <motion.div
-                    layoutId="active-nav-line"
-                    className="absolute bottom-0 left-0 right-0 h-1 bg-secondary"
+                    layoutId="active-pill-bg"
+                    className="absolute inset-0 bg-primary"
                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                   />
                 )}
-                <div className="absolute bottom-0 left-0 w-0 h-1 bg-primary group-hover:w-full transition-all duration-300" />
               </button>
             );
           })}
