@@ -1,12 +1,48 @@
-import React, { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useEffect, useMemo } from 'react';
+import { useLocation, useSearchParams, useNavigate } from 'react-router-dom';
 import { useLeagueData } from '../context/LeagueContext';
 import { ConnectionError } from './ConnectionError';
 import { UpdateBanner } from './UpdateBanner';
+import { Navigation } from './Navigation';
+import { TeamFilterHint } from './TeamFilterHint';
 
 export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
-  const { error, refresh, loading } = useLeagueData();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const { error, refresh, loading, data } = useLeagueData();
+
+  const divisions = useMemo(() => {
+    if (loading || !data.leaderboard) return [];
+    return Object.keys(data.leaderboard);
+  }, [loading, data.leaderboard]);
+
+  const activeDivision = useMemo(() => {
+    if (loading || divisions.length === 0) return '';
+    const paramDiv = searchParams.get('division');
+    if (paramDiv && divisions.includes(paramDiv)) return paramDiv;
+    return divisions.includes('Division A') ? 'Division A' : divisions[0] || '';
+  }, [loading, divisions, searchParams]);
+
+  const handleDivisionChange = (div: string) => {
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set('division', div);
+    newParams.delete('team');
+    setSearchParams(newParams);
+  };
+
+  const handlePageChange = (path: string) => {
+    if (activeDivision) {
+        navigate(`${path}?division=${encodeURIComponent(activeDivision)}`);
+    } else {
+        navigate(path);
+    }
+  };
+
+  const pageTabs = [
+    { name: 'Leaderboard', path: '/leaderboard' },
+    { name: 'Matches', path: '/matches' },
+  ];
 
   // RESIZER LOGIC
   useEffect(() => {
@@ -56,7 +92,23 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         {error ? (
           <ConnectionError onRetry={refresh} isRetrying={loading} />
         ) : (
-          children
+          <>
+            {/* Unified Header Block - Lifted from pages to Layout to enable Shared Layout Animations */}
+            {!loading && activeDivision && (
+              <header className="pt-4 pb-0 px-6 md:px-12 space-y-4">
+                <Navigation 
+                  pageTabs={pageTabs} 
+                  activePage={location.pathname === '/' ? '/leaderboard' : location.pathname} 
+                  divisions={divisions} 
+                  activeDivision={activeDivision} 
+                  onPageChange={handlePageChange} 
+                  onDivisionChange={handleDivisionChange} 
+                />
+                <TeamFilterHint transparent />
+              </header>
+            )}
+            {children}
+          </>
         )}
       </main>
 

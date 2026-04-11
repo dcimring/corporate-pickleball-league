@@ -2,10 +2,8 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { motion, useInView } from 'framer-motion';
 import { LeaderboardTable } from '../components/LeaderboardTable';
-import { Navigation } from '../components/Navigation';
 import { ShareButton } from '../components/ShareButton';
 import { ShareableLeaderboard } from '../components/ShareableLeaderboard';
-import { TeamFilterHint } from '../components/TeamFilterHint';
 import { LoadingState } from '../components/LoadingState';
 import { useLeagueData } from '../context/LeagueContext';
 
@@ -70,11 +68,6 @@ export const Leaderboard: React.FC = () => {
   const divisions = Object.keys(data.leaderboard);
   const stats = data.leaderboard[activeDivision] || [];
 
-  const pageTabs = [
-    { name: 'Leaderboard', path: '/leaderboard' },
-    { name: 'Matches', path: '/matches' },
-  ];
-
   const divisionMatches = data.matches[activeDivision] || [];
   const latestMatchDate = divisionMatches.length > 0 
     ? divisionMatches.reduce((latest, current) => {
@@ -97,17 +90,8 @@ export const Leaderboard: React.FC = () => {
       {/* Portal target for Share Toasts */}
       <div ref={toastPortalRef} className="fixed bottom-0 left-0 right-0 z-[300] pointer-events-none flex justify-center pb-6" />
 
-      {/* Unified Header Block */}
-      <header className="pt-4 pb-4 px-6 md:px-12 space-y-4">
-        <Navigation 
-          pageTabs={pageTabs} 
-          activePage="/leaderboard" 
-          divisions={divisions} 
-          activeDivision={activeDivision} 
-          onPageChange={handlePageChange} 
-          onDivisionChange={handleDivisionChange} 
-        />
-
+      {/* Page-Specific Content below Layout Header */}
+      <div className="pt-0 pb-4 px-6 md:px-12">
         {/* Editorial Ticker - No Background */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -123,9 +107,7 @@ export const Leaderboard: React.FC = () => {
             <span className="w-1.5 h-1.5 bg-secondary shadow-[0_0_8px_rgba(255,199,44,0.8)] animate-pulse" />
           </p>
         </motion.div>
-        
-        <TeamFilterHint transparent />
-      </header>
+      </div>
 
       <div className="px-0 md:px-12 pt-6 pb-12 space-y-8">
         <LeaderboardTable stats={stats} onTeamClick={handleTeamClick} />
