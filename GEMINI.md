@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-The **Corporate Pickleball League** is a responsive web application built to manage and display league information, including standings, scores, and statistics. It features a distinct **"Roost Kinetic"** aesthetic with a high-contrast, "Warm Paper" UI texture, designed for mobile-first performance and seamless iframe integration.
+The **Corporate Pickleball League** is a responsive web application built to manage and display league information, including standings, scores, and statistics. It features a distinct **"Editorial Athlete"** aesthetic with a high-contrast, professional sports-editorial UI, designed for mobile-first performance and seamless iframe integration.
 
 ### Tech Stack
 -   **Framework:** React 19+ (via Vite)
@@ -64,16 +64,16 @@ npm run lint
 
 ### Styling
 -   **Tailwind CSS v4:** The project uses the latest Tailwind CSS features, including CSS variables for theming defined in `src/index.css`.
--   **Theme Colors:**
-    -   `brand-blue`: #005596 (Cayman Navy)
-    -   `brand-yellow`: #FFC72C (Electric Volt Accents)
-    -   `brand-gray`: #F8FAFC (Subtle Backgrounds)
-    -   `brand-cream`: #FFFFFF (Warm Paper Texture Base)
-    -   `brand-ink`: #0F172A (Main Text)
-    -   `brand-light-blue`: #E0F2FE (Hover/outline accents)
+-   **Theme Colors (Editorial Athlete):**
+    -   `primary`: #005a87 (Ocean Blue)
+    -   `secondary`: #ffc72c (Volt Yellow)
+    -   `surface`: #f7f9fb (Cool Grayish White)
+    -   `on-surface`: #0f172a (Main Text)
 -   **Typography:**
-    -   Family: 'Montserrat' (Headings, bold/black italic), 'Open Sans' (Body text).
-    -   Styles: High-contrast editorial look with large, bold data points.
+    -   Display/Headings: 'Epilogue' (Bold/Extra Bold tracking tight).
+    -   Body: 'Public Sans' (Clean, readable sans-serif).
+    -   Stats/Labels: 'Lexend' (Clear numeric/label font).
+    -   Styles: High-contrast editorial look with large, bold data points and sharp edges.
 
 ### Data Management
 - **Fetching:** Data is fetched from Supabase via `src/context/LeagueContext.tsx` with a 5-second timeout.
@@ -85,7 +85,7 @@ npm run lint
 -   **Functional Components:** Use React functional components with TypeScript interfaces for props.
 -   **Mobile-First:** Ensure all UI elements are responsive and optimized for mobile devices (e.g., touch-friendly targets, horizontal scrolling wrappers).
 -   **Leaderboard:** Features a 2px horizontal padding on mobile view (`px-2`) and semantic coloring for the DIFF column (positive values are green on light green).
--   **Match Cards:** Use "Roost Kinetic" design with grainy paper texture and hard shadows.
+-   **Match Cards:** Use "Editorial Athlete" design with sharp corners (`rounded-none`) and ambient depth (`shadow-ambient`).
 
 ### Social Sharing
 -   **Mechanism:** Client-side image generation using `html-to-image` creates branded PNGs for the leaderboard and match results.

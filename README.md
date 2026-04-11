@@ -1,17 +1,16 @@
 # 🏓 Corporate Pickleball League
 
-A professional, responsive, and iframe-optimized website for the Corporate Pickleball League, featuring a distinct **"Roost Kinetic"** aesthetic and seamless high-performance data integration.
+A professional, responsive, and iframe-optimized website for the Corporate Pickleball League, featuring a distinct **"Editorial Athlete"** aesthetic and seamless high-performance data integration.
 
 ## ✨ Key Features
 
--   **"Roost Kinetic" Aesthetic:** A high-contrast, bold UI featuring **Cayman Blue (#005596)**, **Electric Volt (#FFC72C)**, and a clean, paper-textured background.
--   **Kinetic Tab Navigation:** A custom dark-blue navigation container with a sliding yellow pill for active states, optimized for both standalone and iframe viewing.
--   **Mechanical Match Ticker:** A recessed, high-precision ticker showing data recency with pulsing status indicators and monospace typography.
--   **Dynamic Social Sharing:** Generate professional, branded PNG images for any leaderboard or match result. Supports specialized **Story (9:16)**, **Post (1.91:1)**, and **WhatsApp** optimized layouts.
+-   **"Editorial Athlete" Aesthetic:** A high-contrast, professional sports-editorial UI featuring **Ocean Blue (#005a87)**, **Volt Yellow (#ffc72c)**, and a clean, modern surface background.
+-   **Editorial Navigation:** A refined navigation system with glassmorphism and clear visual focus for active states, optimized for both standalone and iframe viewing.
+-   **Dynamic Typography Scale:** High-impact editorial typography using **Epilogue**, **Public Sans**, and **Lexend** for data-heavy views.
+-   **Dynamic Social Sharing:** Generate professional, branded PNG images for any leaderboard or match result. Supports specialized **Story (9:16)** and **Post ( landscape)** layouts.
 -   **Consolidated Stats UI:** A refined leaderboard featuring semantic color-coded "DIFF" pills, unified brand-blue primary data, and consistent hierarchy.
--   **Kinetic Loading Experience:** A custom-themed "Bouncing Dimple" loading state with squash-and-stretch ball physics and cycling match-intel messaging.
 -   **Iframe Optimization:** Advanced iframe support including auto-resizing via `ResizeObserver` and fluid, adaptive navigation to prevent clipping on narrow devices.
--   **Automated Data Ingestion:** Background service (`run_ingest_service.py`) that monitors Gmail for match results and syncs them automatically to Supabase.
+-   **Automated Data Ingestion:** Background service (`run_ingest_service.py`) and Google Apps Script that monitors Gmail for match results and syncs them automatically to Supabase.
 -   **Robust Error Handling:** Graceful connection timeout screens and silent background failure handling to preserve user experience.
 
 ## 🚀 Tech Stack
