@@ -47,13 +47,12 @@ export const ShareableLeaderboard: React.FC<ShareableLeaderboardProps> = ({
                 {/* Top Section: Masthead */}
                 <div className="w-full flex justify-between items-start mb-10 pt-2 px-8">
                     <div className="flex flex-col items-start gap-4">
-                         <h1 className="font-display font-black text-[#005a87] text-[64px] uppercase tracking-tighter leading-[0.85] flex flex-col">
-                            <span>LA ROCHE POSAY</span>
-                            <span>PICKLEBALL LEAGUE</span>
+                         <h1 className="font-display font-black text-[#005a87] text-[64px] uppercase tracking-tighter leading-none">
+                            LA ROCHE POSAY PICKLEBALL LEAGUE
                         </h1>
                         <div className="flex items-center gap-4 mt-2">
-                             <div className="w-12 h-1 bg-[#ffc72c]" />
-                             <p className="font-stat font-black tracking-[0.4em] text-[#005a87] opacity-60 uppercase text-base">
+                             <div className="w-12 h-1.5 bg-[#ffc72c]" />
+                             <p className="font-stat font-black tracking-[0.4em] text-[#005a87] opacity-60 uppercase text-xs">
                                 OFFICIAL STANDINGS
                              </p>
                         </div>
