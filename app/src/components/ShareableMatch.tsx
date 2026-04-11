@@ -71,14 +71,14 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({
                 </div>
 
                 {/* Main Duel Stage - Constrained width */}
-                <div className="flex-1 flex items-center justify-between px-8 relative mt-12">
+                <div className="flex-1 flex items-center justify-between pl-0 pr-16 relative mt-12">
                     {/* Team 1 Duel Block */}
                     <div className="flex flex-col items-start gap-4 relative z-10 w-[380px] flex-shrink-0">
                         {isWin1 && !isTie && (
-                            <div className="px-4 py-2 bg-[#ffc72c] text-[#005a87] mb-[-0.5rem]">
-                                <div className="flex items-center gap-2">
-                                    <Trophy className="w-4 h-4" strokeWidth={3} />
-                                    <span className="font-stat font-black text-sm uppercase tracking-[0.2em]">WINNER</span>
+                            <div className="px-6 py-3 bg-[#ffc72c] text-[#005a87] mb-[-0.25rem]">
+                                <div className="flex items-center gap-3">
+                                    <Trophy className="w-8 h-8" strokeWidth={3} />
+                                    <span className="font-stat font-black text-2xl uppercase tracking-[0.2em]">WINNER</span>
                                 </div>
                             </div>
                         )}
@@ -116,10 +116,10 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({
                     {/* Team 2 Duel Block */}
                     <div className="flex flex-col items-end gap-4 relative z-10 w-[380px] text-right flex-shrink-0">
                         {isWin2 && !isTie && (
-                            <div className="px-4 py-2 bg-[#ffc72c] text-[#005a87] mb-[-0.5rem]">
-                                <div className="flex items-center gap-2">
-                                    <Trophy className="w-4 h-4" strokeWidth={3} />
-                                    <span className="font-stat font-black text-sm uppercase tracking-[0.2em]">WINNER</span>
+                            <div className="px-6 py-3 bg-[#ffc72c] text-[#005a87] mb-[-0.25rem]">
+                                <div className="flex items-center gap-3">
+                                    <Trophy className="w-8 h-8" strokeWidth={3} />
+                                    <span className="font-stat font-black text-2xl uppercase tracking-[0.2em]">WINNER</span>
                                 </div>
                             </div>
                         )}
