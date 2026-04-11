@@ -45,6 +45,7 @@ export const Leaderboard: React.FC = () => {
   const handleDivisionChange = (div: string) => {
     const newParams = new URLSearchParams(searchParams);
     newParams.set('division', div);
+    newParams.delete('team');
     setSearchParams(newParams);
   };
 
