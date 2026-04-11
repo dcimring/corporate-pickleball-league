@@ -60,12 +60,14 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         )}
       </main>
 
-      <footer className="mt-4 pb-2 text-center px-4 opacity-30">
-        <div className="text-[7px] font-mono uppercase text-gray-400 tracking-widest flex flex-wrap justify-center gap-x-4 gap-y-1">
-          <span>Build: {new Date(__BUILD_TIME__).toLocaleString('en-US', { timeZone: 'America/Cayman', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false }).replace(/, /g, '.').replace(/[/:]/g, '.')}</span>
-          <span className="flex items-center gap-1">
-            Leaderboard module built with <span className="normal-case text-[8px]">❤️</span> in Cayman by <a href="https://danielcimring.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors underline decoration-secondary underline-offset-2">Daniel Cimring</a>
-          </span>
+      <footer className="mt-8 pb-4 text-center px-4">
+        <div className="flex flex-col items-center gap-2">
+          <div className="text-[10px] md:text-xs font-stat font-bold uppercase tracking-[0.2em] text-primary/60 flex items-center gap-1.5">
+            Leaderboard module built with <span className="normal-case text-sm">❤️</span> in Cayman by <a href="https://danielcimring.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-secondary transition-colors underline decoration-secondary/30 underline-offset-4 decoration-2">Daniel Cimring</a>
+          </div>
+          <p className="text-[7px] font-mono uppercase text-gray-400 tracking-widest opacity-30 mt-1">
+            Build: {new Date(__BUILD_TIME__).toLocaleString('en-US', { timeZone: 'America/Cayman', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false }).replace(/, /g, '.').replace(/[/:]/g, '.')}
+          </p>
         </div>
       </footer>
     </div>
