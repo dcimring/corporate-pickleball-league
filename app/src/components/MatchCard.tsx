@@ -64,7 +64,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick, onShar
         {/* Subtle tonal layering background shift on hover */}
         <div className="absolute inset-0 bg-surface-container-low opacity-0 group-hover:opacity-100" />
         
-        <div className="relative p-5 md:p-6 flex flex-col gap-6 z-10 h-full">
+        <div className="relative p-5 md:p-6 flex flex-col gap-1.5 md:gap-6 z-10 h-full">
             {/* Top Metadata Bar */}
             <div className="flex justify-between items-center border-b border-outline-variant/10 pb-3 flex-shrink-0">
                 <div className="font-stat font-bold text-primary text-[10px] md:text-xs tracking-widest opacity-60">
