@@ -73,7 +73,7 @@ export const Navigation: React.FC<NavigationProps> = ({
                     : "text-primary/40 hover:text-primary hover:bg-primary/5"
                 )}
               >
-                <span className="relative z-20 label-md md:text-sm md:tracking-[0.2em]">{tab.name}</span>
+                <span className="relative z-20 label-md md:text-xl md:tracking-[0.1em] font-bold uppercase">{tab.name}</span>
                 {isActive && (
                   <motion.div
                     layoutId="active-pill-bg"
@@ -127,7 +127,7 @@ export const Navigation: React.FC<NavigationProps> = ({
         </div>
 
         {/* Desktop Tabs (Pills - Recessed Style restored - Now Square & Transparent) */}
-        <div className="hidden md:flex md:flex-wrap gap-2 md:justify-center p-1.5 rounded-none w-full border border-outline-variant/10">
+        <div className="hidden md:flex md:flex-wrap gap-2 md:justify-center p-1.5 rounded-none w-full border border-outline-variant/10 relative">
           {divisions.map((div) => {
             const isActive = activeDivision === div;
             return (
@@ -137,12 +137,18 @@ export const Navigation: React.FC<NavigationProps> = ({
                 className={clsx(
                   "relative px-6 py-2.5 text-[11px] font-stat font-bold uppercase tracking-[0.2em] transition-all whitespace-nowrap flex-shrink-0 rounded-none",
                   isActive 
-                    ? "bg-white text-primary shadow-md" 
+                    ? "text-primary z-10" 
                     : "text-primary/40 hover:text-primary/60 hover:bg-white/50"
                 )}
               >
-                {shortenDivisionName(div)}
-                {isActive && <motion.div layoutId="glow-pill" className="absolute inset-0 rounded-none ring-1 ring-primary/5" />}
+                <span className="relative z-20">{shortenDivisionName(div)}</span>
+                {isActive && (
+                  <motion.div 
+                    layoutId="division-pill" 
+                    className="absolute inset-0 bg-white shadow-md rounded-none ring-1 ring-primary/5 z-10"
+                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                  />
+                )}
               </button>
             );
           })}
