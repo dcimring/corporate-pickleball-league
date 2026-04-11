@@ -41,21 +41,6 @@ export const Matches: React.FC = () => {
   const mobileWABtnRef = useRef<ShareButtonHandle>(null);
   const desktopWABtnRef = useRef<ShareButtonHandle>(null);
 
-  const handleDivisionChange = (div: string) => {
-    const newParams = new URLSearchParams(searchParams);
-    newParams.set('division', div);
-    newParams.delete('team');
-    setSearchParams(newParams);
-  };
-
-  const handlePageChange = (path: string) => {
-    if (activeDivision) {
-        navigate(`${path}?division=${encodeURIComponent(activeDivision)}`);
-    } else {
-        navigate(path);
-    }
-  };
-
   const handleClearFilter = () => {
     const newParams = new URLSearchParams(searchParams);
     newParams.delete('team');
@@ -106,7 +91,6 @@ export const Matches: React.FC = () => {
     return <LoadingState />;
   }
 
-  const divisions = Object.keys(data.matches);
   const selectedTeam = searchParams.get('team');
   
   let matches = data.matches[activeDivision] || [];
