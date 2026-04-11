@@ -1,1 +1,5 @@
-{\n  "version": "DEV",\n  "comment": "In development mode, we use DEV to prevent the update banner from triggering."\n}
+{
+  "version": 1775868098703,
+  "builtAt": "2026-04-11T00:41:38.703Z",
+  "debug": true
+}

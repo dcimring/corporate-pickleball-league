@@ -40,7 +40,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   }, [location.pathname, error]); // Add error to dependency array to trigger resize on error screen
 
   return (
-    <div id="app-container" className="font-body selection:bg-brand-yellow selection:text-brand-blue bg-transparent pt-4 inline-block w-full relative">
+    <div id="app-container" className="selection:bg-secondary-container selection:text-on-secondary-container bg-transparent pt-4 inline-block w-full relative">
       {/* Update Notification Banner */}
       <UpdateBanner />
 

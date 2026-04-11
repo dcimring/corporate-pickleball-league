@@ -12,11 +12,6 @@ interface NavigationProps {
   onDivisionChange: (division: string) => void;
 }
 
-const shortenDivisionName = (name: string) => {
-  if (name === 'Cayman Premier League') return 'CPL';
-  return name.replace('Division ', 'Div ');
-};
-
 export const Navigation: React.FC<NavigationProps> = ({ 
   pageTabs, 
   activePage, 
@@ -28,7 +23,6 @@ export const Navigation: React.FC<NavigationProps> = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
 
-  // Close dropdown when clicking outside or pressing Escape
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
@@ -58,10 +52,9 @@ export const Navigation: React.FC<NavigationProps> = ({
   };
 
   return (
-    <div className="flex flex-col gap-3 px-4 md:px-0">
-      {/* Page Tabs (Kinetic Container - Transparent) */}
-      <div className="flex justify-center w-full overflow-visible">
-        <div className="p-1 rounded-2xl flex gap-1 relative group w-full max-w-[calc(100vw-32px)] md:max-w-md">
+    <div className="flex flex-col gap-8 w-full">
+      {/* Page Tabs - Editorial Style */}
+      <div className="flex justify-center md:justify-start w-full gap-4">
           {pageTabs.map((tab) => {
             const isActive = activePage === tab.path;
             return (
@@ -69,38 +62,37 @@ export const Navigation: React.FC<NavigationProps> = ({
                 key={tab.name}
                 onClick={() => onPageChange(tab.path)}
                 className={clsx(
-                  "relative flex-1 px-2 md:px-10 py-3 rounded-xl text-base md:text-xl font-heading font-black italic uppercase tracking-tight transition-colors duration-300 z-10",
-                  isActive ? "text-brand-blue" : "text-brand-blue/30 hover:text-brand-blue/50"
+                  "relative px-4 md:px-0 py-2 headline-md uppercase tracking-tighter transition-all duration-500 group",
+                  isActive ? "text-primary" : "text-on-surface-variant opacity-30 hover:opacity-100"
                 )}
               >
                 <span className="relative z-20">{tab.name}</span>
                 {isActive && (
                   <motion.div
-                    layoutId="active-nav-pill"
-                    className="absolute inset-0 bg-brand-yellow rounded-xl shadow-[0_0_20px_rgba(255,199,44,0.3)]"
+                    layoutId="active-nav-line"
+                    className="absolute bottom-0 left-0 right-0 h-1 bg-secondary"
                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                   />
                 )}
+                <div className="absolute bottom-0 left-0 w-0 h-1 bg-primary group-hover:w-full transition-all duration-300" />
               </button>
             );
           })}
-        </div>
       </div>
 
-      {/* Division Selector */}
+      {/* Division Selector - Tournament Chips */}
       <div className="w-full relative" ref={containerRef}>
           {/* Mobile Dropdown */}
-          <div className="md:hidden px-6">
+          <div className="md:hidden">
           <button
             onClick={() => setIsOpen(!isOpen)}
             className={clsx(
-              "w-full max-w-xs mx-auto flex items-center justify-between px-5 py-3.5 bg-brand-gray rounded-2xl shadow-[inset_0_2px_8px_rgba(0,0,0,0.06)] border border-outline-variant font-heading font-bold text-xs uppercase tracking-[0.15em] text-brand-blue transition-all duration-300 relative overflow-hidden",
-              isOpen ? "ring-1 ring-brand-yellow" : ""
+              "w-full flex items-center justify-between px-6 py-4 bg-surface-container-high label-md text-primary transition-all duration-300 relative",
+              isOpen ? "ring-2 ring-secondary" : ""
             )}
           >
-            <div className="absolute left-0 top-0 bottom-0 w-1 bg-brand-yellow" />
-            <span className="pl-1">{shortenDivisionName(activeDivision) || 'Select Division'}</span>
-            <ChevronDown className={clsx("w-4 h-4 transition-transform duration-300 opacity-40", isOpen && "rotate-180")} />
+            <span>{activeDivision || 'Select Division'}</span>
+            <ChevronDown className={clsx("w-5 h-5 transition-transform duration-300 opacity-60", isOpen && "rotate-180")} />
           </button>
             <AnimatePresence>
             {isOpen && (
@@ -108,19 +100,19 @@ export const Navigation: React.FC<NavigationProps> = ({
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
-                className="bg-brand-gray text-brand-blue overflow-hidden max-w-xs mx-auto rounded-2xl mt-2 border border-outline-variant shadow-xl z-50 relative"
+                className="bg-surface-container-highest text-primary overflow-hidden w-full mt-0 shadow-ambient z-50 relative"
               >
                   {divisions.map((div) => (
                     <button
                       key={div}
                       onClick={() => handleMobileSelect(div)}
                       className={clsx(
-                        "w-full flex items-center justify-between px-5 py-4 text-left font-heading font-bold text-[10px] uppercase tracking-widest border-t border-outline-variant hover:bg-brand-light-blue transition-colors",
-                        activeDivision === div && "bg-white text-brand-blue shadow-sm"
+                        "w-full flex items-center justify-between px-6 py-5 text-left label-md border-t border-outline-variant hover:bg-surface-container-low transition-colors",
+                        activeDivision === div && "bg-surface-container-lowest text-primary"
                       )}
                     >
-                      {shortenDivisionName(div)}
-                      {activeDivision === div && <Check className="w-3 h-3 text-brand-yellow" />}
+                      {div}
+                      {activeDivision === div && <Check className="w-4 h-4 text-secondary" />}
                     </button>
                   ))}
               </motion.div>
@@ -128,8 +120,8 @@ export const Navigation: React.FC<NavigationProps> = ({
           </AnimatePresence>
         </div>
 
-        {/* Desktop Tabs (Pills - Recessed Style) */}
-        <div className="hidden md:flex md:flex-wrap gap-2 md:justify-center p-1.5 bg-brand-blue/5 rounded-2xl w-full shadow-[inset_0_2px_10px_rgba(0,0,0,0.05)] border border-outline-variant">
+        {/* Desktop Tournament Chips (Pill-shaped) */}
+        <div className="hidden md:flex flex-wrap gap-3">
           {divisions.map((div) => {
             const isActive = activeDivision === div;
             return (
@@ -137,14 +129,13 @@ export const Navigation: React.FC<NavigationProps> = ({
                 key={div}
                 onClick={() => onDivisionChange(div)}
                 className={clsx(
-                  "relative px-5 py-2 text-[10px] font-heading font-bold uppercase tracking-[0.2em] transition-all whitespace-nowrap flex-shrink-0 rounded-xl",
+                  "relative px-6 py-2 label-md rounded-full transition-all duration-300 whitespace-nowrap",
                   isActive 
-                    ? "bg-white text-brand-blue shadow-md" 
-                    : "text-brand-blue/40 hover:text-brand-blue/60 hover:bg-brand-blue/5"
+                    ? "bg-secondary-container text-on-secondary-container shadow-sm" 
+                    : "bg-surface-container-highest text-primary/60 hover:bg-surface-container-high hover:text-primary"
                 )}
               >
-                {shortenDivisionName(div)}
-                {isActive && <motion.div layoutId="glow-pill" className="absolute inset-0 rounded-xl ring-1 ring-brand-blue/10" />}
+                {div}
               </button>
             );
           })}

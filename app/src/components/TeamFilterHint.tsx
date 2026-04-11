@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { clsx } from 'clsx';
 import { Info, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -14,12 +14,12 @@ export const TeamFilterHint: React.FC<TeamFilterHintProps> = ({
   className,
   storageKey = DEFAULT_STORAGE_KEY,
 }) => {
-  const [isDismissed, setIsDismissed] = useState<boolean | null>(null);
-
-  useEffect(() => {
-    const stored = window.localStorage.getItem(storageKey);
-    setIsDismissed(stored === '1');
-  }, [storageKey]);
+  const [isDismissed, setIsDismissed] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      return window.localStorage.getItem(storageKey) === '1';
+    }
+    return false;
+  });
 
   const handleDismiss = () => {
     window.localStorage.setItem(storageKey, '1');
@@ -35,24 +35,24 @@ export const TeamFilterHint: React.FC<TeamFilterHintProps> = ({
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 5 }}
         className={clsx(
-          "w-full max-w-lg mx-auto px-4",
+          "w-full",
           className
         )}
       >
-        <div className="flex items-center justify-center gap-3 py-2.5 border-b border-brand-blue/10 bg-brand-light-blue/20 text-brand-blue/70">
-          <Info className="h-3.5 w-3.5 shrink-0 opacity-60" />
+        <div className="flex items-center justify-center gap-4 py-3 bg-surface-container-high text-primary/60 px-6">
+          <Info className="h-4 w-4 shrink-0 opacity-40" />
           
-          <p className="font-mono text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-center leading-none">
-            TIP: CLICK TEAM NAME TO SEE ALL THEIR MATCHES
+          <p className="label-sm font-bold tracking-widest text-center leading-none">
+            TIP: Click team name to see all matches
           </p>
 
           <button
             type="button"
             onClick={handleDismiss}
             aria-label="Dismiss tip"
-            className="ml-2 p-1 hover:text-brand-blue transition-colors rounded-full hover:bg-brand-blue/10"
+            className="ml-4 p-1 hover:text-primary transition-colors hover:bg-surface-container-highest"
           >
-            <X className="h-3 w-3" />
+            <X className="h-4 w-4" />
           </button>
         </div>
       </motion.div>

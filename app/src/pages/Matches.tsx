@@ -34,7 +34,6 @@ export const Matches: React.FC = () => {
 
   useEffect(() => {
     if (!loading && data.matches) {
-        // Initial division selection logic
         const divisions = Object.keys(data.matches);
         const paramDiv = searchParams.get('division');
         const defaultDiv = paramDiv && divisions.includes(paramDiv) 
@@ -42,10 +41,11 @@ export const Matches: React.FC = () => {
           : (divisions.includes('Division A') ? 'Division A' : divisions[0] || '');
         
         if (activeDivision === '' || (paramDiv && activeDivision !== paramDiv)) {
+             // eslint-disable-next-line react-hooks/set-state-in-effect
              setActiveDivision(defaultDiv);
         }
     }
-  }, [loading, data, searchParams]);
+  }, [loading, data, searchParams, activeDivision]);
 
   const handleDivisionChange = (div: string) => {
     setActiveDivision(div);
@@ -79,10 +79,8 @@ export const Matches: React.FC = () => {
     setActiveToastTarget(toastRef);
   };
 
-  // Trigger share once the match is rendered in the hidden container
   useEffect(() => {
     if (sharingMatch && sharingType) {
-      // Small delay to ensure React has finished rendering the hidden content
       const timer = setTimeout(() => {
         const isDesktop = typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches;
         
@@ -102,7 +100,6 @@ export const Matches: React.FC = () => {
   }, [sharingMatch, sharingType]);
 
   const handleShareEnd = () => {
-    // Keep machinery alive for toast
     setTimeout(() => {
         setSharingMatch(null);
         setSharingType(null);
@@ -129,83 +126,110 @@ export const Matches: React.FC = () => {
   ];
 
   return (
-    <div className="relative">
-      <Navigation 
-        pageTabs={pageTabs} 
-        activePage="/matches" 
-        divisions={divisions} 
-        activeDivision={activeDivision} 
-        onPageChange={handlePageChange} 
-        onDivisionChange={handleDivisionChange} 
-      />
+    <div className="space-y-0 relative overflow-hidden bg-surface">
+      {/* THE HERO SLOT - Editorial 3D Effect */}
+      <div className="relative w-full h-[300px] md:h-[500px] flex items-center px-6 md:px-12 bg-surface-container-low overflow-hidden">
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
+              <h1 className="display-lg text-primary opacity-5 whitespace-nowrap">
+                  MATCH DAY COVERAGE
+              </h1>
+          </div>
 
-      <div className="mt-4">
-        {/* Active Filter Ribbon */}
-        <AnimatePresence mode="wait">
-          {selectedTeam && (
-            <motion.div 
-              initial={{ opacity: 0, height: 0, y: -10 }}
-              animate={{ opacity: 1, height: 'auto', y: 0 }}
-              exit={{ opacity: 0, height: 0, y: -10 }}
-              transition={{ type: "spring", bounce: 0.3, duration: 0.5 }}
-              className="px-0 flex justify-center overflow-hidden"
-            >
-              <button 
-                onClick={handleClearFilter}
-                className="w-full py-3 bg-brand-blue text-white flex items-center justify-center gap-4 group hover:bg-brand-blue/95 transition-colors relative"
-              >
-                <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-brand-yellow" />
-                <span className="font-heading font-black italic uppercase text-xs md:text-sm tracking-[0.2em] flex items-center gap-2">
-                  <span className="opacity-50 font-mono not-italic text-[10px] tracking-normal">Filtering:</span>
-                  {selectedTeam}
-                </span>
-                <div className="bg-white/10 rounded-full p-1 group-hover:bg-brand-yellow group-hover:text-brand-blue transition-all">
-                  <X className="w-3 h-3" />
-                </div>
-              </button>
-            </motion.div>
-          )}
-        </AnimatePresence>
+          <div className="relative z-10 max-w-4xl">
+              <h2 className="display-lg text-primary uppercase">
+                  GAME<br />
+                  <span className="text-secondary">CHANGERS</span><br />
+                  LIVE
+              </h2>
+          </div>
 
-        <TeamFilterHint />
+          {/* Overlapping Placeholder */}
+          <div className="absolute right-[-10%] bottom-[-10%] w-[350px] md:w-[600px] h-[400px] md:h-[700px] z-20 pointer-events-none">
+              <div className="w-full h-full bg-linear-to-bl from-primary to-primary-container opacity-20 transform -rotate-6 scale-110 shadow-ambient" 
+                   style={{ clipPath: 'polygon(10% 20%, 90% 0%, 100% 90%, 0% 100%)' }} />
+          </div>
+          
+          <div className="absolute inset-0 opacity-[0.05] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] mix-blend-multiply" />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4 pb-4 mt-6">
-        {matches.length > 0 ? (
-          matches.map((match) => (
-            <MatchCard 
-              key={match.id} 
-              match={match} 
-              onTeamClick={handleTeamClick} 
-              onShare={handleShare}
-              isSharing={sharingMatch?.id === match.id}
-            />
-          ))
-        ) : (
-          <div className="col-span-full p-12 text-center flex flex-col items-center justify-center gap-4 text-gray-400 bg-white rounded-2xl border border-gray-100">
-            <div className="bg-blue-50 p-3 rounded-full">
-              <Info className="w-6 h-6 text-brand-blue" />
-            </div>
-            <p className="font-heading font-bold text-lg text-brand-blue">
-              {selectedTeam ? `No matches found for ${selectedTeam}` : 'No matches found'}
-            </p>
-            <p className="font-body text-xs text-gray-500">
-              {selectedTeam ? 'Try clearing the filter or check back later.' : 'Check back later for the schedule!'}
-            </p>
+      <div className="px-6 md:px-12 py-12 space-y-12">
+        <Navigation 
+          pageTabs={pageTabs} 
+          activePage="/matches" 
+          divisions={divisions} 
+          activeDivision={activeDivision} 
+          onPageChange={handlePageChange} 
+          onDivisionChange={handleDivisionChange} 
+        />
+
+        <div className="space-y-6">
+          {/* Active Filter Ribbon - Editorial Style */}
+          <AnimatePresence mode="wait">
             {selectedTeam && (
-               <button onClick={handleClearFilter} className="mt-1 text-brand-blue text-sm font-bold hover:underline">
-                 Clear Filter
-               </button>
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.98 }}
+                className="overflow-hidden"
+              >
+                <div 
+                  className="w-full py-6 bg-primary text-on-primary flex items-center justify-center gap-6 relative"
+                >
+                  <div className="absolute left-0 top-0 bottom-0 w-2 bg-secondary" />
+                  <span className="label-md font-black tracking-[0.3em] flex items-center gap-4">
+                    <span className="opacity-40 font-stat">FILTERED BY</span>
+                    <span className="text-secondary">{selectedTeam}</span>
+                  </span>
+                  <button 
+                    onClick={handleClearFilter}
+                    className="p-2 bg-white/10 hover:bg-secondary hover:text-primary transition-all rounded-none"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+              </motion.div>
             )}
-          </div>
-        )}
+          </AnimatePresence>
+
+          <TeamFilterHint />
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          {matches.length > 0 ? (
+            matches.map((match) => (
+              <MatchCard 
+                key={match.id} 
+                match={match} 
+                onTeamClick={handleTeamClick} 
+                onShare={handleShare}
+                isSharing={sharingMatch?.id === match.id}
+              />
+            ))
+          ) : (
+            <div className="col-span-full py-32 text-center flex flex-col items-center justify-center gap-8 bg-surface-container-low">
+              <div className="bg-primary/5 p-8 rounded-none">
+                <Info className="w-12 h-12 text-primary opacity-20" />
+              </div>
+              <div className="space-y-4">
+                <h3 className="display-sm text-primary uppercase">No matches found</h3>
+                <p className="body-lg text-on-surface-variant opacity-60 max-w-md mx-auto">
+                    {selectedTeam ? `We couldn't find any match records for ${selectedTeam} in this division.` : 'The schedule is being finalized. Check back soon for upcoming fixtures.'}
+                </p>
+              </div>
+              {selectedTeam && (
+                 <button onClick={handleClearFilter} className="btn-secondary">
+                   RESET ALL FILTERS
+                 </button>
+              )}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* GLOBAL SHARE PORTAL (Hidden from view) */}
       <div className="absolute left-[-9999px] top-[-9999px] pointer-events-none">
           {sharingMatch && (
             <>
-              {/* Target Containers for html-to-image */}
               <div ref={storyShareRef} className="w-fit">
                   <ShareableMatch match={sharingMatch} layout="story" />
               </div>
@@ -213,7 +237,6 @@ export const Matches: React.FC = () => {
                   <ShareableMatch match={sharingMatch} layout="post" />
               </div>
 
-              {/* Machinery */}
               <ShareButton
                 ref={mobileStoryBtnRef}
                 targetRef={storyShareRef}

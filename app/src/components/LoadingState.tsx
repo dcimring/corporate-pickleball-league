@@ -20,83 +20,77 @@ export const LoadingState: React.FC = () => {
   }, []);
 
   return (
-    <div className="relative min-h-[600px] w-full flex flex-col items-center justify-center bg-brand-cream/95 overflow-hidden py-20">
+    <div className="relative min-h-screen w-full flex flex-col items-center justify-center bg-surface overflow-hidden py-32">
       {/* Texture Overlay */}
-      <div className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-multiply" 
-           style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }} 
+      <div className="absolute inset-0 opacity-[0.05] pointer-events-none mix-blend-multiply" 
+           style={{ backgroundImage: `url("https://www.transparenttextures.com/patterns/stardust.png")` }} 
       />
 
-      {/* Atmospheric Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-brand-blue/5 rounded-full blur-[120px] pointer-events-none" />
+      {/* Atmospheric Layout Elements */}
+      <div className="absolute top-0 left-0 w-full h-1 bg-primary" />
+      <div className="absolute bottom-0 left-0 w-full h-20 bg-surface-container-low" />
 
-      <div className="relative flex flex-col items-center gap-12">
-        {/* The Bouncing Dimple */}
-        <div className="relative h-24 flex items-end justify-center">
-            {/* Shadow */}
-            <motion.div 
-                animate={{ 
-                    scaleX: [1, 1.4, 1],
-                    opacity: [0.2, 0.4, 0.2]
-                }}
-                transition={{ 
-                    duration: 0.6, 
-                    repeat: Infinity, 
-                    ease: "easeInOut" 
-                }}
-                className="absolute bottom-[-10px] w-12 h-2 bg-brand-blue/20 rounded-full blur-sm"
-            />
+      <div className="relative flex flex-col items-center gap-20 max-w-2xl px-8">
+        {/* The Hero Loading Object */}
+        <div className="relative h-48 flex items-center justify-center w-full">
+            {/* Background Stadium Voice */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <h1 className="display-lg text-primary opacity-5 scale-150 rotate-[-15deg] whitespace-nowrap">
+                    LOADING
+                </h1>
+            </div>
 
-            {/* The Ball */}
+            {/* The Animated Element */}
             <motion.div
                 animate={{ 
-                    y: [0, -60, 0],
-                    scaleY: [0.8, 1, 0.8],
-                    scaleX: [1.2, 1, 1.2],
-                    rotate: [0, 90, 180]
+                    y: [0, -40, 0],
+                    rotate: [0, 90, 180, 270, 360]
                 }}
                 transition={{ 
-                    duration: 0.6, 
+                    duration: 1.2, 
                     repeat: Infinity, 
                     ease: "easeInOut" 
                 }}
-                className="w-16 h-16 bg-brand-blue rounded-full border-4 border-white shadow-xl flex items-center justify-center overflow-hidden relative"
+                className="w-24 h-24 bg-primary flex items-center justify-center shadow-ambient relative z-10"
+                style={{ clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)' }}
             >
-                {/* Dimples */}
-                <div className="absolute top-2 left-2 w-3 h-3 bg-white/20 rounded-full" />
-                <div className="absolute top-4 right-3 w-2 h-2 bg-white/30 rounded-full" />
-                <div className="absolute bottom-3 left-4 w-4 h-4 bg-white/10 rounded-full" />
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-white/40 rounded-full" />
-                
-                {/* Skew lines */}
-                <div className="absolute inset-0 border-t-2 border-white/5 transform -skew-y-12" />
+                <div className="w-8 h-8 bg-secondary" />
             </motion.div>
         </div>
 
-        {/* Messaging */}
-        <div className="text-center space-y-3 relative z-10">
-            <div className="h-8 overflow-hidden">
+        {/* Messaging - Editorial Rhythm */}
+        <div className="text-center space-y-8 relative z-10">
+            <p className="label-md text-secondary font-black tracking-[0.3em]">
+                EDITORIAL IN PROGRESS
+            </p>
+            
+            <div className="h-16 overflow-hidden">
                 <AnimatePresence mode="wait">
                     <motion.h2
                         key={msgIndex}
-                        initial={{ y: 20, opacity: 0 }}
+                        initial={{ y: 30, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
-                        exit={{ y: -20, opacity: 0 }}
-                        transition={{ duration: 0.4, ease: "circOut" }}
-                        className="font-heading font-black italic text-brand-blue text-2xl md:text-3xl tracking-[0.15em] uppercase"
+                        exit={{ y: -30, opacity: 0 }}
+                        transition={{ duration: 0.6, ease: "circOut" }}
+                        className="display-sm text-primary uppercase"
                     >
                         {messages[msgIndex]}
                     </motion.h2>
                 </AnimatePresence>
             </div>
             
-            {/* Progress Bar */}
-            <div className="w-48 h-1 bg-brand-blue/10 rounded-full mx-auto overflow-hidden relative">
+            {/* Editorial Progress Line */}
+            <div className="w-64 h-1 bg-surface-container-highest mx-auto overflow-hidden relative">
                 <motion.div 
-                    animate={{ x: [-200, 200] }}
-                    transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
-                    className="absolute inset-0 w-1/2 bg-brand-yellow rounded-full shadow-[0_0_10px_rgba(255,199,44,0.5)]"
+                    animate={{ x: [-256, 256] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                    className="absolute inset-0 w-32 bg-primary"
                 />
             </div>
+
+            <p className="body-md text-on-surface-variant opacity-40 uppercase tracking-widest">
+                Official Tournament Records
+            </p>
         </div>
       </div>
     </div>

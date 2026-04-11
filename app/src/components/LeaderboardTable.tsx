@@ -11,33 +11,33 @@ interface LeaderboardTableProps {
 export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTeamClick }) => {
   
   if (stats.length === 0) return (
-    <div className="p-20 text-center flex flex-col items-center justify-center gap-6 bg-brand-gray rounded-lg shadow-ambient border border-outline-variant">
-      <div className="bg-brand-blue/10 p-5 rounded-full">
-        <Info className="w-10 h-10 text-brand-blue" />
+    <div className="p-20 text-center flex flex-col items-center justify-center gap-6 bg-surface-container-low">
+      <div className="bg-primary/5 p-8 rounded-none">
+        <Info className="w-12 h-12 text-primary opacity-20" />
       </div>
-      <div className="space-y-2">
-        <h3 className="headline-md text-brand-blue uppercase">No teams found</h3>
-        <p className="body-md text-brand-ink/40">Check back soon for the latest schedule and results!</p>
+      <div className="space-y-4">
+        <h3 className="display-sm text-primary uppercase">No teams found</h3>
+        <p className="body-lg text-on-surface-variant opacity-60 max-w-md mx-auto">The league is preparing for action. Check back soon for the latest standings and results.</p>
       </div>
     </div>
   );
 
   return (
-    <div className="w-full flex flex-col gap-4">
-      {/* Header Row */}
-      <div className="flex items-center px-2 py-1 label-md text-brand-blue/40 uppercase tracking-[0.2em]">
-        <div className="w-12 md:w-16 text-center">#</div>
-        <div className="flex-1 pl-4 md:pl-8 text-left">Team</div>
-        <div className="flex items-center justify-end gap-3 md:gap-8 pr-4 md:pr-10">
-            <div className="w-12 md:w-20 text-center">W-L</div>
-            <div className="w-12 md:w-16 text-center">%</div>
-            <div className="hidden md:block w-24 text-center">PF-PA</div>
-            <div className="hidden md:block w-16 text-right">DIFF</div>
+    <div className="w-full flex flex-col gap-0">
+      {/* Header Row - Tonal Layering */}
+      <div className="flex items-center px-6 py-4 bg-surface-container-high label-md text-on-surface-variant opacity-80">
+        <div className="w-12 md:w-20 text-center">Rank</div>
+        <div className="flex-1 pl-4 md:pl-12 text-left">Team</div>
+        <div className="flex items-center justify-end gap-6 md:gap-12">
+            <div className="w-16 md:w-24 text-center">Record</div>
+            <div className="w-16 md:w-24 text-center">Win %</div>
+            <div className="hidden md:block w-32 text-center">Pts For/Against</div>
+            <div className="hidden md:block w-20 text-right">Diff</div>
         </div>
       </div>
 
-      {/* Team Rows as Cards */}
-      <div className="flex flex-col gap-2">
+      {/* Team Rows */}
+      <div className="flex flex-col gap-0">
         {stats.map((entry, index) => {
           const diff = entry.pointsFor - entry.pointsAgainst;
           const isTop3 = index < 3;
@@ -46,54 +46,54 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
             <div 
               key={entry.team} 
               onClick={() => onTeamClick(entry.team)}
-              className="flex items-center rounded-lg shadow-ambient transition-all duration-300 cursor-pointer group relative overflow-visible h-[64px] md:h-20 bg-white hover:scale-[1.02] hover:z-20 z-10"
+              className="flex items-center transition-all duration-500 cursor-pointer group relative overflow-visible h-20 md:h-24 bg-surface-container-lowest hover:bg-surface-container-low z-10"
             >
-              {/* Rank Badge - Kinetic Overlap */}
-              <div className="h-full flex items-center justify-center w-12 md:w-16 relative z-20">
+              {/* Rank - Stadium Voice */}
+              <div className="h-full flex items-center justify-center w-12 md:w-20 relative">
                 <span className={clsx(
-                  "display-sm italic -ml-4 transition-transform duration-300 group-hover:scale-110",
-                  index === 0 ? "text-brand-blue drop-shadow-[2px_2px_0px_#FFC72C]" : 
-                  index === 1 ? "text-brand-blue/60" :
-                  index === 2 ? "text-brand-blue/40" : "text-brand-blue/20"
+                  "display-sm transition-transform duration-500 group-hover:scale-110",
+                  index === 0 ? "text-primary" : 
+                  index === 1 ? "text-primary/70" :
+                  index === 2 ? "text-primary/50" : "text-primary/20"
                 )}>
-                  {index + 1}
+                  {(index + 1).toString().padStart(2, '0')}
                 </span>
               </div>
 
-              {/* Team Name - Editorial Style */}
-              <div className="flex-1 pl-2 md:pl-4 pr-2 relative z-10">
-                <span className="title-md md:headline-md uppercase tracking-tight line-clamp-1 leading-none text-brand-blue block transition-transform duration-300 group-hover:translate-x-2">
+              {/* Team Name - Editorial Voice */}
+              <div className="flex-1 pl-4 md:pl-12 pr-4">
+                <span className="headline-md uppercase tracking-tight line-clamp-1 leading-none text-primary block transition-transform duration-500 group-hover:translate-x-4">
                     {entry.team}
                 </span>
               </div>
 
-              {/* Stats Group */}
-              <div className="flex items-center justify-end gap-3 md:gap-8 pr-4 md:pr-10 relative z-10">
+              {/* Stats Group - Stat Voice (Lexend) */}
+              <div className="flex items-center justify-end gap-6 md:gap-12 pr-6">
                 {/* W-L */}
-                <div className="w-12 md:w-20 text-center font-heading font-bold text-xs md:text-base text-brand-blue/60">
+                <div className="w-16 md:w-24 text-center font-stat font-bold text-sm md:text-xl text-primary/60">
                   {entry.wins}-{entry.losses}
                 </div>
 
                 {/* % */}
                 <div className={clsx(
-                  "w-12 md:w-16 text-center font-heading font-extrabold italic text-base md:text-2xl tracking-tighter",
-                  isTop3 ? "text-brand-blue" : "text-brand-blue/80"
+                  "w-16 md:w-24 text-center font-stat font-black text-xl md:text-3xl tracking-tighter",
+                  isTop3 ? "text-primary" : "text-primary/80"
                 )}>
-                  {(entry.winPct * 100).toFixed(0)}%
+                  {(entry.winPct * 100).toFixed(0)}<span className="text-[0.6em] opacity-40 ml-0.5">%</span>
                 </div>
 
                 {/* PF-PA (Desktop Only) */}
-                <div className="hidden md:block w-24 text-center font-body font-medium text-sm text-brand-ink/40">
-                  {entry.pointsFor}-{entry.pointsAgainst}
+                <div className="hidden md:block w-32 text-center font-stat font-medium text-sm text-on-surface-variant opacity-40">
+                  {entry.pointsFor} <span className="mx-1 opacity-20">/</span> {entry.pointsAgainst}
                 </div>
 
-                {/* DIFF (Desktop Only) - Semantic Kinetic Pills */}
-                <div className="hidden md:block w-16 text-right">
+                {/* DIFF (Desktop Only) */}
+                <div className="hidden md:block w-20 text-right">
                     <span className={clsx(
-                      "inline-block min-w-[44px] px-2 py-1 rounded-md font-heading font-bold text-[10px] text-center uppercase tracking-wider",
-                      diff > 0 ? "bg-green-100 text-green-700" : 
-                      diff < 0 ? "bg-brand-red/10 text-brand-red" : 
-                      "bg-brand-gray text-brand-ink/30"
+                      "font-stat font-black text-lg",
+                      diff > 0 ? "text-[#00A651]" : 
+                      diff < 0 ? "text-[#E31837]" : 
+                      "text-on-surface-variant opacity-20"
                     )}>
                         {diff > 0 ? '+' : ''}{diff}
                     </span>

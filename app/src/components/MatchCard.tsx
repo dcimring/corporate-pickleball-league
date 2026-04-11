@@ -26,7 +26,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick, onShar
       month: 'short',
       year: '2-digit',
       timeZone: 'UTC'
-    }).format(date).toUpperCase(); // 14-JAN-26
+    }).format(date).toUpperCase();
   };
 
   useEffect(() => {
@@ -57,139 +57,138 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick, onShar
   };
 
   return (
-    <div className="w-full relative group transition-all duration-300 z-10 hover:z-50">
-      {/* Toast Portal Target - Centered over the card */}
+    <div className="w-full relative group transition-all duration-300 z-10 hover:z-20">
       <div ref={toastContainerRef} className="absolute inset-0 z-[100] pointer-events-none flex items-center justify-center p-2" />
 
-      {/* Main Card Container - Removed border */}
-      <div className="bg-white rounded-lg shadow-ambient group-hover:scale-[1.02] transition-transform duration-300 relative">
-        {/* Grainy Texture Overlay - Wrapped in overflow-hidden container */}
-        <div className="absolute inset-0 rounded-lg overflow-hidden pointer-events-none">
-          <div className="absolute inset-0 opacity-[0.03] mix-blend-multiply bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]" />
-        </div>
-
-        {/* Content Layer */}
-        <div className="relative pt-6 pb-3 px-6 md:px-8 flex flex-col h-full z-10">
-            {/* Teams Container */}
-            <div className="flex-1 flex flex-col justify-center gap-3 relative">
+      <div className="editorial-card relative overflow-hidden group-hover:scale-[1.01] transition-transform duration-500">
+        {/* Subtle tonal layering background shift on hover */}
+        <div className="absolute inset-0 bg-surface-container-low opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        
+        <div className="relative p-6 md:p-8 flex flex-col md:grid md:grid-cols-[1fr_200px] gap-8 z-10">
+            {/* Left Column: Teams and Scores */}
+            <div className="space-y-6">
                 {/* Team 1 */}
-                <div className="flex justify-between items-center group/team relative">
+                <div className="flex justify-between items-center group/team">
                     <div 
                       onClick={() => onTeamClick?.(match.team1)}
                       className={clsx(
-                      "font-heading font-extrabold uppercase text-xl md:text-2xl tracking-tight leading-tight max-w-[75%] cursor-pointer transition-colors relative z-10",
-                      isWin1 ? "text-brand-blue" : "text-brand-blue/30"
+                      "font-heading font-black uppercase text-2xl md:text-3xl tracking-tighter leading-none cursor-pointer transition-colors relative",
+                      isWin1 ? "text-primary" : "text-on-surface-variant opacity-40"
                     )}>
                       {match.team1}
                       {isWin1 && (
                         <motion.div 
                           layoutId={`win-dot-${match.id}`}
-                          className="absolute -left-4 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-brand-yellow shadow-[0_0_10px_rgba(255,199,44,0.6)]" 
+                          className="absolute -left-4 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-secondary shadow-[0_0_12px_rgba(255,199,44,0.8)]" 
                         />
                       )}
                     </div>
                     <div className={clsx(
-                      "font-heading font-black text-4xl md:text-5xl transition-all duration-300",
-                      isWin1 ? "text-brand-blue drop-shadow-[2px_2px_0px_#FFC72C]" : "text-brand-blue/10"
+                      "font-stat font-black text-5xl md:text-6xl tracking-tighter transition-all duration-500",
+                      isWin1 ? "text-primary" : "text-on-surface-variant opacity-10"
                     )}>
                       {match.team1Wins}
                     </div>
                 </div>
 
-                {/* Subtle Divider (Editorial Shift) - Replaced border with bg shift */}
-                <div className="h-px bg-brand-gray w-full" />
-
                 {/* Team 2 */}
-                <div className="flex justify-between items-center group/team relative">
+                <div className="flex justify-between items-center group/team">
                     <div 
                       onClick={() => onTeamClick?.(match.team2)}
                       className={clsx(
-                      "font-heading font-extrabold uppercase text-xl md:text-2xl tracking-tight leading-tight max-w-[75%] cursor-pointer transition-colors relative z-10",
-                      isWin2 ? "text-brand-blue" : "text-brand-blue/30"
+                      "font-heading font-black uppercase text-2xl md:text-3xl tracking-tighter leading-none cursor-pointer transition-colors relative",
+                      isWin2 ? "text-primary" : "text-on-surface-variant opacity-40"
                     )}>
                       {match.team2}
                       {isWin2 && (
                         <motion.div 
                           layoutId={`win-dot-${match.id}`}
-                          className="absolute -left-4 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-brand-yellow shadow-[0_0_10px_rgba(255,199,44,0.6)]" 
+                          className="absolute -left-4 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-secondary shadow-[0_0_12px_rgba(255,199,44,0.8)]" 
                         />
                       )}
                     </div>
                     <div className={clsx(
-                      "font-heading font-black text-4xl md:text-5xl transition-all duration-300",
-                      isWin2 ? "text-brand-blue drop-shadow-[2px_2px_0px_#FFC72C]" : "text-brand-blue/10"
+                      "font-stat font-black text-5xl md:text-6xl tracking-tighter transition-all duration-500",
+                      isWin2 ? "text-primary" : "text-on-surface-variant opacity-10"
                     )}>
                       {match.team2Wins}
                     </div>
                 </div>
             </div>
 
-            {/* Footer (Date & Points) - Removed top border, using padding/gap */}
-            <div className="mt-4 pt-3 flex justify-between items-center">
-                <div className="font-heading font-black text-brand-blue/40 text-[10px] tracking-[0.2em] uppercase">
-                    {formatDate(match.date)}
+            {/* Right Column: Metadata (Desktop Asymmetry) */}
+            <div className="flex flex-row md:flex-col justify-between md:justify-end items-end md:items-end gap-4">
+                <div className="text-right space-y-1">
+                    <div className="label-sm text-on-surface-variant opacity-60">
+                        Match Date
+                    </div>
+                    <div className="font-stat font-bold text-primary text-sm tracking-widest">
+                        {formatDate(match.date)}
+                    </div>
                 </div>
 
-                <div className="flex items-center gap-4">
-                    <div className="flex items-center gap-2 font-heading font-bold text-[10px] text-brand-blue/30">
-                        <span className="tracking-widest uppercase opacity-50">PTS:</span>
-                        <span className={clsx("text-xs", isWin1 ? "text-brand-blue font-black" : "")}>{match.team1Points}</span>
-                        <span className="opacity-20">/</span>
-                        <span className={clsx("text-xs", isWin2 ? "text-brand-blue font-black" : "")}>{match.team2Points}</span>
+                <div className="text-right space-y-1">
+                    <div className="label-sm text-on-surface-variant opacity-60">
+                        Points Scored
                     </div>
-
-                    {/* Share Action */}
-                    <div className="relative" ref={menuRef}>
-                        <button 
-                          onClick={() => setIsMenuOpen(!isMenuOpen)}
-                          disabled={isSharing}
-                          className={clsx(
-                              "flex items-center gap-2 p-2 rounded-full transition-all duration-300",
-                              isMenuOpen ? "bg-brand-blue text-white shadow-ambient" : "bg-brand-gray text-brand-blue hover:bg-brand-light-blue/50"
-                          )}
-                        >
-                            {isSharing ? (
-                                <Loader2 className="w-4 h-4 animate-spin" />
-                            ) : (
-                                <Share2 className="w-4 h-4" />
-                            )}
-                        </button>
-
-                        <AnimatePresence>
-                            {isMenuOpen && (
-                                <motion.div 
-                                    initial={{ opacity: 0, scale: 0.95, y: -10 }}
-                                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                                    exit={{ opacity: 0, scale: 0.95, y: -10 }}
-                                    className="absolute top-full right-0 mt-3 w-48 glass-nav rounded-2xl shadow-ambient overflow-hidden z-[200] border border-white/10"
-                                >
-                                    <div className="p-1.5 flex flex-col gap-1">
-                                        <button 
-                                            onClick={handleShareClick('story')}
-                                            className="flex items-center gap-3 w-full px-4 py-2.5 rounded-xl hover:bg-white/10 text-white transition-colors group"
-                                        >
-                                            <Instagram className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                                            <span className="font-heading font-bold uppercase text-[10px] tracking-widest text-left">Story</span>
-                                        </button>
-                                        <button 
-                                            onClick={handleShareClick('post')}
-                                            className="flex items-center gap-3 w-full px-4 py-2.5 rounded-xl hover:bg-white/10 text-white transition-colors group"
-                                        >
-                                            <ImageIcon className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                                            <span className="font-heading font-bold uppercase text-[10px] tracking-widest text-left">Post</span>
-                                        </button>
-                                        <button 
-                                            onClick={handleShareClick('wa')}
-                                            className="flex items-center gap-3 w-full px-4 py-2.5 rounded-xl hover:bg-[#25D366]/20 text-[#25D366] transition-colors group"
-                                        >
-                                            <MessageCircle className="w-5 h-5 fill-[#25D366] group-hover:scale-110 transition-transform" />
-                                            <span className="font-heading font-bold uppercase text-[10px] tracking-widest text-left font-[#25D366]">WhatsApp</span>
-                                        </button>
-                                    </div>
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
+                    <div className="font-stat font-bold text-primary flex items-center justify-end gap-2">
+                        <span className={clsx("text-lg", isWin1 ? "font-black" : "opacity-40")}>{match.team1Points}</span>
+                        <span className="opacity-20 text-xs">/</span>
+                        <span className={clsx("text-lg", isWin2 ? "font-black" : "opacity-40")}>{match.team2Points}</span>
                     </div>
+                </div>
+
+                {/* Share Action */}
+                <div className="relative mt-2" ref={menuRef}>
+                    <button 
+                      onClick={() => setIsMenuOpen(!isMenuOpen)}
+                      disabled={isSharing}
+                      className={clsx(
+                          "flex items-center gap-2 p-3 rounded-none transition-all duration-300",
+                          isMenuOpen ? "bg-primary text-on-primary shadow-ambient" : "bg-surface-container-high text-primary hover:bg-surface-container-highest"
+                      )}
+                    >
+                        {isSharing ? (
+                            <Loader2 className="w-5 h-5 animate-spin" />
+                        ) : (
+                            <Share2 className="w-5 h-5" />
+                        )}
+                    </button>
+
+                    <AnimatePresence>
+                        {isMenuOpen && (
+                            <motion.div 
+                                initial={{ opacity: 0, scale: 0.95, y: -10 }}
+                                animate={{ opacity: 1, scale: 1, y: 0 }}
+                                exit={{ opacity: 0, scale: 0.95, y: -10 }}
+                                className="absolute bottom-full md:top-full right-0 mb-3 md:mt-3 w-48 glass-nav rounded-none shadow-ambient overflow-hidden z-[200]"
+                            >
+                                <div className="p-1 flex flex-col">
+                                    <button 
+                                        onClick={handleShareClick('story')}
+                                        className="flex items-center gap-3 w-full px-4 py-3 hover:bg-surface-container-low text-primary transition-colors group"
+                                    >
+                                        <Instagram className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                                        <span className="label-md text-left">Story</span>
+                                    </button>
+                                    <button 
+                                        onClick={handleShareClick('post')}
+                                        className="flex items-center gap-3 w-full px-4 py-3 hover:bg-surface-container-low text-primary transition-colors group"
+                                    >
+                                        <ImageIcon className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                                        <span className="label-md text-left">Post</span>
+                                    </button>
+                                    <button 
+                                        onClick={handleShareClick('wa')}
+                                        className="flex items-center gap-3 w-full px-4 py-3 hover:bg-surface-container-low text-[#25D366] transition-colors group"
+                                    >
+                                        <MessageCircle className="w-5 h-5 fill-[#25D366] group-hover:scale-110 transition-transform" />
+                                        <span className="label-md text-left">WhatsApp</span>
+                                    </button>
+                                </div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
                 </div>
             </div>
         </div>

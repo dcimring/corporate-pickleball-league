@@ -1,31 +1,38 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400;1,700&family=Open+Sans:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,100..900;1,100..900&family=Public+Sans:ital,wght@0,100..900;1,100..900&family=Lexend:wght@100..900&display=swap');
 @import "tailwindcss";
 
 @theme {
-  /* Cayman Theme Colors (Restored) */
-  --color-brand-blue: #005596;
-  --color-brand-yellow: #FFC72C;
-  --color-brand-red: #E31837;
-  --color-brand-green: #00A651;
-  --color-brand-light-blue: #E0F2FE;
-  --color-brand-light-blue-strong: #9CCCFF;
-  --color-brand-gray: #F8FAFC;
-  --color-text-main: #0F172A;
+  /* Editorial Athlete Design System Colors */
+  --color-surface: #f7f9fb;
+  --color-surface-container-low: #f2f4f6;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-high: #ebeef1;
+  --color-surface-container-highest: #e4e8ec;
   
-  --color-brand-cream: #FFFFFF; 
-  --color-brand-ink: #0F172A;   
-  --color-brand-acid: #FFC72C;  
-  --color-brand-soft-blue: #F1F5F9;
-
-  --color-outline-variant: rgba(15, 23, 42, 0.1); /* Ghost Border based on Ink */
-
-  --font-heading: 'Montserrat', sans-serif;
-  --font-body: 'Open Sans', sans-serif;
+  --color-primary: #003e6f;
+  --color-primary-container: #005596;
+  --color-on-primary: #ffffff;
   
-  --shadow-ambient: 0 4px 24px -4px rgba(15, 23, 42, 0.06);
+  --color-secondary: #ffc72c;
+  --color-secondary-container: #ffc72c;
+  --color-on-secondary-container: #003e6f;
+  
+  --color-on-surface: #0f172a;
+  --color-on-surface-variant: #414750;
+  
+  --color-outline-variant: rgba(15, 23, 42, 0.15);
 
+  /* Typography */
+  --font-display: 'Epilogue', sans-serif;
+  --font-heading: 'Epilogue', sans-serif;
+  --font-body: 'Public Sans', sans-serif;
+  --font-stat: 'Lexend', sans-serif;
+  
+  /* Shadows & Depth */
+  --shadow-ambient: 0 12px 32px rgba(25, 28, 30, 0.06);
+
+  /* Animations */
   --animate-float: float 6s ease-in-out infinite;
-
   @keyframes float {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-10px); }
@@ -35,44 +42,41 @@
 @layer base {
   body {
     font-family: var(--font-body);
-    background-color: white;
-    background-image: linear-gradient(
-      to bottom, 
-      #ffffff 0px, 
-      white 300px, 
-      white calc(100% - 300px), 
-      #ffffff 100%
-    );
-    background-attachment: scroll;
-    color: var(--color-brand-ink);
+    background-color: var(--color-surface);
+    color: var(--color-on-surface);
     @apply antialiased;
   }
   
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
-    @apply font-bold;
+    @apply font-bold tracking-tight;
   }
 
-  /* Aggressive Typographic Scale - Mapped to Montserrat */
-  .display-lg { font-size: 3.5rem; line-height: 1; font-family: var(--font-heading); font-weight: 800; }
-  .display-sm { font-size: 2.25rem; line-height: 1.2; font-family: var(--font-heading); font-weight: 800; }
-  .headline-md { font-size: 1.75rem; line-height: 1.3; font-family: var(--font-heading); font-weight: 700; }
-  .title-md { font-size: 1.125rem; line-height: 1.5; font-family: var(--font-body); font-weight: 600; }
-  .body-md { font-size: 0.875rem; line-height: 1.6; font-family: var(--font-body); }
-  .label-md { font-size: 0.75rem; line-height: 1.5; font-family: var(--font-heading); font-weight: 600; }
+  /* Editorial Typographic Scale */
+  .display-lg { font-size: clamp(3rem, 8vw, 5rem); line-height: 0.9; font-family: var(--font-display); font-weight: 900; letter-spacing: -0.04em; }
+  .display-sm { font-size: 2.5rem; line-height: 1.1; font-family: var(--font-display); font-weight: 800; letter-spacing: -0.02em; }
+  .headline-md { font-size: 1.75rem; line-height: 1.2; font-family: var(--font-heading); font-weight: 700; }
+  .body-lg { font-size: 1.125rem; line-height: 1.6; font-family: var(--font-body); }
+  .body-md { font-size: 1rem; line-height: 1.6; font-family: var(--font-body); }
+  .label-md { font-size: 0.75rem; line-height: 1.5; font-family: var(--font-stat); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+  .label-sm { font-size: 0.65rem; line-height: 1.5; font-family: var(--font-stat); font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; }
 }
 
 @layer components {
-  .btn-kinetic {
-    @apply inline-flex items-center justify-center px-6 py-2.5 bg-brand-blue text-white font-heading font-semibold rounded-full hover:opacity-90 transition-all shadow-ambient;
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-6 py-3 bg-linear-to-r from-primary to-primary-container text-on-primary font-heading font-bold rounded-[4px] hover:opacity-90 transition-all shadow-ambient;
   }
   
-  .glass-nav {
-    @apply backdrop-blur-xl bg-brand-blue/80 text-white;
+  .btn-secondary {
+    @apply inline-flex items-center justify-center px-6 py-3 bg-secondary-container text-on-secondary-container font-heading font-bold rounded-[4px] hover:opacity-90 transition-all shadow-ambient;
   }
 
-  .kinetic-card {
-    @apply bg-white rounded-lg shadow-ambient transition-all duration-300;
+  .glass-nav {
+    @apply backdrop-blur-[24px] bg-surface/80;
+  }
+
+  .editorial-card {
+    @apply bg-surface-container-lowest rounded-none shadow-ambient transition-all duration-300 border-none;
   }
   
   .no-scrollbar::-webkit-scrollbar {
