@@ -134,7 +134,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick, onShar
             </div>
 
             {/* Teams and Scores - Flex Grow to push cards to same height */}
-            <div className="flex-1 flex flex-col justify-center space-y-6">
+            <div className="flex-1 flex flex-col justify-center space-y-1.5 md:space-y-6">
                 {/* Team 1 */}
                 <div className="flex justify-between items-center group/team relative">
                     <div 
