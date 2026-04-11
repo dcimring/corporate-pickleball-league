@@ -59,13 +59,12 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({
             <div className="relative z-10 flex flex-col h-full w-full">
                 {/* Branding Anchor Top Left */}
                 <div className="absolute top-0 left-0 flex flex-col items-start gap-2">
-                    <h1 className="font-display font-black text-[#005a87] text-[32px] uppercase tracking-tighter leading-[0.85] flex flex-col">
-                        <span>LA ROCHE POSAY</span>
-                        <span>PICKLEBALL LEAGUE</span>
+                    <h1 className="font-display font-black text-[#005a87] text-[64px] uppercase tracking-tighter leading-none">
+                        LA ROCHE POSAY PICKLEBALL LEAGUE
                     </h1>
                     <div className="flex items-center gap-3">
-                        <div className="w-8 h-1 bg-[#ffc72c]" />
-                        <p className="font-stat font-black tracking-[0.4em] text-[#005a87] opacity-40 uppercase text-[10px]">
+                        <div className="w-12 h-1.5 bg-[#ffc72c]" />
+                        <p className="font-stat font-black tracking-[0.4em] text-[#005a87] opacity-40 uppercase text-xs">
                             MATCH RESULT
                         </p>
                     </div>
