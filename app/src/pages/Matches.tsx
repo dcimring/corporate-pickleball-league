@@ -11,7 +11,6 @@ import type { Match } from '../types';
 
 export const Matches: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const navigate = useNavigate();
   const { data, loading } = useLeagueData();
 
   // Unified Active Division Logic - Derive directly from URL to prevent dual-render flicker
