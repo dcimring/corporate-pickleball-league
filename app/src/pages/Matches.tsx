@@ -128,7 +128,7 @@ export const Matches: React.FC = () => {
   return (
     <div className="space-y-0 relative overflow-hidden bg-surface">
       {/* Unified Header Block */}
-      <header className="bg-surface-container-low pt-4 pb-4 px-6 md:px-12 space-y-4">
+      <header className="pt-4 pb-4 px-6 md:px-12 space-y-4">
         <Navigation 
           pageTabs={pageTabs} 
           activePage="/matches" 

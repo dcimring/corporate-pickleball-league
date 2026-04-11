@@ -100,7 +100,7 @@ export const Leaderboard: React.FC = () => {
       <div ref={toastPortalRef} className="fixed bottom-0 left-0 right-0 z-[300] pointer-events-none flex justify-center pb-6" />
 
       {/* Unified Header Block */}
-      <header className="bg-surface-container-low pt-4 pb-4 px-6 md:px-12 space-y-4">
+      <header className="pt-4 pb-4 px-6 md:px-12 space-y-4">
         <Navigation 
           pageTabs={pageTabs} 
           activePage="/leaderboard" 
