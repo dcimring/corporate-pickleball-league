@@ -61,9 +61,12 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       </main>
 
       <footer className="mt-4 pb-2 text-center px-4 opacity-30">
-        <p className="text-[7px] font-mono uppercase text-gray-400 tracking-widest">
-          Build: {new Date(__BUILD_TIME__).toLocaleString('en-US', { timeZone: 'America/Cayman', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false }).replace(/, /g, '.').replace(/[/:]/g, '.')}
-        </p>
+        <div className="text-[7px] font-mono uppercase text-gray-400 tracking-widest flex flex-wrap justify-center gap-x-4 gap-y-1">
+          <span>Build: {new Date(__BUILD_TIME__).toLocaleString('en-US', { timeZone: 'America/Cayman', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false }).replace(/, /g, '.').replace(/[/:]/g, '.')}</span>
+          <span className="flex items-center gap-1">
+            Leaderboard module built with <span className="normal-case text-[8px]">❤️</span> in Cayman by <a href="https://danielcimring.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors underline decoration-secondary underline-offset-2">Daniel Cimring</a>
+          </span>
+        </div>
       </footer>
     </div>
   );
