@@ -55,7 +55,7 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({
 
         {/* Decorative Background Elements */}
         <div className={clsx(
-            "absolute transform -rotate-6 z-0 opacity-15 bg-linear-to-bl from-[#003e6f] to-[#005596]",
+            "absolute transform -rotate-6 z-0 opacity-15 bg-linear-to-bl from-[#005a87] to-[#005596]",
             isPost ? "h-[400px] w-[800px] top-[-100px] right-[-100px]" : "h-[800px] w-[1200px] top-[-200px] right-[-200px]"
         )} style={{ clipPath: 'polygon(10% 20%, 90% 0%, 100% 90%, 0% 100%)' }} />
 
@@ -67,12 +67,12 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({
                         <p className="font-stat font-black tracking-[0.4em] text-[#ffc72c] uppercase mb-4 text-xl">
                             MATCH DAY REPORT
                         </p>
-                        <h1 className="font-display font-black text-[#003e6f] text-[100px] uppercase tracking-tighter leading-[0.85]">
+                        <h1 className="font-display font-black text-[#005a87] text-[100px] uppercase tracking-tighter leading-[0.85]">
                             THE<br/><span className="text-[#005596]">RESULT</span>
                         </h1>
                     </div>
                     <div className="text-right">
-                        <div className="bg-[#ffc72c] text-[#003e6f] px-8 py-3 font-display font-black uppercase tracking-widest shadow-xl text-2xl">
+                        <div className="bg-[#ffc72c] text-[#005a87] px-8 py-3 font-display font-black uppercase tracking-widest shadow-xl text-2xl">
                             {formatDateNoTz(match.date)}
                         </div>
                     </div>
@@ -87,13 +87,13 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({
                             <div className="flex flex-col gap-2 flex-1 relative">
                                 <span className={clsx(
                                     "font-display font-black uppercase text-5xl tracking-tighter leading-tight",
-                                    isWin1 ? "text-[#003e6f]" : "text-[#003e6f]/20"
+                                    isWin1 ? "text-[#005a87]" : "text-[#005a87]/20"
                                 )}>
                                     {match.team1}
                                 </span>
                                 <div className="flex items-center gap-4">
-                                    <span className="font-stat font-bold text-xl text-[#003e6f]/30 uppercase tracking-[0.2em]">POINTS</span>
-                                    <span className={clsx("font-stat font-black text-3xl", isWin1 ? "text-[#003e6f]" : "text-[#003e6f]/20")}>
+                                    <span className="font-stat font-bold text-xl text-[#005a87]/30 uppercase tracking-[0.2em]">POINTS</span>
+                                    <span className={clsx("font-stat font-black text-3xl", isWin1 ? "text-[#005a87]" : "text-[#005a87]/20")}>
                                         {match.team1Points}
                                     </span>
                                 </div>
@@ -103,7 +103,7 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({
                             </div>
                             <span className={clsx(
                                 "font-stat font-black text-[140px] leading-none ml-12",
-                                isWin1 ? "text-[#003e6f]" : "text-[#003e6f]/10"
+                                isWin1 ? "text-[#005a87]" : "text-[#005a87]/10"
                             )}>
                                 {match.team1Wins}
                             </span>
@@ -113,13 +113,13 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({
                             <div className="flex flex-col gap-2 flex-1 relative">
                                 <span className={clsx(
                                     "font-display font-black uppercase text-5xl tracking-tighter leading-tight",
-                                    isWin2 ? "text-[#003e6f]" : "text-[#003e6f]/20"
+                                    isWin2 ? "text-[#005a87]" : "text-[#005a87]/20"
                                 )}>
                                     {match.team2}
                                 </span>
                                 <div className="flex items-center gap-4">
-                                    <span className="font-stat font-bold text-xl text-[#003e6f]/30 uppercase tracking-[0.2em]">POINTS</span>
-                                    <span className={clsx("font-stat font-black text-3xl", isWin2 ? "text-[#003e6f]" : "text-[#003e6f]/20")}>
+                                    <span className="font-stat font-bold text-xl text-[#005a87]/30 uppercase tracking-[0.2em]">POINTS</span>
+                                    <span className={clsx("font-stat font-black text-3xl", isWin2 ? "text-[#005a87]" : "text-[#005a87]/20")}>
                                         {match.team2Points}
                                     </span>
                                 </div>
@@ -129,7 +129,7 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({
                             </div>
                             <span className={clsx(
                                 "font-stat font-black text-[140px] leading-none ml-12",
-                                isWin2 ? "text-[#003e6f]" : "text-[#003e6f]/10"
+                                isWin2 ? "text-[#005a87]" : "text-[#005a87]/10"
                             )}>
                                 {match.team2Wins}
                             </span>
@@ -140,16 +140,16 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({
                     <div className="w-[400px] flex flex-col gap-12 items-center justify-center">
                         <div className="text-center space-y-4">
                             <Trophy className="w-16 h-16 text-[#ffc72c] mx-auto" strokeWidth={3} />
-                            <h3 className="font-display font-black italic text-[#003e6f] text-4xl uppercase tracking-[0.2em]">
+                            <h3 className="font-display font-black italic text-[#005a87] text-4xl uppercase tracking-[0.2em]">
                                 {isTie ? 'TIE' : 'WINNER'}
                             </h3>
-                            <div className="bg-[#003e6f] text-white p-8 w-full text-center">
+                            <div className="bg-[#005a87] text-white p-8 w-full text-center">
                                 <span className="font-display font-black text-5xl uppercase tracking-widest leading-none">
                                     {isTie ? 'NO WINNER' : (isWin1 ? match.team1 : match.team2)}
                                 </span>
                             </div>
                         </div>
-                        <div className="font-stat font-black text-2xl tracking-[0.4em] text-[#003e6f] opacity-20 uppercase">
+                        <div className="font-stat font-black text-2xl tracking-[0.4em] text-[#005a87] opacity-20 uppercase">
                            PICKLEBALL.KY
                         </div>
                     </div>
@@ -163,27 +163,27 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({
                     <p className="font-stat font-black tracking-[0.5em] text-[#ffc72c] uppercase text-4xl">
                         OFFICIAL MATCH RECORD
                     </p>
-                    <h1 className="font-display font-black text-[#003e6f] text-[150px] uppercase tracking-tighter leading-[0.8] mb-12">
+                    <h1 className="font-display font-black text-[#005a87] text-[150px] uppercase tracking-tighter leading-[0.8] mb-12">
                         THE<br/><span className="text-[#005596]">FINAL</span><br/>SCORE
                     </h1>
                 </div>
 
                 {/* Scoreboard Story */}
                 <div className="w-full bg-white shadow-[0_24px_64px_rgba(25,28,30,0.1)] p-20 flex flex-col gap-20 relative overflow-hidden">
-                    <div className="absolute top-0 left-0 right-0 h-8 bg-[#003e6f]" />
+                    <div className="absolute top-0 left-0 right-0 h-8 bg-[#005a87]" />
 
                     {/* Team 1 */}
                     <div className="flex justify-between items-center relative">
                         <div className="flex flex-col gap-6 max-w-[65%] relative">
                             <span className={clsx(
                                 "font-display font-black uppercase text-8xl tracking-tighter leading-[0.9]",
-                                isWin1 ? "text-[#003e6f]" : "text-[#003e6f]/20"
+                                isWin1 ? "text-[#005a87]" : "text-[#005a87]/20"
                             )}>
                                 {match.team1}
                             </span>
                             <div className="flex items-center gap-6">
-                                <span className="font-stat font-bold text-3xl text-[#003e6f]/30 uppercase tracking-[0.2em]">POINTS</span>
-                                <span className={clsx("font-stat font-black text-5xl", isWin1 ? "text-[#003e6f]" : "text-[#003e6f]/20")}>
+                                <span className="font-stat font-bold text-3xl text-[#005a87]/30 uppercase tracking-[0.2em]">POINTS</span>
+                                <span className={clsx("font-stat font-black text-5xl", isWin1 ? "text-[#005a87]" : "text-[#005a87]/20")}>
                                     {match.team1Points}
                                 </span>
                             </div>
@@ -194,7 +194,7 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({
                         <div className="relative">
                             <span className={clsx(
                                 "font-stat font-black text-[320px] leading-none",
-                                isWin1 ? "text-[#003e6f]" : "text-[#003e6f]/10"
+                                isWin1 ? "text-[#005a87]" : "text-[#005a87]/10"
                             )}>
                                 {match.team1Wins}
                             </span>
@@ -208,13 +208,13 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({
                         <div className="flex flex-col gap-6 max-w-[65%] relative">
                             <span className={clsx(
                                 "font-display font-black uppercase text-8xl tracking-tighter leading-[0.9]",
-                                isWin2 ? "text-[#003e6f]" : "text-[#003e6f]/20"
+                                isWin2 ? "text-[#005a87]" : "text-[#005a87]/20"
                             )}>
                                 {match.team2}
                             </span>
                             <div className="flex items-center gap-6">
-                                <span className="font-stat font-bold text-3xl text-[#003e6f]/30 uppercase tracking-[0.2em]">POINTS</span>
-                                <span className={clsx("font-stat font-black text-5xl", isWin2 ? "text-[#003e6f]" : "text-[#003e6f]/20")}>
+                                <span className="font-stat font-bold text-3xl text-[#005a87]/30 uppercase tracking-[0.2em]">POINTS</span>
+                                <span className={clsx("font-stat font-black text-5xl", isWin2 ? "text-[#005a87]" : "text-[#005a87]/20")}>
                                     {match.team2Points}
                                 </span>
                             </div>
@@ -225,20 +225,20 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({
                         <div className="relative">
                             <span className={clsx(
                                 "font-stat font-black text-[320px] leading-none",
-                                isWin2 ? "text-[#003e6f]" : "text-[#003e6f]/10"
+                                isWin2 ? "text-[#005a87]" : "text-[#005a87]/10"
                             )}>
                                 {match.team2Wins}
                             </span>
                         </div>
                     </div>
 
-                    <div className="pt-16 border-t-[10px] border-[#003e6f] text-center font-stat font-black text-6xl uppercase tracking-[0.4em] text-[#003e6f]">
+                    <div className="pt-16 border-t-[10px] border-[#005a87] text-center font-stat font-black text-6xl uppercase tracking-[0.4em] text-[#005a87]">
                         {formatDateNoTz(match.date)}
                     </div>
                 </div>
 
                 {/* Winner Badge Story */}
-                <div className="bg-[#ffc72c] text-[#003e6f] p-20 w-full relative overflow-hidden text-center space-y-8">
+                <div className="bg-[#ffc72c] text-[#005a87] p-20 w-full relative overflow-hidden text-center space-y-8">
                     <Trophy className="w-24 h-24 mx-auto" strokeWidth={3} />
                     <h3 className="font-display font-black text-6xl uppercase tracking-[0.3em]">
                         {isTie ? 'TIE' : 'WINNER'}
@@ -250,7 +250,7 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({
 
                 {/* Footer Story */}
                 <div className="mt-auto pb-24 text-center">
-                     <p className="font-display font-black uppercase tracking-[0.6em] text-5xl text-[#003e6f] opacity-20">
+                     <p className="font-display font-black uppercase tracking-[0.6em] text-5xl text-[#005a87] opacity-20">
                         PICKLEBALL.KY
                      </p>
                 </div>

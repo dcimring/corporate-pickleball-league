@@ -41,7 +41,7 @@ export const ShareableLeaderboard: React.FC<ShareableLeaderboardProps> = ({
 
         {/* Decorative Background Elements (Refined Tonal Depth) */}
         <div className={clsx(
-            "absolute transform rotate-12 z-0 opacity-20 bg-linear-to-tr from-[#003e6f] to-[#005596]",
+            "absolute transform rotate-12 z-0 opacity-20 bg-linear-to-tr from-[#003e6f] to-[#005a87]",
             isPost 
                 ? "top-[-100px] right-[-100px] w-[500px] h-[500px]" 
                 : "top-[-300px] right-[-200px] w-[1000px] h-[1000px]"
@@ -58,9 +58,9 @@ export const ShareableLeaderboard: React.FC<ShareableLeaderboardProps> = ({
                     isPost ? "text-[100px]" : "text-[160px]"
                 )}>
                     {isPost ? (
-                        <>THE<br/><span className="text-[#005596]">LEADERBOARD</span></>
+                        <>THE<br/><span className="text-[#005a87]">LEADERBOARD</span></>
                     ) : (
-                        <>THE<br/><span className="text-[#005596]">CORPORATE</span><br/>LEADERBOARD</>
+                        <>THE<br/><span className="text-[#005a87]">CORPORATE</span><br/>LEADERBOARD</>
                     )}
                 </h1>
                 <div className={clsx("mt-8 flex items-center gap-6", isPost ? "text-2xl" : "text-4xl")}>
