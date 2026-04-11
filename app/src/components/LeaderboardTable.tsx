@@ -25,12 +25,12 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
   return (
     <div className="w-full flex flex-col gap-0">
       {/* Header Row - Tightened for mobile */}
-      <div className="flex items-center px-2 md:px-6 py-4 bg-surface-container-high label-sm md:label-md text-on-surface-variant opacity-80">
+      <div className="flex items-center px-1 md:px-6 py-4 bg-surface-container-high label-sm md:label-md text-on-surface-variant opacity-80">
         <div className="w-10 md:w-20 text-center">Rank</div>
         <div className="flex-1 pl-2 md:pl-12 text-left">Team</div>
-        <div className="flex items-center justify-end gap-2 md:gap-12">
-            <div className="w-12 md:w-24 text-center">W-L</div>
-            <div className="w-12 md:w-24 text-center">Win %</div>
+        <div className="flex items-center justify-end gap-1 md:gap-12">
+            <div className="w-14 md:w-24 text-center">W-L</div>
+            <div className="w-14 md:w-24 text-center">Win %</div>
             <div className="hidden md:block w-32 text-center">Pts For/Against</div>
             <div className="w-10 md:w-20 text-right">
               <span className="md:hidden">Pts</span>
@@ -49,7 +49,7 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
             <div 
               key={entry.team} 
               onClick={() => onTeamClick(entry.team)}
-              className="flex items-center transition-all duration-500 cursor-pointer group relative overflow-visible h-20 md:h-24 bg-surface-container-lowest hover:bg-surface-container-low z-10 border-b border-outline-variant/5 md:border-none"
+              className="flex items-center transition-all duration-500 cursor-pointer group relative overflow-visible h-20 md:h-24 bg-surface-container-lowest hover:bg-surface-container-low z-10 border-b border-outline-variant/5 md:border-none px-1 md:px-0"
             >
               {/* Rank */}
               <div className="h-full flex items-center justify-center w-10 md:w-20 relative">
@@ -58,7 +58,7 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
                   index === 0 ? "text-primary" : 
                   index === 1 ? "text-primary/70" :
                   index === 2 ? "text-primary/50" : "text-primary/20",
-                  "text-2xl md:text-4xl"
+                  "text-3xl md:text-4xl"
                 )}>
                   {index + 1}
                 </span>
@@ -72,15 +72,15 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
               </div>
 
               {/* Stats Group - Optimized gaps for mobile */}
-              <div className="flex items-center justify-end gap-2 md:gap-12 pr-2 md:pr-6">
+              <div className="flex items-center justify-end gap-1 md:gap-12 pr-1 md:pr-6">
                 {/* W-L */}
-                <div className="w-12 md:w-24 text-center font-stat font-bold text-xs md:text-xl text-primary/60">
+                <div className="w-14 md:w-24 text-center font-stat font-bold text-base md:text-xl text-primary/60">
                   {entry.wins}-{entry.losses}
                 </div>
 
                 {/* % */}
                 <div className={clsx(
-                  "w-12 md:w-24 text-center font-stat font-black text-sm md:text-3xl tracking-tighter",
+                  "w-14 md:w-24 text-center font-stat font-black text-base md:text-3xl tracking-tighter",
                   isTop3 ? "text-primary" : "text-primary/80"
                 )}>
                   {(entry.winPct * 100).toFixed(0)}<span className="text-[0.6em] opacity-40 ml-0.5">%</span>
@@ -94,7 +94,7 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
                 {/* Pts (Mobile) / DIFF (Desktop) */}
                 <div className="w-10 md:w-20 text-right">
                     {/* Mobile: Show Points For */}
-                    <span className="md:hidden font-stat font-black text-sm text-primary/60">
+                    <span className="md:hidden font-stat font-black text-base text-primary/60">
                         {entry.pointsFor}
                     </span>
                     

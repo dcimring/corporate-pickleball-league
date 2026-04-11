@@ -140,7 +140,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick, onShar
                     <div 
                       onClick={() => onTeamClick?.(match.team1)}
                       className={clsx(
-                      "font-heading font-black uppercase text-xl md:text-3xl lg:text-4xl tracking-tighter leading-[0.9] cursor-pointer transition-colors relative flex-1 pr-4",
+                      "font-heading font-black uppercase text-2xl md:text-3xl lg:text-4xl tracking-tighter leading-[0.9] cursor-pointer transition-colors relative flex-1 pr-4",
                       isWin1 ? "text-primary" : "text-on-surface-variant opacity-30"
                     )}>
                       {match.team1}
@@ -149,7 +149,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick, onShar
                       )}
                     </div>
                     <div className={clsx(
-                      "font-stat font-black text-4xl md:text-5xl lg:text-6xl tracking-tighter flex-shrink-0",
+                      "font-stat font-black text-5xl md:text-5xl lg:text-6xl tracking-tighter flex-shrink-0",
                       isWin1 ? "text-primary" : "text-on-surface-variant opacity-10"
                     )}>
                       {match.team1Wins}
@@ -161,7 +161,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick, onShar
                     <div 
                       onClick={() => onTeamClick?.(match.team2)}
                       className={clsx(
-                      "font-heading font-black uppercase text-xl md:text-3xl lg:text-4xl tracking-tighter leading-[0.9] cursor-pointer transition-colors relative flex-1 pr-4",
+                      "font-heading font-black uppercase text-2xl md:text-3xl lg:text-4xl tracking-tighter leading-[0.9] cursor-pointer transition-colors relative flex-1 pr-4",
                       isWin2 ? "text-primary" : "text-on-surface-variant opacity-30"
                     )}>
                       {match.team2}
@@ -170,7 +170,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick, onShar
                       )}
                     </div>
                     <div className={clsx(
-                      "font-stat font-black text-4xl md:text-5xl lg:text-6xl tracking-tighter flex-shrink-0",
+                      "font-stat font-black text-5xl md:text-5xl lg:text-6xl tracking-tighter flex-shrink-0",
                       isWin2 ? "text-primary" : "text-on-surface-variant opacity-10"
                     )}>
                       {match.team2Wins}
