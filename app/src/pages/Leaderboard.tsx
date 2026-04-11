@@ -8,7 +8,7 @@ import { LoadingState } from '../components/LoadingState';
 import { useLeagueData } from '../context/LeagueContext';
 
 export const Leaderboard: React.FC = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { data, loading } = useLeagueData();
 
