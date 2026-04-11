@@ -58,12 +58,10 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({
             /* Post Layout (Landscape) - REFACTORED TO MATCH STORY STYLE */
             <div className="relative z-10 flex h-full gap-12 items-center">
                 {/* Left Column: Masthead */}
-                <div className="flex flex-col justify-center items-start space-y-6 w-[350px] flex-shrink-0">
-                    <h1 className="font-display font-black text-[#005a87] text-[64px] uppercase tracking-tighter leading-[0.8] flex flex-col">
-                        <span>LA ROCHE</span>
-                        <span>POSAY</span>
-                        <span>PICKLEBALL</span>
-                        <span>LEAGUE</span>
+                <div className="flex flex-col justify-center items-start space-y-6 w-[450px] flex-shrink-0">
+                    <h1 className="font-display font-black text-[#005a87] text-[64px] uppercase tracking-tighter leading-[0.85] flex flex-col">
+                        <span>LA ROCHE POSAY</span>
+                        <span>PICKLEBALL LEAGUE</span>
                     </h1>
                     
                     <div className="flex flex-col items-start gap-4 pt-2">
