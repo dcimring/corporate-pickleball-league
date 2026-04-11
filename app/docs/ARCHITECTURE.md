@@ -23,7 +23,7 @@ To prevent the "Iframe Scrollbar" issue, the app implements a height-matching pr
 Since the primary site navigation is gone, the app uses a nested navigation system:
 - **Level 1 (PageTabs):** Switches between the main views (`/leaderboard` and `/matches`).
 - **Level 2 (DivisionTabs):** Filters the data by division. On mobile, this transforms into a styled dropdown for better space efficiency.
-- **Visual Focus:** Selected navigation items and division pills feature a white background (`bg-white`) to provide immediate visual focus within the "Warm Paper" UI.
+- **Visual Focus:** Selected navigation items and division pills feature a white background (`bg-white`) to provide immediate visual focus within the cool surface UI.
 - **Team Filtering:** Users can click a team name on the Leaderboard or Match Cards to filter the `/matches` view to show only games involving that team. This state is managed via URL search parameters (`?team=Name`).
 
 ### 5. Routing
@@ -38,18 +38,18 @@ Since the primary site navigation is gone, the app uses a nested navigation syst
 
 ### 7. Social Sharing
 - **Client-Side Generation:** To avoid server-side rendering complexity, the app uses `html-to-image` to capture specific, hidden DOM elements (`ShareableLeaderboard`, `ShareableMatch`) as high-resolution PNGs.
-- **Hidden Rendering:** These components are rendered off-screen (`top: -9999px`) but are fully styled with the "Roost Kinetic" theme, allowing for distinct designs optimized for social media (e.g., portrait aspect ratio, larger typography) separate from the screen UI.
+- **Hidden Rendering:** These components are rendered off-screen (`top: -9999px`) but are fully styled with the "Editorial Athlete" theme, allowing for distinct designs optimized for social media (e.g., portrait aspect ratio, larger typography) separate from the screen UI.
 - **Capacity:** The `ShareableLeaderboard` is designed to fit 12 teams in the story format and 6 teams per column in the post format, ensuring readability and visual impact.
 - **Native Sharing:** The `ShareButton` utilizes the `navigator.share` API to invoke the native mobile sharing sheet, allowing users to share the generated image directly to apps like Instagram, WhatsApp, or Facebook. On unsupported platforms, it falls back to a file download.
 - **Iframe Permissions:** For this feature to function within an embedded context, the parent `<iframe>` tag **must** include `allow="web-share"`. Without this attribute, the browser blocks the API, and the app defaults to the file download fallback.
 
-### 8. UI Style (Roost Kinetic)
-The "Roost Kinetic" aesthetic is designed for high-contrast, mobile-first performance and editorial clarity.
-- **Typography:** Uses **Montserrat** for headings and high-impact data points (bold/black italic) and **Open Sans** for body text.
-- **Textures:** Implements a "Warm Paper" UI texture via subtle grainy backgrounds (using `transparenttextures.com` patterns) and hard shadows (`shadow-ambient`).
+### 8. UI Style (Editorial Athlete)
+The "Editorial Athlete" aesthetic is designed for high-contrast, professional sports-editorial clarity and mobile-first performance.
+- **Typography:** Uses **Epilogue** for display/headings (bold/extra-bold with tight tracking) and **Public Sans** for body text. **Lexend** is used for statistical labels and numeric data.
+- **Visual Language:** Sharp edges (`rounded-none`), clean lines, and ambient depth (`shadow-ambient`). 
 - **Leaderboard Table:** 
-  - **Rank Badge:** Large, semi-transparent italic rank numbers that overlap with team rows.
-  - **Stats Group:** Consolidated stats with prominent win percentages.
+  - **Rank Badge:** Large, semi-transparent rank numbers that overlap with team rows for a dynamic, layered look.
+  - **Stats Group:** Consolidated stats using the `Lexend` font for maximum clarity.
   - **Semantic Coloring:** The DIFF column uses semantic coloring for quick readability: positive values are "green on light green" (`bg-green-100 text-green-700`).
   - **Mobile Padding:** A 2px horizontal padding (`px-2`) is applied on mobile views to prevent the table from touching the screen edges.
 
@@ -64,6 +64,6 @@ The "Roost Kinetic" aesthetic is designed for high-contrast, mobile-first perfor
 - **Framework**: React 19+
 - **Routing**: React Router 7
 - **Database**: Supabase
-- **Styling**: Tailwind CSS v4 (Roost Kinetic Theme)
-- **Typography**: Montserrat (Headings), Open Sans (Body)
+- **Styling**: Tailwind CSS v4 (Editorial Athlete Theme)
+- **Typography**: Epilogue (Display/Headings), Public Sans (Body), Lexend (Stats)
 - **Animation**: Framer Motion (for tab transitions)

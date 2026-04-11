@@ -32,16 +32,14 @@ Backend data is stored in Supabase (Postgres). Match ingestion is automated via 
 - Lint: `npm run lint`
 
 ## Style
-- **Aesthetic:** "Roost Kinetic" with high-contrast, editorial typography and "Warm Paper" UI textures.
-- **Typography:** Montserrat (Headings, bold/black italic), Open Sans (Body).
+- **Aesthetic:** "Editorial Athlete" with high-contrast, professional sports-editorial typography and clean visual language.
+- **Typography:** Epilogue (Display/Headings), Public Sans (Body), Lexend (Stats).
 - **Theme colors:**
-  - `brand-blue`: #005596 (Cayman Navy)
-  - `brand-yellow`: #FFC72C (Electric Volt Accents)
-  - `brand-gray`: #F8FAFC (Subtle Backgrounds)
-  - `brand-cream`: #FFFFFF (Warm Paper Texture Base)
-  - `brand-light-blue`: #E0F2FE (Hover/outline accents)
-  - `brand-ink`: #0F172A (Main Text)
-- **UI Patterns:** White backgrounds for selected navigation items and division pills to provide clear visual focus.
+  - `primary`: #005a87 (Ocean Blue)
+  - `secondary`: #ffc72c (Volt Yellow)
+  - `surface`: #f7f9fb (Cool Grayish White)
+  - `on-surface`: #0f172a (Main Text)
+- **UI Patterns:** Sharp edges (`rounded-none`), ambient depth (`shadow-ambient`), and dynamic typography scales (`display-lg`, `label-md`, etc.).
 
 ## Behavior Notes
 - Data is fetched once on app mount; background refresh runs silently.
