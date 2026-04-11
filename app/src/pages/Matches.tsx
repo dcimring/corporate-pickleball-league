@@ -126,7 +126,7 @@ export const Matches: React.FC = () => {
   ];
 
   return (
-    <div className="space-y-0 relative overflow-hidden bg-surface">
+    <div className="space-y-0 relative overflow-hidden">
       {/* Unified Header Block */}
       <header className="pt-4 pb-4 px-6 md:px-12 space-y-4">
         <Navigation 

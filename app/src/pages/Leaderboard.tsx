@@ -95,7 +95,7 @@ export const Leaderboard: React.FC = () => {
   };
 
   return (
-    <div className="space-y-0 relative overflow-hidden bg-surface">
+    <div className="space-y-0 relative overflow-hidden">
       {/* Portal target for Share Toasts */}
       <div ref={toastPortalRef} className="fixed bottom-0 left-0 right-0 z-[300] pointer-events-none flex justify-center pb-6" />
 
