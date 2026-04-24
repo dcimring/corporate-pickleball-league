@@ -25,7 +25,7 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
   return (
     <div className="w-full flex flex-col gap-0">
       {/* Header Row - Refined Editorial Labels */}
-      <div className="flex items-center px-1 md:px-6 py-4 border-b border-primary/10 label-sm md:label-md text-primary/40 font-black tracking-widest uppercase">
+      <div className="flex items-center px-1 md:px-6 py-4 label-sm md:label-md text-primary/40 font-black tracking-widest uppercase">
         <div className="w-10 md:w-20 text-center">Rank</div>
         <div className="flex-1 pl-2 md:pl-12 text-left">Team</div>
         <div className="flex items-center justify-end gap-1 md:gap-12">
