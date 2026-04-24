@@ -9,8 +9,8 @@
   --color-surface-container-high: #ebeef1;
   --color-surface-container-highest: #e4e8ec;
   
-  --color-primary: #005a87;
-  --color-primary-container: #005a87;
+  --color-primary: #16559a; /* #005a87 */
+  --color-primary-container: #16559a;
   --color-on-primary: #ffffff;
   
   --color-secondary: #ffc72c;
