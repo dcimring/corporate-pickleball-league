@@ -17,10 +17,10 @@ export const Leaderboard: React.FC = () => {
     if (loading || !data.leaderboard) return '';
     const divisions = Object.keys(data.leaderboard);
     const paramDiv = searchParams.get('division');
-    
     if (paramDiv && divisions.includes(paramDiv)) return paramDiv;
     
-    return divisions.includes('Division A') ? 'Division A' : divisions[0] || '';
+    // Default to Cayman Premier League or first available
+    return divisions.includes('Cayman Premier League') ? 'Cayman Premier League' : divisions[0] || '';
   }, [loading, data.leaderboard, searchParams]);
 
   const postShareRef = useRef<HTMLDivElement>(null);
