@@ -77,7 +77,7 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({
                     {/* Team 1 Duel Block */}
                     <div className="flex flex-col items-start gap-4 relative z-10 w-[380px] flex-shrink-0">
                         {isWin1 && !isTie && (
-                            <div className="px-6 py-3 bg-[#ffc72c] text-[#16559a] mb-[-0.25rem]">
+                            <div className="px-6 py-3 bg-[#ffc72c] text-[#16559a] mb-2">
                                 <div className="flex items-center gap-3">
                                     <Trophy className="w-8 h-8" strokeWidth={3} />
                                     <span className="font-stat font-black text-2xl uppercase tracking-[0.2em]">WINNER</span>
@@ -85,7 +85,7 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({
                             </div>
                         )}
                         <h2 className={clsx(
-                            "font-display font-black uppercase text-6xl tracking-tighter leading-none break-words w-full",
+                            "font-display font-black uppercase text-6xl tracking-tighter leading-[0.9] break-words w-full",
                             isWin1 ? "text-[#16559a]" : "text-[#16559a]/20"
                         )}>
                             {match.team1}
@@ -118,7 +118,7 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({
                     {/* Team 2 Duel Block */}
                     <div className="flex flex-col items-end gap-4 relative z-10 w-[380px] text-right flex-shrink-0">
                         {isWin2 && !isTie && (
-                            <div className="px-6 py-3 bg-[#ffc72c] text-[#16559a] mb-[-0.25rem]">
+                            <div className="px-6 py-3 bg-[#ffc72c] text-[#16559a] mb-2">
                                 <div className="flex items-center gap-3">
                                     <Trophy className="w-8 h-8" strokeWidth={3} />
                                     <span className="font-stat font-black text-2xl uppercase tracking-[0.2em]">WINNER</span>
@@ -126,7 +126,7 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({
                             </div>
                         )}
                         <h2 className={clsx(
-                            "font-display font-black uppercase text-6xl tracking-tighter leading-none break-words w-full",
+                            "font-display font-black uppercase text-6xl tracking-tighter leading-[0.9] break-words w-full",
                             isWin2 ? "text-[#16559a]" : "text-[#16559a]/20"
                         )}>
                             {match.team2}
@@ -176,8 +176,9 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({
                     <div className="flex justify-between items-center">
                         <div className="flex flex-col gap-1">
                             <span className={clsx(
-                                "font-display font-black uppercase text-[80px] tracking-tighter leading-[0.85] max-w-[550px]",
-                                isWin1 ? "text-[#16559a]" : "text-[#16559a]/20"
+                                "font-display font-black uppercase tracking-tighter leading-[0.85] max-w-[550px]",
+                                isWin1 ? "text-[#16559a]" : "text-[#16559a]/20",
+                                match.team1.length > 15 ? "text-[64px]" : "text-[80px]"
                             )}>
                                 {match.team1}
                             </span>
@@ -205,8 +206,9 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({
                     <div className="flex justify-between items-center">
                         <div className="flex flex-col gap-1">
                             <span className={clsx(
-                                "font-display font-black uppercase text-[80px] tracking-tighter leading-[0.85] max-w-[550px]",
-                                isWin2 ? "text-[#16559a]" : "text-[#16559a]/20"
+                                "font-display font-black uppercase tracking-tighter leading-[0.85] max-w-[550px]",
+                                isWin2 ? "text-[#16559a]" : "text-[#16559a]/20",
+                                match.team2.length > 15 ? "text-[64px]" : "text-[80px]"
                             )}>
                                 {match.team2}
                             </span>
