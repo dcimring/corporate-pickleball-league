@@ -118,7 +118,7 @@ export const ShareableLeaderboard: React.FC<ShareableLeaderboardProps> = ({
                         </p>
                     </div>
 
-                    <div className="bg-[#ffc72c] text-[#16559a] px-6 py-2 font-display font-black uppercase tracking-widest text-2xl mt-8 inline-block">
+                    <div className="bg-[#ffc72c] text-[#16559a] px-10 py-4 font-display font-black uppercase tracking-[0.15em] text-4xl mt-12 inline-block">
                         {division}
                     </div>
                 </div>
@@ -170,7 +170,7 @@ const LeaderboardRow: React.FC<{ entry: LeaderboardEntry, index: number, isPost:
     return (
         <div className={clsx(
             "flex items-center relative transition-colors",
-            isPost ? "h-[46px] px-4 border-b border-[#16559a]/5 last:border-b-0" : "h-[90px] px-6",
+            isPost ? "h-[46px] px-4 border-b border-[#16559a]/5 last:border-b-0" : "min-h-[110px] py-3 px-6",
             index % 2 === 0 ? "bg-[#ffffff]" : "bg-[#f2f4f6]"
         )}>
             {/* Rank */}
@@ -185,10 +185,10 @@ const LeaderboardRow: React.FC<{ entry: LeaderboardEntry, index: number, isPost:
             </div>
 
             {/* Team Name */}
-            <div className="flex-1 pl-4 pr-2">
+            <div className="flex-1 pl-4 pr-2 flex flex-col justify-center">
                 <span className={clsx(
-                    "font-display font-black uppercase text-[#16559a] tracking-tight leading-none block truncate",
-                    isPost ? "text-lg" : "text-4xl"
+                    "font-display font-black uppercase text-[#16559a] tracking-tight block",
+                    isPost ? "text-lg truncate leading-tight" : (entry.team.length > 20 ? "text-[32px] leading-[0.85]" : "text-4xl leading-[0.85]")
                 )}>
                     {entry.team}
                 </span>
