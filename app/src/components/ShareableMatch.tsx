@@ -82,9 +82,9 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({
 
                 {/* Main Duel Stage - REFACTORED WITH CARD BG */}
                 <div className="flex-1 flex flex-col justify-center relative mt-24">
-                    <div className="w-full bg-white/80 backdrop-blur-md p-10 shadow-2xl border border-white/50 flex items-center justify-between">
+                    <div className="w-full bg-white/80 backdrop-blur-md py-10 px-14 shadow-2xl border border-white/50 flex items-center justify-between">
                         {/* Team 1 Duel Block */}
-                        <div className="flex flex-col items-start gap-4 relative z-10 w-[380px] flex-shrink-0">
+                        <div className="flex flex-col items-start gap-4 relative z-10 w-[360px] flex-shrink-0">
                             {isWin1 && !isTie && (
                                 <div className="px-6 py-2 bg-[#ffc72c] text-[#16559a] shadow-lg transform -rotate-1 mb-2">
                                     <div className="flex items-center gap-2">
@@ -94,8 +94,9 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({
                                 </div>
                             )}
                             <h2 className={clsx(
-                                "font-display font-black uppercase text-6xl tracking-tighter leading-[0.85] break-words w-full",
-                                isWin1 ? "text-[#16559a]" : "text-[#16559a]/20"
+                                "font-display font-black uppercase tracking-tighter leading-[0.85] break-words w-full",
+                                isWin1 ? "text-[#16559a]" : "text-[#16559a]/20",
+                                match.team1.length > 15 ? "text-5xl" : "text-6xl"
                             )}>
                                 {match.team1}
                             </h2>
@@ -108,18 +109,18 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({
                         </div>
 
                         {/* Central Scores */}
-                        <div className="flex items-center justify-center relative z-10 mx-4">
+                        <div className="flex items-center justify-center relative z-10 mx-2">
                             <span className={clsx(
-                                "font-stat font-black text-[180px] leading-none tracking-tighter drop-shadow-xl",
+                                "font-stat font-black text-[160px] leading-none tracking-tighter drop-shadow-xl",
                                 isWin1 ? "text-[#16559a]" : "text-[#16559a]/10"
                             )}>
                                 {match.team1Wins}
                             </span>
-                            <div className="flex flex-col gap-3 mx-6 opacity-20">
+                            <div className="flex flex-col gap-3 mx-4 opacity-20">
                                  {[...Array(3)].map((_, i) => <div key={i} className="w-2 h-2 rounded-full bg-[#16559a]" />)}
                             </div>
                             <span className={clsx(
-                                "font-stat font-black text-[180px] leading-none tracking-tighter drop-shadow-xl",
+                                "font-stat font-black text-[160px] leading-none tracking-tighter drop-shadow-xl",
                                 isWin2 ? "text-[#16559a]" : "text-[#16559a]/10"
                             )}>
                                 {match.team2Wins}
@@ -127,7 +128,7 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({
                         </div>
 
                         {/* Team 2 Duel Block */}
-                        <div className="flex flex-col items-end gap-4 relative z-10 w-[380px] text-right flex-shrink-0">
+                        <div className="flex flex-col items-end gap-4 relative z-10 w-[360px] text-right flex-shrink-0">
                             {isWin2 && !isTie && (
                                 <div className="px-6 py-2 bg-[#ffc72c] text-[#16559a] shadow-lg transform rotate-1 mb-2">
                                     <div className="flex items-center gap-2">
@@ -137,8 +138,9 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({
                                 </div>
                             )}
                             <h2 className={clsx(
-                                "font-display font-black uppercase text-6xl tracking-tighter leading-[0.85] break-words w-full",
-                                isWin2 ? "text-[#16559a]" : "text-[#16559a]/20"
+                                "font-display font-black uppercase tracking-tighter leading-[0.85] break-words w-full",
+                                isWin2 ? "text-[#16559a]" : "text-[#16559a]/20",
+                                match.team2.length > 15 ? "text-5xl" : "text-6xl"
                             )}>
                                 {match.team2}
                             </h2>
