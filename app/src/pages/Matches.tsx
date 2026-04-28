@@ -18,11 +18,10 @@ export const Matches: React.FC = () => {
     if (loading || !data.matches) return '';
     const divisions = Object.keys(data.matches);
     const paramDiv = searchParams.get('division');
-    
     if (paramDiv && divisions.includes(paramDiv)) return paramDiv;
     
-    // Default to Division A or first available
-    return divisions.includes('Division A') ? 'Division A' : divisions[0] || '';
+    // Default to Cayman Premier League or first available
+    return divisions.includes('Cayman Premier League') ? 'Cayman Premier League' : divisions[0] || '';
   }, [loading, data.matches, searchParams]);
 
   // Global Sharing State

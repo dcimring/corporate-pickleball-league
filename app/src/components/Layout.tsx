@@ -21,7 +21,9 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     if (loading || divisions.length === 0) return '';
     const paramDiv = searchParams.get('division');
     if (paramDiv && divisions.includes(paramDiv)) return paramDiv;
-    return divisions.includes('Division A') ? 'Division A' : divisions[0] || '';
+    
+    // Default to Cayman Premier League or first available
+    return divisions.includes('Cayman Premier League') ? 'Cayman Premier League' : divisions[0] || '';
   }, [loading, divisions, searchParams]);
 
   const handleDivisionChange = (div: string) => {
