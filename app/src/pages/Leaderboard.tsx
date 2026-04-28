@@ -123,8 +123,8 @@ export const Leaderboard: React.FC = () => {
                     targetRef={storyShareRef} 
                     portalTarget={toastPortalRef}
                     buttonLabel="STORY FORMAT"
-                    fileName={`LRP-Pickleball-Leaderboard-Story-${activeDivision}.jpg`}
-                    shareText={`Check out the latest standings for ${activeDivision} in the La Roche Posay Corporate Pickleball League! 🥒🏆`}
+                    fileName={`Pickleball-Leaderboard-Story-${activeDivision}.jpg`}
+                    shareText={`Check out the latest standings for ${activeDivision} in the Corporate Pickleball League! 🥒🏆`}
                     className="!w-full md:!w-64 !btn-primary"
                   />
                   <p className="label-sm opacity-40">PORTRAIT 9:16</p>
@@ -135,8 +135,8 @@ export const Leaderboard: React.FC = () => {
                     targetRef={postShareRef} 
                     portalTarget={toastPortalRef}
                     buttonLabel="POST FORMAT"
-                    fileName={`LRP-Pickleball-Leaderboard-Post-${activeDivision}.jpg`}
-                    shareText={`We're climbing the leaderboard in the La Roche Posay Corporate Pickleball League! 🔥`}
+                    fileName={`Pickleball-Leaderboard-Post-${activeDivision}.jpg`}
+                    shareText={`We're climbing the leaderboard in the Corporate Pickleball League! 🔥`}
                     className="!w-full md:!w-64 !btn-secondary"
                   />
                   <p className="label-sm opacity-40">LANDSCAPE 1.91:1</p>
@@ -147,7 +147,7 @@ export const Leaderboard: React.FC = () => {
                     targetRef={storyShareRef} 
                     portalTarget={toastPortalRef}
                     buttonLabel="WHATSAPP"
-                    fileName={`LRP-Pickleball-Leaderboard-WA-${activeDivision}.jpg`}
+                    fileName={`Pickleball-Leaderboard-WA-${activeDivision}.jpg`}
                     shareText={`Check out the ${activeDivision} standings! 🥒🏆\n\nSee more at: pickleball.ky`}
                     className="!w-full md:!w-64 !inline-flex !items-center !justify-center !px-6 !py-3 !bg-[#25D366] !text-white !font-heading !font-bold !rounded-[4px] !hover:opacity-90 !transition-all !shadow-ambient"
                   />
