@@ -183,7 +183,7 @@ export const Matches: React.FC = () => {
                 hidden
                 toastPosition="fixed"
                 onShareEnd={handleShareEnd}
-                fileName={`LRP-Match-${sharingMatch.team1}-vs-${sharingMatch.team2}-story.jpg`}
+                fileName={`Match-${sharingMatch.team1}-vs-${sharingMatch.team2}-story.jpg`}
               />
               <ShareButton
                 ref={desktopStoryBtnRef}
@@ -193,7 +193,7 @@ export const Matches: React.FC = () => {
                 preferDownload
                 toastPosition="fixed"
                 onShareEnd={handleShareEnd}
-                fileName={`LRP-Match-${sharingMatch.team1}-vs-${sharingMatch.team2}-story.jpg`}
+                fileName={`Match-${sharingMatch.team1}-vs-${sharingMatch.team2}-story.jpg`}
               />
               <ShareButton
                 ref={mobilePostBtnRef}
@@ -202,7 +202,7 @@ export const Matches: React.FC = () => {
                 hidden
                 toastPosition="fixed"
                 onShareEnd={handleShareEnd}
-                fileName={`LRP-Match-${sharingMatch.team1}-vs-${sharingMatch.team2}-post.jpg`}
+                fileName={`Match-${sharingMatch.team1}-vs-${sharingMatch.team2}-post.jpg`}
               />
               <ShareButton
                 ref={desktopPostBtnRef}
@@ -212,7 +212,7 @@ export const Matches: React.FC = () => {
                 preferDownload
                 toastPosition="fixed"
                 onShareEnd={handleShareEnd}
-                fileName={`LRP-Match-${sharingMatch.team1}-vs-${sharingMatch.team2}-post.jpg`}
+                fileName={`Match-${sharingMatch.team1}-vs-${sharingMatch.team2}-post.jpg`}
               />
               <ShareButton
                 ref={mobileWABtnRef}
@@ -221,7 +221,7 @@ export const Matches: React.FC = () => {
                 hidden
                 toastPosition="fixed"
                 onShareEnd={handleShareEnd}
-                fileName={`LRP-Match-WA-${sharingMatch.team1}-vs-${sharingMatch.team2}.jpg`}
+                fileName={`Match-WA-${sharingMatch.team1}-vs-${sharingMatch.team2}.jpg`}
               />
               <ShareButton
                 ref={desktopWABtnRef}
@@ -231,7 +231,7 @@ export const Matches: React.FC = () => {
                 preferDownload
                 toastPosition="fixed"
                 onShareEnd={handleShareEnd}
-                fileName={`LRP-Match-WA-${sharingMatch.team1}-vs-${sharingMatch.team2}.jpg`}
+                fileName={`Match-WA-${sharingMatch.team1}-vs-${sharingMatch.team2}.jpg`}
               />
             </>
           )}
