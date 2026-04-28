@@ -78,11 +78,14 @@ export const Matches: React.FC = () => {
   }, [sharingMatch, sharingType]);
 
   const handleShareEnd = () => {
+    // Immediately stop the spin animation in the card by clearing the type
+    setSharingType(null);
+    
+    // Keep the sharing match (and thus the portal/toast) active for 6 seconds
     setTimeout(() => {
         setSharingMatch(null);
-        setSharingType(null);
         setActiveToastTarget(null);
-    }, 5000);
+    }, 6000);
   };
 
   if (loading || !activeDivision) {
@@ -141,7 +144,7 @@ export const Matches: React.FC = () => {
                 match={match} 
                 onTeamClick={handleTeamClick} 
                 onShare={handleShare}
-                isSharing={sharingMatch?.id === match.id}
+                isSharing={sharingMatch?.id === match.id && sharingType !== null}
               />
             ))
           ) : (
