@@ -4,6 +4,7 @@
 // SUPABASE_SERVICE_ROLE_KEY: Your Supabase Service Role Key (preferred) or Anon Key
 // TARGET_SENDER: Email address to accept results from (e.g. sender@example.com)
 // TARGET_SUBJECT: Subject line to match (e.g. Corporate League Results)
+// NOTIFICATION_RECIPIENT: Specific email address to send updates to (optional)
 // DISCORD_WEBHOOK_URL: Webhook URL for status notifications
 
 const CONFIG = {
@@ -146,7 +147,7 @@ function processMatchResults() {
       divisionNameById[division.id] = division.name;
     }
     const { newMatches, modifiedMatches } = diffMatches(matchesToInsert, existingMatches, teamNameById, divisionNameById);
-    const recipient = extractEmailAddress(newest.from);
+    const recipient = props.getProperty('NOTIFICATION_RECIPIENT') || extractEmailAddress(newest.from);
     sendUpdateEmail(recipient, newest, newMatches, modifiedMatches);
     sendDiscordNotification(true, "Ingestion Successful", "Match data has been updated.", stats);
   } else {
