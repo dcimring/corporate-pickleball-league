@@ -711,11 +711,27 @@ function sendDiscordNotification(success, title, description, details) {
   };
 
   try {
-    UrlFetchApp.fetch(webhookUrl, {
+    const response = UrlFetchApp.fetch(webhookUrl, {
       method: 'post',
       contentType: 'application/json',
-      payload: JSON.stringify(payload)
+      payload: JSON.stringify(payload),
+      muteHttpExceptions: true
     });
+
+    const statusCode = response.getResponseCode();
+    if (statusCode >= 400) {
+      const errorBody = response.getContentText();
+      log(`Discord Error (${statusCode}): ${errorBody}`);
+      
+      if (statusCode === 429) {
+        try {
+          const data = JSON.parse(errorBody);
+          log(`Wait ${data.retry_after}ms before trying again.`);
+        } catch (e) {
+          log("Could not parse Discord rate limit response.");
+        }
+      }
+    }
   } catch (e) {
     log("Failed to send Discord notification: " + e);
   }
