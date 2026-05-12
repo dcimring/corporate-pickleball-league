@@ -87,7 +87,8 @@ function processMatchResults() {
   const newest = emailsToProcess[0];
   log(`Processing newest email: "${newest.subject}" from ${formatDate(newest.date)}`);
 
-  const csvData = newest.attachment.getDataAsString();
+  const csvDataRaw = newest.attachment.getDataAsString();
+  const csvData = sanitizeCsvData(csvDataRaw);
   const { matches: matchesToInsert, errors, createdTeams } = parseCSVAndMap(csvData, lookups);
   const newCount = matchesToInsert.length;
   const existingMatches = fetchExistingMatches();
@@ -209,11 +210,16 @@ function updateDatabase(matches) {
     const insertOptions = {
       method: 'post',
       headers: { ...headers, 'Prefer': 'return=minimal' },
-      payload: JSON.stringify(matches)
+      payload: JSON.stringify(matches),
+      muteHttpExceptions: true
     };
     const response = UrlFetchApp.fetch(`${url}/rest/v1/matches`, insertOptions);
     
-    return response.getResponseCode() === 201;
+    if (response.getResponseCode() !== 201) {
+      log(`Database Insert Error (${response.getResponseCode()}): ${response.getContentText()}`);
+      return false;
+    }
+    return true;
   } catch (e) {
     log("Database Update Error: " + e);
     return false;
@@ -332,6 +338,14 @@ function parseCSVAndMap(csvText, { divisions, teams }) {
     const t1Points = parseInt(cols[7]);
     const t2Points = parseInt(cols[8]);
 
+    // Validation: Ensure all numeric fields are valid
+    if (isNaN(t1Wins) || isNaN(t2Wins) || isNaN(t1Points) || isNaN(t2Points)) {
+      const msg = `Row ${i+1}: Invalid numeric data (Wins: ${cols[5]}/${cols[6]}, Points: ${cols[7]}/${cols[8]}).`;
+      log(msg);
+      errors.push(msg);
+      continue;
+    }
+
     // Validate Total Games (CPL uses 8 or 9, others use 6)
     const totalGames = t1Wins + t2Wins;
     const isCpl = divNameRaw.trim().toLowerCase() === 'cpl';
@@ -342,6 +356,7 @@ function parseCSVAndMap(csvText, { divisions, teams }) {
       const msg = `Row ${i+1}: Total games (${totalGames}) does not equal ${expectedStr} (${team1Name} vs ${team2Name}).`;
       log(msg);
       errors.push(msg);
+      // We still process this match as it's a valid data point, just a warning
     }
 
     // Lookup IDs (Case Insensitive)
@@ -357,7 +372,7 @@ function parseCSVAndMap(csvText, { divisions, teams }) {
     if (!t1Id) {
       // Auto-create Team 1
       const newTeam = createTeam(team1Name, divId);
-      if (newTeam) {
+      if (newTeam && newTeam.id) {
         t1Id = newTeam.id;
         teams.push(newTeam); // Update cache
         createdTeams.push(`${team1Name} (${divNameRaw})`);
@@ -373,7 +388,7 @@ function parseCSVAndMap(csvText, { divisions, teams }) {
     if (!t2Id) {
       // Auto-create Team 2
       const newTeam = createTeam(team2Name, divId);
-      if (newTeam) {
+      if (newTeam && newTeam.id) {
         t2Id = newTeam.id;
         teams.push(newTeam); // Update cache
         createdTeams.push(`${team2Name} (${divNameRaw})`);
@@ -383,6 +398,13 @@ function parseCSVAndMap(csvText, { divisions, teams }) {
         errors.push(msg);
         continue;
       }
+    }
+
+    if (!divId || !t1Id || !t2Id) {
+      const msg = `Row ${i+1}: Missing required IDs (Div: ${divId}, T1: ${t1Id}, T2: ${t2Id}).`;
+      log(msg);
+      errors.push(msg);
+      continue;
     }
 
     mappedMatches.push({
@@ -735,4 +757,10 @@ function sendDiscordNotification(success, title, description, details) {
   } catch (e) {
     log("Failed to send Discord notification: " + e);
   }
+}
+
+function sanitizeCsvData(text) {
+  if (!text) return "";
+  log("Sanitizing CSV: Removing non-standard ASCII characters.");
+  return text.replace(/[^\x00-\x7F]/g, "");
 }
