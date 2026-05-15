@@ -11,6 +11,18 @@ interface MatchCardProps {
   isSharing?: boolean;
 }
 
+const MarginBar: React.FC<{ wins1: number; wins2: number; isWin1: boolean }> = ({ wins1, wins2, isWin1 }) => {
+  const total = wins1 + wins2 || 1;
+  const p1 = (wins1 / total) * 100;
+  const p2 = (wins2 / total) * 100;
+  return (
+    <div className="margin-bar h-[5px] bg-rule rounded-sm overflow-hidden flex gap-[2px]">
+      <div className={`margin-a h-full ${isWin1 ? 'bg-yellow' : 'bg-rule-2'}`} style={{ width: `${p1}%` }} />
+      <div className={`margin-b h-full ${!isWin1 ? 'bg-yellow' : 'bg-rule-2'}`} style={{ width: `${p2}%` }} />
+    </div>
+  );
+};
+
 export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick, onShare, isSharing }) => {
   const menuRef = useRef<HTMLDivElement>(null);
   const toastContainerRef = useRef<HTMLDivElement>(null);
@@ -24,7 +36,6 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick, onShar
     return new Intl.DateTimeFormat('en-GB', {
       day: '2-digit',
       month: 'short',
-      year: '2-digit',
       timeZone: 'UTC'
     }).format(date).toUpperCase();
   };
@@ -35,19 +46,10 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick, onShar
         setIsMenuOpen(false);
       }
     };
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        setIsMenuOpen(false);
-      }
-    };
     if (isMenuOpen) {
       document.addEventListener('mousedown', handleClickOutside);
-      document.addEventListener('keydown', handleKeyDown);
     }
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-      document.removeEventListener('keydown', handleKeyDown);
-    };
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isMenuOpen]);
 
   const handleShareClick = (type: 'story' | 'post' | 'wa') => (e: React.MouseEvent) => {
@@ -57,126 +59,99 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick, onShar
   };
 
   return (
-    <div className="w-full h-full relative group z-10">
+    <div className="match-card bg-card border border-rule rounded-lg p-5.5 md:p-6 flex flex-col gap-4.5 shadow-[0_18px_40px_-32px_rgba(20,58,120,0.30)] transition-all duration-160 hover:-translate-y-0.5 hover:shadow-[0_24px_50px_-28px_rgba(20,58,120,0.35)] relative group overflow-hidden">
       <div ref={toastContainerRef} className="absolute inset-0 z-[100] pointer-events-none flex items-center justify-center p-2" />
+      
+      {/* Match Header */}
+      <div className="match-head flex items-center justify-between gap-3 flex-shrink-0">
+        <span className="match-date text-navy-faint mono text-[11px]">{formatDate(match.date)}</span>
+        <div className="match-head-right flex items-center gap-3">
+          <div className="match-pts text-navy-faint text-[12px] mono">
+            <strong className={clsx("transition-colors", isWin1 ? "text-navy font-bold" : "text-navy-faint font-semibold")}>{match.team1Points}</strong>
+            <span className="mx-1 text-rule-3">/</span>
+            <strong className={clsx("transition-colors", isWin2 ? "text-navy font-bold" : "text-navy-faint font-semibold")}>{match.team2Points}</strong>
+            <span className="ml-1 text-[10px] opacity-40">PTS</span>
+          </div>
 
-      <div className="editorial-card h-full relative overflow-hidden flex flex-col">
-        {/* Subtle tonal layering background shift on hover */}
-        <div className="absolute inset-0 bg-surface-container-low opacity-0 group-hover:opacity-100" />
-        
-        <div className="relative p-5 md:p-6 flex flex-col gap-1.5 md:gap-6 z-10 h-full">
-            {/* Top Metadata Bar */}
-            <div className="flex justify-between items-center border-b border-outline-variant/10 pb-3 flex-shrink-0">
-                <div className="font-stat font-bold text-primary text-[10px] md:text-xs tracking-widest opacity-60">
-                    {formatDate(match.date)}
-                </div>
-                <div className="flex items-center gap-3">
-                    <div className="font-stat font-bold text-primary text-[10px] md:text-xs tracking-widest opacity-60 flex items-center gap-2">
-                        <span className={clsx(isWin1 ? "font-black opacity-100" : "opacity-40")}>{match.team1Points}</span>
-                        <span className="opacity-20">/</span>
-                        <span className={clsx(isWin2 ? "font-black opacity-100" : "opacity-40")}>{match.team2Points}</span>
-                        <span className="ml-1">PTS</span>
-                    </div>
-                    
-                    {/* Share Action Trigger */}
-                    <div className="relative" ref={menuRef}>
-                        <button 
-                          onClick={() => setIsMenuOpen(!isMenuOpen)}
-                          disabled={isSharing}
-                          className={clsx(
-                              "flex items-center justify-center p-1.5 rounded-none",
-                              isMenuOpen ? "text-secondary" : "text-primary opacity-30 hover:opacity-100"
-                          )}
-                        >
-                            {isSharing ? (
-                                <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                            ) : (
-                                <Share2 className="w-3.5 h-3.5" />
-                            )}
-                        </button>
+          <div className="relative" ref={menuRef}>
+            <button 
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              disabled={isSharing}
+              className="match-share w-6.5 h-6.5 flex items-center justify-center rounded-md hover:bg-rule transition-colors text-navy-faint hover:text-navy"
+            >
+              {isSharing ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Share2 className="w-3.5 h-3.5" />}
+            </button>
+            <AnimatePresence>
+              {isMenuOpen && (
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.95, y: -5 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95, y: -5 }}
+                  className="absolute top-full right-0 mt-2 w-40 bg-card border border-rule rounded-md shadow-[0_12px_32px_rgba(0,0,0,0.12)] overflow-hidden z-[200]"
+                >
+                  <div className="p-1 flex flex-col">
+                    <button onClick={handleShareClick('story')} className="flex items-center gap-3 w-full px-3 py-2 hover:bg-card-tint text-navy transition-colors">
+                      <Instagram size={14} className="text-navy-soft" />
+                      <span className="mono text-[11px] text-left">Story</span>
+                    </button>
+                    <button onClick={handleShareClick('post')} className="flex items-center gap-3 w-full px-3 py-2 hover:bg-card-tint text-navy transition-colors">
+                      <ImageIcon size={14} className="text-navy-soft" />
+                      <span className="mono text-[11px] text-left">Post</span>
+                    </button>
+                    <button onClick={handleShareClick('wa')} className="flex items-center gap-3 w-full px-3 py-2 hover:bg-card-tint text-navy transition-colors">
+                      <MessageCircle size={14} className="text-success fill-success/10" />
+                      <span className="mono text-[11px] text-left">WhatsApp</span>
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      </div>
 
-                        <AnimatePresence>
-                            {isMenuOpen && (
-                                <motion.div 
-                                    initial={{ opacity: 0, scale: 0.95, y: -5 }}
-                                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                                    exit={{ opacity: 0, scale: 0.95, y: -5 }}
-                                    className="absolute top-full right-0 mt-2 w-40 glass-nav rounded-none shadow-ambient overflow-hidden z-[200]"
-                                >
-                                    <div className="p-1 flex flex-col">
-                                        <button 
-                                            onClick={handleShareClick('story')}
-                                            className="flex items-center gap-3 w-full px-3 py-2 hover:bg-surface-container-low text-primary transition-colors group"
-                                        >
-                                            <Instagram className="w-4 h-4 group-hover:scale-110 transition-transform" />
-                                            <span className="label-sm text-left">Story</span>
-                                        </button>
-                                        <button 
-                                            onClick={handleShareClick('post')}
-                                            className="flex items-center gap-3 w-full px-3 py-2 hover:bg-surface-container-low text-primary transition-colors group"
-                                        >
-                                            <ImageIcon className="w-4 h-4 group-hover:scale-110 transition-transform" />
-                                            <span className="label-sm text-left">Post</span>
-                                        </button>
-                                        <button 
-                                            onClick={handleShareClick('wa')}
-                                            className="flex items-center gap-3 w-full px-3 py-2 hover:bg-surface-container-low text-[#25D366] transition-colors group"
-                                        >
-                                            <MessageCircle className="w-4 h-4 fill-[#25D366] group-hover:scale-110 transition-transform" />
-                                            <span className="label-sm text-left">WhatsApp</span>
-                                        </button>
-                                    </div>
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
-                    </div>
-                </div>
-            </div>
+      {/* Match Body */}
+      <div className="match-body flex flex-col gap-0.5 -mx-1 flex-1 justify-center">
+        {/* Team 1 Row */}
+        <div className={clsx("mt-row grid grid-cols-[1fr_auto] items-center gap-4 px-1 py-1.5 rounded-md transition-colors", isWin1 ? "mt-row-win" : "mt-row-lose")}>
+          <div className="mt-name-wrap flex items-center gap-3 min-w-0">
+            <span className={clsx("mt-dot w-2 h-2 rounded-full border-[1.5px] flex-shrink-0 transition-all", isWin1 ? "on bg-yellow border-yellow shadow-[0_0_0_4px_var(--yellow-glow)]" : "border-rule-2")} />
+            <span 
+              onClick={() => onTeamClick?.(match.team1)}
+              className={clsx("mt-name font-display font-extrabold uppercase tracking-wide text-[clamp(18px,1.7vw,22px)] leading-[1.05] truncate cursor-pointer hover:underline decoration-yellow decoration-2 underline-offset-2", isWin1 ? "text-navy" : "text-navy-faint-2")}
+            >
+              {match.team1}
+            </span>
+          </div>
+          <span className={clsx("mt-games font-display font-black text-[clamp(38px,4.2vw,56px)] leading-[0.9] tracking-tighter", isWin1 ? "text-navy" : "text-navy-faint-2")}>
+            {match.team1Wins}
+          </span>
+        </div>
 
-            {/* Teams and Scores - Flex Grow to push cards to same height */}
-            <div className="flex-1 flex flex-col justify-center space-y-1.5 md:space-y-6">
-                {/* Team 1 */}
-                <div className="flex justify-between items-center group/team relative">
-                    <div 
-                      onClick={() => onTeamClick?.(match.team1)}
-                      className={clsx(
-                      "font-heading font-black uppercase text-2xl md:text-3xl lg:text-4xl tracking-tighter leading-[0.9] cursor-pointer transition-colors relative flex-1 pr-4",
-                      isWin1 ? "text-primary" : "text-on-surface-variant opacity-30"
-                    )}>
-                      {match.team1}
-                      {isWin1 && (
-                        <div className="absolute -left-3 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-secondary shadow-[0_0_8px_rgba(255,199,44,0.8)]" />
-                      )}
-                    </div>
-                    <div className={clsx(
-                      "font-stat font-black text-5xl md:text-5xl lg:text-6xl tracking-tighter flex-shrink-0",
-                      isWin1 ? "text-primary" : "text-on-surface-variant opacity-10"
-                    )}>
-                      {match.team1Wins}
-                    </div>
-                </div>
+        {/* Team 2 Row */}
+        <div className={clsx("mt-row grid grid-cols-[1fr_auto] items-center gap-4 px-1 py-1.5 rounded-md transition-colors", isWin2 ? "mt-row-win" : "mt-row-lose")}>
+          <div className="mt-name-wrap flex items-center gap-3 min-w-0">
+            <span className={clsx("mt-dot w-2 h-2 rounded-full border-[1.5px] flex-shrink-0 transition-all", isWin2 ? "on bg-yellow border-yellow shadow-[0_0_0_4px_var(--yellow-glow)]" : "border-rule-2")} />
+            <span 
+              onClick={() => onTeamClick?.(match.team2)}
+              className={clsx("mt-name font-display font-extrabold uppercase tracking-wide text-[clamp(18px,1.7vw,22px)] leading-[1.05] truncate cursor-pointer hover:underline decoration-yellow decoration-2 underline-offset-2", isWin2 ? "text-navy" : "text-navy-faint-2")}
+            >
+              {match.team2}
+            </span>
+          </div>
+          <span className={clsx("mt-games font-display font-black text-[clamp(38px,4.2vw,56px)] leading-[0.9] tracking-tighter", isWin2 ? "text-navy" : "text-navy-faint-2")}>
+            {match.team2Wins}
+          </span>
+        </div>
+      </div>
 
-                {/* Team 2 */}
-                <div className="flex justify-between items-center group/team relative">
-                    <div 
-                      onClick={() => onTeamClick?.(match.team2)}
-                      className={clsx(
-                      "font-heading font-black uppercase text-2xl md:text-3xl lg:text-4xl tracking-tighter leading-[0.9] cursor-pointer transition-colors relative flex-1 pr-4",
-                      isWin2 ? "text-primary" : "text-on-surface-variant opacity-30"
-                    )}>
-                      {match.team2}
-                      {isWin2 && (
-                        <div className="absolute -left-3 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-secondary shadow-[0_0_8px_rgba(255,199,44,0.8)]" />
-                      )}
-                    </div>
-                    <div className={clsx(
-                      "font-stat font-black text-5xl md:text-5xl lg:text-6xl tracking-tighter flex-shrink-0",
-                      isWin2 ? "text-primary" : "text-on-surface-variant opacity-10"
-                    )}>
-                      {match.team2Wins}
-                    </div>
-                </div>
-            </div>
+      {/* Match Footer */}
+      <div className="match-foot flex flex-col gap-2.5 flex-shrink-0">
+        <MarginBar wins1={match.team1Wins} wins2={match.team2Wins} isWin1={isWin1} />
+        <div className="match-foot-meta flex items-center gap-2.5 text-navy-faint text-[11px] mono">
+          <span>Winner: <strong className="font-bold text-navy uppercase">{isWin1 ? match.team1 : match.team2}</strong></span>
+          <span className="match-foot-sep text-rule-3 opacity-50">|</span>
+          <span>{match.team1Wins + match.team2Wins} Games Played</span>
         </div>
       </div>
     </div>

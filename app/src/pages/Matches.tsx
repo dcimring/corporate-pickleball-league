@@ -101,30 +101,30 @@ export const Matches: React.FC = () => {
   }
 
   return (
-    <div className="space-y-0 relative overflow-hidden">
+    <div className="space-y-0 relative">
       {/* Page-Specific Content below Layout Header */}
-      <div className="pt-0 pb-4 px-6 md:px-12">
+      <div className="pt-0 pb-6 px-0">
         <div className="space-y-2">
-          {/* Active Filter Ribbon - Editorial Style */}
+          {/* Active Filter Ribbon - New Design Style */}
           <AnimatePresence mode="wait">
             {selectedTeam && (
               <motion.div 
-                initial={{ opacity: 0, scale: 0.98 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.98 }}
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
                 className="overflow-hidden"
               >
                 <div 
-                  className="w-full py-2 bg-primary text-on-primary flex items-center justify-center gap-6 relative"
+                  className="w-full py-3 bg-navy text-white flex items-center justify-center gap-6 relative shadow-lg"
                 >
-                  <div className="absolute left-0 top-0 bottom-0 w-2 bg-secondary" />
-                  <span className="label-sm font-black tracking-[0.3em] flex items-center gap-4">
-                    <span className="opacity-40 font-stat">FILTERED BY</span>
-                    <span className="text-secondary">{selectedTeam}</span>
+                  <div className="absolute left-0 top-0 bottom-0 w-2 bg-yellow" />
+                  <span className="mono text-[11px] font-black tracking-[0.3em] flex items-center gap-4">
+                    <span className="opacity-40">FILTERED BY</span>
+                    <span className="text-yellow">{selectedTeam}</span>
                   </span>
                   <button 
                     onClick={handleClearFilter}
-                    className="p-1 hover:bg-secondary hover:text-primary transition-all rounded-none"
+                    className="p-1.5 hover:bg-yellow hover:text-navy transition-all rounded-full"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -135,36 +135,48 @@ export const Matches: React.FC = () => {
         </div>
       </div>
 
-      <div className="px-6 md:px-12 pt-6 pb-12 space-y-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
-          {matches.length > 0 ? (
-            matches.map((match) => (
-              <MatchCard 
-                key={match.id} 
-                match={match} 
-                onTeamClick={handleTeamClick} 
-                onShare={handleShare}
-                isSharing={sharingMatch?.id === match.id && sharingType !== null}
-              />
-            ))
-          ) : (
-            <div className="col-span-full py-32 text-center flex flex-col items-center justify-center gap-8 bg-surface-container-low">
-              <div className="bg-primary/5 p-8 rounded-none">
-                <Info className="w-12 h-12 text-primary opacity-20" />
+      <div className="pb-12 space-y-12">
+        {/* Match Group Header Style */}
+        <div className="match-group">
+           <div className="match-group-head flex items-center gap-4 pb-4">
+              <div className="match-group-mark w-2 h-[22px] bg-yellow rounded-sm" />
+              <h3 className="match-group-title m-0 font-display text-[14px] font-bold text-navy tracking-[0.1em] uppercase">
+                {selectedTeam ? `Matches for ${selectedTeam}` : 'All Match Results'}
+              </h3>
+              <span className="match-group-count mono text-navy-faint text-[12px]">{matches.length}</span>
+              <div className="match-group-rule flex-1 h-px bg-rule" />
+           </div>
+
+           <div className="match-grid grid grid-cols-[repeat(auto-fill,minmax(360px,1fr))] gap-[var(--grid-gap)] mt-4">
+            {matches.length > 0 ? (
+              matches.map((match) => (
+                <MatchCard 
+                  key={match.id} 
+                  match={match} 
+                  onTeamClick={handleTeamClick} 
+                  onShare={handleShare}
+                  isSharing={sharingMatch?.id === match.id && sharingType !== null}
+                />
+              ))
+            ) : (
+              <div className="col-span-full py-32 text-center flex flex-col items-center justify-center gap-8 bg-card border border-dashed border-rule-2 rounded-lg">
+                <div className="bg-navy/5 p-8 rounded-full">
+                  <Info className="w-12 h-12 text-navy opacity-20" />
+                </div>
+                <div className="space-y-4">
+                  <h3 className="font-display font-black text-navy uppercase text-2xl">No matches found</h3>
+                  <p className="font-display font-medium text-navy-faint opacity-60 max-w-md mx-auto">
+                      {selectedTeam ? `We couldn't find any match records for ${selectedTeam} in this division.` : 'The schedule is being finalized. Check back soon for upcoming fixtures.'}
+                  </p>
+                </div>
+                {selectedTeam && (
+                   <button onClick={handleClearFilter} className="btn-secondary px-8 py-3 bg-yellow text-navy font-display font-extrabold rounded-full shadow-md hover:shadow-lg transition-all">
+                     RESET ALL FILTERS
+                   </button>
+                )}
               </div>
-              <div className="space-y-4">
-                <h3 className="display-sm text-primary uppercase">No matches found</h3>
-                <p className="body-lg text-on-surface-variant opacity-60 max-w-md mx-auto">
-                    {selectedTeam ? `We couldn't find any match records for ${selectedTeam} in this division.` : 'The schedule is being finalized. Check back soon for upcoming fixtures.'}
-                </p>
-              </div>
-              {selectedTeam && (
-                 <button onClick={handleClearFilter} className="btn-secondary">
-                   RESET ALL FILTERS
-                 </button>
-              )}
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
 
