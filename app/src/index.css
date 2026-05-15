@@ -223,10 +223,10 @@
   }
   @media (max-width: 640px) {
     .lb-row { 
-      grid-template-columns: 38px 58px 50px 42px 1fr;
+      grid-template-columns: 38px 58px 50px 42px 72px 1fr;
       grid-template-areas: 
-        "rank team team team team"
-        "rank wl pct pts diff";
+        "rank team team team team ."
+        "rank wl pct pts diff .";
       gap: 4px 8px;
       padding: 16px 5px;
       align-items: center;
@@ -263,7 +263,7 @@
     }
     .col-diff { 
       grid-area: diff; 
-      justify-content: flex-end !important;
+      justify-content: flex-start !important;
       white-space: nowrap;
     }
     
