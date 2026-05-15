@@ -218,33 +218,49 @@
   }
   @media (max-width: 640px) {
     .lb-row { 
-      grid-template-columns: 40px 1.5fr 70px 54px;
+      grid-template-columns: 44px 70px 60px 1fr;
       grid-template-areas: 
-        "rank team wl pct"
-        "rank pts pts diff";
-      gap: 10px 10px;
-      padding: 16px 10px;
+        "rank team team team"
+        "rank wl pct diff";
+      gap: 4px 14px;
+      padding: 16px 12px;
+      align-items: center;
     }
     
-    .col-rank { grid-area: rank; }
-    .col-team { grid-area: team; min-width: 0; }
-    .col-wl   { grid-area: wl; justify-content: flex-end !important; white-space: nowrap; }
-    .col-pct  { grid-area: pct; justify-content: flex-end !important; white-space: nowrap; }
-    .col-pts  { 
-      grid-area: pts; 
-      display: flex !important; 
-      justify-content: flex-start !important;
-      padding-top: 4px;
-      white-space: nowrap;
-      min-width: 0;
+    .col-rank { 
+      grid-area: rank; 
+      align-self: flex-start; 
+      padding-top: 2px;
+    }
+    .col-team { 
+      grid-area: team; 
+      min-width: 0; 
+      padding-bottom: 2px;
+    }
+    .col-wl { 
+      grid-area: wl; 
+      justify-content: flex-start !important; 
+      white-space: nowrap; 
+      opacity: 0.9;
+    }
+    .col-pct { 
+      grid-area: pct; 
+      justify-content: flex-start !important; 
+      white-space: nowrap; 
+      opacity: 0.9;
+    }
+    .col-pts { 
+      display: none !important; 
     }
     .col-diff { 
       grid-area: diff; 
       justify-content: flex-end !important;
-      padding-top: 4px;
       white-space: nowrap;
     }
-    .team-name { font-size: 15px !important; }
+    
+    .rank-num { font-size: 20px !important; }
+    .team-name { font-size: 17px !important; }
+    .col-wl .mono, .col-pct .mono, .col-diff .diff-chip { font-size: 14px !important; }
 
     .match-grid { grid-template-columns: 1fr; }
   }
