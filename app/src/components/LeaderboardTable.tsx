@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowUp, ArrowDown, Crown } from 'lucide-react';
+import { ArrowUp, ArrowDown, Crown, Info } from 'lucide-react';
 import type { LeaderboardEntry } from '../types';
 
 interface LeaderboardTableProps {
@@ -44,9 +44,16 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
 
   if (stats.length === 0) {
     return (
-      <div className="empty-state bg-card border border-dashed border-rule-2 rounded-lg py-16 px-6 text-center text-navy-faint">
-        <p className="mono">No standings yet for this division.</p>
-        <p className="mt-1.5 text-muted text-[10px] mono">Check back after week 1.</p>
+      <div className="py-32 text-center flex flex-col items-center justify-center gap-8 bg-card border border-dashed border-rule-2 rounded-lg">
+        <div className="bg-navy/5 p-8 rounded-full">
+          <Info className="w-12 h-12 text-navy opacity-20" />
+        </div>
+        <div className="space-y-4">
+          <h3 className="font-display font-black text-navy uppercase text-2xl">No standings found</h3>
+          <p className="font-display font-medium text-navy-faint opacity-60 max-w-md mx-auto">
+            The league is preparing for action. Check back soon for the latest standings and results.
+          </p>
+        </div>
       </div>
     );
   }
