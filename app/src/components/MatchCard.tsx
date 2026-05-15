@@ -59,7 +59,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick, onShar
   };
 
   return (
-    <div className="match-card bg-card border border-rule rounded-lg p-5.5 md:p-6 flex flex-col gap-4.5 shadow-[0_18px_40px_-32px_rgba(20,58,120,0.30)] transition-all duration-160 hover:-translate-y-0.5 hover:shadow-[0_24px_50px_-28px_rgba(20,58,120,0.35)] relative group overflow-hidden">
+    <div className="match-card p-5.5 md:p-6 flex flex-col gap-4.5 relative group overflow-hidden">
       <div ref={toastContainerRef} className="absolute inset-0 z-[100] pointer-events-none flex items-center justify-center p-2" />
       
       {/* Match Header */}
