@@ -112,11 +112,11 @@ export const Leaderboard: React.FC = () => {
         </div>
       </div>
 
-      <div className="pb-[var(--header-gap-lg)]">
+      <div className="pb-0">
         <LeaderboardTable stats={stats} onTeamClick={handleTeamClick} />
           
         {/* Share Section - New Design */}
-        <div className="flex items-center justify-center py-16">
+        <div className="flex items-center justify-center pt-16 pb-4">
           <motion.div 
             ref={shareCardRef}
             initial={{ y: 20, opacity: 0 }}

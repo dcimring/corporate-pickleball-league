@@ -113,7 +113,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         </div>
       </header>
 
-      <main className="main flex-1 w-full max-w-[1480px] mx-auto px-5 md:px-[clamp(20px,4vw,56px)] pb-14">
+      <main className="main flex-1 w-full max-w-[1480px] mx-auto px-5 md:px-[clamp(20px,4vw,56px)] pb-4">
         {error ? (
           <ConnectionError onRetry={refresh} isRetrying={loading} />
         ) : (
