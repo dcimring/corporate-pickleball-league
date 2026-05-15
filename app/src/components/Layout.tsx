@@ -178,7 +178,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                       className="w-full flex items-center justify-between px-1 py-4 text-left group"
                     >
                       <div className="flex flex-col gap-0.5">
-                        <span className="mono text-[10px] text-navy-faint font-bold tracking-widest">Active Division</span>
+                        <span className="mono text-[10px] text-navy-faint font-bold tracking-widest">Select Division</span>
                         <span className="mono text-[14px] text-navy font-extrabold flex items-center gap-2">
                           {shortenDivisionName(activeDivision)}
                           <span className="w-1.5 h-1.5 bg-yellow rounded-sm" />
