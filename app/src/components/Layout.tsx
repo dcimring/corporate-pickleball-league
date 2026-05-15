@@ -104,14 +104,14 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
           </div>
         </div>
 
-        <div className="topbar-tabs inline-flex gap-1.5 bg-card border border-rule rounded-full p-1.5 shadow-[0_8px_24px_-16px_rgba(20,58,120,0.25)] justify-center">
+        <div className="topbar-tabs inline-flex gap-1 bg-card border border-rule rounded-full p-1 shadow-[0_8px_24px_-16px_rgba(20,58,120,0.25)] justify-center">
           {pageTabs.map((tab) => {
             const isActive = activePage === tab.path;
             return (
               <button
                 key={tab.path}
                 onClick={() => handlePageChange(tab.path)}
-                className={`tab px-7 py-2.5 font-display font-extrabold text-[13px] tracking-[0.14em] uppercase rounded-full transition-all duration-140 ${
+                className={`tab px-6 sm:px-7 py-2.5 font-display font-extrabold text-[13px] tracking-[0.14em] uppercase rounded-full transition-all duration-140 ${
                   isActive 
                     ? 'tab-active bg-yellow text-navy shadow-[0_4px_14px_-6px_rgba(255,201,60,0.6)]' 
                     : 'text-navy-faint hover:text-navy'
