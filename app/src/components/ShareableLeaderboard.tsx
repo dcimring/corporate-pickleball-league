@@ -57,7 +57,7 @@ export const ShareableLeaderboard: React.FC<ShareableLeaderboardProps> = ({
                 {/* Top Section: Masthead */}
                 <div className="w-full flex justify-between items-end mb-10 px-2">
                     <div className="flex flex-col items-start gap-1">
-                         <span className="mono text-[14px] text-[#005596] opacity-40 font-bold tracking-[0.4em] uppercase">League Standings</span>
+                         <span className="mono text-[14px] text-[#005596] opacity-40 font-bold tracking-[0.4em] uppercase">League Official</span>
                          <h1 className="font-display font-black text-[#005596] text-[90px] leading-[0.85] tracking-tighter uppercase">
                             STANDINGS
                          </h1>
