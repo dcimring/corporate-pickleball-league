@@ -62,22 +62,28 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
     <section className="leaderboard">
       {/* Table Header */}
       <div className="lb-row lb-head bg-card-tint py-4 px-5.5 border-bottom border-rule">
-        <button onClick={() => requestSort('rank')} className={`th text-left flex items-center gap-1.5 mono text-[11px] ${sortConfig.key === 'rank' ? 'text-navy' : 'text-navy-faint hover:text-navy-soft'}`}>
-          Rank {getSortIcon('rank')}
+        <button onClick={() => requestSort('rank')} className={`th col-rank text-left flex items-center gap-1.5 mono text-[11px] ${sortConfig.key === 'rank' ? 'text-navy' : 'text-navy-faint hover:text-navy-soft'}`}>
+          <span className="hidden sm:inline">Rank</span>
+          <span className="sm:hidden">#</span>
+          {getSortIcon('rank')}
         </button>
-        <button onClick={() => requestSort('team')} className={`th text-left flex items-center gap-1.5 mono text-[11px] ${sortConfig.key === 'team' ? 'text-navy' : 'text-navy-faint hover:text-navy-soft'}`}>
+        <button onClick={() => requestSort('team')} className={`th col-team text-left flex items-center gap-1.5 mono text-[11px] ${sortConfig.key === 'team' ? 'text-navy' : 'text-navy-faint hover:text-navy-soft'}`}>
           Team {getSortIcon('team')}
         </button>
-        <button onClick={() => requestSort('wins')} className={`th justify-center flex items-center gap-1.5 mono text-[11px] ${sortConfig.key === 'wins' ? 'text-navy' : 'text-navy-faint hover:text-navy-soft'}`}>
+        <button onClick={() => requestSort('wins')} className={`th col-wl justify-end flex items-center gap-1.5 mono text-[11px] ${sortConfig.key === 'wins' ? 'text-navy' : 'text-navy-faint hover:text-navy-soft'}`}>
           W — L {getSortIcon('wins')}
         </button>
-        <button onClick={() => requestSort('winPct')} className={`th justify-center flex items-center gap-1.5 mono text-[11px] ${sortConfig.key === 'winPct' ? 'text-navy' : 'text-navy-faint hover:text-navy-soft'}`}>
-          Win % {getSortIcon('winPct')}
+        <button onClick={() => requestSort('winPct')} className={`th col-pct justify-end flex items-center gap-1.5 mono text-[11px] ${sortConfig.key === 'winPct' ? 'text-navy' : 'text-navy-faint hover:text-navy-soft'}`}>
+          <span className="hidden sm:inline">Win %</span>
+          <span className="sm:hidden">%</span>
+          {getSortIcon('winPct')}
         </button>
-        <button onClick={() => requestSort('pointsFor')} className={`th justify-center flex items-center gap-1.5 mono text-[11px] ${sortConfig.key === 'pointsFor' ? 'text-navy' : 'text-navy-faint hover:text-navy-soft'}`}>
-          Pts for / against {getSortIcon('pointsFor')}
+        <button onClick={() => requestSort('pointsFor')} className={`th col-pts justify-start flex items-center gap-1.5 mono text-[11px] ${sortConfig.key === 'pointsFor' ? 'text-navy' : 'text-navy-faint hover:text-navy-soft'}`}>
+          <span className="hidden sm:inline">Pts for / against</span>
+          <span className="sm:hidden uppercase">Pts For / Against</span>
+          {getSortIcon('pointsFor')}
         </button>
-        <button onClick={() => requestSort('diff')} className={`th justify-end flex items-center gap-1.5 mono text-[11px] ${sortConfig.key === 'diff' ? 'text-navy' : 'text-navy-faint hover:text-navy-soft'}`}>
+        <button onClick={() => requestSort('diff')} className={`th col-diff justify-end flex items-center gap-1.5 mono text-[11px] ${sortConfig.key === 'diff' ? 'text-navy' : 'text-navy-faint hover:text-navy-soft'}`}>
           Diff {getSortIcon('diff')}
         </button>
       </div>

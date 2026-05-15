@@ -162,8 +162,8 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
 
       <footer className="page-foot flex flex-col md:flex-row items-center justify-between gap-4 py-6 md:py-8 px-5 md:px-[clamp(20px,4vw,56px)] max-w-[1480px] mx-auto w-full text-navy-faint text-[11px]">
         <div className="flex flex-col md:flex-row items-center gap-4">
-          <div className="mono font-bold tracking-[0.2em] flex items-center gap-1.5">
-            Built with ❤️ in Cayman by <a href="https://danielcimring.com" target="_blank" rel="noopener noreferrer" className="text-navy-soft hover:text-yellow transition-colors underline decoration-yellow/30 underline-offset-4 decoration-2">Daniel Cimring</a>
+          <div className="mono font-bold tracking-[0.2em] flex items-center gap-1.5 uppercase">
+            Leaderboard module built with <span className="normal-case text-[14px]">❤️</span> in Cayman by <a href="https://danielcimring.com" target="_blank" rel="noopener noreferrer" className="text-navy-soft hover:text-yellow transition-colors underline decoration-yellow/30 underline-offset-4 decoration-2">Daniel Cimring</a>
           </div>
         </div>
         <p className="mono uppercase tracking-widest opacity-40">

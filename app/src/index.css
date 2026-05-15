@@ -196,9 +196,32 @@
     .lb-row { grid-template-columns: 44px 1.4fr 1fr 0.7fr 70px; gap: 10px; }
     .col-pts { display: none; }
   }
-  @media (max-width: 600px) {
-    .lb-row { grid-template-columns: 36px 1fr 0.9fr 60px; gap: 8px; padding: 14px 12px; }
-    .col-pct { display: none; }
-    .team-name { font-size: 16px !important; }
+  @media (max-width: 640px) {
+    .lb-row { 
+      grid-template-columns: 44px 1.5fr 80px 60px;
+      grid-template-areas: 
+        "rank team wl pct"
+        "rank pts pts diff";
+      gap: 10px 12px;
+      padding: 16px 12px;
+    }
+    .col-rank { grid-area: rank; }
+    .col-team { grid-area: team; }
+    .col-wl   { grid-area: wl; justify-content: flex-end !important; white-space: nowrap; }
+    .col-pct  { grid-area: pct; justify-content: flex-end !important; white-space: nowrap; }
+    .col-pts  { 
+      grid-area: pts; 
+      display: flex !important; 
+      justify-content: flex-start !important;
+      padding-top: 4px;
+      white-space: nowrap;
+    }
+    .col-diff { 
+      grid-area: diff; 
+      justify-content: flex-end !important;
+      padding-top: 4px;
+      white-space: nowrap;
+    }
+    .team-name { font-size: 15px !important; }
   }
 }
