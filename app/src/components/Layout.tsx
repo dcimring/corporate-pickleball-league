@@ -3,13 +3,15 @@ import { useLocation, useSearchParams, useNavigate, Link } from 'react-router-do
 import { useLeagueData } from '../context/LeagueContext';
 import { ConnectionError } from './ConnectionError';
 import { UpdateBanner } from './UpdateBanner';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronDown } from 'lucide-react';
 
 export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const { error, refresh, loading, data } = useLeagueData();
+  const [isDivMenuOpen, setIsDivMenuOpen] = React.useState(false);
 
   const divisions = useMemo(() => {
     if (loading || !data.leaderboard) return [];
@@ -126,7 +128,8 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                 </div>
                 
                 <div className="div-tabs relative border-b border-rule">
-                  <div className="div-tabs-inner flex gap-0 overflow-x-auto no-scrollbar">
+                  {/* Desktop Tabs */}
+                  <div className="hidden md:flex div-tabs-inner gap-0 overflow-x-auto no-scrollbar">
                     {divisions.map((div) => {
                       const isActive = activeDivision === div;
                       return (
@@ -149,6 +152,73 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                         </button>
                       );
                     })}
+                  </div>
+
+                  {/* Mobile Dropdown */}
+                  <div className="md:hidden w-full relative">
+                    <button 
+                      onClick={() => setIsDivMenuOpen(!isDivMenuOpen)}
+                      className="w-full flex items-center justify-between px-1 py-4 text-left group"
+                    >
+                      <div className="flex flex-col gap-0.5">
+                        <span className="mono text-[10px] text-navy-faint font-bold tracking-widest">Active Division</span>
+                        <span className="mono text-[14px] text-navy font-extrabold flex items-center gap-2">
+                          {shortenDivisionName(activeDivision)}
+                          <span className="w-1.5 h-1.5 bg-yellow rounded-sm" />
+                        </span>
+                      </div>
+                      <div className={`p-2 rounded-full bg-navy/5 transition-transform duration-300 ${isDivMenuOpen ? 'rotate-180' : ''}`}>
+                        <ChevronDown size={18} className="text-navy" />
+                      </div>
+                    </button>
+
+                    <AnimatePresence>
+                      {isDivMenuOpen && (
+                        <>
+                          {/* Backdrop */}
+                          <motion.div 
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setIsDivMenuOpen(false)}
+                            className="fixed inset-0 z-[400] bg-navy/20 backdrop-blur-[2px]"
+                          />
+                          
+                          {/* Menu */}
+                          <motion.div 
+                            initial={{ opacity: 0, y: -10, scale: 0.98 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: -10, scale: 0.98 }}
+                            className="absolute top-full left-0 right-0 z-[500] bg-card border border-rule shadow-2xl rounded-xl mt-1 overflow-hidden"
+                          >
+                            <div className="p-1.5 flex flex-col gap-1">
+                              {divisions.map((div) => {
+                                const isActive = activeDivision === div;
+                                return (
+                                  <button
+                                    key={div}
+                                    onClick={() => {
+                                      handleDivisionChange(div);
+                                      setIsDivMenuOpen(false);
+                                    }}
+                                    className={`w-full flex items-center justify-between px-4 py-3.5 rounded-lg transition-all ${
+                                      isActive 
+                                        ? 'bg-navy text-white shadow-lg' 
+                                        : 'text-navy-soft hover:bg-navy/5 active:scale-[0.99]'
+                                    }`}
+                                  >
+                                    <span className={`mono text-[13px] ${isActive ? 'font-bold tracking-wider' : 'font-medium'}`}>
+                                      {shortenDivisionName(div)}
+                                    </span>
+                                    {isActive && <div className="w-1.5 h-1.5 bg-yellow rounded-sm" />}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </motion.div>
+                        </>
+                      )}
+                    </AnimatePresence>
                   </div>
                 </div>
               </div>

@@ -127,7 +127,7 @@ export const Matches: React.FC = () => {
   return (
     <div className="space-y-0 relative">
       {/* Meta Banner - Shared with Leaderboard */}
-      <div className="meta flex items-center justify-center flex-wrap gap-7 py-[var(--header-gap-md)] px-0 text-navy-soft">
+      <div className="meta flex items-center justify-center flex-wrap gap-7 pt-[var(--header-gap-sm)] pb-[var(--header-gap-md)] px-0 text-navy-soft">
         <AnimatePresence>
           {showTip && (
             <motion.div 
@@ -197,7 +197,7 @@ export const Matches: React.FC = () => {
               <div className="match-group-rule flex-1 h-px bg-rule" />
            </div>
 
-           <div className="match-grid grid grid-cols-[repeat(auto-fill,minmax(360px,1fr))] gap-[var(--grid-gap)] mt-4">
+           <div className="match-grid mt-4">
             {matches.length > 0 ? (
               matches.map((match) => (
                 <MatchCard 

@@ -70,15 +70,15 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
         <button onClick={() => requestSort('team')} className={`th col-team text-left flex items-center gap-1.5 mono text-[11px] ${sortConfig.key === 'team' ? 'text-navy' : 'text-navy-faint hover:text-navy-soft'}`}>
           Team {getSortIcon('team')}
         </button>
-        <button onClick={() => requestSort('wins')} className={`th col-wl justify-end flex items-center gap-1.5 mono text-[11px] ${sortConfig.key === 'wins' ? 'text-navy' : 'text-navy-faint hover:text-navy-soft'}`}>
+        <button onClick={() => requestSort('wins')} className={`th col-wl justify-center flex items-center gap-1.5 mono text-[11px] ${sortConfig.key === 'wins' ? 'text-navy' : 'text-navy-faint hover:text-navy-soft'}`}>
           W — L {getSortIcon('wins')}
         </button>
-        <button onClick={() => requestSort('winPct')} className={`th col-pct justify-end flex items-center gap-1.5 mono text-[11px] ${sortConfig.key === 'winPct' ? 'text-navy' : 'text-navy-faint hover:text-navy-soft'}`}>
+        <button onClick={() => requestSort('winPct')} className={`th col-pct justify-center flex items-center gap-1.5 mono text-[11px] ${sortConfig.key === 'winPct' ? 'text-navy' : 'text-navy-faint hover:text-navy-soft'}`}>
           <span className="hidden sm:inline">Win %</span>
           <span className="sm:hidden">%</span>
           {getSortIcon('winPct')}
         </button>
-        <button onClick={() => requestSort('pointsFor')} className={`th col-pts justify-start flex items-center gap-1.5 mono text-[11px] ${sortConfig.key === 'pointsFor' ? 'text-navy' : 'text-navy-faint hover:text-navy-soft'}`}>
+        <button onClick={() => requestSort('pointsFor')} className={`th col-pts justify-center flex items-center gap-1.5 mono text-[11px] ${sortConfig.key === 'pointsFor' ? 'text-navy' : 'text-navy-faint hover:text-navy-soft'}`}>
           <span className="hidden sm:inline">Pts for / against</span>
           <span className="sm:hidden uppercase">Pts For / Against</span>
           {getSortIcon('pointsFor')}
@@ -109,7 +109,7 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
                 {isFeatured && <Crown size={18} className="text-yellow" />}
               </div>
 
-              <div className="col-team flex flex-col gap-1">
+              <div className="col-team flex flex-col gap-1 min-w-0">
                 <span className={`team-name font-display font-extrabold leading-[1.05] tracking-wide uppercase group-hover:underline decoration-yellow decoration-2 underline-offset-4 transition-all ${isFeatured ? 'text-[clamp(20px,2vw,28px)]' : 'text-[clamp(18px,1.8vw,24px)]'}`}>
                   {entry.team}
                 </span>
@@ -119,7 +119,7 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
               <div className="col-wl flex justify-center">
                 <span className="mono text-[14px]">
                   <strong className="text-navy font-bold">{entry.wins}</strong>
-                  <span className="dim mx-2">—</span>
+                  <span className="dim mx-1">—</span>
                   <span className="text-navy-faint">{entry.losses}</span>
                 </span>
               </div>
@@ -134,7 +134,7 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
               <div className="col-pts flex justify-center">
                 <span className="mono text-[14px]">
                   <strong className="text-navy font-bold">{entry.pointsFor}</strong>
-                  <span className="dim mx-2">/</span>
+                  <span className="dim mx-1">/</span>
                   <span className="text-navy-faint">{entry.pointsAgainst}</span>
                 </span>
               </div>
