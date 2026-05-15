@@ -94,7 +94,7 @@ export const Leaderboard: React.FC = () => {
               className="meta-tip inline-flex items-center gap-3 py-2 px-3.5 bg-card border border-rule rounded-full text-[11px] shadow-sm"
             >
               <Info size={14} className="text-navy-faint" />
-              <span className="mono font-bold uppercase">Tip: <span className="font-medium lowercase">Click team name to see all matches</span></span>
+              <span className="mono font-bold uppercase">Tip: <span className="font-medium lowercase">Click team name to see their matches</span></span>
               <button 
                 onClick={handleDismissTip}
                 className="ml-1 p-0.5 hover:bg-rule rounded-full transition-colors group"
