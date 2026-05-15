@@ -3,8 +3,8 @@
 
 @theme {
   /* New Design System Tokens (Court / High Contrast) */
-  --color-navy: #143a78;
-  --color-navy-deep: #0b2554;
+  --color-navy: #005596;
+  --color-navy-deep: #005596;
   --color-navy-soft: #2a528f;
   --color-navy-faint: #8d9fc1;
   --color-navy-faint-2: #b6c2d9;
@@ -47,7 +47,7 @@
 }
 
 :root {
-  --navy: #143a78;
+  --navy: #005596;
   --navy-deep: #0b2554;
   --navy-soft: #2a528f;
   --navy-faint: #8d9fc1;

@@ -16,11 +16,14 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
   const sortedStats = useMemo(() => {
     const sortableItems = [...stats].map((item, idx) => ({ ...item, rank: idx + 1, diff: item.pointsFor - item.pointsAgainst }));
     
-    sortableItems.sort((a: any, b: any) => {
-      if (a[sortConfig.key] < b[sortConfig.key]) {
+    sortableItems.sort((a, b) => {
+      const aVal = a[sortConfig.key as keyof typeof a];
+      const bVal = b[sortConfig.key as keyof typeof b];
+      
+      if (aVal < bVal) {
         return sortConfig.direction === 'asc' ? -1 : 1;
       }
-      if (a[sortConfig.key] > b[sortConfig.key]) {
+      if (aVal > bVal) {
         return sortConfig.direction === 'asc' ? 1 : -1;
       }
       return 0;
@@ -28,7 +31,7 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
     return sortableItems;
   }, [stats, sortConfig]);
 
-  const requestSort = (key: any) => {
+  const requestSort = (key: keyof LeaderboardEntry | 'rank' | 'diff') => {
     let direction: 'asc' | 'desc' = 'asc';
     if (sortConfig.key === key && sortConfig.direction === 'asc') {
       direction = 'desc';

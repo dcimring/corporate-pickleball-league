@@ -12,6 +12,14 @@ const messages = [
 export const LoadingState: React.FC = () => {
   const [msgIndex, setMsgIndex] = useState(0);
 
+  const isIframe = React.useMemo(() => {
+    try {
+      return window.self !== window.top;
+    } catch {
+      return true;
+    }
+  }, []);
+
   useEffect(() => {
     const interval = setInterval(() => {
       setMsgIndex((prev) => (prev + 1) % messages.length);
@@ -20,7 +28,7 @@ export const LoadingState: React.FC = () => {
   }, []);
 
   return (
-    <div className="relative min-h-screen w-full flex flex-col items-center justify-center bg-surface overflow-hidden py-32">
+    <div className={`relative w-full flex flex-col items-center justify-center bg-surface overflow-hidden py-32 ${!isIframe ? 'min-h-screen' : ''}`}>
       {/* Texture Overlay */}
       <div className="absolute inset-0 opacity-[0.05] pointer-events-none mix-blend-multiply" 
            style={{ backgroundImage: `url("https://www.transparenttextures.com/patterns/stardust.png")` }} 

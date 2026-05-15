@@ -8,8 +8,19 @@ interface ConnectionErrorProps {
 }
 
 export const ConnectionError: React.FC<ConnectionErrorProps> = ({ onRetry, isRetrying = false }) => {
+  const isIframe = React.useMemo(() => {
+    try {
+      return window.self !== window.top;
+    } catch {
+      return true;
+    }
+  }, []);
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-[50vh] px-6 w-full py-20">
+    <div className={clsx(
+      "flex flex-col items-center justify-center px-6 w-full py-20",
+      !isIframe && "min-h-[50vh]"
+    )}>
       <div className="editorial-card w-full max-w-2xl bg-surface-container-low p-12 text-center relative overflow-hidden group">
         
         {/* Magazine Texture Overlay */}

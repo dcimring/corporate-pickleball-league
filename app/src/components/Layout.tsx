@@ -54,13 +54,24 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     return name.toUpperCase().replace('DIVISION ', 'DIV ');
   };
 
+  const isIframe = React.useMemo(() => {
+    try {
+      return window.self !== window.top;
+    } catch {
+      return true;
+    }
+  }, []);
+
   // RESIZER LOGIC
   useEffect(() => {
     const sendHeight = () => {
       const appContainer = document.getElementById('app-container');
       if (appContainer) {
         const height = appContainer.offsetHeight;
-        window.parent.postMessage({ 'height': height + 20 }, '*');
+        // Only post if we're actually in an iframe
+        if (isIframe) {
+            window.parent.postMessage({ 'height': height + 20 }, '*');
+        }
       }
     };
 
@@ -75,10 +86,10 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         window.removeEventListener('resize', sendHeight);
         observer.disconnect();
     };
-  }, [location.pathname, error, loading]);
+  }, [location.pathname, error, loading, isIframe]);
 
   return (
-    <div id="app-container" className="app min-h-screen flex flex-col">
+    <div id="app-container" className={`app flex flex-col ${!isIframe ? 'min-h-screen' : ''}`}>
       <UpdateBanner />
 
       {/* Top Bar - New Design */}
