@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import { useLocation, useSearchParams, useNavigate, Link } from 'react-router-dom';
+import { useLocation, useSearchParams, useNavigate } from 'react-router-dom';
 import { useLeagueData } from '../context/LeagueContext';
 import { ConnectionError } from './ConnectionError';
 import { UpdateBanner } from './UpdateBanner';

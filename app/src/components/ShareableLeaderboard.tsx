@@ -20,10 +20,6 @@ export const ShareableLeaderboard: React.FC<ShareableLeaderboardProps> = ({
   // Fit 12 entries max for both formats
   const displayEntries = entries.slice(0, 12);
 
-  // New Brand Palette
-  const NAVY = "#143a78";
-  const YELLOW = "#ffc93c";
-
   return (
     <div 
       className={clsx(

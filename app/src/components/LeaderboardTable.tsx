@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from 'react';
-import { motion } from 'framer-motion';
 import { ArrowUp, ArrowDown, Crown, Info } from 'lucide-react';
 import type { LeaderboardEntry } from '../types';
 
