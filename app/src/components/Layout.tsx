@@ -112,12 +112,12 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         ) : (
           <>
             {!loading && activeDivision && (
-              <div className="page-head pt-3.5">
-                <div className="page-head-row flex flex-col md:flex-row md:items-end justify-between gap-6 pb-4.5">
-                  <h1 className="page-title font-display font-black text-[clamp(40px,5.4vw,68px)] leading-[0.95] tracking-[-0.02em] uppercase text-navy relative after:content-[''] after:block after:w-14 after:h-1.5 after:bg-yellow after:mt-3.5 after:rounded-sm">
-                    {activePage === '/leaderboard' ? 'Leaderboard' : 'Matches'}
+              <div className="page-head pt-[var(--header-gap-md)]">
+                <div className="page-head-row flex flex-col md:flex-row md:items-end justify-between gap-4 pb-[var(--header-gap-md)]">
+                  <h1 className="page-title font-display font-black text-[clamp(40px,5.4vw,68px)] leading-[0.95] tracking-[-0.02em] uppercase text-navy relative after:content-[''] after:block after:w-14 after:h-1.5 after:bg-yellow after:mt-4 after:rounded-sm">
+                    {activePage === '/leaderboard' ? 'Standings' : 'Matches'}
                   </h1>
-                  <span className="page-season mono text-navy-faint pb-2">Summer 2026</span>
+                  <span className="page-season mono text-navy-faint pb-1">Summer 2026</span>
                 </div>
                 
                 <div className="div-tabs relative border-b border-rule">

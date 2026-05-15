@@ -84,7 +84,7 @@ export const Leaderboard: React.FC = () => {
       <div ref={toastPortalRef} className="fixed bottom-0 left-0 right-0 z-[300] pointer-events-none flex justify-center pb-6" />
 
       {/* Meta Banner - New Design */}
-      <div className="meta flex items-center justify-center flex-wrap gap-7 py-6 px-0 text-navy-soft">
+      <div className="meta flex items-center justify-center flex-wrap gap-7 py-[var(--header-gap-md)] px-0 text-navy-soft">
         <AnimatePresence>
           {showTip && (
             <motion.div 
@@ -94,7 +94,7 @@ export const Leaderboard: React.FC = () => {
               className="meta-tip inline-flex items-center gap-3 py-2 px-3.5 bg-card border border-rule rounded-full text-[11px] shadow-sm"
             >
               <Info size={14} className="text-navy-faint" />
-              <span className="mono font-bold">Tip: <span className="font-medium">Click team name to see all matches</span></span>
+              <span className="mono font-bold uppercase">Tip: <span className="font-medium lowercase">Click team name to see all matches</span></span>
               <button 
                 onClick={handleDismissTip}
                 className="ml-1 p-0.5 hover:bg-rule rounded-full transition-colors group"
@@ -111,7 +111,7 @@ export const Leaderboard: React.FC = () => {
         </div>
       </div>
 
-      <div className="pb-12 space-y-8">
+      <div className="pb-[var(--header-gap-lg)]">
         <LeaderboardTable stats={stats} onTeamClick={handleTeamClick} />
           
         {/* Share Section - New Design */}

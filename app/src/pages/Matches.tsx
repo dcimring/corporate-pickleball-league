@@ -12,6 +12,14 @@ import type { Match } from '../types';
 export const Matches: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { data, loading } = useLeagueData();
+  const [showTip, setShowTip] = useState(() => {
+    return sessionStorage.getItem('leaderboard_tip_dismissed') !== 'true';
+  });
+
+  const handleDismissTip = () => {
+    setShowTip(false);
+    sessionStorage.setItem('leaderboard_tip_dismissed', 'true');
+  };
 
   // Unified Active Division Logic - Derive directly from URL to prevent dual-render flicker
   const activeDivision = useMemo(() => {
@@ -95,6 +103,22 @@ export const Matches: React.FC = () => {
   const selectedTeam = searchParams.get('team');
   
   let matches = data.matches[activeDivision] || [];
+
+  const latestMatchDate = matches.length > 0 
+    ? matches.reduce((latest, current) => {
+        return new Date(current.date) > new Date(latest) ? current.date : latest;
+      }, matches[0].date)
+    : null;
+
+  const formatDate = (dateString: string) => {
+    const d = new Date(dateString);
+    const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+    const day = d.getUTCDate();
+    const suffix = (day % 10 === 1 && day !== 11) ? 'ST' : 
+                   (day % 10 === 2 && day !== 12) ? 'ND' :
+                   (day % 10 === 3 && day !== 13) ? 'RD' : 'TH';
+    return `${months[d.getUTCMonth()]} ${day}${suffix}`;
+  };
   
   if (selectedTeam) {
     matches = matches.filter(m => m.team1 === selectedTeam || m.team2 === selectedTeam);
@@ -102,8 +126,35 @@ export const Matches: React.FC = () => {
 
   return (
     <div className="space-y-0 relative">
-      {/* Page-Specific Content below Layout Header */}
-      <div className="pt-0 pb-6 px-0">
+      {/* Meta Banner - Shared with Leaderboard */}
+      <div className="meta flex items-center justify-center flex-wrap gap-7 py-[var(--header-gap-md)] px-0 text-navy-soft">
+        <AnimatePresence>
+          {showTip && (
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="meta-tip inline-flex items-center gap-3 py-2 px-3.5 bg-card border border-rule rounded-full text-[11px] shadow-sm"
+            >
+              <Info size={14} className="text-navy-faint" />
+              <span className="mono font-bold uppercase">Tip: <span className="font-medium lowercase">Click team name to see all matches</span></span>
+              <button 
+                onClick={handleDismissTip}
+                className="ml-1 p-0.5 hover:bg-rule rounded-full transition-colors group"
+                aria-label="Dismiss tip"
+              >
+                <X size={12} className="text-navy-faint group-hover:text-navy" />
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+        <div className="meta-asof inline-flex items-center gap-3 text-navy-soft mono text-[11px]">
+          <span className="meta-dot w-1.5 h-1.5 bg-yellow rounded-sm" />
+          Data as of {latestMatchDate ? formatDate(latestMatchDate) : 'May 2026'}
+        </div>
+      </div>
+
+      <div className="pb-[var(--header-gap-lg)]">
         <div className="space-y-2">
           {/* Active Filter Ribbon - New Design Style */}
           <AnimatePresence mode="wait">
@@ -112,7 +163,7 @@ export const Matches: React.FC = () => {
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="overflow-hidden"
+                className="overflow-hidden mb-[var(--header-gap-md)]"
               >
                 <div 
                   className="w-full py-3 bg-navy text-white flex items-center justify-center gap-6 relative shadow-lg"
@@ -133,9 +184,7 @@ export const Matches: React.FC = () => {
             )}
           </AnimatePresence>
         </div>
-      </div>
 
-      <div className="pb-12 space-y-12">
         {/* Match Group Header Style */}
         <div className="match-group">
            <div className="match-group-head flex items-center gap-4 pb-4">

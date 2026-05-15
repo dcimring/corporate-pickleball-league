@@ -73,6 +73,9 @@
   --radius-sm: 8px;
   --row-pad: 22px;
   --grid-gap: 18px;
+  --header-gap-lg: 48px;
+  --header-gap-md: 24px;
+  --header-gap-sm: 12px;
 }
 
 [data-theme="court"] {

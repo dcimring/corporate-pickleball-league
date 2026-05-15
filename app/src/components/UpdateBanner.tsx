@@ -62,27 +62,27 @@ export const UpdateBanner: React.FC = () => {
           initial={{ opacity: 0, y: -48 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -48 }}
-          className="sticky top-0 left-0 right-0 z-[500] glass-nav shadow-ambient overflow-hidden"
+          className="sticky top-0 left-0 right-0 z-[500] bg-navy shadow-lg overflow-hidden"
           onClick={handleRefresh}
         >
           <div className="w-full px-6 h-12 flex items-center justify-between cursor-pointer group">
             <div className="flex-1 flex justify-center items-center gap-4">
-              <RefreshCw size={16} className="text-secondary animate-spin-slow" />
-              <p className="label-sm font-black tracking-[0.2em] text-primary uppercase text-center">
-                SYSTEM UPDATE READY • <span className="underline decoration-secondary underline-offset-4">SYNCHRONIZE NOW</span>
+              <RefreshCw size={16} className="text-yellow animate-spin-slow" />
+              <p className="mono font-bold tracking-[0.2em] text-white uppercase text-center text-[11px]">
+                SYSTEM UPDATE READY • <span className="underline decoration-yellow underline-offset-4">SYNCHRONIZE NOW</span>
               </p>
             </div>
             
             <button 
               onClick={handleClose}
-              className="p-2 hover:bg-primary/5 transition-colors"
+              className="p-2 hover:bg-white/10 transition-colors"
               aria-label="Close"
             >
-              <X size={18} className="text-primary opacity-30" />
+              <X size={18} className="text-white opacity-40 group-hover:opacity-100" />
             </button>
           </div>
           
-          <div className="absolute top-0 left-0 h-[2px] bg-secondary w-full" />
+          <div className="absolute top-0 left-0 h-[2px] bg-yellow w-full" />
         </motion.div>
       )}
     </AnimatePresence>
