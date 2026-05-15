@@ -89,7 +89,11 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   }, [location.pathname, error, loading, isIframe]);
 
   return (
-    <div id="app-container" className={`app flex flex-col ${!isIframe ? 'min-h-screen' : ''}`}>
+    <div 
+      id="app-container" 
+      className={`app flex flex-col ${!isIframe ? 'min-h-screen' : ''}`}
+      data-is-iframe={isIframe ? "true" : "false"}
+    >
       <UpdateBanner />
 
       {/* Top Bar - New Design */}
@@ -124,7 +128,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         </div>
       </header>
 
-      <main className="main flex-1 w-full max-w-[1480px] mx-auto px-5 md:px-[clamp(20px,4vw,56px)] pb-4">
+      <main className="main flex-1 w-full max-w-[1480px] mx-auto pb-4 main-container-padding">
         {error ? (
           <ConnectionError onRetry={refresh} isRetrying={loading} />
         ) : (

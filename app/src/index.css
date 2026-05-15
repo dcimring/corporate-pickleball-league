@@ -105,6 +105,20 @@
   --yellow: #ffd24c;
 }
 
+@layer utilities {
+  .main-container-padding {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+
+  @media (min-width: 768px) {
+    .main-container-padding {
+      padding-left: clamp(20px, 4vw, 56px);
+      padding-right: clamp(20px, 4vw, 56px);
+    }
+  }
+}
+
 @layer base {
   * { box-sizing: border-box; }
   
@@ -204,13 +218,14 @@
   }
   @media (max-width: 640px) {
     .lb-row { 
-      grid-template-columns: 44px 1.5fr 70px 54px;
+      grid-template-columns: 40px 1.5fr 70px 54px;
       grid-template-areas: 
         "rank team wl pct"
         "rank pts pts diff";
-      gap: 10px 12px;
-      padding: 16px 12px;
+      gap: 10px 10px;
+      padding: 16px 10px;
     }
+    
     .col-rank { grid-area: rank; }
     .col-team { grid-area: team; min-width: 0; }
     .col-wl   { grid-area: wl; justify-content: flex-end !important; white-space: nowrap; }
