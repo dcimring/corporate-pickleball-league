@@ -106,7 +106,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
           </div>
         </div>
 
-        <div className="topbar-tabs inline-flex gap-1 bg-card border border-rule rounded-full p-1.5 shadow-[0_8px_24px_-16px_rgba(20,58,120,0.25)] justify-center">
+        <div className="topbar-tabs inline-flex gap-1.5 bg-card border border-rule rounded-full p-2 shadow-[0_8px_24px_-16px_rgba(20,58,120,0.25)] justify-center overflow-hidden">
           {pageTabs.map((tab) => {
             const isActive = activePage === tab.path;
             return (
