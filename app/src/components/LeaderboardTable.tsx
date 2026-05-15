@@ -84,7 +84,7 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
         </button>
         <button onClick={() => requestSort('pointsFor')} className={`th col-pts justify-center flex items-center gap-1.5 mono text-[11px] ${sortConfig.key === 'pointsFor' ? 'text-navy' : 'text-navy-faint hover:text-navy-soft'}`}>
           <span className="hidden md:inline">Pts for / against</span>
-          <span className="md:hidden uppercase">F/A</span>
+          <span className="md:hidden">PTS</span>
           {getSortIcon('pointsFor')}
         </button>
         <button onClick={() => requestSort('diff')} className={`th col-diff justify-end flex items-center gap-1.5 mono text-[11px] ${sortConfig.key === 'diff' ? 'text-navy' : 'text-navy-faint hover:text-navy-soft'}`}>
@@ -126,7 +126,8 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
               <div className="col-wl flex justify-center">
                 <span className="mono text-[14px]">
                   <strong className="text-navy font-bold">{entry.wins}</strong>
-                  <span className="dim mx-1">—</span>
+                  <span className="md:hidden text-navy-faint opacity-50">-</span>
+                  <span className="hidden md:inline dim mx-1">—</span>
                   <span className="text-navy-faint">{entry.losses}</span>
                 </span>
               </div>
@@ -141,13 +142,15 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
               <div className="col-pts flex justify-center">
                 <span className="mono text-[14px]">
                   <strong className="text-navy font-bold">{entry.pointsFor}</strong>
-                  <span className="dim mx-1">/</span>
-                  <span className="text-navy-faint">{entry.pointsAgainst}</span>
+                  <span className="hidden md:inline">
+                    <span className="dim mx-1">/</span>
+                    <span className="text-navy-faint">{entry.pointsAgainst}</span>
+                  </span>
                 </span>
               </div>
 
               <div className="col-diff flex justify-end">
-                <span className={`diff-chip inline-flex items-center gap-1.5 px-2 py-1 rounded-md text-[12px] font-bold mono ${positive ? 'bg-[rgba(31,155,81,0.10)] text-success' : 'bg-[rgba(214,54,42,0.10)] text-error'}`}>
+                <span className={`diff-chip inline-flex items-center justify-center gap-1.5 px-2 py-1 rounded-md text-[12px] font-bold mono ${positive ? 'bg-[rgba(31,155,81,0.10)] text-success' : 'bg-[rgba(214,54,42,0.10)] text-error'}`}>
                   {positive ? <ArrowUp size={14} /> : <ArrowDown size={14} />}
                   {positive ? "+" : ""}{diff}
                 </span>

@@ -195,6 +195,11 @@
     box-shadow: 0 24px 60px -40px rgba(20, 58, 120, 0.25);
   }
 
+  .diff-chip {
+    width: 68px;
+    justify-content: center;
+  }
+
   /* Leaderboard Row Grid */
   .lb-row {
     display: grid;
@@ -218,12 +223,12 @@
   }
   @media (max-width: 640px) {
     .lb-row { 
-      grid-template-columns: 44px 70px 60px 1fr;
+      grid-template-columns: 38px 58px 50px 42px 1fr;
       grid-template-areas: 
-        "rank team team team"
-        "rank wl pct diff";
-      gap: 4px 14px;
-      padding: 16px 12px;
+        "rank team team team team"
+        "rank wl pct pts diff";
+      gap: 4px 8px;
+      padding: 16px 10px;
       align-items: center;
     }
     
@@ -250,7 +255,11 @@
       opacity: 0.9;
     }
     .col-pts { 
-      display: none !important; 
+      grid-area: pts;
+      display: flex !important; 
+      justify-content: flex-start !important;
+      white-space: nowrap;
+      opacity: 0.9;
     }
     .col-diff { 
       grid-area: diff; 
@@ -260,7 +269,7 @@
     
     .rank-num { font-size: 20px !important; }
     .team-name { font-size: 17px !important; }
-    .col-wl .mono, .col-pct .mono, .col-diff .diff-chip { font-size: 14px !important; }
+    .col-wl .mono, .col-pct .mono, .col-pts .mono, .col-diff .diff-chip { font-size: 14px !important; }
 
     .match-grid { grid-template-columns: 1fr; }
   }
