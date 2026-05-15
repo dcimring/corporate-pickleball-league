@@ -61,16 +61,16 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
         <button onClick={() => requestSort('team')} className={`th text-left flex items-center gap-1.5 mono text-[11px] ${sortConfig.key === 'team' ? 'text-navy' : 'text-navy-faint hover:text-navy-soft'}`}>
           Team {getSortIcon('team')}
         </button>
-        <button onClick={() => requestSort('wins')} className={`th text-left flex items-center gap-1.5 mono text-[11px] ${sortConfig.key === 'wins' ? 'text-navy' : 'text-navy-faint hover:text-navy-soft'}`}>
+        <button onClick={() => requestSort('wins')} className={`th justify-center flex items-center gap-1.5 mono text-[11px] ${sortConfig.key === 'wins' ? 'text-navy' : 'text-navy-faint hover:text-navy-soft'}`}>
           W — L {getSortIcon('wins')}
         </button>
-        <button onClick={() => requestSort('winPct')} className={`th text-left flex items-center gap-1.5 mono text-[11px] ${sortConfig.key === 'winPct' ? 'text-navy' : 'text-navy-faint hover:text-navy-soft'}`}>
+        <button onClick={() => requestSort('winPct')} className={`th justify-center flex items-center gap-1.5 mono text-[11px] ${sortConfig.key === 'winPct' ? 'text-navy' : 'text-navy-faint hover:text-navy-soft'}`}>
           Win % {getSortIcon('winPct')}
         </button>
-        <button onClick={() => requestSort('pointsFor')} className={`th text-left flex items-center gap-1.5 mono text-[11px] ${sortConfig.key === 'pointsFor' ? 'text-navy' : 'text-navy-faint hover:text-navy-soft'}`}>
+        <button onClick={() => requestSort('pointsFor')} className={`th justify-center flex items-center gap-1.5 mono text-[11px] ${sortConfig.key === 'pointsFor' ? 'text-navy' : 'text-navy-faint hover:text-navy-soft'}`}>
           Pts for / against {getSortIcon('pointsFor')}
         </button>
-        <button onClick={() => requestSort('diff')} className={`th text-right flex items-center justify-end gap-1.5 mono text-[11px] ${sortConfig.key === 'diff' ? 'text-navy' : 'text-navy-faint hover:text-navy-soft'}`}>
+        <button onClick={() => requestSort('diff')} className={`th justify-end flex items-center gap-1.5 mono text-[11px] ${sortConfig.key === 'diff' ? 'text-navy' : 'text-navy-faint hover:text-navy-soft'}`}>
           Diff {getSortIcon('diff')}
         </button>
       </div>
@@ -103,7 +103,7 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
                 {isFeatured && <span className="lb-pill self-start inline-flex items-center px-2 py-0.5 bg-yellow text-navy rounded-sm text-[9.5px] font-semibold mono">Top of the table</span>}
               </div>
 
-              <div className="col-wl">
+              <div className="col-wl flex justify-center">
                 <span className="mono text-[14px]">
                   <strong className="text-navy font-bold">{entry.wins}</strong>
                   <span className="dim mx-2">—</span>
@@ -111,14 +111,14 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
                 </span>
               </div>
 
-              <div className="col-pct">
+              <div className="col-pct flex justify-center">
                 <span className="mono text-[14px]">
                   <strong className="text-navy font-bold">{(entry.winPct * 100).toFixed(0)}</strong>
                   <span className="dim">%</span>
                 </span>
               </div>
 
-              <div className="col-pts">
+              <div className="col-pts flex justify-center">
                 <span className="mono text-[14px]">
                   <strong className="text-navy font-bold">{entry.pointsFor}</strong>
                   <span className="dim mx-2">/</span>

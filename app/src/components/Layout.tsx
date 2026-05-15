@@ -3,7 +3,6 @@ import { useLocation, useSearchParams, useNavigate, Link } from 'react-router-do
 import { useLeagueData } from '../context/LeagueContext';
 import { ConnectionError } from './ConnectionError';
 import { UpdateBanner } from './UpdateBanner';
-import { TeamFilterHint } from './TeamFilterHint';
 import { motion } from 'framer-motion';
 
 export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -118,7 +117,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                   <h1 className="page-title font-display font-black text-[clamp(40px,5.4vw,68px)] leading-[0.95] tracking-[-0.02em] uppercase text-navy relative after:content-[''] after:block after:w-14 after:h-1.5 after:bg-yellow after:mt-3.5 after:rounded-sm">
                     {activePage === '/leaderboard' ? 'Leaderboard' : 'Matches'}
                   </h1>
-                  <span className="page-season mono text-navy-faint pb-2">Spring 2026</span>
+                  <span className="page-season mono text-navy-faint pb-2">Summer 2026</span>
                 </div>
                 
                 <div className="div-tabs relative border-b border-rule">
@@ -146,10 +145,6 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                       );
                     })}
                   </div>
-                </div>
-                
-                <div className="mt-4">
-                  <TeamFilterHint transparent />
                 </div>
               </div>
             )}

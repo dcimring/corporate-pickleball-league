@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
+import { Info, X } from 'lucide-react';
 import { LeaderboardTable } from '../components/LeaderboardTable';
 import { ShareButton } from '../components/ShareButton';
 import { ShareableLeaderboard } from '../components/ShareableLeaderboard';
@@ -11,6 +12,14 @@ export const Leaderboard: React.FC = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { data, loading } = useLeagueData();
+  const [showTip, setShowTip] = useState(() => {
+    return sessionStorage.getItem('leaderboard_tip_dismissed') !== 'true';
+  });
+
+  const handleDismissTip = () => {
+    setShowTip(false);
+    sessionStorage.setItem('leaderboard_tip_dismissed', 'true');
+  };
 
   // Unified Active Division Logic - Derive directly from URL to prevent dual-render flicker
   const activeDivision = useMemo(() => {
@@ -76,10 +85,26 @@ export const Leaderboard: React.FC = () => {
 
       {/* Meta Banner - New Design */}
       <div className="meta flex items-center justify-center flex-wrap gap-7 py-6 px-0 text-navy-soft">
-        <div className="meta-tip inline-flex items-center gap-2.5 py-2 px-3.5 bg-card border border-rule rounded-full text-[11px] shadow-sm">
-          <span className="meta-tip-icon opacity-50 text-[14px]">💡</span>
-          <span>Click any team name to see their full match history.</span>
-        </div>
+        <AnimatePresence>
+          {showTip && (
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="meta-tip inline-flex items-center gap-3 py-2 px-3.5 bg-card border border-rule rounded-full text-[11px] shadow-sm"
+            >
+              <Info size={14} className="text-navy-faint" />
+              <span className="mono font-bold">Tip: <span className="font-medium">Click team name to see all matches</span></span>
+              <button 
+                onClick={handleDismissTip}
+                className="ml-1 p-0.5 hover:bg-rule rounded-full transition-colors group"
+                aria-label="Dismiss tip"
+              >
+                <X size={12} className="text-navy-faint group-hover:text-navy" />
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
         <div className="meta-asof inline-flex items-center gap-3 text-navy-soft mono text-[11px]">
           <span className="meta-dot w-1.5 h-1.5 bg-yellow rounded-sm" />
           Data as of {latestMatchDate ? formatDate(latestMatchDate) : 'May 2026'}
