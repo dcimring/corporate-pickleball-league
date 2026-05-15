@@ -47,6 +47,11 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     { name: 'Matches', path: '/matches' },
   ];
 
+  const shortenDivisionName = (name: string) => {
+    if (name.toLowerCase() === 'cayman premier league') return 'CPL';
+    return name.toUpperCase().replace('DIVISION ', 'DIV ');
+  };
+
   // RESIZER LOGIC
   useEffect(() => {
     const sendHeight = () => {
@@ -133,7 +138,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                           }`}
                         >
                           <span className={`div-tab-label mono text-[12px] ${isActive ? 'font-bold' : ''}`}>
-                            {div}
+                            {shortenDivisionName(div)}
                           </span>
                           {isActive && (
                             <motion.div 

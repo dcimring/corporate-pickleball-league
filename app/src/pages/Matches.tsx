@@ -150,7 +150,8 @@ export const Matches: React.FC = () => {
         </AnimatePresence>
         <div className="meta-asof inline-flex items-center gap-3 text-navy-soft mono text-[11px]">
           <span className="meta-dot w-1.5 h-1.5 bg-yellow rounded-sm" />
-          Data as of {latestMatchDate ? formatDate(latestMatchDate) : 'May 2026'}
+          <span>DATA CURRENT THROUGH {latestMatchDate ? formatDate(latestMatchDate) : 'MAY 2026'}</span>
+          <span className="meta-dot w-1.5 h-1.5 bg-yellow rounded-sm" />
         </div>
       </div>
 
