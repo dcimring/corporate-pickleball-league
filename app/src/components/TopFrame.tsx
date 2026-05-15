@@ -21,7 +21,7 @@ export const TopFrame: React.FC = () => {
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-2">
           <div className="w-1.5 h-1.5 rounded-full bg-yellow shadow-[0_0_10px_rgba(255,201,60,0.8)] animate-pulse" />
-          <span className="mono text-[10px] text-yellow/90 font-bold tracking-[0.25em] uppercase">Status: Optimal</span>
+          <span className="mono text-[10px] text-yellow/90 font-bold tracking-[0.25em] uppercase">Status: Live</span>
         </div>
         
         <div className="hidden sm:flex items-center gap-4">
