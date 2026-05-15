@@ -19,10 +19,6 @@ export const ShareableMatch: React.FC<ShareableMatchProps> = ({
   const isWin1 = !isTie && (match.team1Wins > match.team2Wins || (winsEqual && match.team1Points > match.team2Points));
   const isWin2 = !isTie && (match.team2Wins > match.team1Wins || (winsEqual && match.team2Points > match.team1Points));
 
-  // Constants to match main design system
-  const NAVY = "#005596";
-  const YELLOW = "#ffc93c";
-
   const formatDateNoTz = (dateStr: string) => {
     const datePart = dateStr.split('T')[0];
     const parts = datePart.split('-');
