@@ -128,7 +128,7 @@
     color: var(--navy);
     background:
       radial-gradient(1200px 600px at 80% -20%, var(--yellow-glow) 0%, transparent 60%),
-      linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+      linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 85%, #ffffff 100%);
     background-attachment: fixed;
     letter-spacing: -0.005em;
     -webkit-font-smoothing: antialiased;

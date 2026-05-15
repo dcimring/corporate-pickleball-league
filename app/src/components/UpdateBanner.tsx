@@ -62,7 +62,7 @@ export const UpdateBanner: React.FC = () => {
           initial={{ opacity: 0, y: -48 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -48 }}
-          className="sticky top-0 left-0 right-0 z-[500] bg-navy shadow-lg overflow-hidden"
+          className="sticky top-[36px] left-0 right-0 z-[500] bg-navy shadow-lg overflow-hidden"
           onClick={handleRefresh}
         >
           <div className="w-full px-6 h-12 flex items-center justify-between cursor-pointer group">

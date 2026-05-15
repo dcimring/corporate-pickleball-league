@@ -3,6 +3,7 @@ import { useLocation, useSearchParams, useNavigate } from 'react-router-dom';
 import { useLeagueData } from '../context/LeagueContext';
 import { ConnectionError } from './ConnectionError';
 import { UpdateBanner } from './UpdateBanner';
+import { TopFrame } from './TopFrame';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 
@@ -94,6 +95,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       className={`app flex flex-col ${!isIframe ? 'min-h-screen' : ''}`}
       data-is-iframe={isIframe ? "true" : "false"}
     >
+      <TopFrame />
       <UpdateBanner />
 
       {/* Top Bar - New Design */}
