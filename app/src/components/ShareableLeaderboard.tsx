@@ -82,8 +82,8 @@ export const ShareableLeaderboard: React.FC<ShareableLeaderboardProps> = ({
                             </div>
                         </div>
                     ) : (
-                        <div className="w-full flex gap-x-8">
-                            <div className="flex-1 flex flex-col">
+                        <div className="w-full grid grid-cols-2 gap-x-8">
+                            <div className="min-w-0 flex flex-col">
                                 <LeaderboardHeader isPost={true} />
                                 <div className="flex flex-col border border-[#005596]/10 bg-white shadow-2xl overflow-hidden">
                                     {displayEntries.slice(0, 6).map((entry, idx) => (
@@ -91,7 +91,7 @@ export const ShareableLeaderboard: React.FC<ShareableLeaderboardProps> = ({
                                     ))}
                                 </div>
                             </div>
-                            <div className="flex-1 flex flex-col">
+                            <div className="min-w-0 flex flex-col">
                                 <LeaderboardHeader isPost={true} />
                                 <div className="flex flex-col border border-[#005596]/10 bg-white shadow-2xl overflow-hidden">
                                     {displayEntries.slice(6, 12).map((entry, idx) => (
