@@ -52,7 +52,7 @@ export const ShareableLeaderboard: React.FC<ShareableLeaderboardProps> = ({
 
         {isPost ? (
             /* Post Layout (Landscape) */
-            <div className="relative z-10 flex flex-col h-full items-center p-10">
+            <div className="relative z-10 flex flex-col h-full items-center py-10 px-14">
                 
                 {/* Top Section: Masthead */}
                 <div className="w-full flex justify-between items-end mb-10 px-2">
@@ -73,7 +73,7 @@ export const ShareableLeaderboard: React.FC<ShareableLeaderboardProps> = ({
                 {/* Bottom Section: Leaderboard Columns */}
                 <div className="w-full flex-1 flex flex-col gap-0 px-2">
                     {isSingleColumnPost ? (
-                        <div className="max-w-[1000px] w-full mx-auto flex flex-col">
+                        <div className="max-w-[980px] w-full mx-auto flex flex-col">
                             <LeaderboardHeader isPost={true} />
                             <div className="flex flex-col border border-[#005596]/10 bg-white shadow-2xl overflow-hidden">
                                 {displayEntries.map((entry, idx) => (
@@ -159,7 +159,7 @@ const LeaderboardHeader: React.FC<{ isPost: boolean }> = ({ isPost }) => (
     )}>
         <div className={clsx("text-center opacity-40", isPost ? "w-10" : "w-24")}>#</div>
         <div className={clsx("flex-1 opacity-40", isPost ? "pl-4" : "pl-6")}>Team</div>
-        <div className={clsx("flex items-center", isPost ? "gap-3" : "gap-8")}>
+        <div className={clsx("flex items-center", isPost ? "gap-3 pr-2" : "gap-8")}>
             <div className={clsx("text-center opacity-40", isPost ? "w-16" : "w-24")}>W-L</div>
             <div className={clsx("text-center", isPost ? "w-16" : "w-32")}>Win %</div>
         </div>
@@ -193,7 +193,7 @@ const LeaderboardRow: React.FC<{ entry: LeaderboardEntry, index: number, isPost:
             </div>
             
             {/* Stats Columns */}
-            <div className={clsx("flex items-center", isPost ? "gap-3" : "gap-8")}>
+            <div className={clsx("flex items-center", isPost ? "gap-3 pr-2" : "gap-8")}>
                 <div className={clsx(
                     "text-center mono font-bold text-[#005596]/40",
                     isPost ? "w-16 text-[14px]" : "w-24 text-2xl"
