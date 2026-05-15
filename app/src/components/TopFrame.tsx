@@ -28,7 +28,7 @@ export const TopFrame: React.FC = () => {
           <div className="w-[1px] h-4 bg-white/10" />
           <span className="mono text-[10px] text-white/30 tracking-[0.2em] uppercase">Core.v2.6.5</span>
           <div className="w-[1px] h-4 bg-white/10" />
-          <span className="mono text-[10px] text-white/30 tracking-[0.2em] uppercase">Staging.Environment</span>
+          <span className="mono text-[10px] text-white/30 tracking-[0.2em] uppercase">OFFICIAL.LEAGUE.PLATFORM</span>
         </div>
       </div>
 
