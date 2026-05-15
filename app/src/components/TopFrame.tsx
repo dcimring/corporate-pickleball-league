@@ -38,7 +38,7 @@ export const TopFrame: React.FC = () => {
           <span className="mono text-[10px] text-white/30 tracking-[0.2em] uppercase hidden xs:inline">GCM.LAT.19.31</span>
           <div className="w-[1px] h-4 bg-white/10 hidden xs:block" />
           <div className="flex items-center gap-2">
-            <span className="mono text-[10px] text-white/40 tracking-[0.1em] uppercase">Local:</span>
+            <span className="mono text-[10px] text-white/40 tracking-[0.1em] uppercase">Time:</span>
             <span className="mono text-[10px] text-white/70 font-bold tracking-[0.15em]">{formattedTime}</span>
           </div>
         </div>
