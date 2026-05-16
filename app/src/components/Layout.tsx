@@ -95,15 +95,17 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       className={`app flex flex-col ${!isIframe ? 'min-h-screen' : ''}`}
       data-is-iframe={isIframe ? "true" : "false"}
     >
-      <TopFrame />
+      {!isIframe && <TopFrame />}
       <UpdateBanner />
 
       {/* Top Bar - New Design */}
       <header className="topbar grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] items-center gap-2 md:gap-4 pt-3 pb-1 md:py-4 px-6 md:px-[clamp(20px,4vw,56px)]">
         <div className="topbar-side flex items-center">
-          <div className="brand inline-flex items-center gap-3 py-1.5 px-3 rounded-full">
-            <span className="brand-name mono text-[11px] text-navy-soft">Corporate Pickleball League</span>
-          </div>
+          {!isIframe && (
+            <div className="brand inline-flex items-center gap-3 py-1.5 px-3 rounded-full">
+              <span className="brand-name mono text-[11px] text-navy-soft">Corporate Pickleball League</span>
+            </div>
+          )}
         </div>
 
         <div className="topbar-tabs flex md:inline-flex w-full md:w-auto max-w-[380px] md:max-w-none mx-auto gap-1 bg-card border border-rule rounded-full p-1.5 shadow-[0_8px_24px_-16px_rgba(20,58,120,0.25)] justify-center overflow-hidden">
@@ -137,12 +139,14 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
           <>
             {!loading && activeDivision && (
               <div className="page-head pt-2 md:pt-3">
-                <div className="page-head-row flex flex-col md:flex-row md:items-end justify-between gap-2 md:gap-4 pb-3 md:pb-5">
-                  <h1 className="page-title font-display font-black text-[clamp(40px,5.4vw,68px)] leading-[0.95] tracking-[-0.02em] uppercase text-navy relative after:content-[''] after:block after:w-14 after:h-1.5 after:bg-yellow after:mt-4 after:rounded-sm">
-                    {activePage === '/leaderboard' ? 'Standings' : 'Matches'}
-                  </h1>
-                  <span className="page-season mono text-navy-faint pb-1">Summer 2026</span>
-                </div>
+                {!isIframe && (
+                  <div className="page-head-row flex flex-col md:flex-row md:items-end justify-between gap-2 md:gap-4 pb-3 md:pb-5">
+                    <h1 className="page-title font-display font-black text-[clamp(40px,5.4vw,68px)] leading-[0.95] tracking-[-0.02em] uppercase text-navy relative after:content-[''] after:block after:w-14 after:h-1.5 after:bg-yellow after:mt-4 after:rounded-sm">
+                      {activePage === '/leaderboard' ? 'Standings' : 'Matches'}
+                    </h1>
+                    <span className="page-season mono text-navy-faint pb-1">Summer 2026</span>
+                  </div>
+                )}
                 
                 <div className="div-tabs relative border-b border-rule">
                   {/* Desktop Tabs */}
