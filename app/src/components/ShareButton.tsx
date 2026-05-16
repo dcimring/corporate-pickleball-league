@@ -92,15 +92,13 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
         quality: imageQuality,
         type: imageFormat === 'jpeg' ? 'image/jpeg' : 'image/png',
         backgroundColor: '#fefefe', // Clean white background for transparency fallback
-        features: {
-          // Disable filters that might break capture in some browsers
-          filter: (domNode: Node) => {
-            if (domNode instanceof HTMLElement) {
-              // Hide any share buttons inside the capture area
-              return !domNode.classList.contains('match-share') && !domNode.classList.contains('no-export');
-            }
-            return true;
+        // Disable filters that might break capture in some browsers
+        filter: (domNode: Node) => {
+          if (domNode instanceof HTMLElement) {
+            // Hide any share buttons inside the capture area
+            return !domNode.classList.contains('match-share') && !domNode.classList.contains('no-export');
           }
+          return true;
         }
       };
 
