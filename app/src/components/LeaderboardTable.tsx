@@ -133,7 +133,20 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
               </div>
 
               <div className="col-pct flex justify-center">
-                <span className="inline-flex items-center justify-center px-2.5 py-1 bg-navy/10 text-navy rounded-[4px] text-[13px] font-bold mono min-w-[48px]">
+                {/* Desktop: Dynamic Bar */}
+                <div className="hidden md:flex items-center justify-center w-full max-w-[100px] h-7 bg-navy/5 rounded-[4px] relative overflow-hidden">
+                  <div 
+                    className="absolute left-0 top-0 bottom-0 bg-navy/15 transition-all duration-500 ease-out"
+                    style={{ width: `${entry.winPct * 100}%` }}
+                  />
+                  <span className="relative z-10 text-navy text-[13px] font-bold mono">
+                    {(entry.winPct * 100).toFixed(0)}
+                    <span className="text-[10px] opacity-60 ml-0.5">%</span>
+                  </span>
+                </div>
+
+                {/* Mobile: Compact Chip */}
+                <span className="md:hidden inline-flex items-center justify-center px-2.5 py-1 bg-navy/10 text-navy rounded-[4px] text-[13px] font-bold mono min-w-[48px]">
                   {(entry.winPct * 100).toFixed(0)}
                   <span className="text-[10px] opacity-60 ml-0.5">%</span>
                 </span>
