@@ -7,7 +7,7 @@ import type { Match } from '../types';
 interface MatchCardProps {
   match: Match;
   onTeamClick?: (teamName: string) => void;
-  onShare?: (match: Match, type: 'story' | 'post' | 'wa', toastRef: React.RefObject<HTMLDivElement | null>) => void;
+  onShare?: (match: Match, type: 'story' | 'post' | 'wa', toastRef: React.RefObject<HTMLDivElement | null>, cardRef: React.RefObject<HTMLDivElement | null>) => void;
   isSharing?: boolean;
 }
 
@@ -24,6 +24,7 @@ const MarginBar: React.FC<{ wins1: number; wins2: number; isWin1: boolean }> = (
 };
 
 export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick, onShare, isSharing }) => {
+  const cardRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const toastContainerRef = useRef<HTMLDivElement>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -55,11 +56,11 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick, onShar
   const handleShareClick = (type: 'story' | 'post' | 'wa') => (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsMenuOpen(false);
-    onShare?.(match, type, toastContainerRef);
+    onShare?.(match, type, toastContainerRef, cardRef);
   };
 
   return (
-    <div className="match-card p-5.5 md:p-6 flex flex-col gap-4.5 relative group overflow-hidden">
+    <div ref={cardRef} className="match-card p-5.5 md:p-6 flex flex-col gap-4.5 relative group overflow-hidden bg-white">
       <div ref={toastContainerRef} className="absolute inset-0 z-[100] pointer-events-none flex items-center justify-center p-2" />
       
       {/* Match Header */}

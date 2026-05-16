@@ -6,7 +6,6 @@ import { MatchCard } from '../components/MatchCard';
 import { LoadingState } from '../components/LoadingState';
 import { useLeagueData } from '../context/LeagueContext';
 import { ShareButton, type ShareButtonHandle } from '../components/ShareButton';
-import { ShareableMatch } from '../components/ShareableMatch';
 import type { Match } from '../types';
 
 export const Matches: React.FC = () => {
@@ -37,9 +36,7 @@ export const Matches: React.FC = () => {
   const [sharingMatch, setSharingMatch] = useState<Match | null>(null);
   const [sharingType, setSharingType] = useState<'story' | 'post' | 'wa' | null>(null);
   const [activeToastTarget, setActiveToastTarget] = useState<React.RefObject<HTMLDivElement | null> | null>(null);
-  
-  const storyShareRef = useRef<HTMLDivElement>(null);
-  const postShareRef = useRef<HTMLDivElement>(null);
+  const [activeCardRef, setActiveCardRef] = useState<React.RefObject<HTMLDivElement | null> | null>(null);
   
   const mobileStoryBtnRef = useRef<ShareButtonHandle>(null);
   const desktopStoryBtnRef = useRef<ShareButtonHandle>(null);
@@ -60,14 +57,15 @@ export const Matches: React.FC = () => {
     setSearchParams(newParams);
   };
 
-  const handleShare = (match: Match, type: 'story' | 'post' | 'wa', toastRef: React.RefObject<HTMLDivElement | null>) => {
+  const handleShare = (match: Match, type: 'story' | 'post' | 'wa', toastRef: React.RefObject<HTMLDivElement | null>, cardRef: React.RefObject<HTMLDivElement | null>) => {
     setSharingMatch(match);
     setSharingType(type);
     setActiveToastTarget(toastRef);
+    setActiveCardRef(cardRef);
   };
 
   useEffect(() => {
-    if (sharingMatch && sharingType) {
+    if (sharingMatch && sharingType && activeCardRef) {
       const timer = setTimeout(() => {
         const isDesktop = typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches;
         
@@ -84,7 +82,7 @@ export const Matches: React.FC = () => {
       }, 300);
       return () => clearTimeout(timer);
     }
-  }, [sharingMatch, sharingType]);
+  }, [sharingMatch, sharingType, activeCardRef]);
 
   const handleShareEnd = () => {
     // Immediately stop the spin animation in the card by clearing the type
@@ -94,6 +92,7 @@ export const Matches: React.FC = () => {
     setTimeout(() => {
         setSharingMatch(null);
         setActiveToastTarget(null);
+        setActiveCardRef(null);
     }, 6000);
   };
 
@@ -233,18 +232,11 @@ export const Matches: React.FC = () => {
 
       {/* GLOBAL SHARE PORTAL (Hidden from view) */}
       <div className="absolute left-[-9999px] top-[-9999px] pointer-events-none">
-          {sharingMatch && (
+          {sharingMatch && activeCardRef && (
             <>
-              <div ref={storyShareRef} className="w-fit">
-                  <ShareableMatch match={sharingMatch} layout="story" />
-              </div>
-              <div ref={postShareRef} className="w-fit">
-                  <ShareableMatch match={sharingMatch} layout="post" />
-              </div>
-
               <ShareButton
                 ref={mobileStoryBtnRef}
-                targetRef={storyShareRef}
+                targetRef={activeCardRef}
                 portalTarget={activeToastTarget || undefined}
                 hidden
                 toastPosition="fixed"
@@ -253,7 +245,7 @@ export const Matches: React.FC = () => {
               />
               <ShareButton
                 ref={desktopStoryBtnRef}
-                targetRef={storyShareRef}
+                targetRef={activeCardRef}
                 portalTarget={activeToastTarget || undefined}
                 hidden
                 preferDownload
@@ -263,7 +255,7 @@ export const Matches: React.FC = () => {
               />
               <ShareButton
                 ref={mobilePostBtnRef}
-                targetRef={postShareRef}
+                targetRef={activeCardRef}
                 portalTarget={activeToastTarget || undefined}
                 hidden
                 toastPosition="fixed"
@@ -272,7 +264,7 @@ export const Matches: React.FC = () => {
               />
               <ShareButton
                 ref={desktopPostBtnRef}
-                targetRef={postShareRef}
+                targetRef={activeCardRef}
                 portalTarget={activeToastTarget || undefined}
                 hidden
                 preferDownload
@@ -282,7 +274,7 @@ export const Matches: React.FC = () => {
               />
               <ShareButton
                 ref={mobileWABtnRef}
-                targetRef={storyShareRef}
+                targetRef={activeCardRef}
                 portalTarget={activeToastTarget || undefined}
                 hidden
                 toastPosition="fixed"
@@ -291,7 +283,7 @@ export const Matches: React.FC = () => {
               />
               <ShareButton
                 ref={desktopWABtnRef}
-                targetRef={storyShareRef}
+                targetRef={activeCardRef}
                 portalTarget={activeToastTarget || undefined}
                 hidden
                 preferDownload

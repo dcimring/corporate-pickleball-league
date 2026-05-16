@@ -4,7 +4,6 @@ import { motion, useInView, AnimatePresence } from 'framer-motion';
 import { Info, X } from 'lucide-react';
 import { LeaderboardTable } from '../components/LeaderboardTable';
 import { ShareButton } from '../components/ShareButton';
-import { ShareableLeaderboard } from '../components/ShareableLeaderboard';
 import { LoadingState } from '../components/LoadingState';
 import { useLeagueData } from '../context/LeagueContext';
 
@@ -33,8 +32,7 @@ export const Leaderboard: React.FC = () => {
     return divisions.includes('Cayman Premier League') ? 'Cayman Premier League' : divisions[0] || '';
   }, [loading, data.leaderboard, searchParams]);
 
-  const postShareRef = useRef<HTMLDivElement>(null);
-  const storyShareRef = useRef<HTMLDivElement>(null);
+  const tableContainerRef = useRef<HTMLDivElement>(null);
   const shareCardRef = useRef<HTMLDivElement>(null);
   const shareCardInView = useInView(shareCardRef, { once: true, amount: 0.1 });
   const [shareCardAnimated, setShareCardAnimated] = useState(false);
@@ -114,7 +112,9 @@ export const Leaderboard: React.FC = () => {
       </div>
 
       <div className="pb-0">
-        <LeaderboardTable stats={stats} onTeamClick={handleTeamClick} />
+        <div ref={tableContainerRef} className="bg-surface p-4 -m-4 rounded-xl">
+           <LeaderboardTable stats={stats} onTeamClick={handleTeamClick} />
+        </div>
           
         {/* Share Section - New Design */}
         <div className="flex items-center justify-center pt-16 pb-4">
@@ -140,7 +140,7 @@ export const Leaderboard: React.FC = () => {
             <div className="flex flex-col md:flex-row items-center justify-center gap-8">
               <div className="w-full md:w-auto space-y-3">
                 <ShareButton 
-                  targetRef={storyShareRef} 
+                  targetRef={tableContainerRef} 
                   portalTarget={toastPortalRef}
                   buttonLabel="STORY FORMAT"
                   fileName={`Pickleball-Leaderboard-Story-${activeDivision}.jpg`}
@@ -152,7 +152,7 @@ export const Leaderboard: React.FC = () => {
 
               <div className="w-full md:w-auto space-y-3">
                 <ShareButton 
-                  targetRef={postShareRef} 
+                  targetRef={tableContainerRef} 
                   portalTarget={toastPortalRef}
                   buttonLabel="POST FORMAT"
                   fileName={`Pickleball-Leaderboard-Post-${activeDivision}.jpg`}
@@ -164,7 +164,7 @@ export const Leaderboard: React.FC = () => {
 
               <div className="w-full md:w-auto space-y-3">
                 <ShareButton 
-                  targetRef={storyShareRef} 
+                  targetRef={tableContainerRef} 
                   portalTarget={toastPortalRef}
                   buttonLabel="WHATSAPP"
                   fileName={`Pickleball-Leaderboard-WA-${activeDivision}.jpg`}
@@ -175,16 +175,6 @@ export const Leaderboard: React.FC = () => {
               </div>
             </div>
           </motion.div>
-        </div>
-      </div>
-
-      {/* Hidden containers for generation */}
-      <div className="absolute left-[-9999px] top-[-9999px] w-max">
-        <div ref={storyShareRef} className="w-fit">
-            <ShareableLeaderboard layout="story" division={activeDivision} entries={stats} />
-        </div>
-        <div ref={postShareRef} className="w-fit">
-            <ShareableLeaderboard layout="post" division={activeDivision} entries={stats} />
         </div>
       </div>
     </div>
