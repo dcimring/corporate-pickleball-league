@@ -1,7 +1,7 @@
 import React, { useState, forwardRef, useImperativeHandle } from 'react';
 import { createPortal } from 'react-dom';
 import { Share2, Loader2, Download, CheckCircle2, X, Smartphone, Share } from 'lucide-react';
-import { toBlob, toJpeg } from 'html-to-image';
+import { domToBlob } from 'modern-screenshot';
 import { clsx } from 'clsx';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -48,7 +48,7 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
   preferDownload = false,
   imageFormat = 'jpeg',
   imageQuality = 0.95,
-  pixelRatio = 2,
+  pixelRatio = 3, // Increased for sharper results with modern-screenshot
   tabIndex,
   shareTitle = 'Corporate Pickleball League',
   shareText = 'Check out the latest stats from the Corporate Pickleball League! 🥒🏆',
@@ -84,21 +84,25 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
       setLoading(true);
       onShareStart?.();
 
-      await new Promise(resolve => setTimeout(resolve, 200));
+      // Small delay to allow for any layout stabilization
+      await new Promise(resolve => setTimeout(resolve, 250));
 
       const exportOptions = {
-        cacheBust: true,
-        backgroundColor: '#f7f9fb',
-        pixelRatio,
+        scale: pixelRatio,
+        quality: imageQuality,
+        type: imageFormat === 'jpeg' ? 'image/jpeg' : 'image/png',
+        backgroundColor: '#fefefe', // Clean white background for transparency fallback
+        // Disable filters that might break capture in some browsers
+        filter: (domNode: Node) => {
+          if (domNode instanceof HTMLElement) {
+            // Hide any share buttons inside the capture area
+            return !domNode.classList.contains('match-share') && !domNode.classList.contains('no-export');
+          }
+          return true;
+        }
       };
 
-      const blob = imageFormat === 'jpeg'
-        ? await (async () => {
-            const dataUrl = await toJpeg(node, { ...exportOptions, quality: imageQuality });
-            const response = await fetch(dataUrl);
-            return response.blob();
-          })()
-        : await toBlob(node, exportOptions);
+      const blob = await domToBlob(node, exportOptions);
 
       if (!blob) throw new Error('Failed to generate image');
 
@@ -106,7 +110,7 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
       const extension = imageFormat === 'jpeg' ? 'jpg' : 'png';
       const baseName = fileName.replace(/\.(png|jpg|jpeg)$/i, '');
       const uniqueFileName = `${baseName}-${timestamp}.${extension}`;
-      const file = new File([blob], uniqueFileName, { type: imageFormat === 'jpeg' ? 'image/jpeg' : 'image/png' });
+      const file = new File([blob], uniqueFileName, { type: blob.type });
 
       const isMobileOrTablet = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
                               (navigator.maxTouchPoints > 0 && window.innerWidth < 1024);
