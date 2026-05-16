@@ -28,7 +28,8 @@ export const Leaderboard: React.FC = () => {
     const paramDiv = searchParams.get('division');
     if (paramDiv && divisions.includes(paramDiv)) return paramDiv;
     
-    // Default to Cayman Premier League or first available
+    // Default to Division A, then Cayman Premier League, or first available
+    if (divisions.includes('Division A')) return 'Division A';
     return divisions.includes('Cayman Premier League') ? 'Cayman Premier League' : divisions[0] || '';
   }, [loading, data.leaderboard, searchParams]);
 
