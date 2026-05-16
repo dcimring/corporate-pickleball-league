@@ -239,6 +239,8 @@ export const Matches: React.FC = () => {
                 targetRef={activeCardRef}
                 portalTarget={activeToastTarget || undefined}
                 hidden
+                pixelRatio={2}
+                imageQuality={0.8}
                 toastPosition="fixed"
                 onShareEnd={handleShareEnd}
                 fileName={`Match-${sharingMatch.team1}-vs-${sharingMatch.team2}-story.jpg`}
@@ -248,6 +250,8 @@ export const Matches: React.FC = () => {
                 targetRef={activeCardRef}
                 portalTarget={activeToastTarget || undefined}
                 hidden
+                pixelRatio={2}
+                imageQuality={0.8}
                 preferDownload
                 toastPosition="fixed"
                 onShareEnd={handleShareEnd}
@@ -258,6 +262,8 @@ export const Matches: React.FC = () => {
                 targetRef={activeCardRef}
                 portalTarget={activeToastTarget || undefined}
                 hidden
+                pixelRatio={2}
+                imageQuality={0.8}
                 toastPosition="fixed"
                 onShareEnd={handleShareEnd}
                 fileName={`Match-${sharingMatch.team1}-vs-${sharingMatch.team2}-post.jpg`}
@@ -267,6 +273,8 @@ export const Matches: React.FC = () => {
                 targetRef={activeCardRef}
                 portalTarget={activeToastTarget || undefined}
                 hidden
+                pixelRatio={2}
+                imageQuality={0.8}
                 preferDownload
                 toastPosition="fixed"
                 onShareEnd={handleShareEnd}
@@ -277,6 +285,8 @@ export const Matches: React.FC = () => {
                 targetRef={activeCardRef}
                 portalTarget={activeToastTarget || undefined}
                 hidden
+                pixelRatio={2}
+                imageQuality={0.8}
                 toastPosition="fixed"
                 onShareEnd={handleShareEnd}
                 fileName={`Match-WA-${sharingMatch.team1}-vs-${sharingMatch.team2}.jpg`}
@@ -286,6 +296,8 @@ export const Matches: React.FC = () => {
                 targetRef={activeCardRef}
                 portalTarget={activeToastTarget || undefined}
                 hidden
+                pixelRatio={2}
+                imageQuality={0.8}
                 preferDownload
                 toastPosition="fixed"
                 onShareEnd={handleShareEnd}

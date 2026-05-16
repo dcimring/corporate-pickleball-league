@@ -143,6 +143,8 @@ export const Leaderboard: React.FC = () => {
                   targetRef={tableContainerRef} 
                   portalTarget={toastPortalRef}
                   buttonLabel="STORY FORMAT"
+                  pixelRatio={2}
+                  imageQuality={0.8}
                   fileName={`Pickleball-Leaderboard-Story-${activeDivision}.jpg`}
                   shareText={`Check out the latest standings for ${activeDivision} in the Corporate Pickleball League! 🥒🏆`}
                   className="!w-full md:!w-64 !bg-navy !text-white !font-display !font-extrabold !text-[13px] !tracking-widest !rounded-full !py-4 !shadow-lg"
@@ -155,6 +157,8 @@ export const Leaderboard: React.FC = () => {
                   targetRef={tableContainerRef} 
                   portalTarget={toastPortalRef}
                   buttonLabel="POST FORMAT"
+                  pixelRatio={2}
+                  imageQuality={0.8}
                   fileName={`Pickleball-Leaderboard-Post-${activeDivision}.jpg`}
                   shareText={`We're climbing the leaderboard in the Corporate Pickleball League! 🔥`}
                   className="!w-full md:!w-64 !bg-yellow !text-navy !font-display !font-extrabold !text-[13px] !tracking-widest !rounded-full !py-4 !shadow-lg"
@@ -167,6 +171,8 @@ export const Leaderboard: React.FC = () => {
                   targetRef={tableContainerRef} 
                   portalTarget={toastPortalRef}
                   buttonLabel="WHATSAPP"
+                  pixelRatio={2}
+                  imageQuality={0.8}
                   fileName={`Pickleball-Leaderboard-WA-${activeDivision}.jpg`}
                   shareText={`Check out the ${activeDivision} standings! 🥒🏆\n\nSee more at: pickleball.ky`}
                   className="!w-full md:!w-64 !bg-[#25D366] !text-white !font-display !font-extrabold !text-[13px] !tracking-widest !rounded-full !py-4 !shadow-lg"
