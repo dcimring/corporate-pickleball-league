@@ -133,9 +133,9 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
               </div>
 
               <div className="col-pct flex justify-center">
-                <span className="mono text-[14px]">
-                  <strong className="text-navy font-bold">{(entry.winPct * 100).toFixed(0)}</strong>
-                  <span className="dim">%</span>
+                <span className="inline-flex items-center justify-center px-2.5 py-1 bg-navy/10 text-navy rounded-[4px] text-[13px] font-bold mono min-w-[48px]">
+                  {(entry.winPct * 100).toFixed(0)}
+                  <span className="text-[10px] opacity-60 ml-0.5">%</span>
                 </span>
               </div>
 
