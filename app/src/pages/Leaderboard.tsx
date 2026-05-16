@@ -84,7 +84,7 @@ export const Leaderboard: React.FC = () => {
       <div ref={toastPortalRef} className="fixed bottom-0 left-0 right-0 z-[300] pointer-events-none flex justify-center pb-6" />
 
       {/* Meta Banner - New Design */}
-      <div className="meta flex items-center justify-center flex-wrap gap-7 pt-[var(--header-gap-sm)] pb-[var(--header-gap-md)] px-0 text-navy-soft">
+      <div className="meta flex items-center justify-center flex-wrap gap-4 md:gap-7 pt-3 pb-4 md:pt-[var(--header-gap-sm)] md:pb-[var(--header-gap-md)] px-0 text-navy-soft">
         <AnimatePresence>
           {showTip && (
             <motion.div 

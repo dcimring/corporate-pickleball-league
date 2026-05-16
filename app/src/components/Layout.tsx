@@ -99,7 +99,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       <UpdateBanner />
 
       {/* Top Bar - New Design */}
-      <header className="topbar grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] items-center gap-4 py-4 px-6 md:px-[clamp(20px,4vw,56px)]">
+      <header className="topbar grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] items-center gap-2 md:gap-4 pt-3 pb-1 md:py-4 px-6 md:px-[clamp(20px,4vw,56px)]">
         <div className="topbar-side flex items-center">
           <div className="brand inline-flex items-center gap-3 py-1.5 px-3 rounded-full">
             <span className="brand-name mono text-[11px] text-navy-soft">Corporate Pickleball League</span>
@@ -125,7 +125,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
           })}
         </div>
 
-        <div className="topbar-side topbar-right flex items-center justify-end">
+        <div className="hidden md:flex topbar-side topbar-right items-center justify-end">
           {/* Theme icons could go here */}
         </div>
       </header>
@@ -136,8 +136,8 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         ) : (
           <>
             {!loading && activeDivision && (
-              <div className="page-head pt-[var(--header-gap-md)]">
-                <div className="page-head-row flex flex-col md:flex-row md:items-end justify-between gap-4 pb-[var(--header-gap-md)]">
+              <div className="page-head pt-2 md:pt-[var(--header-gap-md)]">
+                <div className="page-head-row flex flex-col md:flex-row md:items-end justify-between gap-2 md:gap-4 pb-3 md:pb-[var(--header-gap-md)]">
                   <h1 className="page-title font-display font-black text-[clamp(40px,5.4vw,68px)] leading-[0.95] tracking-[-0.02em] uppercase text-navy relative after:content-[''] after:block after:w-14 after:h-1.5 after:bg-yellow after:mt-4 after:rounded-sm">
                     {activePage === '/leaderboard' ? 'Standings' : 'Matches'}
                   </h1>
