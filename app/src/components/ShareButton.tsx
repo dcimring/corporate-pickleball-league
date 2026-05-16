@@ -140,7 +140,7 @@ export const ShareButton = forwardRef<ShareButtonHandle, ShareButtonProps>(({
         if (!isMobileOrTablet) {
           triggerToast({
             title: 'ASSET EXPORTED',
-            message: <>Check your <span className="font-bold underline decoration-secondary underline-offset-4">Downloads</span> folder to share.</>,
+            message: <>Check your <span className="font-bold underline decoration-yellow underline-offset-4">Downloads</span> folder to share.</>,
             icon: 'download'
           });
         }
@@ -257,33 +257,33 @@ const Toast: React.FC<{
           : (position === 'fixed' ? "fixed bottom-12 right-12" : "absolute bottom-full right-0 mb-6")
       )}
     >
-      <div className="bg-primary text-on-primary p-6 shadow-ambient relative overflow-hidden">
+      <div className="bg-navy text-white p-6 shadow-2xl relative overflow-hidden rounded-lg border border-white/10">
         {/* Magazine Texture Overlay */}
         <div className="absolute inset-0 opacity-[0.1] pointer-events-none mix-blend-overlay" 
              style={{ backgroundImage: `url("https://www.transparenttextures.com/patterns/stardust.png")` }} 
         />
         
         <div className="flex gap-6 relative z-10">
-          <div className="bg-white/10 p-4 self-start">
+          <div className="bg-white/10 p-4 self-start rounded-sm">
             {config.icon === 'download' ? (
-              <CheckCircle2 className="w-8 h-8 text-secondary" />
+              <CheckCircle2 className="w-8 h-8 text-yellow" />
             ) : (
-              <Share className="w-8 h-8 text-secondary" />
+              <Share className="w-8 h-8 text-yellow" />
             )}
           </div>
           
           <div className="flex-1 space-y-2 text-left">
-            <div className="label-md font-black tracking-widest text-secondary">
+            <div className="mono font-bold tracking-widest text-yellow text-[13px]">
               {config.title}
             </div>
-            <div className="body-md text-on-primary/80 leading-snug">
+            <div className="font-display font-medium text-white/80 leading-snug text-[14px]">
               {config.message}
             </div>
             
             {config.icon === 'download' && (
               <div className="pt-4 mt-4 border-t border-white/10 flex items-start gap-3">
-                <Smartphone className="w-5 h-5 text-secondary opacity-60 mt-0.5 flex-shrink-0" />
-                <p className="label-sm opacity-40 italic">
+                <Smartphone className="w-5 h-5 text-yellow opacity-60 mt-0.5 flex-shrink-0" />
+                <p className="mono text-[10px] opacity-40 italic">
                   Tip: Open this site on mobile for direct one-tap sharing.
                 </p>
               </div>
@@ -292,7 +292,7 @@ const Toast: React.FC<{
 
           <button 
             onClick={onClose}
-            className="text-white/20 hover:text-white transition-colors self-start"
+            className="text-white/20 hover:text-white transition-colors self-start p-1"
           >
             <X className="w-5 h-5" />
           </button>

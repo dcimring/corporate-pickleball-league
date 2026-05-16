@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
+import { Info, X } from 'lucide-react';
 import { LeaderboardTable } from '../components/LeaderboardTable';
 import { ShareButton } from '../components/ShareButton';
 import { ShareableLeaderboard } from '../components/ShareableLeaderboard';
@@ -11,6 +12,14 @@ export const Leaderboard: React.FC = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { data, loading } = useLeagueData();
+  const [showTip, setShowTip] = useState(() => {
+    return sessionStorage.getItem('leaderboard_tip_dismissed') !== 'true';
+  });
+
+  const handleDismissTip = () => {
+    setShowTip(false);
+    sessionStorage.setItem('leaderboard_tip_dismissed', 'true');
+  };
 
   // Unified Active Division Logic - Derive directly from URL to prevent dual-render flicker
   const activeDivision = useMemo(() => {
@@ -70,93 +79,103 @@ export const Leaderboard: React.FC = () => {
   };
 
   return (
-    <div className="space-y-0 relative overflow-hidden">
+    <div className="space-y-0 relative">
       {/* Portal target for Share Toasts */}
       <div ref={toastPortalRef} className="fixed bottom-0 left-0 right-0 z-[300] pointer-events-none flex justify-center pb-6" />
 
-      {/* Page-Specific Content below Layout Header */}
-      <div className="pt-0 pb-4 px-6 md:px-12">
-        {/* Editorial Ticker - No Background */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          key={`ticker-${activeDivision}-${latestMatchDate}`}
-          className="w-full py-1 flex items-center justify-center relative overflow-hidden"
-        >
-          <p className="relative z-10 label-sm text-primary/60 text-center flex items-center gap-4">
-            <span className="w-1.5 h-1.5 bg-secondary shadow-[0_0_8px_rgba(255,199,44,0.8)] animate-pulse" />
-            <span>
-              {latestMatchDate ? `DATA CURRENT THROUGH ${formatDate(latestMatchDate)}` : 'AWAITING MATCH DATA'}
-            </span>
-            <span className="w-1.5 h-1.5 bg-secondary shadow-[0_0_8px_rgba(255,199,44,0.8)] animate-pulse" />
-          </p>
-        </motion.div>
+      {/* Meta Banner - New Design */}
+      <div className="meta flex items-center justify-center flex-wrap gap-4 md:gap-7 pt-3 pb-4 md:pt-[var(--header-gap-sm)] md:pb-5 px-0 text-navy-soft">
+        <AnimatePresence>
+          {showTip && (
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="meta-tip inline-flex items-center gap-3 py-2 px-3.5 bg-card border border-rule rounded-full text-[11px] shadow-sm"
+            >
+              <Info size={14} className="text-navy-faint" />
+              <span className="mono font-bold uppercase">Tip: <span className="font-medium uppercase">Click team name to see their matches</span></span>
+              <button 
+                onClick={handleDismissTip}
+                className="ml-1 p-0.5 hover:bg-rule rounded-full transition-colors group"
+                aria-label="Dismiss tip"
+              >
+                <X size={12} className="text-navy-faint group-hover:text-navy" />
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+        <div className="meta-asof inline-flex items-center gap-3 text-navy-soft mono text-[11px]">
+          <span className="meta-dot w-1.5 h-1.5 bg-yellow rounded-sm" />
+          <span>DATA CURRENT THROUGH {latestMatchDate ? formatDate(latestMatchDate) : 'MAY 2026'}</span>
+          <span className="meta-dot w-1.5 h-1.5 bg-yellow rounded-sm" />
+        </div>
       </div>
 
-      <div className="px-0 md:px-12 pt-6 pb-12 space-y-8">
+      <div className="pb-0">
         <LeaderboardTable stats={stats} onTeamClick={handleTeamClick} />
           
-          {/* Share Section - Editorial Layout */}
-          <div className="flex items-center justify-center py-12">
-            <motion.div 
-              ref={shareCardRef}
-              initial={{ y: 20, opacity: 0 }}
-              animate={shareCardAnimated ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
-              transition={{ duration: 0.7, ease: "easeOut" }}
-              className="w-full relative overflow-hidden p-8 md:p-12 text-center space-y-8"
-            >
-              <div className="space-y-2 max-w-2xl mx-auto">
-                <p className="label-md text-secondary font-black tracking-[0.2em]">
-                  EDITORIAL EXCLUSIVE
-                </p>
-                <h4 className="display-sm text-primary uppercase">
-                  SHARE THE GLORY
-                </h4>
-                <p className="body-lg text-on-surface-variant opacity-60">
-                  Export high-fidelity standings cards optimized for your favorite social platforms.
-                </p>
+        {/* Share Section - New Design */}
+        <div className="flex items-center justify-center pt-16 pb-4">
+          <motion.div 
+            ref={shareCardRef}
+            initial={{ y: 20, opacity: 0 }}
+            animate={shareCardAnimated ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+            className="w-full relative overflow-hidden p-8 md:p-12 text-center space-y-10"
+          >
+            <div className="space-y-3 max-w-2xl mx-auto">
+              <p className="mono text-yellow font-black tracking-[0.2em] text-[12px]">
+                EDITORIAL EXCLUSIVE
+              </p>
+              <h4 className="font-display font-black text-[clamp(32px,4vw,48px)] text-navy uppercase leading-none tracking-tight">
+                SHARE THE GLORY
+              </h4>
+              <p className="font-display font-medium text-navy-faint text-[16px] max-w-lg mx-auto leading-relaxed">
+                Export high-fidelity standings cards optimized for your favorite social platforms.
+              </p>
+            </div>
+            
+            <div className="flex flex-col md:flex-row items-center justify-center gap-8">
+              <div className="w-full md:w-auto space-y-3">
+                <ShareButton 
+                  targetRef={storyShareRef} 
+                  portalTarget={toastPortalRef}
+                  buttonLabel="STORY FORMAT"
+                  fileName={`Pickleball-Leaderboard-Story-${activeDivision}.jpg`}
+                  shareText={`Check out the latest standings for ${activeDivision} in the Corporate Pickleball League! 🥒🏆`}
+                  className="!w-full md:!w-64 !bg-navy !text-white !font-display !font-extrabold !text-[13px] !tracking-widest !rounded-full !py-4 !shadow-lg"
+                />
+                <p className="mono text-[10px] opacity-40">PORTRAIT 9:16</p>
               </div>
-              
-              <div className="flex flex-col md:flex-row items-center justify-center gap-6">
-                <div className="w-full md:w-auto space-y-2">
-                  <ShareButton 
-                    targetRef={storyShareRef} 
-                    portalTarget={toastPortalRef}
-                    buttonLabel="STORY FORMAT"
-                    fileName={`Pickleball-Leaderboard-Story-${activeDivision}.jpg`}
-                    shareText={`Check out the latest standings for ${activeDivision} in the Corporate Pickleball League! 🥒🏆`}
-                    className="!w-full md:!w-64 !btn-primary"
-                  />
-                  <p className="label-sm opacity-40">PORTRAIT 9:16</p>
-                </div>
 
-                <div className="w-full md:w-auto space-y-2">
-                  <ShareButton 
-                    targetRef={postShareRef} 
-                    portalTarget={toastPortalRef}
-                    buttonLabel="POST FORMAT"
-                    fileName={`Pickleball-Leaderboard-Post-${activeDivision}.jpg`}
-                    shareText={`We're climbing the leaderboard in the Corporate Pickleball League! 🔥`}
-                    className="!w-full md:!w-64 !btn-secondary"
-                  />
-                  <p className="label-sm opacity-40">LANDSCAPE 1.91:1</p>
-                </div>
-
-                <div className="w-full md:w-auto space-y-2">
-                  <ShareButton 
-                    targetRef={storyShareRef} 
-                    portalTarget={toastPortalRef}
-                    buttonLabel="WHATSAPP"
-                    fileName={`Pickleball-Leaderboard-WA-${activeDivision}.jpg`}
-                    shareText={`Check out the ${activeDivision} standings! 🥒🏆\n\nSee more at: pickleball.ky`}
-                    className="!w-full md:!w-64 !inline-flex !items-center !justify-center !px-6 !py-3 !bg-[#25D366] !text-white !font-heading !font-bold !rounded-[4px] !hover:opacity-90 !transition-all !shadow-ambient"
-                  />
-                  <p className="label-sm opacity-40">PORTRAIT 9:16</p>
-                </div>
+              <div className="w-full md:w-auto space-y-3">
+                <ShareButton 
+                  targetRef={postShareRef} 
+                  portalTarget={toastPortalRef}
+                  buttonLabel="POST FORMAT"
+                  fileName={`Pickleball-Leaderboard-Post-${activeDivision}.jpg`}
+                  shareText={`We're climbing the leaderboard in the Corporate Pickleball League! 🔥`}
+                  className="!w-full md:!w-64 !bg-yellow !text-navy !font-display !font-extrabold !text-[13px] !tracking-widest !rounded-full !py-4 !shadow-lg"
+                />
+                <p className="mono text-[10px] opacity-40">LANDSCAPE 1.91:1</p>
               </div>
-            </motion.div>
-          </div>
+
+              <div className="w-full md:w-auto space-y-3">
+                <ShareButton 
+                  targetRef={storyShareRef} 
+                  portalTarget={toastPortalRef}
+                  buttonLabel="WHATSAPP"
+                  fileName={`Pickleball-Leaderboard-WA-${activeDivision}.jpg`}
+                  shareText={`Check out the ${activeDivision} standings! 🥒🏆\n\nSee more at: pickleball.ky`}
+                  className="!w-full md:!w-64 !bg-[#25D366] !text-white !font-display !font-extrabold !text-[13px] !tracking-widest !rounded-full !py-4 !shadow-lg"
+                />
+                <p className="mono text-[10px] opacity-40">PORTRAIT 9:16</p>
+              </div>
+            </div>
+          </motion.div>
         </div>
+      </div>
 
       {/* Hidden containers for generation */}
       <div className="absolute left-[-9999px] top-[-9999px] w-max">
