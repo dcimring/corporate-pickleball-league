@@ -127,7 +127,7 @@ export const Matches: React.FC = () => {
   return (
     <div className="space-y-0 relative">
       {/* Meta Banner - Shared with Leaderboard */}
-      <div className="meta flex items-center justify-center flex-wrap gap-4 md:gap-7 pt-3 pb-4 md:pt-[var(--header-gap-sm)] md:pb-[var(--header-gap-md)] px-0 text-navy-soft">
+      <div className="meta flex items-center justify-center flex-wrap gap-4 md:gap-7 pt-3 pb-4 md:pt-[var(--header-gap-sm)] md:pb-5 px-0 text-navy-soft">
         <AnimatePresence>
           {showTip && (
             <motion.div 
