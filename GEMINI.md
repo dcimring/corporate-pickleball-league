@@ -22,7 +22,7 @@ The **Corporate Pickleball League** is a responsive web application built to man
 -   `app/`: Main application source code.
     -   `src/components/`: Reusable UI components (e.g., `MatchCard.tsx`, `Layout.tsx`, `LeaderboardTable.tsx`, `ConnectionError.tsx`, `ShareButton.tsx`).
     -   `src/pages/`: Main application views (`Leaderboard`, `Matches`).
-    -   `app/docs/`: Detailed project documentation, feature strategies, and architectural plans (e.g., `ARCHITECTURE.md`, `DOCS_INGESTION.md`, `design.md`, `update-frequency-strategy.md`).
+    -   `app/docs/`: Detailed project documentation, feature strategies, and architectural plans (e.g., `ARCHITECTURE.md`, `DOCS_INGESTION.md`, `design.md`, `iframe-integration.md`, `update-frequency-strategy.md`).
 -   `ingest_matches.py`: CLI tool for CSV ingestion.
 -   `run_ingest_service.py`: Automated ingestion service.
 -   `GoogleAppsScript.js`: Gmail monitoring script (see `DOCS_INGESTION.md` for more details).
