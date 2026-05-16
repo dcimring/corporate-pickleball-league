@@ -97,7 +97,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       data-is-iframe={isIframe ? "true" : "false"}
     >
       {!isIframe && <TopFrame />}
-      <UpdateBanner />
+      <UpdateBanner isIframe={isIframe} />
 
       {/* Top Bar - New Design */}
       <header className="topbar grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] items-center gap-2 md:gap-4 pt-3 pb-1 md:py-4 px-6 md:px-[clamp(20px,4vw,56px)]">

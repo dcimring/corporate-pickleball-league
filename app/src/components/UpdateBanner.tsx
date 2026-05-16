@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { RefreshCw, X } from 'lucide-react';
 
-export const UpdateBanner: React.FC = () => {
+export const UpdateBanner: React.FC<{ isIframe?: boolean }> = ({ isIframe }) => {
   const [needRefresh, setNeedRefresh] = useState(false);
   const initialVersionRef = useRef<string>(String(__BUILD_ID__));
   const lastCheckRef = useRef<number>(0);
@@ -62,7 +62,7 @@ export const UpdateBanner: React.FC = () => {
           initial={{ opacity: 0, y: -48 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -48 }}
-          className="sticky top-[36px] left-0 right-0 z-[500] bg-navy shadow-lg overflow-hidden"
+          className={`sticky ${isIframe ? 'top-0' : 'top-[36px]'} left-0 right-0 z-[500] bg-navy shadow-lg overflow-hidden`}
           onClick={handleRefresh}
         >
           <div className="w-full px-6 h-12 flex items-center justify-between cursor-pointer group">
