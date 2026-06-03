@@ -54,8 +54,9 @@ The "Editorial Athlete" aesthetic is designed for high-contrast, professional sp
   - **Mobile Padding:** A 2px horizontal padding (`px-2`) is applied on mobile views to prevent the table from touching the screen edges.
 
 ## Data Ingestion
-- **Source:** CSV files emailed to a specific address.
+- **Source:** CSV files emailed to a specific address or manual CLI input.
 - **Automation:** `run_ingest_service.py` or Google Apps Script (`GoogleAppsScript.js`) polls for new emails every 15 mins.
+- **Manual Import Utility:** `manual_import.py` is a Python CLI utility designed for administrators to manually ingest results from a local CSV file or inline strings. It supports `--dry-run` validation, case-insensitive division mapping (e.g. CPL -> Cayman Premier League), case-insensitive team matching with auto-provisioning for unrecognized teams, game count validations, and distinct `append` (default, duplicate-checked) and `replace` database update modes.
 - **Validation:** Scripts validate total game count (8 or 9 for CPL division, 6 for others) before ingestion. CPL matches tied 4-4 result in a 9th game.
 - **Database:** Parsed results are upserted into Supabase.
 - **Detailed Docs:** See `DOCS_INGESTION.md` in this directory for a full breakdown of the Google Apps Script workflow.
