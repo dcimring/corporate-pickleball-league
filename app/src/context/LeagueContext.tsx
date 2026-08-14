@@ -67,12 +67,23 @@ export const LeagueProvider: React.FC<LeagueProviderProps> = ({
     loadData();
 
     // Background refresh
-    if (refreshInterval > 0) {
-      const interval = setInterval(() => {
-        loadData(true); // true = background refresh (no loading spinner)
-      }, refreshInterval);
-      return () => clearInterval(interval);
-    }
+    const interval = refreshInterval > 0
+      ? setInterval(() => {
+          loadData(true); // true = background refresh (no loading spinner)
+        }, refreshInterval)
+      : null;
+
+    // When Safari restores the page from the back-forward cache, refresh data
+    // in the background instead of the old full window.location.reload()
+    const handlePageShow = (event: PageTransitionEvent) => {
+      if (event.persisted) loadData(true);
+    };
+    window.addEventListener('pageshow', handlePageShow);
+
+    return () => {
+      if (interval) clearInterval(interval);
+      window.removeEventListener('pageshow', handlePageShow);
+    };
   }, [refreshInterval]);
 
   return (

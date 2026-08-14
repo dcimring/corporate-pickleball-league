@@ -28,13 +28,8 @@ if ('serviceWorker' in navigator) {
   });
 }
 
-// Handle Safari Back-Forward Cache (bfcache)
-// If the page is restored from memory, trigger a hard reload to pick up the latest state
-window.addEventListener('pageshow', (event) => {
-  if (event.persisted) {
-    window.location.reload();
-  }
-});
+// Safari back-forward cache (bfcache) restores are handled in LeagueContext,
+// which refetches data in the background instead of hard-reloading the page.
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
