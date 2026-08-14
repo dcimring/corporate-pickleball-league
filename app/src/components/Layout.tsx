@@ -1,6 +1,8 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import { useLocation, useSearchParams, useNavigate } from 'react-router-dom';
 import { useLeagueData } from '../context/LeagueContext';
+import { useActiveDivision } from '../hooks/useActiveDivision';
+import { SEASON_LABEL } from '../lib/config';
 import { ConnectionError } from './ConnectionError';
 import { UpdateBanner } from './UpdateBanner';
 import { TopFrame } from './TopFrame';
@@ -11,23 +13,9 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { error, refresh, loading, data } = useLeagueData();
+  const { error, refresh, loading } = useLeagueData();
   const [isDivMenuOpen, setIsDivMenuOpen] = React.useState(false);
-
-  const divisions = useMemo(() => {
-    if (loading || !data.leaderboard) return [];
-    return Object.keys(data.leaderboard);
-  }, [loading, data.leaderboard]);
-
-  const activeDivision = useMemo(() => {
-    if (loading || divisions.length === 0) return '';
-    const paramDiv = searchParams.get('division');
-    if (paramDiv && divisions.includes(paramDiv)) return paramDiv;
-    
-    // Default to Division A, then Cayman Premier League, or first available
-    if (divisions.includes('Division A')) return 'Division A';
-    return divisions.includes('Cayman Premier League') ? 'Cayman Premier League' : divisions[0] || '';
-  }, [loading, divisions, searchParams]);
+  const { divisions, activeDivision } = useActiveDivision();
 
   const activePage = location.pathname === '/' ? '/leaderboard' : location.pathname;
 
@@ -145,7 +133,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                     <h1 className="page-title font-display font-black text-[clamp(40px,5.4vw,68px)] leading-[0.95] tracking-[-0.02em] uppercase text-navy relative after:content-[''] after:block after:w-14 after:h-1.5 after:bg-yellow after:mt-4 after:rounded-sm">
                       {activePage === '/leaderboard' ? 'Standings' : 'Matches'}
                     </h1>
-                    <span className="page-season mono text-navy-faint pb-1">Summer 2026</span>
+                    <span className="page-season mono text-navy-faint pb-1">{SEASON_LABEL}</span>
                   </div>
                 )}
                 
