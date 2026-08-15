@@ -65,7 +65,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick, onShar
       
       {/* Match Header */}
       <div className="match-head flex items-center justify-between gap-3 flex-shrink-0">
-        <span className="match-date text-navy-faint mono text-[11px]">{formatDate(match.date)}</span>
+        <span className="match-date text-navy-faint mono text-[11px] whitespace-nowrap">{formatDate(match.date)}</span>
         <div className="match-head-right flex items-center gap-3">
           <div className="match-pts text-navy-faint text-[12px] mono">
             <strong className={clsx("transition-colors", isWin1 ? "text-navy font-bold" : "text-navy-faint font-semibold")}>{match.team1Points}</strong>
@@ -151,10 +151,10 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick, onShar
       {/* Match Footer */}
       <div className="match-foot flex flex-col gap-2.5 flex-shrink-0">
         <MarginBar wins1={match.team1Wins} wins2={match.team2Wins} isWin1={isWin1} />
-        <div className="match-foot-meta flex items-center gap-2.5 text-navy-faint text-[11px] mono">
-          <span>Winner: <strong className="font-bold text-navy uppercase">{isWin1 ? match.team1 : match.team2}</strong></span>
+        <div className="match-foot-meta flex flex-wrap items-center gap-x-2.5 gap-y-1 text-navy-faint text-[11px] mono">
+          <span className="whitespace-nowrap">Winner: <strong className="font-bold text-navy uppercase">{isWin1 ? match.team1 : match.team2}</strong></span>
           <span className="match-foot-sep text-rule-3 opacity-50">|</span>
-          <span>{match.team1Wins + match.team2Wins} Games Played</span>
+          <span className="whitespace-nowrap">{match.team1Wins + match.team2Wins} Games Played</span>
         </div>
       </div>
     </div>

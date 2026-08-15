@@ -94,7 +94,7 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
               aria-label={isActive
                 ? `${SORT_LABELS[col.key]}, sorted ${sortConfig.direction === 'asc' ? 'ascending' : 'descending'}`
                 : `Sort by ${SORT_LABELS[col.key]}`}
-              className={`th ${col.className} flex items-center gap-1.5 mono text-[11px] ${isActive ? 'text-navy' : 'text-navy-faint hover:text-navy-soft'}`}
+              className={`th ${col.className} flex items-center gap-1.5 mono text-[11px] whitespace-nowrap ${isActive ? 'text-navy' : 'text-navy-faint hover:text-navy-soft'}`}
             >
               {col.desktop === col.mobile ? col.desktop : (
                 <>
@@ -138,11 +138,11 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
                 >
                   {entry.team}
                 </button>
-                {isFeatured && <span className="lb-pill self-start inline-flex items-center px-2 py-0.5 bg-yellow text-navy rounded-sm text-[9.5px] font-semibold mono">Top of the table</span>}
+                {isFeatured && <span className="lb-pill self-start inline-flex items-center px-2 py-0.5 bg-yellow text-navy rounded-sm text-[9.5px] font-semibold mono whitespace-nowrap">Top of the table</span>}
               </div>
 
               <div className="col-wl flex justify-center">
-                <span className="mono text-[14px]">
+                <span className="mono text-[14px] whitespace-nowrap">
                   <strong className="text-navy font-bold">{entry.wins}</strong>
                   <span className="md:hidden text-navy-faint opacity-50">-</span>
                   <span className="hidden md:inline dim mx-1">—</span>
@@ -177,7 +177,7 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
               </div>
 
               <div className="col-pts flex justify-center">
-                <span className="mono text-[14px]">
+                <span className="mono text-[14px] whitespace-nowrap">
                   <strong className="text-navy font-bold">{entry.pointsFor}</strong>
                   <span className="hidden md:inline">
                     <span className="dim mx-1">/</span>
@@ -197,9 +197,9 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
         })}
       </div>
 
-      <footer className="lb-foot flex items-center justify-between py-4 px-1.25 md:px-5.5 bg-card-tint border-t border-rule text-navy-faint text-[11px] mono">
-        <span>{stats.length} teams · Standings</span>
-        <span>Sorted by {SORT_LABELS[sortConfig.key] ?? sortConfig.key} ({sortConfig.direction === 'asc' ? 'ascending' : 'descending'})</span>
+      <footer className="lb-foot flex flex-wrap items-center justify-between gap-x-4 gap-y-1 py-4 px-1.25 md:px-5.5 bg-card-tint border-t border-rule text-navy-faint text-[11px] mono">
+        <span className="whitespace-nowrap">{stats.length} teams · Standings</span>
+        <span className="whitespace-nowrap">Sorted by {SORT_LABELS[sortConfig.key] ?? sortConfig.key} ({sortConfig.direction === 'asc' ? 'ascending' : 'descending'})</span>
       </footer>
     </section>
   );
