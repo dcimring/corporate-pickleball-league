@@ -240,13 +240,11 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         )}
       </main>
 
-      <footer className="page-foot flex flex-col md:flex-row items-center justify-between gap-4 py-6 md:py-8 px-5 md:px-[clamp(20px,4vw,56px)] max-w-[1480px] mx-auto w-full text-navy-faint text-[11px]">
-        <div className="flex flex-col md:flex-row items-center gap-4">
-          <div className="mono font-bold tracking-[0.2em] flex items-center gap-1.5 uppercase">
-            Leaderboard module built with <span className="normal-case text-[14px]">❤️</span> in Cayman by <a href="https://danielcimring.com" target="_blank" rel="noopener noreferrer" className="text-navy-soft hover:text-yellow transition-colors underline decoration-yellow/30 underline-offset-4 decoration-2">Daniel Cimring</a>
-          </div>
+      <footer className="page-foot flex flex-col items-center justify-center gap-2 py-6 md:py-8 px-5 md:px-[clamp(20px,4vw,56px)] max-w-[1480px] mx-auto w-full text-navy-faint text-center">
+        <div className="mono font-medium tracking-[0.1em] text-[11px] uppercase">
+          Leaderboard module built with <span className="normal-case text-[13px]">❤️</span> in Cayman by <a href="https://danielcimring.com" target="_blank" rel="noopener noreferrer" className="text-navy-soft hover:text-yellow transition-colors underline decoration-yellow/30 underline-offset-4 decoration-2">Daniel Cimring</a>
         </div>
-        <p className="mono uppercase tracking-widest opacity-40">
+        <p className="mono uppercase tracking-widest text-[10px] opacity-40">
           Build: {new Date(__BUILD_TIME__).toLocaleString('en-US', { timeZone: 'America/Cayman', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false }).replace(/, /g, '.').replace(/[/:]/g, '.')}
         </p>
       </footer>
