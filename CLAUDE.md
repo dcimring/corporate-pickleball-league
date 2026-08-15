@@ -23,12 +23,14 @@ see `app/docs/iframe-integration.md`).
   AA-contrast tokens, fonts via `<link>`, shared `useActiveDivision` hook /
   `lib/format.ts` / `lib/config.ts` (season label), bfcache restore now
   background-refetches instead of hard reloading.
-- **Next step: visual design pass** (user-requested). Direction not yet chosen —
-  propose directions to the user before restyling. Current aesthetic
-  ("Editorial Athlete") is documented in `app/docs/design.md`; design tokens
-  live in `app/src/index.css` (`@theme` block **and** duplicated in `:root` —
-  keep both in sync; `[data-theme="court"|"dark"]` variants exist but no
-  theme switcher UI is wired up).
+- **Visual design pass: done.** After comparing mockup directions, the user chose
+  to keep the "Editorial Athlete" aesthetic but on a **pure-white ground** so the
+  iframe embed blends seamlessly into the white pickleball.ky parent page (body
+  gradients removed; a bolder "Court Paint" restyle was built and rolled back —
+  user preferred the original). Aesthetic is documented in `app/docs/design.md`;
+  design tokens live in `app/src/index.css` (`@theme` block **and** duplicated in
+  `:root` — keep both in sync; `[data-theme="court"|"dark"]` variants exist but
+  no theme switcher UI is wired up). Keep the ground white — no tints/gradients.
 
 ## Non-obvious constraints
 

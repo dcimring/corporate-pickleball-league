@@ -15,8 +15,8 @@
   /* AA-contrast gold for small yellow text on light backgrounds */
   --color-yellow-deep: #8c6d1f;
   
-  --color-surface: #eef2f7;
-  --color-surface-2: #e8edf3;
+  --color-surface: #ffffff;
+  --color-surface-2: #ffffff;
   --color-card: var(--card);
   --color-card-tint: var(--card-tint);
   --color-surface-container: #ffffff;
@@ -58,8 +58,8 @@
   --yellow-deep: #8c6d1f;
   --yellow-soft: #ffe18a;
   --yellow-glow: #fff0c2;
-  --bg: #eef2f7;
-  --bg-2: #e8edf3;
+  --bg: #ffffff;
+  --bg-2: #ffffff;
   --card: #ffffff;
   --card-tint: #f6f8fb;
   --rule: rgba(20, 58, 120, 0.08);
@@ -129,10 +129,8 @@
     font-family: 'Archivo', system-ui, sans-serif;
     font-weight: 600;
     color: var(--navy);
-    background:
-      radial-gradient(1200px 600px at 80% -20%, var(--yellow-glow) 0%, transparent 60%),
-      linear-gradient(180deg, #ffffff 0%, var(--bg) 12%, var(--bg-2) 85%, #ffffff 100%);
-    background-attachment: fixed;
+    /* Pure white ground so the pickleball.ky iframe embed blends seamlessly */
+    background: var(--bg);
     letter-spacing: -0.005em;
     -webkit-font-smoothing: antialiased;
     @apply antialiased;
