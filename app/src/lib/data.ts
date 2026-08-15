@@ -170,12 +170,24 @@ const fetchLeagueDataRaw = async (): Promise<LeagueData> => {
   };
 };
 
-export const fetchLeagueData = async (): Promise<LeagueData> => {
+const TIMEOUT_MS = 12000;
+
+const fetchWithTimeout = (): Promise<LeagueData> => {
+  let timer: ReturnType<typeof setTimeout>;
   const timeout = new Promise<never>((_, reject) => {
-      setTimeout(() => reject(new Error('Connection timed out')), 5000);
+    timer = setTimeout(() => reject(new Error('Connection timed out')), TIMEOUT_MS);
   });
 
-  return Promise.race([fetchLeagueDataRaw(), timeout]);
+  return Promise.race([fetchLeagueDataRaw(), timeout]).finally(() => clearTimeout(timer));
+};
+
+export const fetchLeagueData = async (): Promise<LeagueData> => {
+  try {
+    return await fetchWithTimeout();
+  } catch {
+    // One retry for flaky mobile connections before surfacing the error screen
+    return fetchWithTimeout();
+  }
 };
 
 // Keep a placeholder for initial render if needed, or remove if we fully switch to async

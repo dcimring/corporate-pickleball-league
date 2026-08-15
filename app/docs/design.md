@@ -11,7 +11,7 @@ The system uses a high-contrast palette built around Navy and Yellow, with varyi
 | :--- | :--- | :--- |
 | `navy` | `#005596` | Primary brand color, body text |
 | `yellow` | `#ffc93c` | Primary accent, highlights, active states |
-| `surface` | `#eef2f7` | Main background color |
+| `surface` | `#ffffff` | Main background color (pure white so the pickleball.ky iframe embed blends seamlessly with the parent page — do not tint) |
 | `card` | `#ffffff` | Background for cards and containers |
 
 ### Semantic Colors
@@ -42,7 +42,11 @@ The design uses a modern, bold typographic stack to create an editorial feel.
 - **Rules:** Light borders (`rgba(20, 58, 120, 0.08)`) are used to separate sections without adding visual weight.
 
 ### Layout Patterns
-- **Gradients:** Use of radial and linear gradients on the body to create a sense of depth and focus.
+- **Ground:** Flat pure-white body (`--bg: #ffffff`). The body previously carried
+  radial/linear gradients; these were removed (Aug 2026) so the module blends
+  seamlessly into the white pickleball.ky parent page when embedded — separation
+  now comes entirely from card shadows and rules. Do not reintroduce a tinted or
+  gradient ground.
 - **Grid:** Responsive grid for match cards and leaderboard rows.
 - **Mobile Optimization:** Semantic grid areas for leaderboard rows on mobile to ensure data remains legible.
 

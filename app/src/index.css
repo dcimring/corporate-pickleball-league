@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+/* Fonts are loaded via <link> tags in index.html (non-render-blocking) */
 @import "tailwindcss";
 
 @theme {
@@ -6,15 +6,17 @@
   --color-navy: #005596;
   --color-navy-deep: #005596;
   --color-navy-soft: #2a528f;
-  --color-navy-faint: #8d9fc1;
-  --color-navy-faint-2: #b6c2d9;
-  
+  --color-navy-faint: #5a6f99;
+  --color-navy-faint-2: #8494ad;
+
   --color-yellow: #ffc93c;
   --color-yellow-soft: #ffe18a;
   --color-yellow-glow: #fff0c2;
+  /* AA-contrast gold for small yellow text on light backgrounds */
+  --color-yellow-deep: #8c6d1f;
   
-  --color-surface: #eef2f7;
-  --color-surface-2: #e8edf3;
+  --color-surface: #ffffff;
+  --color-surface-2: #ffffff;
   --color-card: var(--card);
   --color-card-tint: var(--card-tint);
   --color-surface-container: #ffffff;
@@ -50,13 +52,14 @@
   --navy: #005596;
   --navy-deep: #0b2554;
   --navy-soft: #2a528f;
-  --navy-faint: #8d9fc1;
-  --navy-faint-2: #b6c2d9;
+  --navy-faint: #5a6f99;
+  --navy-faint-2: #8494ad;
   --yellow: #ffc93c;
+  --yellow-deep: #8c6d1f;
   --yellow-soft: #ffe18a;
   --yellow-glow: #fff0c2;
-  --bg: #eef2f7;
-  --bg-2: #e8edf3;
+  --bg: #ffffff;
+  --bg-2: #ffffff;
   --card: #ffffff;
   --card-tint: #f6f8fb;
   --rule: rgba(20, 58, 120, 0.08);
@@ -126,10 +129,8 @@
     font-family: 'Archivo', system-ui, sans-serif;
     font-weight: 600;
     color: var(--navy);
-    background:
-      radial-gradient(1200px 600px at 80% -20%, var(--yellow-glow) 0%, transparent 60%),
-      linear-gradient(180deg, #ffffff 0%, var(--bg) 12%, var(--bg-2) 85%, #ffffff 100%);
-    background-attachment: fixed;
+    /* Pure white ground so the pickleball.ky iframe embed blends seamlessly */
+    background: var(--bg);
     letter-spacing: -0.005em;
     -webkit-font-smoothing: antialiased;
     @apply antialiased;

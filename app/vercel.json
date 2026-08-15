@@ -8,16 +8,16 @@
   ],
   "headers": [
     {
-      "source": "/(.*)", 
+      "source": "/((?!.*\\.).*)",
       "headers": [
         {
-          "key": "Clear-Site-Data",
-          "value": "\"cache\""
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
         }
       ]
     },
     {
-      "source": "/(sw|service-worker|version).json",
+      "source": "/(index\\.html|version\\.json|sw\\.js|service-worker\\.js)",
       "headers": [
         {
           "key": "Cache-Control",

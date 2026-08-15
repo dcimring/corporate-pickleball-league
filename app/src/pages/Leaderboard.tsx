@@ -1,16 +1,19 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import { Info, X } from 'lucide-react';
 import { LeaderboardTable } from '../components/LeaderboardTable';
 import { ShareButton } from '../components/ShareButton';
 import { LoadingState } from '../components/LoadingState';
 import { useLeagueData } from '../context/LeagueContext';
+import { useActiveDivision } from '../hooks/useActiveDivision';
+import { formatMatchDate, getLatestMatchDate } from '../lib/format';
+import { SEASON_LABEL } from '../lib/config';
 
 export const Leaderboard: React.FC = () => {
-  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { data, loading } = useLeagueData();
+  const { activeDivision } = useActiveDivision();
   const [showTip, setShowTip] = useState(() => {
     return sessionStorage.getItem('leaderboard_tip_dismissed') !== 'true';
   });
@@ -19,18 +22,6 @@ export const Leaderboard: React.FC = () => {
     setShowTip(false);
     sessionStorage.setItem('leaderboard_tip_dismissed', 'true');
   };
-
-  // Unified Active Division Logic - Derive directly from URL to prevent dual-render flicker
-  const activeDivision = useMemo(() => {
-    if (loading || !data.leaderboard) return '';
-    const divisions = Object.keys(data.leaderboard);
-    const paramDiv = searchParams.get('division');
-    if (paramDiv && divisions.includes(paramDiv)) return paramDiv;
-    
-    // Default to Division A, then Cayman Premier League, or first available
-    if (divisions.includes('Division A')) return 'Division A';
-    return divisions.includes('Cayman Premier League') ? 'Cayman Premier League' : divisions[0] || '';
-  }, [loading, data.leaderboard, searchParams]);
 
   const tableContainerRef = useRef<HTMLDivElement>(null);
   const shareCardRef = useRef<HTMLDivElement>(null);
@@ -60,22 +51,7 @@ export const Leaderboard: React.FC = () => {
 
   const stats = data.leaderboard[activeDivision] || [];
 
-  const divisionMatches = data.matches[activeDivision] || [];
-  const latestMatchDate = divisionMatches.length > 0 
-    ? divisionMatches.reduce((latest, current) => {
-        return new Date(current.date) > new Date(latest) ? current.date : latest;
-      }, divisionMatches[0].date)
-    : null;
-
-  const formatDate = (dateString: string) => {
-    const d = new Date(dateString);
-    const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
-    const day = d.getUTCDate();
-    const suffix = (day % 10 === 1 && day !== 11) ? 'ST' : 
-                   (day % 10 === 2 && day !== 12) ? 'ND' :
-                   (day % 10 === 3 && day !== 13) ? 'RD' : 'TH';
-    return `${months[d.getUTCMonth()]} ${day}${suffix}`;
-  };
+  const latestMatchDate = getLatestMatchDate(data.matches[activeDivision] || []);
 
   return (
     <div className="space-y-0 relative">
@@ -106,7 +82,7 @@ export const Leaderboard: React.FC = () => {
         </AnimatePresence>
         <div className="meta-asof inline-flex items-center gap-3 text-navy-soft mono text-[11px]">
           <span className="meta-dot w-1.5 h-1.5 bg-yellow rounded-sm" />
-          <span>DATA CURRENT THROUGH {latestMatchDate ? formatDate(latestMatchDate) : 'MAY 2026'}</span>
+          <span>DATA CURRENT THROUGH {latestMatchDate ? formatMatchDate(latestMatchDate) : SEASON_LABEL.toUpperCase()}</span>
           <span className="meta-dot w-1.5 h-1.5 bg-yellow rounded-sm" />
         </div>
       </div>
@@ -126,7 +102,7 @@ export const Leaderboard: React.FC = () => {
             className="w-full relative overflow-hidden p-8 md:p-12 text-center space-y-10"
           >
             <div className="space-y-3 max-w-2xl mx-auto">
-              <p className="mono text-yellow font-black tracking-[0.2em] text-[12px]">
+              <p className="mono text-yellow-deep font-black tracking-[0.2em] text-[12px]">
                 EDITORIAL EXCLUSIVE
               </p>
               <h4 className="font-display font-black text-[clamp(32px,4vw,48px)] text-navy uppercase leading-none tracking-tight">

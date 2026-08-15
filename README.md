@@ -21,7 +21,7 @@ A professional, responsive, and iframe-optimized website for the Corporate Pickl
 -   **Styling:** [Tailwind CSS v4](https://tailwindcss.com/)
 -   **Animation:** [Framer Motion](https://www.framer.com/motion/)
 -   **Icons:** [Lucide React](https://lucide.dev/)
--   **Image Generation:** [html-to-image](https://github.com/bubkoo/html-to-image)
+-   **Image Generation:** [modern-screenshot](https://github.com/qq15725/modern-screenshot)
 
 ## 🛠️ Getting Started
 

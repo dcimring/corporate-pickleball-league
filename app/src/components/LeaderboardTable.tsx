@@ -7,8 +7,28 @@ interface LeaderboardTableProps {
   onTeamClick: (teamName: string) => void;
 }
 
+type SortKey = keyof LeaderboardEntry | 'rank' | 'diff';
+
+const SORT_LABELS: Partial<Record<SortKey, string>> = {
+  rank: 'Rank',
+  team: 'Team',
+  wins: 'W-L',
+  winPct: 'Win %',
+  pointsFor: 'Points For',
+  diff: 'Diff'
+};
+
+const HEADER_COLS: { key: SortKey; className: string; desktop: string; mobile: string }[] = [
+  { key: 'rank', className: 'col-rank text-left', desktop: 'Rank', mobile: '#' },
+  { key: 'team', className: 'col-team text-left', desktop: 'Team', mobile: 'Team' },
+  { key: 'wins', className: 'col-wl justify-center', desktop: 'W — L', mobile: 'W-L' },
+  { key: 'winPct', className: 'col-pct justify-center', desktop: 'Win %', mobile: 'WIN%' },
+  { key: 'pointsFor', className: 'col-pts justify-center', desktop: 'Pts for / against', mobile: 'PTS' },
+  { key: 'diff', className: 'col-diff justify-end', desktop: 'Diff', mobile: 'DIFF' }
+];
+
 export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTeamClick }) => {
-  const [sortConfig, setSortConfig] = useState<{ key: keyof LeaderboardEntry | 'rank' | 'diff'; direction: 'asc' | 'desc' }>({
+  const [sortConfig, setSortConfig] = useState<{ key: SortKey; direction: 'asc' | 'desc' }>({
     key: 'rank',
     direction: 'asc'
   });
@@ -31,7 +51,7 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
     return sortableItems;
   }, [stats, sortConfig]);
 
-  const requestSort = (key: keyof LeaderboardEntry | 'rank' | 'diff') => {
+  const requestSort = (key: SortKey) => {
     let direction: 'asc' | 'desc' = 'asc';
     if (sortConfig.key === key && sortConfig.direction === 'asc') {
       direction = 'desc';
@@ -41,7 +61,7 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
 
   const getSortIcon = (key: string) => {
     if (sortConfig.key !== key) return null;
-    return <span className="text-yellow ml-1">{sortConfig.direction === 'asc' ? '↑' : '↓'}</span>;
+    return <span aria-hidden="true" className="text-yellow-deep ml-1">{sortConfig.direction === 'asc' ? '↑' : '↓'}</span>;
   };
 
   if (stats.length === 0) {
@@ -63,35 +83,29 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
   return (
     <section className="leaderboard">
       {/* Table Header */}
-      <div className="lb-row lb-head bg-card-tint py-4 px-1.25 md:px-5.5 border-bottom border-rule">
-        <button onClick={() => requestSort('rank')} className={`th col-rank text-left flex items-center gap-1.5 mono text-[11px] ${sortConfig.key === 'rank' ? 'text-navy' : 'text-navy-faint hover:text-navy-soft'}`}>
-          <span className="hidden md:inline">Rank</span>
-          <span className="md:hidden">#</span>
-          {getSortIcon('rank')}
-        </button>
-        <button onClick={() => requestSort('team')} className={`th col-team text-left flex items-center gap-1.5 mono text-[11px] ${sortConfig.key === 'team' ? 'text-navy' : 'text-navy-faint hover:text-navy-soft'}`}>
-          Team {getSortIcon('team')}
-        </button>
-        <button onClick={() => requestSort('wins')} className={`th col-wl justify-center flex items-center gap-1.5 mono text-[11px] ${sortConfig.key === 'wins' ? 'text-navy' : 'text-navy-faint hover:text-navy-soft'}`}>
-          <span className="hidden md:inline">W — L</span>
-          <span className="md:hidden">W-L</span>
-          {getSortIcon('wins')}
-        </button>
-        <button onClick={() => requestSort('winPct')} className={`th col-pct justify-center flex items-center gap-1.5 mono text-[11px] ${sortConfig.key === 'winPct' ? 'text-navy' : 'text-navy-faint hover:text-navy-soft'}`}>
-          <span className="hidden md:inline">Win %</span>
-          <span className="md:hidden">WIN%</span>
-          {getSortIcon('winPct')}
-        </button>
-        <button onClick={() => requestSort('pointsFor')} className={`th col-pts justify-center flex items-center gap-1.5 mono text-[11px] ${sortConfig.key === 'pointsFor' ? 'text-navy' : 'text-navy-faint hover:text-navy-soft'}`}>
-          <span className="hidden md:inline">Pts for / against</span>
-          <span className="md:hidden">PTS</span>
-          {getSortIcon('pointsFor')}
-        </button>
-        <button onClick={() => requestSort('diff')} className={`th col-diff justify-end flex items-center gap-1.5 mono text-[11px] ${sortConfig.key === 'diff' ? 'text-navy' : 'text-navy-faint hover:text-navy-soft'}`}>
-          <span className="hidden md:inline">Diff</span>
-          <span className="md:hidden">DIFF</span>
-          {getSortIcon('diff')}
-        </button>
+      <div className="lb-row lb-head bg-card-tint py-4 px-1.25 md:px-5.5 border-b border-rule">
+        {HEADER_COLS.map((col) => {
+          const isActive = sortConfig.key === col.key;
+          return (
+            <button
+              key={col.key}
+              onClick={() => requestSort(col.key)}
+              aria-pressed={isActive}
+              aria-label={isActive
+                ? `${SORT_LABELS[col.key]}, sorted ${sortConfig.direction === 'asc' ? 'ascending' : 'descending'}`
+                : `Sort by ${SORT_LABELS[col.key]}`}
+              className={`th ${col.className} flex items-center gap-1.5 mono text-[11px] whitespace-nowrap ${isActive ? 'text-navy' : 'text-navy-faint hover:text-navy-soft'}`}
+            >
+              {col.desktop === col.mobile ? col.desktop : (
+                <>
+                  <span className="hidden md:inline">{col.desktop}</span>
+                  <span className="md:hidden">{col.mobile}</span>
+                </>
+              )}
+              {getSortIcon(col.key)}
+            </button>
+          );
+        })}
       </div>
 
       <div className="lb-body">
@@ -117,14 +131,18 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
               </div>
 
               <div className="col-team flex flex-col gap-1 min-w-0">
-                <span className={`team-name font-display font-extrabold leading-[1.05] tracking-wide uppercase group-hover:underline decoration-yellow decoration-2 underline-offset-4 transition-all ${isFeatured ? 'text-[clamp(20px,2vw,28px)]' : 'text-[clamp(18px,1.8vw,24px)]'}`}>
+                <button
+                  onClick={(e) => { e.stopPropagation(); onTeamClick(entry.team); }}
+                  aria-label={`View matches for ${entry.team}`}
+                  className={`team-name text-left font-display font-extrabold leading-[1.05] tracking-wide uppercase group-hover:underline decoration-yellow decoration-2 underline-offset-4 transition-all rounded-sm focus-visible:outline-2 focus-visible:outline-yellow focus-visible:outline-offset-2 ${isFeatured ? 'text-[clamp(20px,2vw,28px)]' : 'text-[clamp(18px,1.8vw,24px)]'}`}
+                >
                   {entry.team}
-                </span>
-                {isFeatured && <span className="lb-pill self-start inline-flex items-center px-2 py-0.5 bg-yellow text-navy rounded-sm text-[9.5px] font-semibold mono">Top of the table</span>}
+                </button>
+                {isFeatured && <span className="lb-pill self-start inline-flex items-center px-2 py-0.5 bg-yellow text-navy rounded-sm text-[9.5px] font-semibold mono whitespace-nowrap">Top of the table</span>}
               </div>
 
               <div className="col-wl flex justify-center">
-                <span className="mono text-[14px]">
+                <span className="mono text-[14px] whitespace-nowrap">
                   <strong className="text-navy font-bold">{entry.wins}</strong>
                   <span className="md:hidden text-navy-faint opacity-50">-</span>
                   <span className="hidden md:inline dim mx-1">—</span>
@@ -159,7 +177,7 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
               </div>
 
               <div className="col-pts flex justify-center">
-                <span className="mono text-[14px]">
+                <span className="mono text-[14px] whitespace-nowrap">
                   <strong className="text-navy font-bold">{entry.pointsFor}</strong>
                   <span className="hidden md:inline">
                     <span className="dim mx-1">/</span>
@@ -179,9 +197,9 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ stats, onTea
         })}
       </div>
 
-      <footer className="lb-foot flex items-center justify-between py-4 px-1.25 md:px-5.5 bg-card-tint border-t border-rule text-navy-faint text-[11px] mono">
-        <span>{stats.length} teams · Standings</span>
-        <span>Sorted by {sortConfig.key} ({sortConfig.direction})</span>
+      <footer className="lb-foot flex flex-wrap items-center justify-between gap-x-4 gap-y-1 py-4 px-1.25 md:px-5.5 bg-card-tint border-t border-rule text-navy-faint text-[11px] mono">
+        <span className="whitespace-nowrap">{stats.length} teams · Standings</span>
+        <span className="whitespace-nowrap">Sorted by {SORT_LABELS[sortConfig.key] ?? sortConfig.key} ({sortConfig.direction === 'asc' ? 'ascending' : 'descending'})</span>
       </footer>
     </section>
   );

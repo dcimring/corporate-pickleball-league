@@ -9,6 +9,9 @@ export const UpdateBanner: React.FC<{ isIframe?: boolean }> = ({ isIframe }) => 
   const THROTTLE_MS = 120000; // 2 minutes
 
   const checkForUpdates = async () => {
+    // Never prompt in dev builds — the deployed version.json will always differ from "DEV"
+    if (initialVersionRef.current === 'DEV') return;
+
     const now = Date.now();
     if (now - lastCheckRef.current < THROTTLE_MS) {
       return;

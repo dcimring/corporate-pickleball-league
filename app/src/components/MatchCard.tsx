@@ -65,7 +65,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick, onShar
       
       {/* Match Header */}
       <div className="match-head flex items-center justify-between gap-3 flex-shrink-0">
-        <span className="match-date text-navy-faint mono text-[11px]">{formatDate(match.date)}</span>
+        <span className="match-date text-navy-faint mono text-[11px] whitespace-nowrap">{formatDate(match.date)}</span>
         <div className="match-head-right flex items-center gap-3">
           <div className="match-pts text-navy-faint text-[12px] mono">
             <strong className={clsx("transition-colors", isWin1 ? "text-navy font-bold" : "text-navy-faint font-semibold")}>{match.team1Points}</strong>
@@ -117,12 +117,13 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick, onShar
         <div className={clsx("mt-row grid grid-cols-[1fr_auto] items-center gap-4 px-1 py-1.5 rounded-md transition-colors", isWin1 ? "mt-row-win" : "mt-row-lose")}>
           <div className="mt-name-wrap flex items-center gap-3 min-w-0">
             <span className={clsx("mt-dot w-2 h-2 rounded-full border-[1.5px] flex-shrink-0 transition-all", isWin1 ? "on bg-yellow border-yellow shadow-[0_0_0_4px_var(--yellow-glow)]" : "border-rule-2")} />
-            <span 
+            <button
               onClick={() => onTeamClick?.(match.team1)}
-              className={clsx("mt-name font-display font-extrabold uppercase tracking-wide text-[clamp(18px,1.7vw,22px)] leading-[0.95] cursor-pointer hover:underline decoration-yellow decoration-2 underline-offset-2", isWin1 ? "text-navy" : "text-navy-faint-2")}
+              aria-label={`Filter matches by ${match.team1}`}
+              className={clsx("mt-name text-left font-display font-extrabold uppercase tracking-wide text-[clamp(18px,1.7vw,22px)] leading-[0.95] cursor-pointer hover:underline decoration-yellow decoration-2 underline-offset-2 rounded-sm focus-visible:outline-2 focus-visible:outline-yellow focus-visible:outline-offset-2", isWin1 ? "text-navy" : "text-navy-faint-2")}
             >
               {match.team1}
-            </span>
+            </button>
           </div>
           <span className={clsx("mt-games font-display font-black text-[clamp(38px,4.2vw,56px)] leading-[0.9] tracking-tighter self-center", isWin1 ? "text-navy" : "text-navy-faint-2")}>
             {match.team1Wins}
@@ -133,12 +134,13 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick, onShar
         <div className={clsx("mt-row grid grid-cols-[1fr_auto] items-center gap-4 px-1 py-1.5 rounded-md transition-colors", isWin2 ? "mt-row-win" : "mt-row-lose")}>
           <div className="mt-name-wrap flex items-center gap-3 min-w-0">
             <span className={clsx("mt-dot w-2 h-2 rounded-full border-[1.5px] flex-shrink-0 transition-all", isWin2 ? "on bg-yellow border-yellow shadow-[0_0_0_4px_var(--yellow-glow)]" : "border-rule-2")} />
-            <span 
+            <button
               onClick={() => onTeamClick?.(match.team2)}
-              className={clsx("mt-name font-display font-extrabold uppercase tracking-wide text-[clamp(18px,1.7vw,22px)] leading-[0.95] cursor-pointer hover:underline decoration-yellow decoration-2 underline-offset-2", isWin2 ? "text-navy" : "text-navy-faint-2")}
+              aria-label={`Filter matches by ${match.team2}`}
+              className={clsx("mt-name text-left font-display font-extrabold uppercase tracking-wide text-[clamp(18px,1.7vw,22px)] leading-[0.95] cursor-pointer hover:underline decoration-yellow decoration-2 underline-offset-2 rounded-sm focus-visible:outline-2 focus-visible:outline-yellow focus-visible:outline-offset-2", isWin2 ? "text-navy" : "text-navy-faint-2")}
             >
               {match.team2}
-            </span>
+            </button>
           </div>
           <span className={clsx("mt-games font-display font-black text-[clamp(38px,4.2vw,56px)] leading-[0.9] tracking-tighter self-center", isWin2 ? "text-navy" : "text-navy-faint-2")}>
             {match.team2Wins}
@@ -149,10 +151,10 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick, onShar
       {/* Match Footer */}
       <div className="match-foot flex flex-col gap-2.5 flex-shrink-0">
         <MarginBar wins1={match.team1Wins} wins2={match.team2Wins} isWin1={isWin1} />
-        <div className="match-foot-meta flex items-center gap-2.5 text-navy-faint text-[11px] mono">
-          <span>Winner: <strong className="font-bold text-navy uppercase">{isWin1 ? match.team1 : match.team2}</strong></span>
+        <div className="match-foot-meta flex flex-wrap items-center gap-x-2.5 gap-y-1 text-navy-faint text-[11px] mono">
+          <span className="whitespace-nowrap">Winner: <strong className="font-bold text-navy uppercase">{isWin1 ? match.team1 : match.team2}</strong></span>
           <span className="match-foot-sep text-rule-3 opacity-50">|</span>
-          <span>{match.team1Wins + match.team2Wins} Games Played</span>
+          <span className="whitespace-nowrap">{match.team1Wins + match.team2Wins} Games Played</span>
         </div>
       </div>
     </div>
