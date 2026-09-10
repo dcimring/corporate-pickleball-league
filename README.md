@@ -10,14 +10,14 @@ A professional, responsive, and iframe-optimized website for the Corporate Pickl
 -   **Dynamic Social Sharing:** Generate professional, branded PNG images for any leaderboard or match result. Supports specialized **Story (9:16)** and **Post ( landscape)** layouts.
 -   **Consolidated Stats UI:** A refined leaderboard featuring semantic color-coded "DIFF" pills, unified brand-blue primary data, and consistent hierarchy.
 -   **Iframe Optimization:** Advanced iframe support including auto-resizing via `ResizeObserver` and fluid, adaptive navigation to prevent clipping on narrow devices.
--   **Automated Data Ingestion:** Background service (`run_ingest_service.py`) and Google Apps Script that monitors Gmail for match results and syncs them automatically to Supabase.
+-   **Automated Data Ingestion:** A Google Apps Script watches Gmail for the weekly results CSV and posts it to the Convex backend, which validates it and publishes the new standings live to every open page.
 -   **Robust Error Handling:** Graceful connection timeout screens and silent background failure handling to preserve user experience.
 
 ## 🚀 Tech Stack
 
 -   **Framework:** [React 19+](https://reactjs.org/)
 -   **Build Tool:** [Vite](https://vitejs.dev/)
--   **Database:** [Supabase](https://supabase.com/) (PostgreSQL)
+-   **Backend:** [Convex](https://convex.dev/) (live queries; one document per results sheet)
 -   **Styling:** [Tailwind CSS v4](https://tailwindcss.com/)
 -   **Animation:** [Framer Motion](https://www.framer.com/motion/)
 -   **Icons:** [Lucide React](https://lucide.dev/)
@@ -27,7 +27,7 @@ A professional, responsive, and iframe-optimized website for the Corporate Pickl
 
 ### Prerequisites
 
--   [Node.js](https://nodejs.org/) (v18 or higher)
+-   [Node.js](https://nodejs.org/) (v20 or higher)
 -   npm
 
 ### Installation
@@ -44,13 +44,17 @@ A professional, responsive, and iframe-optimized website for the Corporate Pickl
     npm install
     ```
 
-3.  **Setup Environment Variables:**
-    Create a `.env` file in the `app` directory with your Supabase credentials (see `.env.example`).
+3.  **Connect a Convex deployment:**
+    ```bash
+    npx convex dev
+    ```
+    The first run logs you in, creates/selects the project, and writes `VITE_CONVEX_URL` to `.env.local`. Keep it running: it pushes changes under `convex/` as you edit.
 
-4.  **Run in Development:**
+4.  **Run in Development** (in a second terminal):
     ```bash
     npm run dev
     ```
+    Open http://127.0.0.1:5173. Load data by posting a results CSV to the ingest endpoint (see `app/docs/DOCS_INGESTION.md`).
 
 ## 🧩 Iframe Integration
 
@@ -67,11 +71,11 @@ window.addEventListener('message', function(e) {
 
 Ensure your iframe has the ID `pickleball-iframe` and the `allow="web-share"` attribute enabled.
 
-## ⚙️ Ingestion Tools
+## ⚙️ Data & Ingestion
 
--   **`run_ingest_service.py`:** Automation service running every 15 minutes to sync Gmail results to Supabase with smart division mapping.
--   **`ingest_matches.py`:** Manual CLI tool for CSV ingestion with validation safety checks.
--   **`db_backup.py`:** Snapshot tool for database protection.
+-   **`GoogleAppsScript.js`:** Gmail watcher that posts each results CSV to Convex (`POST /ingest`).
+-   **`app/convex/`:** Backend — schema (`imports` table), CSV parser, standings aggregation, diff, ingest mutation, HTTP endpoint.
+-   **Backups:** `npm run backup` (from `app/`) exports the production deployment; `npx convex run ingest:rollback --prod` undoes the latest import.
 
 ## 📄 Documentation
 

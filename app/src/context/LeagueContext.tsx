@@ -1,12 +1,14 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { fetchLeagueData, initialLeagueData } from '../lib/data';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { useQuery } from 'convex/react';
+import { api } from '../../convex/_generated/api';
+import { emptyLeagueData } from '../../convex/lib/aggregate';
 import type { LeagueData } from '../types';
 
 interface LeagueContextType {
   data: LeagueData;
   loading: boolean;
   error: Error | null;
-  refresh: () => Promise<void>;
+  refresh: () => void;
 }
 
 const LeagueContext = createContext<LeagueContextType | undefined>(undefined);
@@ -19,75 +21,47 @@ export const useLeagueData = () => {
   return context;
 };
 
-interface LeagueProviderProps {
-  children: React.ReactNode;
-  refreshInterval?: number; // Milliseconds, default 60000 (1 min)
-}
+const initialLeagueData: LeagueData = emptyLeagueData();
 
-export const LeagueProvider: React.FC<LeagueProviderProps> = ({ 
-  children, 
-  refreshInterval = 60000 
-}) => {
-  const [data, setData] = useState<LeagueData>(initialLeagueData);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
+// Minimum time the loading screen stays up, so the connection-error retry
+// state is visible instead of flickering. Deliberate — keep it.
+const MIN_LOADING_MS = 500;
+// How long to wait for the first result before showing the connection error.
+const CONNECT_TIMEOUT_MS = 12000;
 
-  const loadData = async (isBackground = false) => {
-    const startTime = Date.now();
-    
-    try {
-      if (!isBackground) setLoading(true);
-      
-      const fetched = await fetchLeagueData();
-      setData(fetched);
-      
-      setError(null);
-    } catch (err) {
-      console.error("Failed to fetch league data:", err);
-      // Only set error if it's an explicit load (initial or manual retry)
-      // Background refreshes should fail silently to keep showing stale data
-      if (!isBackground) {
-        setError(err instanceof Error ? err : new Error('Unknown error'));
-      }
-    } finally {
-      if (!isBackground) {
-        // Ensure minimum loading time of 500ms for UX
-        const elapsed = Date.now() - startTime;
-        const remaining = 500 - elapsed;
-        if (remaining > 0) {
-            await new Promise(resolve => setTimeout(resolve, remaining));
-        }
-        setLoading(false);
-      }
-    }
-  };
+export const LeagueProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  // Live subscription: Convex pushes a new value whenever an import lands.
+  const result = useQuery(api.league.get);
+  const hasData = result !== undefined;
+
+  const [attempt, setAttempt] = useState(0);
+  const [floorElapsed, setFloorElapsed] = useState(false);
+  const [timedOut, setTimedOut] = useState(false);
 
   useEffect(() => {
-    // Initial fetch
-    loadData();
+    const timer = setTimeout(() => setFloorElapsed(true), MIN_LOADING_MS);
+    return () => clearTimeout(timer);
+  }, [attempt]);
 
-    // Background refresh
-    const interval = refreshInterval > 0
-      ? setInterval(() => {
-          loadData(true); // true = background refresh (no loading spinner)
-        }, refreshInterval)
-      : null;
+  useEffect(() => {
+    if (hasData) return;
+    const timer = setTimeout(() => setTimedOut(true), CONNECT_TIMEOUT_MS);
+    return () => clearTimeout(timer);
+  }, [hasData, attempt]);
 
-    // When Safari restores the page from the back-forward cache, refresh data
-    // in the background instead of the old full window.location.reload()
-    const handlePageShow = (event: PageTransitionEvent) => {
-      if (event.persisted) loadData(true);
-    };
-    window.addEventListener('pageshow', handlePageShow);
+  // The client reconnects on its own; a retry just clears the error and
+  // restarts the loading floor and timeout window.
+  const refresh = useCallback(() => {
+    setFloorElapsed(false);
+    setTimedOut(false);
+    setAttempt((n) => n + 1);
+  }, []);
 
-    return () => {
-      if (interval) clearInterval(interval);
-      window.removeEventListener('pageshow', handlePageShow);
-    };
-  }, [refreshInterval]);
+  const error = !hasData && timedOut ? new Error('Connection timed out') : null;
+  const loading = !floorElapsed || (!hasData && !error);
 
   return (
-    <LeagueContext.Provider value={{ data, loading, error, refresh: () => loadData(false) }}>
+    <LeagueContext.Provider value={{ data: result ?? initialLeagueData, loading, error, refresh }}>
       {children}
     </LeagueContext.Provider>
   );

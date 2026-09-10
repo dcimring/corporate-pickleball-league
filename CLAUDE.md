@@ -1,13 +1,15 @@
 # Corporate Pickleball League — Claude context
 
-React 19 + Vite + Tailwind v4 + Supabase site for the Cayman Corporate Pickleball
+React 19 + Vite + Tailwind v4 + Convex site for the Cayman Corporate Pickleball
 League (leaderboard + match results). Deployed on Vercel; also embedded as an
 iframe at pickleball.ky/corporate-league (iframe mode hides outer branding —
 see `app/docs/iframe-integration.md`).
 
 ## Run / build
 
-- App lives in `app/` — `cd app && npm install && npm run dev`
+- App lives in `app/` — `cd app && npm install`, then `npx convex dev` (backend,
+  keep running; writes `.env.local`) and `npm run dev` in another terminal.
+- Tests: `npm test` (vitest; parser/aggregation/diff in `app/tests/`).
 - **Gotcha:** another local project often holds IPv6 `localhost:5173`. Vite binds
   `*:5173` (IPv4), so open **http://127.0.0.1:5173**, not `localhost:5173`,
   or you may see a different app entirely.
@@ -15,7 +17,24 @@ see `app/docs/iframe-integration.md`).
   don't commit that churn). Lint: `npm run lint` (one pre-existing
   `react-refresh/only-export-components` error in `LeagueContext.tsx`).
 
-## Current state (Aug 2026)
+## Data model (Sep 2026 — migrated from Supabase to Convex)
+
+- Every emailed results CSV is the complete season. Convex stores one
+  `imports` document per sheet (`app/convex/schema.ts`); the public query
+  `league.get` computes divisions, teams, standings, matches and upcoming
+  fixtures from the latest one. No team/division tables — don't add any.
+- Ingestion: `GoogleAppsScript.js` POSTs the raw CSV to
+  `https://<deployment>.convex.site/ingest` (bearer `INGEST_SECRET` env var on
+  the deployment). Parsing/validation live in `app/convex/lib/`. Rollback =
+  `npx convex run ingest:rollback --prod`. Details: `app/docs/DOCS_INGESTION.md`.
+- `LeagueData` types are defined in `app/convex/lib/aggregate.ts` and
+  re-exported from `src/types.ts`. `LeagueContext` is a live `useQuery`
+  subscription (no polling); keep the 500ms loading floor and 12s timeout.
+- Vercel build command (in `app/vercel.json`) runs `npx convex deploy` when
+  `CONVEX_DEPLOY_KEY` is set (Production env only); previews use a plain
+  `VITE_CONVEX_URL`.
+
+## Current state (Sep 2026)
 
 - Working branch: `staging`; PRs target `main`.
 - A full site-review round is done (commits `29256f9`, `2045715`): caching
@@ -36,6 +55,8 @@ see `app/docs/iframe-integration.md`).
 
 - The 500ms minimum loading time in `LeagueContext` is deliberate (makes the
   connection-error retry state visible instead of flickering) — keep it.
+- `app/convex/_generated/` is committed; `npx convex dev` regenerates it. Never
+  put test files under `app/convex/` (every file there is bundled as a function).
 - `public/sw.js` / `service-worker.js` are intentional service-worker
   kill-switch stubs for old Safari clients — do not delete
   (see `app/docs/service-worker-removal-plan.md`).
