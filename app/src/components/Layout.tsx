@@ -13,7 +13,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { error, refresh, loading } = useLeagueData();
+  const { data, error, refresh, loading } = useLeagueData();
   const [isDivMenuOpen, setIsDivMenuOpen] = React.useState(false);
   const { divisions, activeDivision } = useActiveDivision();
 
@@ -133,7 +133,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                     <h1 className="page-title font-display font-black text-[clamp(40px,5.4vw,68px)] leading-[0.95] tracking-[-0.02em] uppercase text-navy relative after:content-[''] after:block after:w-14 after:h-1.5 after:bg-yellow after:mt-4 after:rounded-sm">
                       {activePage === '/leaderboard' ? 'Standings' : 'Matches'}
                     </h1>
-                    <span className="page-season mono text-navy-faint pb-1">{SEASON_LABEL}</span>
+                    <span className="page-season mono text-navy-faint pb-1">{data.season || SEASON_LABEL}</span>
                   </div>
                 )}
                 
