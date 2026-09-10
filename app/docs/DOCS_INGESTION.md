@@ -28,7 +28,7 @@ Every results email contains the **complete season**. The backend therefore keep
 | `CONVEX_INGEST_URL` | `https://<deployment>.convex.site/ingest` — note **`.convex.site`**, not `.convex.cloud`. |
 | `CONVEX_INGEST_SECRET` | Must equal the `INGEST_SECRET` environment variable on that Convex deployment (`npx convex env set INGEST_SECRET … --prod`). |
 | `SEASON` | Label stored with each import, e.g. `Summer 2026`. Shown in the site header. **Change it before the first sheet of a new season**: the safety gate and diff only compare sheets within the same season, so a Fall sheet posted as "Summer" is refused with `fewer_rows`. |
-| `TARGET_SENDERS` | Comma-separated list of authorised sender addresses. |
+| `TARGET_SENDERS` | Comma-separated list of authorised sender addresses. Used both in the Gmail search and as an exact, case-insensitive allowlist in code: the Gmail `from:` operator matches tokens anywhere in the From header, so messages whose extracted address is not in this list are marked read, skipped, and reported to Discord. |
 | `TARGET_SUBJECT` | Exact subject line to match. |
 | `NOTIFICATION_RECIPIENT` | Optional; defaults to the sender. |
 | `DISCORD_WEBHOOK_URL` | Optional. |

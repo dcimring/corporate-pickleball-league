@@ -262,11 +262,6 @@ const Toast: React.FC<{
       )}
     >
       <div className="bg-navy text-white p-6 shadow-2xl relative overflow-hidden rounded-lg border border-white/10">
-        {/* Magazine Texture Overlay */}
-        <div className="absolute inset-0 opacity-[0.1] pointer-events-none mix-blend-overlay" 
-             style={{ backgroundImage: `url("https://www.transparenttextures.com/patterns/stardust.png")` }} 
-        />
-        
         <div className="flex gap-6 relative z-10">
           <div className="bg-white/10 p-4 self-start rounded-sm">
             {config.icon === 'download' ? (

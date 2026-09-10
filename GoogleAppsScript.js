@@ -28,8 +28,12 @@ function processMatchResults() {
     return;
   }
 
-  // Gmail search syntax for OR is {sender1 sender2}
-  const sendersList = targetSenders.split(',').map(s => s.trim()).filter(s => s).join(' ');
+  // Gmail search syntax for OR is {sender1 sender2}. The search is only a
+  // pre-filter: `from:` matches tokens anywhere in the From header, so every
+  // message is re-checked below against the exact allowlist before its
+  // attachment is trusted.
+  const allowedSenders = targetSenders.split(',').map(s => s.trim().toLowerCase()).filter(s => s);
+  const sendersList = allowedSenders.join(' ');
   const searchQuery = `from:{${sendersList}} subject:"${targetSubject}" is:unread`;
   log(`Searching for emails: ${searchQuery}`);
 
@@ -45,6 +49,14 @@ function processMatchResults() {
   for (const thread of threads) {
     for (const message of thread.getMessages()) {
       if (!message.isUnread()) continue;
+      const senderAddress = extractEmailAddress(message.getFrom()).toLowerCase();
+      if (!allowedSenders.includes(senderAddress)) {
+        // Lookalike or spoofed sender that slipped through the Gmail search.
+        log(`Ignoring message from unauthorised sender "${message.getFrom()}" (subject: "${message.getSubject()}").`);
+        sendDiscordNotification(false, "Ignored Email", `Results-style email from unauthorised sender: ${message.getFrom()}`, { "Email Subject": message.getSubject() });
+        message.markRead();
+        continue;
+      }
       for (const attachment of message.getAttachments()) {
         if (attachment.getContentType() === 'text/csv' || attachment.getName().endsWith('.csv')) {
           emailsToProcess.push({
@@ -218,6 +230,17 @@ function formatDate(dateObj) {
   return Utilities.formatDate(dateObj, Session.getScriptTimeZone(), "yyyy-MM-dd HH:mm:ss");
 }
 
+// CSV-derived strings (team names, divisions, subjects) go into the HTML
+// notification email; escape them so a crafted sheet cannot inject markup.
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 function extractEmailAddress(fromField) {
   if (!fromField) return '';
   const match = fromField.match(/<([^>]+)>/);
@@ -249,7 +272,7 @@ function sendUpdateEmail(recipient, newestEmail, newMatches, modifiedMatches) {
     return divisions.map((division) => {
       const items = grouped[division] || [];
       return `
-        <h4 style="margin: 16px 0 8px;">${division}</h4>
+        <h4 style="margin: 16px 0 8px;">${escapeHtml(division)}</h4>
         ${renderMatchesTable(items)}
       `;
     }).join('');
@@ -259,7 +282,7 @@ function sendUpdateEmail(recipient, newestEmail, newMatches, modifiedMatches) {
     <div style="font-family: Arial, sans-serif; color: #1f2937;">
       <h2 style="margin: 0 0 8px;">Leaderboard Updated</h2>
       <p style="margin: 0 0 16px;">Results email processed and website updated.</p>
-      <p style="margin: 0 0 16px;"><strong>Processed Email Date:</strong> ${processedDate}</p>
+      <p style="margin: 0 0 16px;"><strong>Processed Email Date:</strong> ${escapeHtml(processedDate)}</p>
       <h3 style="margin: 16px 0 6px;">New Matches (${newCount})</h3>
       ${groupedHtml(newMatches)}
       <h3 style="margin: 16px 0 6px;">Modified Matches (${modifiedCount})</h3>
@@ -293,14 +316,14 @@ function renderMatchesTable(matches) {
 
     return `
       <tr>
-        <td style="padding: 10px 12px; font-size: 14px; color: #111827;">${formatShortDate(match.date)}</td>
-        <td style="padding: 10px 12px; font-size: 14px; color: #111827; font-weight: ${team1IsWinner ? 700 : 400};">${match.team1}</td>
-        <td style="padding: 10px 12px; font-size: 14px; color: #111827; text-align: center; font-weight: ${team1IsWinner ? 700 : 400};">${match.team1Wins}</td>
-        <td style="padding: 10px 12px; font-size: 14px; color: #111827; text-align: center; font-weight: ${team1IsWinner ? 700 : 400};">${match.team1Points}</td>
+        <td style="padding: 10px 12px; font-size: 14px; color: #111827;">${escapeHtml(formatShortDate(match.date))}</td>
+        <td style="padding: 10px 12px; font-size: 14px; color: #111827; font-weight: ${team1IsWinner ? 700 : 400};">${escapeHtml(match.team1)}</td>
+        <td style="padding: 10px 12px; font-size: 14px; color: #111827; text-align: center; font-weight: ${team1IsWinner ? 700 : 400};">${escapeHtml(match.team1Wins)}</td>
+        <td style="padding: 10px 12px; font-size: 14px; color: #111827; text-align: center; font-weight: ${team1IsWinner ? 700 : 400};">${escapeHtml(match.team1Points)}</td>
         <td style="padding: 10px 8px; font-size: 12px; color: #6b7280; text-align: center;">vs</td>
-        <td style="padding: 10px 12px; font-size: 14px; color: #111827; font-weight: ${team2IsWinner ? 700 : 400};">${match.team2}</td>
-        <td style="padding: 10px 12px; font-size: 14px; color: #111827; text-align: center; font-weight: ${team2IsWinner ? 700 : 400};">${match.team2Wins}</td>
-        <td style="padding: 10px 12px; font-size: 14px; color: #111827; text-align: center; font-weight: ${team2IsWinner ? 700 : 400};">${match.team2Points}</td>
+        <td style="padding: 10px 12px; font-size: 14px; color: #111827; font-weight: ${team2IsWinner ? 700 : 400};">${escapeHtml(match.team2)}</td>
+        <td style="padding: 10px 12px; font-size: 14px; color: #111827; text-align: center; font-weight: ${team2IsWinner ? 700 : 400};">${escapeHtml(match.team2Wins)}</td>
+        <td style="padding: 10px 12px; font-size: 14px; color: #111827; text-align: center; font-weight: ${team2IsWinner ? 700 : 400};">${escapeHtml(match.team2Points)}</td>
       </tr>
     `;
   }).join('');

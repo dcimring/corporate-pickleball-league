@@ -46,3 +46,12 @@ Host sites should listen for this message and adjust the iframe height according
 
 - **Min-Height**: The `min-h-screen` class is removed from the app container when in an iframe to prevent unnecessary vertical stretching.
 - **Data Attributes**: The `data-is-iframe` attribute is added to the `#app-container` element for targetable CSS overrides.
+
+## Allowed Embedding Origins
+
+The Vercel deployment sends a `Content-Security-Policy` with
+`frame-ancestors 'self' https://pickleball.ky https://www.pickleball.ky`
+(see `app/vercel.json`). Browsers refuse to render the app inside an iframe on any
+other origin. To embed it on a new host site, add that origin to the
+`frame-ancestors` list and redeploy. Local test pages (`test_inside_iframe.html`)
+work against `npm run dev` because the dev server does not send the header.
