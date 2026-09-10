@@ -5,7 +5,7 @@ import { diffImports } from './lib/diff';
 import { sourceValidator } from './schema';
 
 // Receives the raw results CSV, validates it, compares it with the previous
-// import, and stores it as a new `imports` document. One transaction: either
+// import of the same season, and stores it as a new `imports` document. One transaction: either
 // the whole sheet is recorded or nothing changes.
 export const apply = internalMutation({
   args: {
@@ -20,7 +20,15 @@ export const apply = internalMutation({
     const parsed = parseResultsCsv(args.csv);
     const playedCount = parsed.rows.filter((r) => r.scores).length;
 
-    const previous = await ctx.db.query('imports').order('desc').first();
+    // Compare only with the previous import of the same season, so the first
+    // sheet of a new season (few matches) is not refused for having fewer rows
+    // than the end of the last one. Forgetting to bump SEASON in the Apps
+    // Script therefore fails loudly with `fewer_rows` instead of mislabelling.
+    const previous = await ctx.db
+      .query('imports')
+      .withIndex('by_season', (q) => q.eq('season', args.season))
+      .order('desc')
+      .first();
     const previousCount = previous?.playedCount ?? 0;
 
     const diff = diffImports(parsed.rows, previous?.rows ?? []);

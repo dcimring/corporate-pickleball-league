@@ -30,6 +30,9 @@ see `app/docs/iframe-integration.md`).
 - `LeagueData` types are defined in `app/convex/lib/aggregate.ts` and
   re-exported from `src/types.ts`. `LeagueContext` is a live `useQuery`
   subscription (no polling); keep the 500ms loading floor and 12s timeout.
+- Season rollover = change the `SEASON` Script Property in the Apps Script.
+  The safety gate/diff compare within a season; the header shows
+  `data.season` (`SEASON_LABEL` in `lib/config.ts` is only the pre-data fallback).
 - Vercel build command (in `app/vercel.json`) runs `npx convex deploy` when
   `CONVEX_DEPLOY_KEY` is set (Production env only); previews use a plain
   `VITE_CONVEX_URL`.

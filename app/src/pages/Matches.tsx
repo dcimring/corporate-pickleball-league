@@ -118,7 +118,7 @@ export const Matches: React.FC = () => {
         </AnimatePresence>
         <div className="meta-asof inline-flex items-center gap-3 text-navy-soft mono text-[11px]">
           <span className="meta-dot w-1.5 h-1.5 bg-yellow rounded-sm" />
-          <span>DATA CURRENT THROUGH {latestMatchDate ? formatMatchDate(latestMatchDate) : SEASON_LABEL.toUpperCase()}</span>
+          <span>DATA CURRENT THROUGH {latestMatchDate ? formatMatchDate(latestMatchDate) : (data.season || SEASON_LABEL).toUpperCase()}</span>
           <span className="meta-dot w-1.5 h-1.5 bg-yellow rounded-sm" />
         </div>
       </div>

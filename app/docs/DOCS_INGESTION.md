@@ -16,8 +16,8 @@ Every results email contains the **complete season**. The backend therefore keep
    - parses the CSV (`convex/lib/csv.ts`): `division, team1, "v", team2, D-Mon-YY, t1Wins, t2Wins, t1Points, t2Points`;
    - rows with blank wins are **fixtures** (kept, shown as upcoming); rows with wins but blank points are recorded as **0-0 with a warning**; rows with unparseable numbers or dates are **errors** and skipped;
    - warns when total games ≠ 6 (≠ 8 or 9 for CPL) but still ingests the row;
-   - **safety gates**: no played rows → skipped (`zero_rows`); fewer played rows than the current import → skipped (`fewer_rows`) unless `force: true`;
-   - diffs against the previous import (`convex/lib/diff.ts`) by division + date + the two team names (order-insensitive, repeat pairings numbered);
+   - **safety gates**: no played rows → skipped (`zero_rows`); fewer played rows than the previous import **of the same season** → skipped (`fewer_rows`) unless `force: true`;
+   - diffs against the previous import of the same season (`convex/lib/diff.ts`) by division + date + the two team names (order-insensitive, repeat pairings numbered);
    - stores the new import unless `dryRun: true`.
 6. **Notifications** — the script emails a "Leaderboard Updated" summary of new/modified matches to `NOTIFICATION_RECIPIENT` (or the sender) and posts a status embed to Discord with counts, new teams, and validation notes.
 
@@ -27,7 +27,7 @@ Every results email contains the **complete season**. The backend therefore keep
 | :--- | :--- |
 | `CONVEX_INGEST_URL` | `https://<deployment>.convex.site/ingest` — note **`.convex.site`**, not `.convex.cloud`. |
 | `CONVEX_INGEST_SECRET` | Must equal the `INGEST_SECRET` environment variable on that Convex deployment (`npx convex env set INGEST_SECRET … --prod`). |
-| `SEASON` | Label stored with each import, e.g. `Summer 2026`. |
+| `SEASON` | Label stored with each import, e.g. `Summer 2026`. Shown in the site header. **Change it before the first sheet of a new season**: the safety gate and diff only compare sheets within the same season, so a Fall sheet posted as "Summer" is refused with `fewer_rows`. |
 | `TARGET_SENDERS` | Comma-separated list of authorised sender addresses. |
 | `TARGET_SUBJECT` | Exact subject line to match. |
 | `NOTIFICATION_RECIPIENT` | Optional; defaults to the sender. |
