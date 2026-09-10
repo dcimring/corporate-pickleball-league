@@ -107,6 +107,7 @@ function processMatchResults() {
 // and logs the server's response. Run it from the editor after changing the
 // URL or secret to confirm the connection without touching the data.
 function testIngestDryRun() {
+  const props = PropertiesService.getScriptProperties();
   const label = GmailApp.getUserLabelByName(CONFIG.PROCESSED_LABEL);
   if (!label) {
     log("No processed emails found (label missing).");
@@ -129,8 +130,28 @@ function testIngestDryRun() {
     return;
   }
   log(`Dry run with "${newest.subject}" (${formatDate(newest.date)})`);
+  log(`Posting to ${props.getProperty('CONVEX_INGEST_URL')} as season "${props.getProperty('SEASON')}"`);
   const result = postIngest(newest, { dryRun: true });
-  if (result) log(JSON.stringify(result, null, 2));
+  if (!result) return;
+  // The full response is too large for the Apps Script log; summarise it.
+  // previousCount is the number of played matches in the import the server
+  // compared against. 0 means it found no earlier import for this SEASON.
+  const summary = {
+    ok: result.ok,
+    skippedReason: result.skippedReason || null,
+    previousCount: result.previousCount,
+    newCount: result.newCount,
+    rowCount: result.rowCount,
+    newMatches: countGroupedMatches(result.newMatches),
+    modifiedMatches: countGroupedMatches(result.modifiedMatches),
+    newTeams: (result.newTeams || []).length,
+    errors: result.errors || [],
+    warnings: (result.warnings || []).length
+  };
+  log(JSON.stringify(summary, null, 2));
+  if (summary.previousCount === 0 && summary.newCount > 0) {
+    log('WARNING: no previous import found for this SEASON. Check that the SEASON script property exactly matches the season label already stored on the deployment.');
+  }
 }
 
 // --- Convex ---
