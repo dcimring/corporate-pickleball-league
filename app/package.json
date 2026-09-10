@@ -7,11 +7,14 @@
     "dev": "vite --host",
     "build": "rm -rf dist && tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest run",
+    "convex:dev": "convex dev",
+    "backup": "convex export --prod --path ../backups/convex_$(date +%Y%m%d_%H%M%S).zip"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.90.1",
     "clsx": "^2.1.1",
+    "convex": "^1.45.0",
     "framer-motion": "^12.26.1",
     "lucide-react": "^0.562.0",
     "modern-screenshot": "^4.7.0",
@@ -36,6 +39,7 @@
     "tailwindcss": "^4.1.18",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.46.4",
-    "vite": "^7.2.4"
+    "vite": "^7.2.4",
+    "vitest": "^5.0.0"
   }
 }

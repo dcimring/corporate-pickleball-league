@@ -2,8 +2,15 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
+import { ConvexProvider, ConvexReactClient } from 'convex/react'
 
 console.log('App Build ID:', __BUILD_ID__);
+
+const convexUrl = import.meta.env.VITE_CONVEX_URL;
+if (!convexUrl) {
+  throw new Error('Missing VITE_CONVEX_URL environment variable');
+}
+const convex = new ConvexReactClient(convexUrl);
 
 // Emergency Service Worker Reset / Kill Switch
 // This actively unregisters any Service Worker to prevent "sticky cache" issues
@@ -28,11 +35,13 @@ if ('serviceWorker' in navigator) {
   });
 }
 
-// Safari back-forward cache (bfcache) restores are handled in LeagueContext,
-// which refetches data in the background instead of hard-reloading the page.
+// Data is a live Convex subscription (see LeagueContext); the client reconnects
+// on its own after Safari back-forward cache restores, so no reload is needed.
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <ConvexProvider client={convex}>
+      <App />
+    </ConvexProvider>
   </StrictMode>,
 )

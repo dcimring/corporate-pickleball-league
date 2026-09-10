@@ -7,11 +7,12 @@ This branch is specifically designed for integration as a WordPress widget.
 - **Removed Header/Footer:** The `Layout.tsx` component no longer renders a site-wide navigation bar or footer.
 - **Removed Branding:** No logos or external links are rendered within the application to avoid visual conflict with the parent site.
 
-### 2. Data Flow (Front-Load Pattern)
+### 2. Data Flow (Live Subscription)
 To ensure instant navigation:
-- **`LeagueContext`:** Fetches all data (Divisions, Matches, Teams) once when the app mounts from Supabase.
-- **Background Refresh:** Silently re-fetches data every 60 seconds to keep the UI live without spinners.
+- **`LeagueContext`:** Subscribes once (`useQuery(api.league.get)`) to a single Convex query that returns everything the UI needs — divisions, standings, match lists, upcoming fixtures — computed server-side from the most recent results import.
+- **Live Updates:** Convex pushes a new value the moment an import lands; there is no polling and no manual refresh.
 - **Consumption:** `Leaderboard` and `Matches` pages read directly from this context, rendering immediately.
+- **Shape:** `LeagueData` is defined once in `convex/lib/aggregate.ts` and re-exported from `src/types.ts`, so the query and the UI cannot drift.
 
 ### 3. Parent-Child Communication (Resizer)
 To prevent the "Iframe Scrollbar" issue, the app implements a height-matching protocol:
@@ -33,8 +34,10 @@ Since the primary site navigation is gone, the app uses a nested navigation syst
 - *(Note: Stats and Home pages have been removed to keep the widget focused).*
 
 ### 6. Error Handling
-- **Connection Timeout:** The initial data fetch has a strict 5-second timeout. If the connection fails or hangs, the `ConnectionError` component replaces the main layout, offering a "Retry" button.
-- **Background Persistence:** If a background refresh (polling) fails while valid data is already loaded, the error is suppressed to prevent interrupting the user experience. The app continues to display the stale data until a successful refresh occurs.
+- **Loading Floor:** The loading screen is shown for at least 500ms so the retry state never flickers (deliberate — keep it).
+- **Connection Timeout:** If no data has arrived 12 seconds after mount, the `ConnectionError` component replaces the main layout with a "Retry" button. Retry clears the error and restarts the window; the Convex client reconnects on its own.
+- **Stale Data Persistence:** Once data has loaded, a dropped connection never interrupts the user: the last value stays on screen and updates resume when the socket reconnects.
+- **Server Errors:** A query that throws surfaces through `useQuery` during render and is caught by `ErrorBoundary` (`App.tsx`), which shows the same error screen.
 
 ### 7. Social Sharing
 - **Client-Side Generation:** To avoid server-side rendering complexity, the app uses `html-to-image` to capture specific, hidden DOM elements (`ShareableLeaderboard`, `ShareableMatch`) as high-resolution PNGs.
@@ -54,17 +57,17 @@ The "Editorial Athlete" aesthetic is designed for high-contrast, professional sp
   - **Mobile Padding:** A 2px horizontal padding (`px-2`) is applied on mobile views to prevent the table from touching the screen edges.
 
 ## Data Ingestion
-- **Source:** CSV files emailed to a specific address or manual CLI input.
-- **Automation:** `run_ingest_service.py` or Google Apps Script (`GoogleAppsScript.js`) polls for new emails every 15 mins.
-- **Manual Import Utility:** `manual_import.py` is a Python CLI utility designed for administrators to manually ingest results from a local CSV file or inline strings. It supports `--dry-run` validation, case-insensitive division mapping (e.g. CPL -> Cayman Premier League), case-insensitive team matching with auto-provisioning for unrecognized teams, game count validations, and distinct `append` (default, duplicate-checked) and `replace` database update modes.
-- **Validation:** Scripts validate total game count (8 or 9 for CPL division, 6 for others) before ingestion. CPL matches tied 4-4 result in a 9th game.
-- **Database:** Parsed results are upserted into Supabase.
-- **Detailed Docs:** See `DOCS_INGESTION.md` in this directory for a full breakdown of the Google Apps Script workflow.
+- **Source:** A CSV of the complete season, emailed weekly. It is the single source of truth: divisions and teams are derived from it, nothing is stored separately.
+- **Automation:** Google Apps Script (`GoogleAppsScript.js`) polls Gmail and posts the raw CSV to the Convex HTTP endpoint `POST /ingest`.
+- **Storage:** One `imports` document per received sheet (season, email metadata, parsed rows, warnings). The site always shows the latest; older imports are history and instant rollback points (`npx convex run ingest:rollback --prod`).
+- **Validation:** Server-side (`convex/lib/csv.ts`): fixtures are kept as upcoming matches, missing points become 0 with a warning, bad numbers/dates are errors, total game count is checked (8 or 9 for CPL, 6 otherwise; CPL matches tied 4-4 go to a 9th game). A sheet with fewer played matches than the current one is refused unless forced.
+- **Manual import:** `curl` the same endpoint (see `DOCS_INGESTION.md`).
+- **Detailed Docs:** See `DOCS_INGESTION.md` in this directory.
 
 ## Tech Stack
 - **Framework**: React 19+
 - **Routing**: React Router 7
-- **Database**: Supabase
+- **Backend**: Convex (`app/convex/`)
 - **Styling**: Tailwind CSS v4 (Editorial Athlete Theme)
 - **Typography**: Epilogue (Display/Headings), Public Sans (Body), Lexend (Stats)
 - **Animation**: Framer Motion (for tab transitions)

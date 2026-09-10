@@ -4,20 +4,23 @@ import { Leaderboard } from './pages/Leaderboard';
 import { Matches } from './pages/Matches';
 import { ScrollToTop } from './components/ScrollToTop';
 import { LeagueProvider } from './context/LeagueContext';
+import { ErrorBoundary } from './components/ErrorBoundary';
 
 function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
-      <LeagueProvider>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<Navigate to="/leaderboard" replace />} />
-            <Route path="/leaderboard" element={<Leaderboard />} />
-            <Route path="/matches" element={<Matches />} />
-          </Routes>
-        </Layout>
-      </LeagueProvider>
+      <ErrorBoundary>
+        <LeagueProvider>
+          <Layout>
+            <Routes>
+              <Route path="/" element={<Navigate to="/leaderboard" replace />} />
+              <Route path="/leaderboard" element={<Leaderboard />} />
+              <Route path="/matches" element={<Matches />} />
+            </Routes>
+          </Layout>
+        </LeagueProvider>
+      </ErrorBoundary>
     </BrowserRouter>
   );
 }

@@ -10,8 +10,8 @@ The **Corporate Pickleball League** is a responsive web application built to man
 -   **Styling:** Tailwind CSS v4
 -   **Routing:** React Router 7
 -   **Icons:** Lucide React
--   **Backend:** Supabase (PostgreSQL)
--   **Ingestion:** Python & Google Apps Script automation
+-   **Backend:** Convex (`app/convex/`, live queries)
+-   **Ingestion:** Google Apps Script posts the results CSV to a Convex HTTP endpoint
 
 ## Development Workflow Rules
 - Always perform work and code changes on the `staging` branch.
@@ -23,8 +23,8 @@ The **Corporate Pickleball League** is a responsive web application built to man
     -   `src/components/`: Reusable UI components (e.g., `MatchCard.tsx`, `Layout.tsx`, `LeaderboardTable.tsx`, `ConnectionError.tsx`, `ShareButton.tsx`).
     -   `src/pages/`: Main application views (`Leaderboard`, `Matches`).
     -   `app/docs/`: Detailed project documentation, feature strategies, and architectural plans (e.g., `ARCHITECTURE.md`, `DOCS_INGESTION.md`, `design.md`, `iframe-integration.md`, `update-frequency-strategy.md`).
--   `ingest_matches.py`: CLI tool for CSV ingestion.
--   `run_ingest_service.py`: Automated ingestion service.
+-   `app/convex/`: Backend — schema, CSV parser, standings aggregation, ingest endpoint.
+-   `app/tests/`: Vitest suites for the parser, aggregation, and diff (`npm test`).
 -   `GoogleAppsScript.js`: Gmail monitoring script (see `DOCS_INGESTION.md` for more details).
 
 ## Building and Running
@@ -32,11 +32,13 @@ The **Corporate Pickleball League** is a responsive web application built to man
 All commands should be run from the `app/` directory.
 
 ### Development Server
-Start the development server with Hot Module Replacement (HMR) and network access:
+Run the Convex dev process (pushes `convex/` changes, writes `.env.local`) and the Vite server:
 ```bash
 cd app
+npx convex dev
 npm run dev
 ```
+Open http://127.0.0.1:5173 (not `localhost`, which another project may hold on IPv6).
 *Note: When running via Gemini CLI, append `&` to run in the background if blocking.*
 
 ### Production Build
@@ -71,10 +73,10 @@ npm run lint
     -   **Styles:** High-contrast editorial look with large data points, 14px border radius, and soft ambient shadows.
 
 ### Data Management
-- **Fetching:** Data is fetched from Supabase via `src/context/LeagueContext.tsx` with a 5-second timeout.
-- **Error Handling:** Initial connection failures trigger a dedicated error screen. Background refreshes fail silently to preserve the user experience.
+- **Fetching:** `src/context/LeagueContext.tsx` subscribes to the Convex query `league.get`, which computes everything from the latest results import; updates are pushed live.
+- **Error Handling:** No data within 12 seconds triggers a dedicated error screen (after a deliberate 500ms loading floor). Once loaded, connection drops never interrupt the user.
 - **Updates:** The application checks for new versions on initial load and whenever the tab becomes visible (visibilitychange), with a 2-minute throttle.
-- **Performance:** Front-loaded data pattern ensures instant navigation between tabs.
+- **Performance:** One query returns the whole league, so navigation between tabs is instant.
 
 ### Components
 -   **Functional Components:** Use React functional components with TypeScript interfaces for props.

@@ -1,0 +1,12 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`buildLeagueData on the real export > matches the standings the live site showed for Division A (checked 2026-09-10) 1`] = `
+[
+  "Legacy",
+  "The Upsetters",
+  "Quality",
+  "Elite",
+  "Locale Staycationers",
+  "Bluewater Medical",
+]
+`;
