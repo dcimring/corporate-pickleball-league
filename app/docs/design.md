@@ -60,3 +60,18 @@ The design uses a modern, bold typographic stack to create an editorial feel.
 - High-contrast ranking numbers in Mono font.
 - Accent bars on "Featured" rows (e.g., the top team).
 - Color-coded "Diff Chips" for point differential.
+
+### Share Cards (social export)
+- Fixed 1080×1350 portrait canvas (`src/components/share/`), "Masthead"
+  direction chosen from mockups in Sep 2026: mono yellow kicker, huge Archivo
+  Black headline (STANDINGS / MATCH RESULT), yellow bar, division line, then
+  the body. The leader row (standings) and the winning team (match) sit on a
+  solid yellow tile with navy type — borrowed from the "Scoreboard" mockup.
+- **Navy ground is intentional here** and is the only exception to the
+  white-ground rule: the card is a standalone social image, not part of the
+  embedded page.
+- Colours are literal hex (`#005596`, `#ffc93c`, `#ffffff`), sizes are px,
+  and no Tailwind responsive classes or theme tokens are used, so the export
+  never changes with viewport or `[data-theme]`.
+- Footer carries the favicon mark, "Pickleball Cayman", the as-of date and
+  `pickleball.ky/corporate-league`.

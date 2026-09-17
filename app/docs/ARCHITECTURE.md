@@ -38,8 +38,10 @@ To prevent the "iframe scrollbar" issue, the app implements a height-matching pr
 - **bfcache:** Restoring from the back/forward cache triggers a background refetch rather than a hard reload.
 
 ### 7. Social Sharing
-- **Capture from the live DOM:** `ShareButton` takes a `targetRef` to the on-screen leaderboard table or match card and rasterises that node with `modern-screenshot` (`domToBlob`) at 3× pixel ratio. There are no hidden off-screen share components: restyling the leaderboard or match cards changes the exported images too, so re-test exports after visual changes.
-- **Formats:** Story (9:16), Post (landscape) and WhatsApp variants differ in dimensions and file name; the leaderboard page renders one button per format.
+- **One card per page:** The leaderboard has a single "Share standings" button and each match card a single share icon. Both render a dedicated off-screen card (`src/components/share/ShareCard.tsx` frame with `LeaderboardShareCard` / `MatchShareCard` bodies) at a fixed 1080×1350 (portrait 4:5) and rasterise it with `modern-screenshot` (`src/lib/share.ts`). Output is identical on phone and desktop; the live table and match cards are never captured.
+- **Card rules:** Navy ground with yellow/white type (the one deliberate exception to the site's white ground). Literal hex colours and px sizes only — `[data-theme]` remaps the CSS tokens and viewport breakpoints would change the layout. Row sizing scales with team count (`leaderboardTiers.ts`).
+- **Flow:** `useShareCard` (`src/hooks/useShareCard.tsx`) mounts the card in a `ShareStage` (fixed, off-screen, `inert`) only while a share is in progress, waits for `document.fonts.ready`, captures, then delivers the file and shows a `ShareToast`.
+- **Fonts:** `modern-screenshot` embeds `@font-face` rules by reading the stylesheet; the Google Fonts `<link>` in `index.html` therefore carries `crossorigin="anonymous"`. Without it the sheet throws a `SecurityError` and the export may fall back to system fonts (Chromium masks this via its font cache; Safari does not).
 - **Native sharing:** On mobile and tablet the button uses `navigator.share` with the generated file so users can post straight to Instagram, WhatsApp or Facebook. Elsewhere, or if sharing is unsupported, it downloads the file.
 - **Iframe permission:** Inside an iframe the parent `<iframe>` tag **must** include `allow="web-share"`; without it the browser blocks the API and the app falls back to download.
 

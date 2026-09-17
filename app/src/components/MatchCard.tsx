@@ -1,14 +1,13 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef } from 'react';
 import { clsx } from 'clsx';
-import { Loader2, Share2, MessageCircle, Image as ImageIcon } from 'lucide-react';
-import { InstagramIcon } from './icons/InstagramIcon';
-import { motion, AnimatePresence } from 'framer-motion';
+import { Loader2, Share2 } from 'lucide-react';
 import type { Match } from '../types';
 
 interface MatchCardProps {
   match: Match;
   onTeamClick?: (teamName: string) => void;
-  onShare?: (match: Match, type: 'story' | 'post' | 'wa', toastRef: React.RefObject<HTMLDivElement | null>, cardRef: React.RefObject<HTMLDivElement | null>) => void;
+  /** Called with the match and the card's toast overlay element. */
+  onShare?: (match: Match, toastTarget: HTMLElement | null) => void;
   isSharing?: boolean;
 }
 
@@ -25,11 +24,8 @@ const MarginBar: React.FC<{ wins1: number; wins2: number; isWin1: boolean }> = (
 };
 
 export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick, onShare, isSharing }) => {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const menuRef = useRef<HTMLDivElement>(null);
   const toastContainerRef = useRef<HTMLDivElement>(null);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  
+
   const isWin1 = match.team1Wins > match.team2Wins || (match.team1Wins === match.team2Wins && match.team1Points > match.team2Points);
   const isWin2 = match.team2Wins > match.team1Wins || (match.team2Wins === match.team1Wins && match.team2Points > match.team1Points);
 
@@ -42,30 +38,15 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick, onShar
     }).format(date).toUpperCase();
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setIsMenuOpen(false);
-      }
-    };
-    if (isMenuOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [isMenuOpen]);
-
-  const handleShareClick = (type: 'story' | 'post' | 'wa') => (e: React.MouseEvent) => {
+  const handleShareClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsMenuOpen(false);
-    // The ref objects are only forwarded to the event handler, not read during render.
-    // eslint-disable-next-line react-hooks/refs
-    onShare?.(match, type, toastContainerRef, cardRef);
+    onShare?.(match, toastContainerRef.current);
   };
 
   return (
-    <div ref={cardRef} className="match-card p-5.5 md:p-6 flex flex-col gap-4.5 relative group overflow-hidden bg-white">
+    <div className="match-card p-5.5 md:p-6 flex flex-col gap-4.5 relative group overflow-hidden bg-white">
       <div ref={toastContainerRef} className="absolute inset-0 z-[100] pointer-events-none flex items-center justify-center p-2" />
-      
+
       {/* Match Header */}
       <div className="match-head flex items-center justify-between gap-3 flex-shrink-0">
         <span className="match-date text-navy-faint mono text-[11px] whitespace-nowrap">{formatDate(match.date)}</span>
@@ -77,40 +58,18 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick, onShar
             <span className="ml-1 text-[10px] opacity-40">PTS</span>
           </div>
 
-          <div className="relative" ref={menuRef}>
-            <button 
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
+          {onShare && (
+            <button
+              type="button"
+              onClick={handleShareClick}
               disabled={isSharing}
-              className="match-share w-6.5 h-6.5 flex items-center justify-center rounded-md hover:bg-rule transition-colors text-navy-faint hover:text-navy"
+              aria-label={`Share result: ${match.team1} vs ${match.team2}`}
+              title="Share result"
+              className="match-share w-6.5 h-6.5 flex items-center justify-center rounded-md hover:bg-rule transition-colors text-navy-faint hover:text-navy disabled:cursor-wait"
             >
               {isSharing ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Share2 className="w-3.5 h-3.5" />}
             </button>
-            <AnimatePresence>
-              {isMenuOpen && (
-                <motion.div 
-                  initial={{ opacity: 0, scale: 0.95, y: -5 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.95, y: -5 }}
-                  className="absolute top-full right-0 mt-2 w-40 bg-card border border-rule rounded-md shadow-[0_12px_32px_rgba(0,0,0,0.12)] overflow-hidden z-[200]"
-                >
-                  <div className="p-1 flex flex-col">
-                    <button onClick={handleShareClick('story')} className="flex items-center gap-3 w-full px-3 py-2 hover:bg-card-tint text-navy transition-colors">
-                      <InstagramIcon size={14} className="text-navy-soft" />
-                      <span className="mono text-[11px] text-left">Story</span>
-                    </button>
-                    <button onClick={handleShareClick('post')} className="flex items-center gap-3 w-full px-3 py-2 hover:bg-card-tint text-navy transition-colors">
-                      <ImageIcon size={14} className="text-navy-soft" />
-                      <span className="mono text-[11px] text-left">Post</span>
-                    </button>
-                    <button onClick={handleShareClick('wa')} className="flex items-center gap-3 w-full px-3 py-2 hover:bg-card-tint text-navy transition-colors">
-                      <MessageCircle size={14} className="text-success fill-success/10" />
-                      <span className="mono text-[11px] text-left">WhatsApp</span>
-                    </button>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+          )}
         </div>
       </div>
 

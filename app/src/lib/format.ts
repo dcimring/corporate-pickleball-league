@@ -19,3 +19,12 @@ export const getLatestMatchDate = (matches: Match[]): string | null => {
     matches[0].date
   );
 };
+
+// "24 JUN 2026" — full date for the share cards. Match dates are ISO
+// `YYYY-MM-DD`, which `new Date` parses as UTC midnight, so UTC getters keep
+// the calendar day stable in every timezone.
+export const formatMatchDateLong = (dateString: string): string => {
+  const d = new Date(dateString);
+  if (Number.isNaN(d.getTime())) return dateString;
+  return `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()}`;
+};

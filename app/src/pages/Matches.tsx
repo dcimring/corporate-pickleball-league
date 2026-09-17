@@ -1,18 +1,19 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import { Info, X } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MatchCard } from '../components/MatchCard';
 import { LoadingState } from '../components/LoadingState';
+import { ShareToast } from '../components/ShareToast';
+import { ShareStage } from '../components/share/ShareStage';
+import { MatchShareCard } from '../components/share/MatchShareCard';
 import { useLeagueData } from '../hooks/useLeagueData';
-import { ShareButton, type ShareButtonHandle } from '../components/ShareButton';
 import { useActiveDivision } from '../hooks/useActiveDivision';
+import { useShareCard } from '../hooks/useShareCard';
 import { formatMatchDate, getLatestMatchDate } from '../lib/format';
 import { SEASON_LABEL } from '../lib/config';
+import { slugify } from '../lib/share';
 import type { Match } from '../types';
-
-const SHARE_TYPES = ['story', 'post', 'wa'] as const;
-const SHARE_DEVICES = ['mobile', 'desktop'] as const;
 
 export const Matches: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -27,14 +28,11 @@ export const Matches: React.FC = () => {
     sessionStorage.setItem('leaderboard_tip_dismissed', 'true');
   };
 
-  // Global Sharing State
-  const [sharingMatch, setSharingMatch] = useState<Match | null>(null);
-  const [sharingType, setSharingType] = useState<'story' | 'post' | 'wa' | null>(null);
-  const [activeToastTarget, setActiveToastTarget] = useState<React.RefObject<HTMLDivElement | null> | null>(null);
-  const [activeCardRef, setActiveCardRef] = useState<React.RefObject<HTMLDivElement | null> | null>(null);
-
-  // One hidden ShareButton per (type, device) pair, keyed "story-mobile", "post-desktop", etc.
-  const shareBtnRefs = useRef<Record<string, ShareButtonHandle | null>>({});
+  // One share at a time; the payload is the match being exported.
+  const { pending: sharePending, mountStage, request: requestShare, toast: shareToast, toastTarget: shareToastTarget, dismissToast } = useShareCard<Match>({
+    fileName: (m) => `pickleball-result-${slugify(m.team1)}-vs-${slugify(m.team2)}-${m.date}.jpg`,
+    shareText: (m) => `${m.team1} ${m.team1Wins}–${m.team2Wins} ${m.team2} · ${activeDivision ?? ''} · Corporate Pickleball League 🥒🏆`,
+  });
 
   const handleClearFilter = () => {
     const newParams = new URLSearchParams(searchParams);
@@ -48,41 +46,13 @@ export const Matches: React.FC = () => {
     setSearchParams(newParams);
   };
 
-  const handleShare = (match: Match, type: 'story' | 'post' | 'wa', toastRef: React.RefObject<HTMLDivElement | null>, cardRef: React.RefObject<HTMLDivElement | null>) => {
-    setSharingMatch(match);
-    setSharingType(type);
-    setActiveToastTarget(toastRef);
-    setActiveCardRef(cardRef);
-  };
-
-  useEffect(() => {
-    if (sharingMatch && sharingType && activeCardRef) {
-      const timer = setTimeout(() => {
-        const isDesktop = typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches;
-        shareBtnRefs.current[`${sharingType}-${isDesktop ? 'desktop' : 'mobile'}`]?.triggerShare();
-      }, 300);
-      return () => clearTimeout(timer);
-    }
-  }, [sharingMatch, sharingType, activeCardRef]);
-
-  const handleShareEnd = () => {
-    // Immediately stop the spin animation in the card by clearing the type
-    setSharingType(null);
-    
-    // Keep the sharing match (and thus the portal/toast) active for 6 seconds
-    setTimeout(() => {
-        setSharingMatch(null);
-        setActiveToastTarget(null);
-        setActiveCardRef(null);
-    }, 6000);
-  };
-
   if (loading || !activeDivision) {
     return <LoadingState />;
   }
 
   const selectedTeam = searchParams.get('team');
-  
+  const season = data.season || SEASON_LABEL;
+
   let matches = data.matches[activeDivision] || [];
 
   const latestMatchDate = getLatestMatchDate(matches);
@@ -98,7 +68,7 @@ export const Matches: React.FC = () => {
       <div className="meta flex items-center justify-center flex-wrap gap-4 md:gap-7 pt-3 pb-4 md:pt-[var(--header-gap-sm)] md:pb-5 px-0 text-navy-soft">
         <AnimatePresence>
           {showTip && (
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
@@ -106,7 +76,7 @@ export const Matches: React.FC = () => {
             >
               <Info size={14} className="text-navy-faint" />
               <span className="mono font-bold uppercase">Tip: <span className="font-medium uppercase">Click team name to filter their matches</span></span>
-              <button 
+              <button
                 onClick={handleDismissTip}
                 className="ml-1 p-0.5 hover:bg-rule rounded-full transition-colors group"
                 aria-label="Dismiss tip"
@@ -118,7 +88,7 @@ export const Matches: React.FC = () => {
         </AnimatePresence>
         <div className="meta-asof inline-flex items-center gap-3 text-navy-soft mono text-[11px]">
           <span className="meta-dot w-1.5 h-1.5 bg-yellow rounded-sm" />
-          <span>DATA CURRENT THROUGH {latestMatchDate ? formatMatchDate(latestMatchDate) : (data.season || SEASON_LABEL).toUpperCase()}</span>
+          <span>DATA CURRENT THROUGH {latestMatchDate ? formatMatchDate(latestMatchDate) : season.toUpperCase()}</span>
           <span className="meta-dot w-1.5 h-1.5 bg-yellow rounded-sm" />
         </div>
       </div>
@@ -128,13 +98,13 @@ export const Matches: React.FC = () => {
           {/* Active Filter Ribbon - New Design Style */}
           <AnimatePresence mode="wait">
             {selectedTeam && (
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 className="overflow-hidden mb-[var(--header-gap-md)]"
               >
-                <div 
+                <div
                   className="w-full py-3 bg-navy text-white flex items-center justify-center gap-6 relative shadow-lg"
                 >
                   <div className="absolute left-0 top-0 bottom-0 w-2 bg-yellow" />
@@ -142,7 +112,7 @@ export const Matches: React.FC = () => {
                     <span className="opacity-40">FILTERED BY</span>
                     <span className="text-yellow">{selectedTeam}</span>
                   </span>
-                  <button 
+                  <button
                     onClick={handleClearFilter}
                     className="p-1.5 hover:bg-yellow hover:text-navy transition-all rounded-full"
                   >
@@ -168,12 +138,12 @@ export const Matches: React.FC = () => {
            <div className="match-grid mt-4">
             {matches.length > 0 ? (
               matches.map((match) => (
-                <MatchCard 
-                  key={match.id} 
-                  match={match} 
-                  onTeamClick={handleTeamClick} 
-                  onShare={handleShare}
-                  isSharing={sharingMatch?.id === match.id && sharingType !== null}
+                <MatchCard
+                  key={match.id}
+                  match={match}
+                  onTeamClick={handleTeamClick}
+                  onShare={requestShare}
+                  isSharing={sharePending?.id === match.id}
                 />
               ))
             ) : (
@@ -198,28 +168,12 @@ export const Matches: React.FC = () => {
         </div>
       </div>
 
-      {/* GLOBAL SHARE PORTAL (Hidden from view) */}
-      <div className="absolute left-[-9999px] top-[-9999px] pointer-events-none">
-          {sharingMatch && activeCardRef && SHARE_TYPES.map((type) =>
-            SHARE_DEVICES.map((device) => (
-              <ShareButton
-                key={`${type}-${device}`}
-                ref={(el) => { shareBtnRefs.current[`${type}-${device}`] = el; }}
-                targetRef={activeCardRef}
-                portalTarget={activeToastTarget || undefined}
-                hidden
-                pixelRatio={2}
-                imageQuality={0.8}
-                preferDownload={device === 'desktop'}
-                toastPosition="fixed"
-                onShareEnd={handleShareEnd}
-                fileName={type === 'wa'
-                  ? `Match-WA-${sharingMatch.team1}-vs-${sharingMatch.team2}.jpg`
-                  : `Match-${sharingMatch.team1}-vs-${sharingMatch.team2}-${type}.jpg`}
-              />
-            ))
-          )}
-      </div>
+      {sharePending && (
+        <ShareStage ref={mountStage}>
+          <MatchShareCard match={sharePending} division={activeDivision} season={season} />
+        </ShareStage>
+      )}
+      <ShareToast state={shareToast} onClose={dismissToast} portalTarget={shareToastTarget} />
     </div>
   );
 };
