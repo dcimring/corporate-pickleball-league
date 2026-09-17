@@ -89,6 +89,19 @@ describe('buildLeagueData (hand-computed fixture)', () => {
     expect(tied.leaderboard['Division A'][2]).toEqual({ team: 'Bob', wins: 0, losses: 0, winPct: 0, pointsFor: 0, pointsAgainst: 0 });
   });
 
+  it('breaks ties on win % and points for by fewest points against', () => {
+    // Zed and Amy: same win %, same points for; Amy conceded fewer points.
+    const tied = buildLeagueData({
+      season: 'T',
+      importedAt: 0,
+      rows: [
+        row('A', 'Zed', 'Bob', '2026-01-01', [4, 2, 50, 40]),
+        row('A', 'Amy', 'Bob', '2026-01-08', [4, 2, 50, 30]),
+      ],
+    });
+    expect(tied.leaderboard['Division A'].map((e) => e.team)).toEqual(['Amy', 'Zed', 'Bob']);
+  });
+
   it('numbers repeat pairings on the same day', () => {
     const twice = buildLeagueData({
       season: 'T',
