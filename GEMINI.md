@@ -14,8 +14,8 @@ The **Corporate Pickleball League** is a responsive web application built to man
 -   **Ingestion:** Google Apps Script posts the results CSV to a Convex HTTP endpoint
 
 ## Development Workflow Rules
-- Always perform work and code changes on the `staging` branch.
-- After merging changes into `main` and pushing to GitHub, always switch back to the `staging` branch immediately.
+- Work directly on the `main` branch; there is no `staging` branch.
+- Pushing to `main` triggers the Vercel Production build, which also deploys the Convex backend (`app/convex/`).
 
 ## Key Directories & Files
 

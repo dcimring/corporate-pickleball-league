@@ -39,7 +39,11 @@ see `app/docs/iframe-integration.md`).
 
 ## Current state (Sep 2026)
 
-- Working branch: `staging`; PRs target `main`.
+- Work directly on `main` (the `staging` branch was retired Sep 2026). Pushing
+  to `main` triggers the Vercel Production build, which also deploys Convex
+  functions via `CONVEX_DEPLOY_KEY` (scoped to `deployment:deploy`) — no
+  manual `npx convex deploy` needed. Check the Vercel build log for
+  "Deployed Convex functions" if a backend change doesn't appear live.
 - A full site-review round is done (commits `29256f9`, `2045715`): caching
   headers fixed, a11y (team names are real buttons, aria on sort headers),
   AA-contrast tokens, fonts via `<link>`, shared `useActiveDivision` hook /
