@@ -21,8 +21,8 @@ export default defineConfig(({ mode }) => ({
       closeBundle() {
         if (mode !== 'production') return;
 
-        const distPath = path.resolve(__dirname, 'dist');
-        const publicPath = path.resolve(__dirname, 'public');
+        const distPath = path.resolve(import.meta.dirname, 'dist');
+        const publicPath = path.resolve(import.meta.dirname, 'public');
         const distFile = path.resolve(distPath, 'version.json');
         const publicFile = path.resolve(publicPath, 'version.json');
         

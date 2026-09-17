@@ -30,7 +30,7 @@
     "@types/react": "^19.2.5",
     "@types/react-dom": "^19.2.3",
     "@typescript/native": "npm:typescript@^7.0.2",
-    "@vitejs/plugin-react": "^5.1.1",
+    "@vitejs/plugin-react": "^6.1.1",
     "autoprefixer": "^10.4.23",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
@@ -40,7 +40,7 @@
     "tailwindcss": "^4.1.18",
     "typescript": "npm:@typescript/typescript6@^6.0.2",
     "typescript-eslint": "^8.46.4",
-    "vite": "^7.2.4",
+    "vite": "^8.3.0",
     "vitest": "^5.0.0"
   }
 }
