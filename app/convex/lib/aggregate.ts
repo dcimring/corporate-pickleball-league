@@ -140,11 +140,13 @@ export const buildLeagueData = (input: {
         pointsAgainst: a.pointsAgainst,
       };
     });
-    // Win % desc, then points for desc; Array.prototype.sort is stable, so
-    // remaining ties keep alphabetical order.
+    // Win % desc, then points for desc, then points against asc (fewer
+    // conceded wins); Array.prototype.sort is stable, so remaining ties
+    // keep alphabetical order.
     entries.sort((a, b) => {
       if (b.winPct !== a.winPct) return b.winPct - a.winPct;
-      return b.pointsFor - a.pointsFor;
+      if (b.pointsFor !== a.pointsFor) return b.pointsFor - a.pointsFor;
+      return a.pointsAgainst - b.pointsAgainst;
     });
 
     // Matches: newest date first, sheet order within a date. Ids are stable
