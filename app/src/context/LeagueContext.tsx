@@ -1,25 +1,9 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useQuery } from 'convex/react';
 import { api } from '../../convex/_generated/api';
 import { emptyLeagueData } from '../../convex/lib/aggregate';
 import type { LeagueData } from '../types';
-
-interface LeagueContextType {
-  data: LeagueData;
-  loading: boolean;
-  error: Error | null;
-  refresh: () => void;
-}
-
-const LeagueContext = createContext<LeagueContextType | undefined>(undefined);
-
-export const useLeagueData = () => {
-  const context = useContext(LeagueContext);
-  if (!context) {
-    throw new Error('useLeagueData must be used within a LeagueProvider');
-  }
-  return context;
-};
+import { LeagueContext } from './league-context';
 
 const initialLeagueData: LeagueData = emptyLeagueData();
 

@@ -5,7 +5,7 @@ import { Info, X } from 'lucide-react';
 import { LeaderboardTable } from '../components/LeaderboardTable';
 import { ShareButton } from '../components/ShareButton';
 import { LoadingState } from '../components/LoadingState';
-import { useLeagueData } from '../context/LeagueContext';
+import { useLeagueData } from '../hooks/useLeagueData';
 import { useActiveDivision } from '../hooks/useActiveDivision';
 import { formatMatchDate, getLatestMatchDate } from '../lib/format';
 import { SEASON_LABEL } from '../lib/config';

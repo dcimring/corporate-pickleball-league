@@ -25,7 +25,7 @@ The check is performed in the following scenarios:
 
 ### 4. User Experience
 - **Notification**: When a version mismatch is detected between the running app and the server's `version.json`, the `UpdateBanner` slides down from the top.
-- **Action**: Clicking the banner performs a `window.location.reload()`, which, combined with the `Clear-Site-Data: "cache"` header in `vercel.json`, ensures the new version is fetched immediately.
+- **Action**: Clicking the banner performs a `window.location.reload()`. Because `index.html` and `version.json` are served with `no-cache, no-store, must-revalidate` and hashed assets under `/assets/` are immutable, the reload always picks up the new build.
 
 ## Configuration Details
 - **Primary Signal**: `version.json` fetch.

@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { useLeagueData } from '../context/LeagueContext';
+import { useLeagueData } from '../hooks/useLeagueData';
 
 // Shared division resolution: URL param wins, then preferred defaults, then first available.
 // Deriving directly from the URL prevents dual-render flicker on navigation.

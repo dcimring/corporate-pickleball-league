@@ -1,5 +1,12 @@
 # Service Worker Removal & Manual Update Plan
 
+> **Status: completed (March 2026).** Kept as the record of why things are the way
+> they are. What remains in the codebase on purpose: the unregister block in
+> `src/main.tsx`, and the kill-switch stubs `public/sw.js` and
+> `public/service-worker.js` that old Safari clients still fetch. Do not delete them.
+> The event-driven update check that replaced the 10-minute poll is described in
+> `update-frequency-strategy.md`.
+
 This document outlines the strategy for completely removing the Service Worker (PWA) functionality and transitioning the Corporate Pickleball League application to a pure, polling-based update mechanism using `version.json`.
 
 ## Goal

@@ -4,7 +4,7 @@ import { useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MatchCard } from '../components/MatchCard';
 import { LoadingState } from '../components/LoadingState';
-import { useLeagueData } from '../context/LeagueContext';
+import { useLeagueData } from '../hooks/useLeagueData';
 import { ShareButton, type ShareButtonHandle } from '../components/ShareButton';
 import { useActiveDivision } from '../hooks/useActiveDivision';
 import { formatMatchDate, getLatestMatchDate } from '../lib/format';

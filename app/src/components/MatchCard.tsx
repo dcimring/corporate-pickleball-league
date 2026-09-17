@@ -56,6 +56,8 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick, onShar
   const handleShareClick = (type: 'story' | 'post' | 'wa') => (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsMenuOpen(false);
+    // The ref objects are only forwarded to the event handler, not read during render.
+    // eslint-disable-next-line react-hooks/refs
     onShare?.(match, type, toastContainerRef, cardRef);
   };
 

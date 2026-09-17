@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useLocation, useSearchParams, useNavigate } from 'react-router-dom';
-import { useLeagueData } from '../context/LeagueContext';
+import { useLeagueData } from '../hooks/useLeagueData';
 import { useActiveDivision } from '../hooks/useActiveDivision';
 import { SEASON_LABEL } from '../lib/config';
 import { ConnectionError } from './ConnectionError';

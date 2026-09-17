@@ -25,7 +25,7 @@ When `isIframe` is true, the following "outer" branding and navigation elements 
 
 - **TopFrame**: The fixed dark navy bar at the very top (containing status/time).
 - **Global Branding**: The "Corporate Pickleball League" text in the sticky top bar.
-- **Page Headings**: The large "Standings" or "Matches" headings and the "Summer 2026" season text.
+- **Page Headings**: The large "Standings" or "Matches" headings and the season label (`data.season`).
 
 **Retained Elements**:
 - **Division Tabs**: Essential for filtering data.
