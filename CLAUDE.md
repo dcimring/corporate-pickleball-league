@@ -59,6 +59,41 @@ see `app/docs/iframe-integration.md`).
   `:root` — keep both in sync; `[data-theme="court"|"dark"]` variants exist but
   no theme switcher UI is wired up). Keep the ground white — no tints/gradients.
 
+## Next step (Sep 2026): major dependency upgrades
+
+Repo maintenance is done (lint clean, dead code gone, docs current, in-range
+`npm update` applied 2026-09-17). What remains are the major bumps, each a
+real migration. Do them **one group per commit**, in this order, verifying
+each before moving on:
+
+1. **TypeScript 5.9 → 7** (native compiler). Biggest blast radius: `npm run
+   build` runs `tsc -b` with project references (`tsconfig.json` →
+   `tsconfig.app.json` + `tsconfig.node.json`), vitest type-checks via it, and
+   **`npx convex deploy` in the Vercel build type-checks `convex/` with the
+   project's installed `typescript`** — so a TS break also breaks prod deploy.
+   If `tsc -b` or `erasableSyntaxOnly`/`noUncheckedSideEffectImports` are
+   unsupported, stop and report rather than loosening `strict`.
+2. **Vite 7 → 8** + **/plugin-react 5 → 6**. Check the custom
+   `generate-version-json` plugin in `vite.config.ts` (uses `closeBundle`) and
+   `build.cssCodeSplit=false`; `dev` uses `--host`. vitest 5 is already current.
+3. **ESLint 9 → 10** + `/js` 10 + `globals` 17 +
+   `eslint-plugin-react-refresh` 0.5. Flat config already in `eslint.config.js`;
+   keep the one scoped `react-hooks/refs` disable in `MatchCard.tsx`.
+4. **framer-motion 12 → 13**. Used in 7 files (`motion`, `AnimatePresence`,
+   `useInView`); check the changelog for import/prop renames.
+5. **lucide-react 0.562 → 1.x**. 17 icons used (grep `from 'lucide-react'`);
+   1.x renamed/removed some — fix imports, don't swap icons visually.
+
+Skip `/node`: `npm outdated` shows 22 as "latest" from a dist-tag quirk;
+stay on 24 (Vercel builds on Node 24; local is 22).
+
+**Verify each step:** `npx tsc -b && npm test && npm run lint && npm run build`
+from `app/`, then preview via the `app-dev` launch config (port 5174): check
+`/leaderboard` and `/matches` render with no console errors and a Story
+export still downloads. Only then commit and push (a push to `main` is a prod
+deploy that also runs `convex deploy`). If a step can't be completed cleanly,
+leave that dependency on its current major, note why here, and continue.
+
 ## Non-obvious constraints
 
 - The 500ms minimum loading time in `LeagueContext` is deliberate (makes the
