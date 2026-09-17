@@ -10,9 +10,10 @@ see `app/docs/iframe-integration.md`).
 - App lives in `app/` — `cd app && npm install`, then `npx convex dev` (backend,
   keep running; writes `.env.local`) and `npm run dev` in another terminal.
 - Tests: `npm test` (vitest; parser/aggregation/diff in `app/tests/`).
-- **Gotcha:** another local project often holds IPv6 `localhost:5173`. Vite binds
-  `*:5173` (IPv4), so open **http://127.0.0.1:5173**, not `localhost:5173`,
-  or you may see a different app entirely.
+- **Gotcha:** another local project often holds `localhost:5173`. Running
+  `npm run dev` by hand, open **http://127.0.0.1:5173**, not `localhost:5173`,
+  or you may see a different app entirely. The Claude Code preview config
+  (`.claude/launch.json`, `app-dev`) sidesteps this by using port **5174**.
 - Build: `npm run build` (runs `tsc -b`; regenerates `public/version.json` —
   don't commit that churn). Lint: `npm run lint` (clean; keep it that way).
 

@@ -6,10 +6,14 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": [
         "run",
-        "dev"
+        "dev",
+        "--",
+        "--port",
+        "5174",
+        "--strictPort"
       ],
       "cwd": "app",
-      "port": 5173,
+      "port": 5174,
       "autoPort": true
     },
     {
