@@ -11,6 +11,8 @@
     "jsx": "react-jsx",
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
+    /* TS 6+ no longer auto-includes @types/*; convex/http.ts reads process.env */
+    "types": ["node"],
 
     /* These compiler options are just good defaults */
     "target": "ESNext",
