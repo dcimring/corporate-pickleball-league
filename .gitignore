@@ -138,3 +138,6 @@ __pycache__/
 backups/
 .vercel
 version.json
+
+# Claude Code per-machine settings
+.claude/settings.local.json
