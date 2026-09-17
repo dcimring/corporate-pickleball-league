@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { clsx } from 'clsx';
-import { Loader2, Share2, MessageCircle, Image as ImageIcon, Instagram } from 'lucide-react';
+import { Loader2, Share2, MessageCircle, Image as ImageIcon } from 'lucide-react';
+import { InstagramIcon } from './icons/InstagramIcon';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { Match } from '../types';
 
@@ -94,7 +95,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick, onShar
                 >
                   <div className="p-1 flex flex-col">
                     <button onClick={handleShareClick('story')} className="flex items-center gap-3 w-full px-3 py-2 hover:bg-card-tint text-navy transition-colors">
-                      <Instagram size={14} className="text-navy-soft" />
+                      <InstagramIcon size={14} className="text-navy-soft" />
                       <span className="mono text-[11px] text-left">Story</span>
                     </button>
                     <button onClick={handleShareClick('post')} className="flex items-center gap-3 w-full px-3 py-2 hover:bg-card-tint text-navy transition-colors">
