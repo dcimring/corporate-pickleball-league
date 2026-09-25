@@ -99,7 +99,7 @@ function processMatchResults() {
 
   log("Ingestion complete.");
   const recipient = props.getProperty('NOTIFICATION_RECIPIENT') || extractEmailAddress(newest.from);
-  sendUpdateEmail(recipient, newest, result.newMatches, result.modifiedMatches);
+  sendUpdateEmail(recipient, newest, result);
   sendDiscordNotification(true, "Ingestion Successful", "Match data has been updated.", stats);
 }
 
@@ -279,11 +279,19 @@ function addLabel(thread) {
 
 // --- Notifications ---
 
-function sendUpdateEmail(recipient, newestEmail, newMatches, modifiedMatches) {
+function sendUpdateEmail(recipient, newestEmail, result) {
   if (!recipient) return;
 
+  const newMatches = result.newMatches;
+  const modifiedMatches = result.modifiedMatches;
+  const errors = result.errors || [];
+  const warnings = result.warnings || [];
+
   const processedDate = formatDate(newestEmail.date);
-  const subject = `Leaderboard Updated — ${newestEmail.subject}`;
+  const attention = errors.length > 0
+    ? ` — ${errors.length} row${errors.length === 1 ? '' : 's'} need${errors.length === 1 ? 's' : ''} attention`
+    : '';
+  const subject = `Leaderboard Updated${attention} — ${newestEmail.subject}`;
   const newCount = countGroupedMatches(newMatches);
   const modifiedCount = countGroupedMatches(modifiedMatches);
 
@@ -304,6 +312,16 @@ function sendUpdateEmail(recipient, newestEmail, newMatches, modifiedMatches) {
       <h2 style="margin: 0 0 8px;">Leaderboard Updated</h2>
       <p style="margin: 0 0 16px;">Results email processed and website updated.</p>
       <p style="margin: 0 0 16px;"><strong>Processed Email Date:</strong> ${escapeHtml(processedDate)}</p>
+      ${renderProblemsBox(errors, {
+        title: 'Rows Not Uploaded',
+        intro: "These rows couldn't be read, so they are <strong>not on the website</strong>. Please correct them in the sheet — the next results email will pick them up.",
+        background: '#fef2f2', border: '#fecaca', accent: '#dc2626', heading: '#991b1b', text: '#7f1d1d'
+      })}
+      ${renderProblemsBox(warnings, {
+        title: 'Worth Checking',
+        intro: 'These rows are on the website but look unusual.',
+        background: '#fffbeb', border: '#fde68a', accent: '#d97706', heading: '#92400e', text: '#78350f'
+      })}
       <h3 style="margin: 16px 0 6px;">New Matches (${newCount})</h3>
       ${groupedHtml(newMatches)}
       <h3 style="margin: 16px 0 6px;">Modified Matches (${modifiedCount})</h3>
@@ -312,6 +330,21 @@ function sendUpdateEmail(recipient, newestEmail, newMatches, modifiedMatches) {
   `;
 
   GmailApp.sendEmail(recipient, subject, '', { htmlBody });
+}
+
+// Callout listing parser errors/warnings. Renders nothing when the list is
+// empty, so a clean sheet produces the same email as before. `intro` is
+// trusted markup; the messages come from the sheet and are escaped.
+function renderProblemsBox(messages, style) {
+  if (!messages || messages.length === 0) return '';
+  const items = messages.map((m) => `<li>${escapeHtml(m)}</li>`).join('');
+  return `
+    <div style="max-width: 720px; margin: 0 0 20px; padding: 14px 16px; background: ${style.background}; border: 1px solid ${style.border}; border-left: 4px solid ${style.accent}; border-radius: 8px;">
+      <h3 style="margin: 0 0 6px; color: ${style.heading};">${style.title} (${messages.length})</h3>
+      <p style="margin: 0 0 10px; font-size: 14px; color: ${style.text};">${style.intro}</p>
+      <ul style="margin: 0; padding-left: 20px; font-size: 14px; color: #111827; line-height: 1.6;">${items}</ul>
+    </div>
+  `;
 }
 
 function countGroupedMatches(grouped) {
