@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
-import { clsx } from 'clsx';
 import { Loader2, Share2 } from 'lucide-react';
 import type { Match } from '../types';
+import { matchOutcome } from '../lib/results';
 
 interface MatchCardProps {
   match: Match;
@@ -11,32 +11,39 @@ interface MatchCardProps {
   isSharing?: boolean;
 }
 
-const MarginBar: React.FC<{ wins1: number; wins2: number; isWin1: boolean }> = ({ wins1, wins2, isWin1 }) => {
-  const total = wins1 + wins2 || 1;
-  const p1 = (wins1 / total) * 100;
-  const p2 = (wins2 / total) * 100;
-  return (
-    <div className="margin-bar h-[5px] bg-rule rounded-sm overflow-hidden flex gap-[2px]">
-      <div className={`margin-a h-full ${isWin1 ? 'bg-yellow' : 'bg-rule-2'}`} style={{ width: `${p1}%` }} />
-      <div className={`margin-b h-full ${!isWin1 ? 'bg-yellow' : 'bg-rule-2'}`} style={{ width: `${p2}%` }} />
-    </div>
-  );
-};
+const TeamLine: React.FC<{
+  team: string;
+  games: number;
+  points: number;
+  won: boolean;
+  strong: boolean;
+  onTeamClick?: (teamName: string) => void;
+}> = ({ team, games, points, won, strong, onTeamClick }) => (
+  <div className="grid grid-cols-[12px_minmax(0,1fr)_30px_48px] md:grid-cols-[16px_minmax(0,1fr)_40px_56px] items-center gap-2 md:gap-2.5">
+    <span aria-hidden="true" className={`block w-[9px] h-[9px] md:w-2.5 md:h-2.5 rounded-[3px] ${won ? 'bg-yellow' : ''}`} />
+    <button
+      type="button"
+      onClick={() => onTeamClick?.(team)}
+      aria-label={`Show matches for ${team}`}
+      className={`text-left truncate font-display text-[15px] md:text-[16px] rounded-sm hover:underline decoration-yellow decoration-2 underline-offset-2 focus-visible:outline-2 focus-visible:outline-yellow focus-visible:outline-offset-2 ${
+        strong ? 'font-extrabold text-navy' : 'font-semibold text-[#4f6680]'
+      }`}
+    >
+      {team}
+    </button>
+    <span className={`text-center mono text-[20px] md:text-[22px] font-bold tabular-nums ${strong ? 'text-navy' : 'text-[#7d8ea3]'}`}>
+      {games}
+    </span>
+    <span className="text-right mono text-[11px] md:text-[12px] font-semibold text-navy-faint tabular-nums">{points} pts</span>
+  </div>
+);
 
 export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick, onShare, isSharing }) => {
   const toastContainerRef = useRef<HTMLDivElement>(null);
-
-  const isWin1 = match.team1Wins > match.team2Wins || (match.team1Wins === match.team2Wins && match.team1Points > match.team2Points);
-  const isWin2 = match.team2Wins > match.team1Wins || (match.team2Wins === match.team1Wins && match.team2Points > match.team1Points);
-
-  const formatDate = (dateStr: string) => {
-    const date = new Date(dateStr);
-    return new Intl.DateTimeFormat('en-GB', {
-      day: '2-digit',
-      month: 'short',
-      timeZone: 'UTC'
-    }).format(date).toUpperCase();
-  };
+  const outcome = matchOutcome(match);
+  const draw = outcome === 'draw';
+  const winner = outcome === 'team1' ? match.team1 : outcome === 'team2' ? match.team2 : null;
+  const levelOnGames = match.team1Wins === match.team2Wins;
 
   const handleShareClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -44,81 +51,48 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onTeamClick, onShar
   };
 
   return (
-    <div className="match-card p-5.5 md:p-6 flex flex-col gap-4.5 relative group overflow-hidden bg-white">
+    <article className="match-card relative overflow-hidden bg-white border border-rule-2 rounded-[14px] px-4 py-3.5 md:px-5 md:py-4 flex flex-col gap-2 md:gap-2.5 shadow-[0_24px_60px_-40px_rgba(20,58,120,0.25)]">
       <div ref={toastContainerRef} className="absolute inset-0 z-[100] pointer-events-none flex items-center justify-center p-2" />
 
-      {/* Match Header */}
-      <div className="match-head flex items-center justify-between gap-3 flex-shrink-0">
-        <span className="match-date text-navy-faint mono text-[11px] whitespace-nowrap">{formatDate(match.date)}</span>
-        <div className="match-head-right flex items-center gap-3">
-          <div className="match-pts text-navy-faint text-[12px] mono">
-            <strong className={clsx("transition-colors", isWin1 ? "text-navy font-bold" : "text-navy-faint font-semibold")}>{match.team1Points}</strong>
-            <span className="mx-1 text-rule-3">/</span>
-            <strong className={clsx("transition-colors", isWin2 ? "text-navy font-bold" : "text-navy-faint font-semibold")}>{match.team2Points}</strong>
-            <span className="ml-1 text-[10px] opacity-40">PTS</span>
-          </div>
+      <TeamLine
+        team={match.team1}
+        games={match.team1Wins}
+        points={match.team1Points}
+        won={outcome === 'team1'}
+        strong={outcome !== 'team2'}
+        onTeamClick={onTeamClick}
+      />
+      <TeamLine
+        team={match.team2}
+        games={match.team2Wins}
+        points={match.team2Points}
+        won={outcome === 'team2'}
+        strong={outcome !== 'team1'}
+        onTeamClick={onTeamClick}
+      />
 
-          {onShare && (
-            <button
-              type="button"
-              onClick={handleShareClick}
-              disabled={isSharing}
-              aria-label={`Share result: ${match.team1} vs ${match.team2}`}
-              title="Share result"
-              className="match-share w-6.5 h-6.5 flex items-center justify-center rounded-md hover:bg-rule transition-colors text-navy-faint hover:text-navy disabled:cursor-wait"
-            >
-              {isSharing ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Share2 className="w-3.5 h-3.5" />}
-            </button>
-          )}
-        </div>
+      <div className="flex items-center justify-between gap-3 pt-2 md:pt-2.5 border-t border-rule mono text-[10px] md:text-[11px] font-bold tracking-[0.08em] uppercase">
+        {onShare ? (
+          <button
+            type="button"
+            onClick={handleShareClick}
+            disabled={isSharing}
+            aria-label={`Share result: ${match.team1} vs ${match.team2}`}
+            title="Share result"
+            className="-ml-2 inline-flex items-center gap-1.5 min-h-9 px-2 rounded-md text-navy-faint hover:text-navy hover:bg-navy/5 transition-colors disabled:cursor-wait"
+          >
+            {isSharing ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Share2 className="w-3.5 h-3.5" />}
+            Share
+          </button>
+        ) : (
+          <span className="text-navy-faint">Games</span>
+        )}
+        <span className={`truncate ${draw ? 'text-[#4f6680]' : 'text-navy'}`}>
+          {draw
+            ? `Draw · ${match.team1Wins}–${match.team2Wins}`
+            : `${winner} won${levelOnGames ? ' on points' : ''}`}
+        </span>
       </div>
-
-      {/* Match Body */}
-      <div className="match-body flex flex-col gap-0.5 -mx-1 flex-1 justify-center">
-        {/* Team 1 Row */}
-        <div className={clsx("mt-row grid grid-cols-[1fr_auto] items-center gap-4 px-1 py-1.5 rounded-md transition-colors", isWin1 ? "mt-row-win" : "mt-row-lose")}>
-          <div className="mt-name-wrap flex items-center gap-3 min-w-0">
-            <span className={clsx("mt-dot w-2 h-2 rounded-full border-[1.5px] flex-shrink-0 transition-all", isWin1 ? "on bg-yellow border-yellow shadow-[0_0_0_4px_var(--yellow-glow)]" : "border-rule-2")} />
-            <button
-              onClick={() => onTeamClick?.(match.team1)}
-              aria-label={`Filter matches by ${match.team1}`}
-              className={clsx("mt-name text-left font-display font-extrabold uppercase tracking-wide text-[clamp(18px,1.7vw,22px)] leading-[0.95] cursor-pointer hover:underline decoration-yellow decoration-2 underline-offset-2 rounded-sm focus-visible:outline-2 focus-visible:outline-yellow focus-visible:outline-offset-2", isWin1 ? "text-navy" : "text-navy-faint-2")}
-            >
-              {match.team1}
-            </button>
-          </div>
-          <span className={clsx("mt-games font-display font-black text-[clamp(38px,4.2vw,56px)] leading-[0.9] tracking-tighter self-center", isWin1 ? "text-navy" : "text-navy-faint-2")}>
-            {match.team1Wins}
-          </span>
-        </div>
-
-        {/* Team 2 Row */}
-        <div className={clsx("mt-row grid grid-cols-[1fr_auto] items-center gap-4 px-1 py-1.5 rounded-md transition-colors", isWin2 ? "mt-row-win" : "mt-row-lose")}>
-          <div className="mt-name-wrap flex items-center gap-3 min-w-0">
-            <span className={clsx("mt-dot w-2 h-2 rounded-full border-[1.5px] flex-shrink-0 transition-all", isWin2 ? "on bg-yellow border-yellow shadow-[0_0_0_4px_var(--yellow-glow)]" : "border-rule-2")} />
-            <button
-              onClick={() => onTeamClick?.(match.team2)}
-              aria-label={`Filter matches by ${match.team2}`}
-              className={clsx("mt-name text-left font-display font-extrabold uppercase tracking-wide text-[clamp(18px,1.7vw,22px)] leading-[0.95] cursor-pointer hover:underline decoration-yellow decoration-2 underline-offset-2 rounded-sm focus-visible:outline-2 focus-visible:outline-yellow focus-visible:outline-offset-2", isWin2 ? "text-navy" : "text-navy-faint-2")}
-            >
-              {match.team2}
-            </button>
-          </div>
-          <span className={clsx("mt-games font-display font-black text-[clamp(38px,4.2vw,56px)] leading-[0.9] tracking-tighter self-center", isWin2 ? "text-navy" : "text-navy-faint-2")}>
-            {match.team2Wins}
-          </span>
-        </div>
-      </div>
-
-      {/* Match Footer */}
-      <div className="match-foot flex flex-col gap-2.5 flex-shrink-0">
-        <MarginBar wins1={match.team1Wins} wins2={match.team2Wins} isWin1={isWin1} />
-        <div className="match-foot-meta flex flex-wrap items-center gap-x-2.5 gap-y-1 text-navy-faint text-[11px] mono">
-          <span className="whitespace-nowrap">Winner: <strong className="font-bold text-navy uppercase">{isWin1 ? match.team1 : match.team2}</strong></span>
-          <span className="match-foot-sep text-rule-3 opacity-50">|</span>
-          <span className="whitespace-nowrap">{match.team1Wins + match.team2Wins} Games Played</span>
-        </div>
-      </div>
-    </div>
+    </article>
   );
 };

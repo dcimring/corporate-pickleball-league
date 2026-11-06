@@ -104,5 +104,8 @@ Non-obvious results, worth knowing before touching `package.json` again:
   `index.html` needs `crossorigin="anonymous"` or the capture cannot embed the
   fonts. Restyling the live table/cards no longer affects exports.
 - Standings sort (`convex/lib/aggregate.ts`): win % desc → points for desc →
-  points against asc → team name. The leaderboard "W-L" column shows *games*
-  won/lost, not match record — known ambiguity, deliberately left unchanged.
+  points against asc → team name. `LeaderboardEntry.wins/losses` are *games*.
+  Since the Nov 2026 "Sharpened" redesign the table also shows match record
+  (W-D-L) and last-5 form, derived client-side in `src/lib/results.ts` from the
+  division's matches (level on games → more points wins; level on both = draw).
+  Design details: `app/docs/design.md`.

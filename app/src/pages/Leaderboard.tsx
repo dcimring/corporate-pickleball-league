@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion, useInView, AnimatePresence } from 'framer-motion';
-import { Info, X } from 'lucide-react';
+import { motion, useInView } from 'framer-motion';
 import { LeaderboardTable } from '../components/LeaderboardTable';
 import { ShareButton } from '../components/ShareButton';
 import { ShareToast } from '../components/ShareToast';
@@ -11,7 +10,7 @@ import { LoadingState } from '../components/LoadingState';
 import { useLeagueData } from '../hooks/useLeagueData';
 import { useActiveDivision } from '../hooks/useActiveDivision';
 import { useShareCard } from '../hooks/useShareCard';
-import { formatMatchDate, getLatestMatchDate } from '../lib/format';
+import { getLatestMatchDate } from '../lib/format';
 import { SEASON_LABEL } from '../lib/config';
 import { slugify } from '../lib/share';
 
@@ -19,15 +18,6 @@ export const Leaderboard: React.FC = () => {
   const navigate = useNavigate();
   const { data, loading } = useLeagueData();
   const { activeDivision } = useActiveDivision();
-  const [showTip, setShowTip] = useState(() => {
-    return sessionStorage.getItem('leaderboard_tip_dismissed') !== 'true';
-  });
-
-  const handleDismissTip = () => {
-    setShowTip(false);
-    sessionStorage.setItem('leaderboard_tip_dismissed', 'true');
-  };
-
   const shareCardRef = useRef<HTMLDivElement>(null);
   const shareCardInView = useInView(shareCardRef, { once: true, amount: 0.1 });
   const [shareCardAnimated, setShareCardAnimated] = useState(false);
@@ -69,47 +59,18 @@ export const Leaderboard: React.FC = () => {
       {/* Portal target for Share Toasts */}
       <div ref={toastPortalRef} className="fixed bottom-0 left-0 right-0 z-[300] pointer-events-none flex justify-center pb-6" />
 
-      {/* Meta Banner - New Design */}
-      <div className="meta flex items-center justify-center flex-wrap gap-4 md:gap-7 pt-3 pb-4 md:pt-[var(--header-gap-sm)] md:pb-5 px-0 text-navy-soft">
-        <AnimatePresence>
-          {showTip && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className="meta-tip inline-flex items-center gap-3 py-2 px-3.5 bg-card border border-rule rounded-full text-[11px] shadow-sm"
-            >
-              <Info size={14} className="text-navy-faint" />
-              <span className="mono font-bold uppercase">Tip: <span className="font-medium uppercase">Click team name to see their matches</span></span>
-              <button
-                onClick={handleDismissTip}
-                className="ml-1 p-0.5 hover:bg-rule rounded-full transition-colors group"
-                aria-label="Dismiss tip"
-              >
-                <X size={12} className="text-navy-faint group-hover:text-navy" />
-              </button>
-            </motion.div>
-          )}
-        </AnimatePresence>
-        <div className="meta-asof inline-flex items-center gap-3 text-navy-soft mono text-[11px]">
-          <span className="meta-dot w-1.5 h-1.5 bg-yellow rounded-sm" />
-          <span>DATA CURRENT THROUGH {latestMatchDate ? formatMatchDate(latestMatchDate) : season.toUpperCase()}</span>
-          <span className="meta-dot w-1.5 h-1.5 bg-yellow rounded-sm" />
-        </div>
-      </div>
-
       <div className="pb-0">
-        <LeaderboardTable stats={stats} onTeamClick={handleTeamClick} />
+        <LeaderboardTable stats={stats} matches={data.matches[activeDivision] || []} onTeamClick={handleTeamClick} />
 
         {/* Share Section */}
         {stats.length > 0 && (
-          <div className="flex items-center justify-center pt-16 pb-4">
+          <div className="flex items-center justify-center mt-5 md:mt-7 border-t border-rule-2">
             <motion.div
               ref={shareCardRef}
               initial={{ y: 20, opacity: 0 }}
               animate={shareCardAnimated ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
               transition={{ duration: 0.7, ease: "easeOut" }}
-              className="w-full relative overflow-hidden p-8 md:p-12 text-center space-y-10"
+              className="w-full relative overflow-hidden px-4 md:px-12 pt-5 md:pt-7 pb-0 text-center space-y-7"
             >
               <div className="space-y-3 max-w-2xl mx-auto">
                 <p className="mono text-yellow-deep font-black tracking-[0.2em] text-[12px]">

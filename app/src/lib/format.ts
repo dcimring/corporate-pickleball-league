@@ -28,3 +28,24 @@ export const formatMatchDateLong = (dateString: string): string => {
   if (Number.isNaN(d.getTime())) return dateString;
   return `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()}`;
 };
+
+// "Wed 6 May 2026" — date group headings and the "results through" line.
+export const formatMatchDay = (dateString: string): string => {
+  const d = new Date(dateString);
+  if (Number.isNaN(d.getTime())) return dateString;
+  return new Intl.DateTimeFormat('en-GB', {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    timeZone: 'UTC',
+  }).format(d).replace(',', '');
+};
+
+// Division button labels: "CPL" / "Div B2" on desktop, "CPL" / "B2" in the
+// phone grid. The full name stays available as the accessible label.
+export const divisionShortLabel = (name: string, compact = false): string => {
+  if (name.toLowerCase() === 'cayman premier league') return 'CPL';
+  const code = name.replace(/^division\s+/i, '');
+  return compact ? code : `Div ${code}`;
+};

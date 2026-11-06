@@ -52,14 +52,27 @@ The design uses a modern, bold typographic stack to create an editorial feel.
 
 ## Component Specifics
 
-### Match Cards
-- Floating effect on hover (`translateY(-2px)`).
-- Clear win/loss indicators via the "Win Dot" and margin bars.
+### Division picker (Nov 2026, "Sharpened" direction)
+- One button per division. Desktop: a wrapping row of pills ("CPL", "Div B2").
+  Phone: a 4-column grid of short labels ("CPL", "B2") so every division is
+  visible without horizontal scrolling. Active = solid navy.
 
 ### Leaderboard
-- High-contrast ranking numbers in Mono font.
-- Accent bars on "Featured" rows (e.g., the top team).
-- Color-coded "Diff Chips" for point differential.
+- Desktop (lg+): sortable grid — Pos, Team + last-5 form chips, Matches W-D-L,
+  Games, Games won % bar, PF, PA, Pts +/- chip. Leader row tinted `#fff8e4`
+  with a yellow rank badge.
+- Phone/tablet: one row per team — rank badge, name, form chips and a
+  "W-D-L · games" line on the left; games won %, bar and +/- chip on the right.
+  PF/PA are desktop-only.
+- Match record and form come from `src/lib/results.ts` (client-side, from the
+  division's matches). A match level on games goes to more points; level on
+  both is a draw.
+
+### Match Cards
+- Grouped under date headings ("Wed 6 May 2026 — 6 matches"); a "Show team"
+  select filters by team (`?team=`).
+- Two team lines (yellow dot on the winner, games score, points), footer with
+  Share and "X won" / "Draw".
 
 ### Share Cards (social export)
 - Fixed 1080×1350 portrait canvas (`src/components/share/`), "Masthead"

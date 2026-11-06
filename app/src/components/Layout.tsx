@@ -6,15 +6,13 @@ import { SEASON_LABEL } from '../lib/config';
 import { ConnectionError } from './ConnectionError';
 import { UpdateBanner } from './UpdateBanner';
 import { TopFrame } from './TopFrame';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown } from 'lucide-react';
+import { divisionShortLabel, formatMatchDay, getLatestMatchDate } from '../lib/format';
 
 export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const { data, error, refresh, loading } = useLeagueData();
-  const [isDivMenuOpen, setIsDivMenuOpen] = React.useState(false);
   const { divisions, activeDivision } = useActiveDivision();
 
   const activePage = location.pathname === '/' ? '/leaderboard' : location.pathname;
@@ -35,14 +33,11 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   };
 
   const pageTabs = [
-    { name: 'Leaderboard', path: '/leaderboard' },
+    { name: 'Standings', path: '/leaderboard' },
     { name: 'Matches', path: '/matches' },
   ];
 
-  const shortenDivisionName = (name: string) => {
-    if (name.toLowerCase() === 'cayman premier league') return 'CPL';
-    return name.toUpperCase().replace('DIVISION ', 'DIV ');
-  };
+  const latestMatchDate = activeDivision ? getLatestMatchDate(data.matches[activeDivision] || []) : null;
 
   const isIframe = React.useMemo(() => {
     try {
@@ -87,160 +82,93 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       {!isIframe && <TopFrame />}
       <UpdateBanner isIframe={isIframe} />
 
-      {/* Top Bar - New Design */}
-      <header className="topbar grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] items-center gap-2 md:gap-4 pt-3 pb-1 md:py-4 px-6 md:px-[clamp(20px,4vw,56px)]">
-        <div className="topbar-side flex items-center">
-          {!isIframe && (
-            <div className="brand inline-flex items-center gap-3 py-1.5 px-3 rounded-full">
-              <span className="brand-name mono text-[11px] text-navy-soft">Corporate Pickleball League</span>
-            </div>
-          )}
-        </div>
+      <header className="topbar w-full max-w-[1180px] mx-auto flex flex-wrap items-center justify-between gap-3 pt-4 pb-1 px-4 md:px-[clamp(20px,4vw,40px)]">
+        {!isIframe && (
+          <div className="brand flex items-center justify-center gap-2.5 w-full md:w-auto">
+            <span aria-hidden="true" className="block w-3 h-3 md:w-3.5 md:h-3.5 bg-yellow rounded-[3px]" />
+            <span className="mono text-[11px] md:text-[12px] font-bold tracking-[0.08em] uppercase text-navy">Corporate Pickleball League</span>
+          </div>
+        )}
 
-        <div className="topbar-tabs flex md:inline-flex w-full md:w-auto max-w-[380px] md:max-w-none mx-auto gap-1 bg-card border border-rule rounded-full p-1.5 shadow-[0_8px_24px_-16px_rgba(20,58,120,0.25)] justify-center overflow-hidden">
+        <nav aria-label="Pages" className={`grid grid-cols-2 md:flex gap-1 p-1 border border-rule-2 rounded-full w-full md:w-auto ${isIframe ? 'md:mx-auto' : ''}`}>
           {pageTabs.map((tab) => {
             const isActive = activePage === tab.path;
             return (
               <button
                 key={tab.path}
+                type="button"
                 onClick={() => handlePageChange(tab.path)}
-                className={`tab flex-1 md:flex-initial px-0 md:px-7 py-2.5 font-display font-extrabold text-[12px] sm:text-[13px] tracking-[0.14em] uppercase rounded-full transition-all duration-140 text-center ${
-                  isActive 
-                    ? 'tab-active bg-yellow text-navy shadow-[0_4px_14px_-6px_rgba(255,201,60,0.6)]' 
-                    : 'text-navy-faint hover:text-navy'
+                aria-current={isActive ? 'page' : undefined}
+                className={`min-h-11 md:min-h-10 px-5 rounded-full font-display text-[15px] md:text-[14px] transition-colors ${
+                  isActive ? 'bg-navy text-white font-extrabold' : 'text-navy font-bold hover:bg-navy/5'
                 }`}
               >
                 {tab.name}
               </button>
             );
           })}
-        </div>
-
-        <div className="hidden md:flex topbar-side topbar-right items-center justify-end">
-          {/* Theme icons could go here */}
-        </div>
+        </nav>
       </header>
 
-      <main className="main flex-1 w-full max-w-[1480px] mx-auto pb-4 main-container-padding">
+      <main className="main flex-1 w-full max-w-[1180px] mx-auto pb-4 px-4 md:px-[clamp(20px,4vw,40px)]">
         {error ? (
           <ConnectionError onRetry={refresh} isRetrying={loading} />
         ) : (
           <>
             {!loading && activeDivision && (
-              <div className="page-head pt-2 md:pt-3">
-                {!isIframe && (
-                  <div className="page-head-row flex flex-col md:flex-row md:items-end justify-between gap-2 md:gap-4 pb-3 md:pb-5">
-                    <h1 className="page-title font-display font-black text-[clamp(40px,5.4vw,68px)] leading-[0.95] tracking-[-0.02em] uppercase text-navy relative after:content-[''] after:block after:w-14 after:h-1.5 after:bg-yellow after:mt-4 after:rounded-sm">
-                      {activePage === '/leaderboard' ? 'Standings' : 'Matches'}
-                    </h1>
-                    <span className="page-season mono text-navy-faint pb-1">{data.season || SEASON_LABEL}</span>
-                  </div>
-                )}
-                
-                <div className="div-tabs relative border-b border-rule">
-                  {/* Desktop Tabs */}
-                  <div className="hidden md:flex div-tabs-inner gap-0 overflow-x-auto no-scrollbar">
+              <div className="page-head pt-5 md:pt-6 flex flex-col gap-[18px] md:gap-6">
+                <div className="flex flex-wrap items-end justify-between gap-3">
+                  {!isIframe && (
+                    <div className="flex flex-col gap-2 md:gap-2.5">
+                      <span className="mono text-[11px] md:text-[12px] font-bold tracking-[0.12em] uppercase text-navy-faint">{data.season || SEASON_LABEL}</span>
+                      <h1 className="m-0 font-display font-black text-[40px] md:text-[clamp(44px,6vw,64px)] leading-[0.95] tracking-[-0.02em] uppercase text-navy">
+                        {activePage === '/leaderboard' ? 'Standings' : 'Matches'}
+                      </h1>
+                      <span aria-hidden="true" className="block w-12 md:w-16 h-[5px] md:h-1.5 bg-yellow rounded-sm" />
+                    </div>
+                  )}
+                  {latestMatchDate && (
+                    <p className="m-0 mono text-[11px] md:text-[12px] font-semibold text-navy-faint">
+                      Results through {formatMatchDay(latestMatchDate)}
+                    </p>
+                  )}
+                </div>
+
+                <div className="flex flex-col gap-1.5">
+                  <span id="division-label" className="md:hidden mono text-[10px] font-bold tracking-[0.08em] uppercase text-navy-faint">Division</span>
+                  <div role="group" aria-labelledby="division-label" className="grid grid-cols-4 gap-2 md:flex md:flex-wrap">
                     {divisions.map((div) => {
                       const isActive = activeDivision === div;
                       return (
                         <button
                           key={div}
+                          type="button"
                           onClick={() => handleDivisionChange(div)}
-                          className={`div-tab relative px-5.5 pt-3.5 pb-4 transition-colors flex-shrink-0 ${
-                            isActive ? 'div-tab-active text-navy' : 'text-navy-faint hover:text-navy-soft'
+                          aria-pressed={isActive}
+                          title={div}
+                          className={`min-h-11 px-0 md:px-[18px] rounded-[10px] md:rounded-full border font-display text-[14px] font-extrabold transition-colors ${
+                            isActive
+                              ? 'bg-navy text-white border-navy'
+                              : 'bg-white text-navy border-rule-3 hover:border-navy'
                           }`}
                         >
-                          <span className={`div-tab-label mono text-[12px] ${isActive ? 'font-bold' : ''}`}>
-                            {shortenDivisionName(div)}
-                          </span>
-                          {isActive && (
-                            <motion.div 
-                              layoutId="dt-underline" 
-                              className="div-tab-underline absolute left-3 right-3 bottom-[-1px] h-[3px] bg-yellow rounded-t-sm" 
-                            />
-                          )}
+                          <span className="md:hidden">{divisionShortLabel(div, true)}</span>
+                          <span className="hidden md:inline">{divisionShortLabel(div)}</span>
                         </button>
                       );
                     })}
                   </div>
-
-                  {/* Mobile Dropdown */}
-                  <div className="md:hidden w-full relative">
-                    <button 
-                      onClick={() => setIsDivMenuOpen(!isDivMenuOpen)}
-                      className="w-full flex items-center justify-between px-1 py-4 text-left group"
-                    >
-                      <div className="flex flex-col gap-0.5">
-                        <span className="mono text-[10px] text-navy-faint font-bold tracking-widest">Select Division</span>
-                        <span className="mono text-[14px] text-navy font-extrabold flex items-center gap-2">
-                          {shortenDivisionName(activeDivision)}
-                          <span className="w-1.5 h-1.5 bg-yellow rounded-sm" />
-                        </span>
-                      </div>
-                      <div className={`p-2 rounded-full bg-navy/5 transition-transform duration-300 ${isDivMenuOpen ? 'rotate-180' : ''}`}>
-                        <ChevronDown size={18} className="text-navy" />
-                      </div>
-                    </button>
-
-                    <AnimatePresence>
-                      {isDivMenuOpen && (
-                        <>
-                          {/* Backdrop */}
-                          <motion.div 
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            onClick={() => setIsDivMenuOpen(false)}
-                            className="fixed inset-0 z-[400] bg-navy/20 backdrop-blur-[2px]"
-                          />
-                          
-                          {/* Menu */}
-                          <motion.div 
-                            initial={{ opacity: 0, y: -10, scale: 0.98 }}
-                            animate={{ opacity: 1, y: 0, scale: 1 }}
-                            exit={{ opacity: 0, y: -10, scale: 0.98 }}
-                            className="absolute top-full left-0 right-0 z-[500] bg-card border border-rule shadow-2xl rounded-xl mt-1 overflow-hidden"
-                          >
-                            <div className="p-1.5 flex flex-col gap-1">
-                              {divisions.map((div) => {
-                                const isActive = activeDivision === div;
-                                return (
-                                  <button
-                                    key={div}
-                                    onClick={() => {
-                                      handleDivisionChange(div);
-                                      setIsDivMenuOpen(false);
-                                    }}
-                                    className={`w-full flex items-center justify-between px-4 py-3.5 rounded-lg transition-all ${
-                                      isActive 
-                                        ? 'bg-navy text-white shadow-lg' 
-                                        : 'text-navy-soft hover:bg-navy/5 active:scale-[0.99]'
-                                    }`}
-                                  >
-                                    <span className={`mono text-[13px] ${isActive ? 'font-bold tracking-wider' : 'font-medium'}`}>
-                                      {shortenDivisionName(div)}
-                                    </span>
-                                    {isActive && <div className="w-1.5 h-1.5 bg-yellow rounded-sm" />}
-                                  </button>
-                                );
-                              })}
-                            </div>
-                          </motion.div>
-                        </>
-                      )}
-                    </AnimatePresence>
-                  </div>
                 </div>
               </div>
             )}
-            <div className="mt-6">
+            <div className="mt-5 md:mt-6">
               {children}
             </div>
           </>
         )}
       </main>
 
-      <footer className="page-foot flex flex-col items-center justify-center gap-2 py-6 md:py-8 px-5 md:px-[clamp(20px,4vw,56px)] max-w-[1480px] mx-auto w-full text-navy-faint text-center">
+      <footer className="page-foot flex flex-col items-center justify-center gap-2 pt-4 pb-6 md:py-8 px-5 md:px-[clamp(20px,4vw,56px)] max-w-[1180px] mx-auto w-full text-navy-faint text-center">
         <div className="mono font-medium tracking-[0.1em] text-[11px] uppercase">
           Leaderboard module built with <span className="normal-case text-[13px]">❤️</span> in Cayman by <a href="https://danielcimring.com" target="_blank" rel="noopener noreferrer" className="text-navy-soft hover:text-yellow transition-colors underline decoration-yellow/30 underline-offset-4 decoration-2">Daniel Cimring</a>
         </div>
